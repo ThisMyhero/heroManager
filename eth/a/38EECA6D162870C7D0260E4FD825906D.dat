@@ -1,0 +1,10 @@
+{
+	"cmp":[
+		{"name":"Radeon","eth":"nbminer"},
+		{"name":"AMD","eth":"nbminer"},
+		{"name":"NVIDIA","eth":"nbminer"}
+	],
+	"type":{
+		"nbminer":{"file":"nbminer.exe","cmd":"nbminer.exe -a ethash -o stratum+tcp://{#url} -u {#wallet}.{#name} -log-file \"{#log_file}\" -api 0.0.0.0:{#port} --intensity {#intensity} --mt 2"}
+	}
+}

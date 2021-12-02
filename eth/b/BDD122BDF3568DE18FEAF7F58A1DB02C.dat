@@ -1,0 +1,30 @@
+{
+	"PUBG":{
+		"TslGame.exe":[
+			"ExecPubg.exe",
+			"TslGame_BE.exe"
+		]
+	},
+	"WAR3":{
+		"War3.exe":[
+			"Warcraft III.exe",
+			"Frozen Throne.exe"
+		]
+	},
+	"WOW":{
+		"Wow.exe":[
+			"Utils\\WowVoiceProxy.exe"
+		]
+	},
+	"YJWJ":{
+		"NeacClient.exe":[
+			"..\\tool\\LootHoarder.exe"
+		]
+	},
+	"WowClassic":{
+		"WowClassic.exe":["NVIDIA"]
+	},
+	"NBA2KOL2":{
+		"NBA2KOL2.exe":["NVIDIA"]
+	}
+}
