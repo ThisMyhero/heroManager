@@ -1,1 +1,0 @@
-nbminer -a etchash -o stratum+ssl://eth-pool.beepool.org:9531 -u 0x2Bc60899500A53AbF4eE97d9A59feF7742b0aE26.default -log
