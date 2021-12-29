@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en-US" translate="no">
+<head>
+    <title>Control rooms</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta charset="UTF-8">
+    <link rel="preload" href="./css/themes/light/global.css?v=1635430962" as="style"/>
+    <link rel="preload" href="./js/jquery.js" as="script"/>
+
+
+    <meta name="robots" content="noindex">
+    <link href="./css/themes/light/global.css?v=1635430962" id="css" rel="stylesheet" type="text/css">
+    <link href="./css/themes/dark/global.css?v=1632755234" rel="stylesheet" type="text/css">
+    <link href="./css/themes/light/control-room.css?v=1617793300" rel="stylesheet" type="text/css">
+    <link href="./css/themes/dark/control-room.css?v=1617794069" rel="stylesheet" type="text/css">
+</head>
+<body>
+<noscript>
+    <iframe src="/www.googletagmanager.com/ns.html?id=GTM-KJ552JD" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe>
+</noscript>
+<header>
+
+</header>
+<div class="page">
+    <div class="menu">
+        <div id="main_menu">
+
+        </div>
+    </div>
+    <div class="content control_room">
+        <div class="title_row">
+            <div class="title_left">
+                <h1>Control room</h1>
+            </div>
+            <div class="title_right">
+                <div class="filter_room_row">
+                    <div class="room_toggle_box">
+                        <label>Global</label>
+                        <div id="toggleView" class="toggle">
+                            <div class="bullet "></div>
+                        </div>
+                    </div>
+                    <div class="room_select_box">
+                        <label>View</label>
+                        <select id="switchView">
+                            <option selected="selected" value="1">Compact</option>
+                            <option value="2">Extended</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="button green" onclick="addNewRoom();">
+                    <div class="icon plus"></div>
+                    Create new room
+                </div>
+            </div>
+        </div>
+        <div class="container">
+        </div>
+    </div>
+    <input type="hidden" id="nonce" value="c13caefd4b5b37b31c578c6624f681ffad074d2092711c67b61f7f0b8f4a9b9e"/>
+    <div class="popupbackground"></div>
+    <div class="popup" id="delete_room">
+        <div class="close"></div>
+        <div class="title"></div>
+        <div class="text">
+            <div class="icon warning"></div>
+            <p>Please note that this action will detach all the workers that are attached to this room.</p></div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup">No, keep it</div>
+            <div class="button red">Yes, delete it</div>
+        </div>
+    </div>
+    <div class="popup" id="rename_room">
+        <div class="close"></div>
+        <div class="title"></div>
+        <div class="text">
+            <div class="row">
+                <label>New name</label>
+                <input type="text" id="room_name" value=""/>
+            </div>
+        </div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup">Discard changes</div>
+            <div class="button green">Save changes</div>
+        </div>
+    </div>
+    <script>
+        var rooms = '{\"zgtnisjwk59a\":\"{\\\"what\\\":[{\\\"2\\\":{\\\"label\\\":\\\"123\\\",\\\"workers\\\":[\\\"WORKER001\\\",\\\"WORKER001\\\"]},\\\"1\\\":{\\\"label\\\":\\\"ff\\\",\\\"workers\\\":[\\\"home\\\"]}}],\\\"N\\\\\\/A\\\":[[{\\\"label\\\":\\\"\\\",\\\"workers\\\":[\\\"WORKER001\\\",\\\"WORKER001\\\",\\\"WORKER001\\\",\\\"WORKER001\\\"]}]]}\"}';
+        var token = 'zgtnisjwk59a';
+        var tokens = ["zgtnisjwk59a"];
+        var controlRoomView = '1';
+        var globalShow = '0';
+    </script>
+</div>
+<script>
+    var currency = "CNY";
+    var currencyValue = 6.405705;
+    var temperature = "°C";
+    var userPermission = "owner";
+    var userPrimaryPermission = "";
+
+    [
+        "./js/jquery.js", "./js/gettext.js", "./js/perfect-scrollbar.js",'./js/language.js', "./js/templates/global.js", "./js/templates/control-rooms.js"
+    ].forEach(function (src) {
+        var script = document.createElement("script");
+        script.src = src;
+        script.async = false;
+        document.head.appendChild(script);
+    });
+</script>
+</body>
+</html>
