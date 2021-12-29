@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<!-- saved from url=(0023)http://127.0.0.1:22333/ -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>NBMiner</title>
+    
+    <style type="text/css">
+        head,
+        body {
+            background: #3f3f3f;
+            font: 100% sans-serif;
+            color: #bbb;
+            text-align: center;
+        }
+
+        #container {
+            width: 1200px;
+            background: #4f4f4f;
+            margin: 0 auto;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px #222;
+        }
+
+        #version {
+            font-size: 100%;
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+
+        #update_link {
+            font-size: 100%;
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 8px;
+        }
+
+        table {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 10px;
+            border-collapse: collapse;
+        }
+
+        table tr td {
+            empty-cells: show;
+            background: #3f3f3f;
+            font-size: 70%;
+            border: 1px solid #5f5f5f;
+            max-width: 0;
+            padding: 7px 3px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        #error {
+            color: #e33;
+            text-align: center;
+            display: none;
+            padding-bottom: 10px;
+        }
+
+        .text_red {
+            color: #e33;
+        }
+
+        .text_green {
+            color: #3d3;
+        }
+
+        .text_yellow {
+            color: #dc4;
+        }
+
+        #gpu_stat tr td {
+            width: 6%;
+        }
+
+        #gpu_stat tr td:first-child {
+            width: 19%;
+        }
+
+        #miner_stat tr td:first-child {
+            width: 19%;
+        }
+
+        a:link {color:#0099FF;text-decoration:none;}    /* 未被访问的链接 */
+        a:visited {color:#0099FF;text-decoration:none;} /* 已被访问的链接 */
+        a:hover {color:#0099FF;text-decoration:none;}   /* 鼠标指针移动到链接上 */
+        a:active {color:#0099FF;text-decoration:none;}  /* 正在被点击的链接 */
+    </style>
+    <script type="text/javascript">
+        function loop(xmlhttp) {
+            xmlhttp.open('GET', '%url%', true);
+            xmlhttp.send(null);
+            setTimeout(loop, 1000, xmlhttp);
+        }
+
+        function set_status(el, msg, cls) {
+            el.className = cls;
+            el.textContent = msg;
+        }
+
+        function set_time_diff(el, start) {
+            var secs = (new Date() - (start * 1000)) / 1000;
+            var days = Math.floor(secs / 86400);
+            var hours = ("0" + Math.floor(secs / 3600) % 24).substr(-2);
+            var mins = ("0" + Math.floor(secs / 60) % 60).substr(-2);
+            var secs = ("0" + Math.floor(secs) % 60).substr(-2);
+            el.textContent = days + "天 " + hours + ":" + mins + ":" + secs
+        }
+
+        function start() {
+            var error = document.getElementById("error");
+            var miner = document.getElementById("miner");
+            var algorithm = document.getElementById("algorithm_status");
+            var url = document.getElementById("url_status");
+            var user = document.getElementById("user_status")
+            var url2 = document.getElementById("url_status2");
+            var user2 = document.getElementById("user_status2")
+            var total = document.getElementById("total");
+            var version = document.getElementById("version");
+            var uptime = document.getElementById("uptime_status")
+            
+            var difficulty = document.getElementById("difficulty")
+            var latency = document.getElementById("latency")
+            var pool_hashrate = document.getElementById("pool_hashrate")
+            var accepted_shares = document.getElementById("accepted_shares")
+            var rejected_shares = document.getElementById("rejected_shares")
+
+            var difficulty2 = document.getElementById("difficulty2")
+            var latency2 = document.getElementById("latency2")
+            var pool_hashrate2 = document.getElementById("pool_hashrate2")
+            var accepted_shares2 = document.getElementById("accepted_shares2")
+            var rejected_shares2 = document.getElementById("rejected_shares2")
+
+            if (!window.XMLHttpRequest) {
+                error.textContent = "Your browser does not support XMLHttpRequest, auto update will not work!";
+                error.style.display = "block";
+                return;
+            }
+            var xmlhttp = new XMLHttpRequest();
+            if (!xmlhttp) {
+                error.textContent = "Cannot create XMLHttpRequest object, auto update will not work!";
+                error.style.display = "block";
+                return;
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState != 4) { /*set_status(miner, "Disconnected", "text_red");*/
+                    return;
+                }
+                if (xmlhttp.status != 200) {
+                    set_status(miner, "断开", "text_red");
+                    return;
+                }
+                var data = window.JSON.parse(xmlhttp.responseText);
+                set_status(miner, "已连接", "text_green");
+                console.log(data)
+
+                set_time_diff(uptime, data.start_time);
+                version.innerHTML = "NBMiner " + data.version;
+
+                var d_stratum = data.stratum
+
+                algorithm.innerHTML = d_stratum.algorithm
+                user.innerHTML = d_stratum.user;
+                url.innerHTML = d_stratum.url;
+                user2.innerHTML = d_stratum.user2;
+                url2.innerHTML = d_stratum.url2;
+
+                var d_miner = data.miner;
+
+                var tableRef = document.getElementById("gpu_stat")
+                if (tableRef.rows.length <= 3) {
+                    for (gpu of d_miner.devices) {
+                        var element = document.getElementById("gpu" + gpu.id);
+                        var newRow = tableRef.insertRow(tableRef.rows.length - 1);
+                        newRow.setAttribute("id", "gpu" + gpu.id);
+                    }
+                    return;
+                }
+
+
+			var element = document.getElementById("nr");
+			var htm=""
+                for (gpu of d_miner.devices) {
+					 
+					
+                    
+                    var temp_color = (gpu.temperature < 70 ? 'text_green' : (gpu.temperature < 80 ? 'text_yellow' :
+                        'text_red'));
+                      htm = htm+ '<tr> <td>' + gpu.info + '</td>' +
+                        '<td>' + gpu.hashrate + 'H/s</td>' +
+                        '<td>' + gpu.hashrate2 + 'H/s</td>' +
+                        '<td>' + gpu.accepted_shares + '</td>' +
+                        '<td>' + gpu.rejected_shares + '</td>' +
+                        '<td>' + gpu.invalid_shares + '</td>' +
+                        '<td>' + Number(gpu.accepted_shares2) + '</td>' +
+                        '<td>' + gpu.rejected_shares2 + '</td>' +
+                        '<td class="' + temp_color + '">' + gpu.temperature + ' C</td>' +
+                        '<td>' + gpu.power + ' W</td>' +
+                        '<td>' + gpu.fan + ' %</td>' +
+                        '<td>' + gpu.core_clock + ' MHz</td>' +
+                        '<td>' + gpu.mem_clock + ' MHz</td>' +
+                        '<td>' + gpu.mem_utilization + ' %</td></tr>'
+                   
+                }
+				 element.innerHTML = htm;
+
+                total.innerHTML = '<td>总计</td>' +
+                    '<td>' + d_miner.total_hashrate + 'H/s</td>' +
+                    '<td>' + d_miner.total_hashrate2 + 'H/s</td>' +
+                    '<td>-</td>' +
+                    '<td>' + '-' + '</td>' +
+                    '<td>' + '-' + '</td>' +
+                    '<td>' + '-' + '</td>' +
+                    '<td>' + '-' + '</td>' +
+                    '<td>' + '-' + '</td>' +
+                    '<td>' + d_miner.total_power_consume + ' W</td>' +
+                    '<td>' + '-' + '</td>' +
+                    '<td>' + '-' + '</td>' +
+                    '<td>' + '-' + '</td>' +
+                    '<td>' + '-' + '</td>'
+                
+                difficulty.innerHTML = d_stratum.difficulty
+                latency.innerHTML = d_stratum.latency == -1 ? "" : d_stratum.latency + " ms"
+                pool_hashrate_10m.innerHTML = d_stratum.pool_hashrate_10m
+                pool_hashrate_4h.innerHTML = d_stratum.pool_hashrate_4h
+                pool_hashrate_24h.innerHTML = d_stratum.pool_hashrate_24h
+                accepted_shares.innerHTML = d_stratum.accepted_shares
+                rejected_shares.innerHTML = d_stratum.rejected_shares
+
+                difficulty2.innerHTML = d_stratum.difficulty2
+                latency2.innerHTML = d_stratum.latency2 == -1 ? "" : d_stratum.latency2 + " ms"
+                pool_hashrate2_10m.innerHTML = d_stratum.pool_hashrate2_10m
+                pool_hashrate2_4h.innerHTML = d_stratum.pool_hashrate2_4h
+                pool_hashrate2_24h.innerHTML = d_stratum.pool_hashrate2_24h
+                accepted_shares2.innerHTML = d_stratum.accepted_shares2
+                rejected_shares2.innerHTML = d_stratum.rejected_shares2
+
+                // document.body. = document.body.innerHTML.replace(/undefined/g, "-");
+            };
+            loop(xmlhttp);
+        }
+        window.onload = start;
+    </script>
+</head>
+
+<body>
+    <!-- <div id="logo"><img src="/logo.png" height="100"></div> -->
+    <div id="container">
+        <div id="version">NBMiner 39.1</div>
+        <div id="error">错误</div>
+        <table id="miner_stat">
+            <tbody><tr>
+                <td colspan="2">
+                    <strong>矿工信息</strong>
+                </td>
+            </tr>
+            <tr>
+                <td>矿工状态</td>
+                <td>
+                    <span id="miner" class="text_green">已连接</span>
+                </td>
+            </tr>
+            <tr>
+                <td id="uptime">在线时间</td>
+                <td>
+                    <span id="uptime_status">0天 00:00:00</span>
+                </td>
+            </tr>
+            <tr>
+                <td id="algorithm">挖矿算法</td>
+                <td>
+                    <span id="algorithm_status">ethash</span>
+                </td>
+            </tr>
+            <tr>
+                <td id="user">用户名1</td>
+                <td>
+                    <span id="user_status">undefined</span>
+                </td>
+            </tr>
+            <tr>
+                <td id="url">矿池地址1</td>
+                <td>
+                    <span id="url_status">undefined</span>
+                </td>
+            </tr>
+            <tr>
+                <td id="user">用户名2</td>
+                <td>
+                    <span id="user_status2">undefined</span>
+                </td>
+            </tr>
+            <tr>
+                <td id="url">矿池地址2</td>
+                <td>
+                    <span id="url_status2">undefined</span>
+                </td>
+            </tr>
+        </tbody></table>
+        <table id="gpu_stat">
+            <tbody><tr>
+                <td colspan="14">
+                    <strong>显卡信息</strong>
+                </td>
+            </tr>
+            <tr>
+                <td>显卡</td>
+                <td>算力1</td>
+                <td>算力2</td>
+                <td>接受份额1</td>
+                <td>拒绝份额1</td>
+                <td>无效份额1</td>
+                <td>接受份额2</td>
+                <td>拒绝份额2</td>
+                <td>温度</td>
+                <td>功耗</td>
+                <td>风扇</td>
+                <td>核心频率</td>
+                <td>显存频率</td>
+                <td>显存使用率</td>
+            </tr>
+			</tbody>
+			 <tbody id="nr"> 
+			 </tbody>
+			 <tr id="total"><td>总计</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        </table>
+        <table id="pool_stat">
+            <tbody><tr>
+                <td colspan="7">
+                    <strong>矿池统计数据1</strong>
+                </td>
+            </tr>
+            <tr>
+                <td>当前难度</td>
+                <td>矿池延迟</td>
+                <td>10分钟算力</td>
+                <td>4小时算力</td>
+                <td>24小时算力</td>
+                <td class="text_green">接受份额</td>
+                <td class="text_red">拒绝份额</td>
+            </tr>
+                <tr><td id="difficulty">0.000 G</td>
+                <td id="latency">0 ms</td>
+                <td id="pool_hashrate_10m">0.000 </td>
+                <td id="pool_hashrate_4h">0.000 </td>
+                <td id="pool_hashrate_24h">0.000 </td>
+                <td id="accepted_shares">0</td>
+                <td id="rejected_shares">0</td>
+            </tr>
+            <tr>
+                <td colspan="7">
+                    <strong>矿池统计数据2</strong>
+                </td>
+            </tr>
+            <tr>
+                <td>当前难度</td>
+                <td>矿池延迟</td>
+                <td>10分钟算力</td>
+                <td>4小时算力</td>
+                <td>24小时算力</td>
+                <td class="text_green">接受份额</td>
+                <td class="text_red">拒绝份额</td>
+            </tr>
+                <tr><td id="difficulty2">undefined</td>
+                <td id="latency2">undefined ms</td>
+                <td id="pool_hashrate2_10m">undefined</td>
+                <td id="pool_hashrate2_4h">undefined</td>
+                <td id="pool_hashrate2_24h">undefined</td>
+                <td id="accepted_shares2">undefined</td>
+                <td id="rejected_shares2">undefined</td>
+            </tr>
+        </tbody></table>
+        <div id="update_link">
+            获取最新版本: <a href="https://github.com/NebuTech/NBMiner">Github</a>
+        </div>
+    </div>
+
+
+
+</body></html>

@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en-US" translate="no">
+<head>
+    <title>Global statistics</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta charset="UTF-8">
+    <link rel="preload" href="./css/themes/light/global.css?v=1635430962" as="style"/>
+    <link rel="preload" href="./js/jquery.js" as="script"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="./css/themes/light/global.css?v=1635430962" id="css" rel="stylesheet" type="text/css">
+    <link href="./css/themes/dark/global.css?v=1632755234" rel="stylesheet" type="text/css">
+    <link href="./css/themes/light/stats.css?v=1612863384" rel="stylesheet" type="text/css">
+    <link href="./css/themes/dark/stats.css?v=1606721883" rel="stylesheet" type="text/css">
+</head>
+<body>
+<noscript>
+    <iframe src="/www.googletagmanager.com/ns.html?id=GTM-KJ552JD" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe>
+</noscript>
+<header>
+
+</header>
+<div class="page">
+    <div class="menu">
+        <div id="main_menu">
+
+        </div>
+    </div>
+    <div class="content stats">
+        <div class="title_row">
+            <div class="title_left">
+                <h1 lang-data-ht="Global statistics">Global statistics</h1>
+            </div>
+        </div>
+        <div class="container">
+            <div class="col_4_5">
+                <div class="box_graph">
+                    <div id="global-profitability" style="width:100%;"></div>
+                </div>
+                <div class="data_row">
+                    <div class="element">
+                        <small lang-data-ht="Today">Today</small>
+                        <div class="value" id="profToday">0.0 CNY</div>
+                        <div class="change" id="profTodayCompare">
+                            <div class="icon arrow_none"></div>
+                            <span class="gray percent">0%</span> vs. <x lang-data-ht="Yesterday">Yesterday</x>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="top_5" id="topCoinsToday"></div>
+                    </div>
+                    <div class="element">
+                        <small lang-data-ht="Yesterday">Yesterday</small>
+                        <div class="value" id="profYesterday">0.0 CNY</div>
+                        <div class="change" id="profYesterdayCompare">
+                            <div class="icon arrow_none"></div>
+                            <span class="gray percent">0%</span> vs. <x lang-data-ht="same day last week">same day last week</x>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="top_5" id="topCoinsYesterday"></div>
+                    </div>
+                    <div class="element">
+                        <small lang-data-ht="Last 7 days">Last 7 days</small>
+                        <div class="value" id="prof7d">0.0 CNY</div>
+                        <div class="change" id="prof7dCompare">
+                            <div class="icon arrow_none"></div>
+                            <span class="gray percent">0%</span> vs. <x lang-data-ht="previous 7 days">previous 7 days</x>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="top_5" id="topCoinsLast7d"></div>
+                    </div>
+
+                    <div class="element notEnoughData">
+                        <div class="dashed">
+                            <div class="unavailable">
+                                <div class="image nodata"></div>
+                                <div class="title">Not enough data</div>
+                                <p>Statistics will be automatically updated once available.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box_graph">
+                    <div id="coin-hashrate" style="width:100%;"></div>
+                </div>
+                <div class="data_row">
+                    <div class="element">
+                        <small lang-data-ht="Today">Today</small>
+                        <div class="value" id="hashrateToday">-</div>
+                        <div class="change" lang-data-ht="Avg. uptime">Avg. uptime</div>
+                        <div class="divider"></div>
+                        <div class="top_5" id="topCoinsHashrateToday"></div>
+                    </div>
+                    <div class="element">
+                        <small lang-data-ht="Yesterday">Yesterday</small>
+                        <div class="value" id="hashrateYesterday">-</div>
+                        <div class="change" lang-data-ht="Avg. uptime">Avg. uptime</div>
+                        <div class="divider"></div>
+                        <div class="top_5" id="topCoinsHashrateYesterday"></div>
+                    </div>
+                    <div class="element">
+                        <small lang-data-ht="Last 7 days">Last 7 days</small>
+                        <div class="value" id="hashrate7d">-</div>
+                        <div class="change" lang-data-ht="Avg. uptime">Avg. uptime</div>
+                        <div class="divider"></div>
+                        <div class="top_5" id="topCoinsHashrateLast7d"></div>
+                    </div>
+
+                    <div class="element notEnoughData">
+                        <div class="dashed">
+                            <div class="unavailable">
+                                <div class="image nodata"></div>
+                                <div class="title">Not enough data</div>
+                                <p>Statistics will be automatically updated once available.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box_graph">
+                    <div id="coin-power" style="width:100%;"></div>
+                </div>
+                <div class="data_row">
+                    <div class="element">
+                        <small lang-data-ht="Today">Today</small>
+                        <div class="value" id="powerToday">-</div>
+                        <div class="change" lang-data-ht="Total avg. power">Total avg. power</div>
+                        <div class="divider"></div>
+                        <div class="top_5" id="topCoinsPowerToday"></div>
+                    </div>
+                    <div class="element">
+                        <small lang-data-ht="Yesterday">Yesterday</small>
+                        <div class="value" id="powerYesterday">-</div>
+                        <div class="change" lang-data-ht="Total avg. power">Total avg. power</div>
+                        <div class="divider"></div>
+                        <div class="top_5" id="topCoinsPowerYesterday"></div>
+                    </div>
+                    <div class="element">
+                        <small lang-data-ht="Last 7 days">Last 7 days</small>
+                        <div class="value" id="power7d">-</div>
+                        <div class="change" lang-data-ht="Total avg. power">Total avg. power</div>
+                        <div class="divider"></div>
+                        <div class="top_5" id="topCoinsPowerLast7d"></div>
+                    </div>
+
+                    <div class="element notEnoughData">
+                        <div class="dashed">
+                            <div class="unavailable">
+                                <div class="image nodata"></div>
+                                <div class="title">Not enough data</div>
+                                <p>Statistics will be automatically updated once available.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box_graph">
+                    <div id="coin-efficiency" style="width:100%;"></div>
+                </div>
+                <div class="data_row">
+                    <div class="element">
+                        <small lang-data-ht="Today">Today</small>
+                        <div class="value" id="efficiencyToday">-</div>
+                        <div class="change" lang-data-ht="Avg. uptime">Avg. uptime</div>
+                        <div class="divider"></div>
+                        <div class="top_5" id="topCoinsEfficiencyToday"></div>
+                    </div>
+                    <div class="element">
+                        <small lang-data-ht="Yesterday">Yesterday</small>
+                        <div class="value" id="efficiencyYesterday">-</div>
+                        <div class="change" lang-data-ht="Avg. uptime">Avg. uptime</div>
+                        <div class="divider"></div>
+                        <div class="top_5" id="topCoinsEfficiencyYesterday"></div>
+                    </div>
+                    <div class="element">
+                        <small lang-data-ht="Last 7 days">Last 7 days</small>
+                        <div class="value" id="efficiency7d">-</div>
+                        <div class="change" lang-data-ht="Avg. uptime">Avg. uptime</div>
+                        <div class="divider"></div>
+                        <div class="top_5" id="topCoinsEfficiencyLast7d"></div>
+                    </div>
+
+                    <div class="element notEnoughData">
+                        <div class="dashed">
+                            <div class="unavailable">
+                                <div class="image nodata"></div>
+                                <div class="title">Not enough data</div>
+                                <p>Statistics will be automatically updated once available.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col_1_5">
+                <div class="element">
+                    <h2>Worker types distribution</h2>
+                    <div class="distribution">
+                        <div class="row">
+                            <div class="name">Nvidia</div>
+                            <div class="progress_bar">
+                                <div class="progress" style="width:50%;"></div>
+                                <div class="value">50%</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="name">AMD</div>
+                            <div class="progress_bar">
+                                <div class="progress" style="width:50%;"></div>
+                                <div class="value">50%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="element">
+                    <h2>Global activity</h2>
+                    <div class="activity">
+                        <div class="row">
+                            <div class="data">
+                                <div class="value" id="activeWorkers">0</div>
+                                <div class="name">out of <span id="totalWorkers">0</span><br>active workers</div>
+                            </div>
+                            <div class="graph">
+                                <div class="progress_bar">
+                                    <div class="progress" id="activeWorkersPercent" style="width:0%;"></div>
+                                </div>
+                                <div class="value" id="activeWorkersPercentValue">0%</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="data">
+                                <div class="value" id="activeHardware">0</div>
+                                <div class="name">active<br>hardware</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="data">
+                                <div class="value" id="workerTemp">0</div>
+                                <div class="name">out of <span id="totalHardware">0</span><br>with normal temperature
+                                </div>
+                            </div>
+                            <div class="graph">
+                                <div class="progress_bar">
+                                    <div class="progress" id="workerTempPercent" style="width:0%;"></div>
+                                </div>
+                                <div class="value" id="workerTempPercentValue">0%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var workerTimezone = 'Asia/Shanghai';
+        var plan = '1';
+        var workerToken = 'zgtnisjwk59a';
+        var workerOffset = 8;
+        var theme = 'dark';
+        var demoAccount = 0;
+    </script>
+</div>
+
+<script>
+    var currency = "CNY";
+    var currencyValue = 6.405705;
+    var temperature = "°C";
+    var userPermission = "owner";
+    var userPrimaryPermission = "";
+
+    [
+        "./js/jquery.js", "./js/gettext.js", "./js/perfect-scrollbar.js",'./js/language.js', "./js/templates/global.js", "./js/highstock-102020.js", "./js/templates/global-stats.js"
+    ].forEach(function (src) {
+        var script = document.createElement("script");
+        script.src = src;
+        script.async = false;
+        document.head.appendChild(script);
+    });
+</script>
+</body>
+</html>

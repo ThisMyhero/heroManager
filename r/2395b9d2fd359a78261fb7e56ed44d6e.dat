@@ -1,0 +1,10 @@
+<div class="title">
+<b>WORKER001</b>
+<p>msOS worker audit</p>
+<div class="close"></div>
+</div>
+<div class="text">
+<div class="date">No reports</div>
+<div class="button blue" onclick="generateNewReport('WORKER001');">Generate new report</div>
+</div>
+<div class="report_results" style="display:none;"><div class="frame"></div></div>
