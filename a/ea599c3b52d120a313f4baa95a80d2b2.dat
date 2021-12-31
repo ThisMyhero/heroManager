@@ -1,0 +1,765 @@
+
+var languageTypeS=''
+// var languageTypeS='zh'
+function _mx(vax) {
+    for(let m in languageDateList){
+        if(languageDateList[m]==vax){
+            if(languageTypeS=='zh-cn'){
+                return m
+            }else {
+                return languageDateList[m]
+            }
+        }
+    }
+    return vax
+}
+function _mxE(vax) {
+    for(let m in selectList){
+        if(m==vax){
+            if(languageTypeS=='zh-cn'){
+                return selectList[m]
+            }
+        }
+    }
+    return vax
+}
+function _mx2(vax) {
+    for(let m in languageDateListTow){
+        if(languageDateListTow[m]==vax){
+            if(languageTypeS=='zh-cn'){
+                return m
+            }else {
+                return languageDateListTow[m]
+            }
+        }
+    }
+    return vax
+}
+function _mx3(vax) {
+    for(let m in languageDateListThere){
+        if(languageDateListThere[m]==vax){
+            if(languageTypeS=='zh-cn'){
+                return m
+            }else {
+                return languageDateListThere[m]
+            }
+        }
+    }
+    return vax
+}
+function _mx4(vax) {
+    for(let m in languageDateListFour){
+        if(languageDateListFour[m]==vax){
+            if(languageTypeS=='zh-cn'){
+                return m
+            }else {
+                return languageDateListFour[m]
+            }
+        }
+    }
+    return vax
+}
+function _mxFi(vax) {
+    for(let m in selectList){
+        if(selectList[m]==vax){
+            if(languageTypeS=='zh-cn'){
+                return m
+            }else {
+                return selectList[m]
+            }
+        }
+    }
+    return vax
+}
+
+function allLanguage() {
+    getTextLanguage()
+    getTextHtLanguage()
+    getTextHtLanguageTow()
+    getTextLanguageLable()
+    getTextHtLanguageThere()
+    getTextLanguagefi()
+}
+function getTextLanguage() {
+   let mylist = $('[lang-data-ti]')
+    $.each(mylist,function (i,it) {
+        for(let m in languageDateList){
+            if(languageDateList[m]==$(it).attr('lang-data-ti')){
+                if(languageTypeS=='zh-cn'){
+                    $(it).attr('data-tooltip',m)
+                }else {
+                    $(it).attr('data-tooltip',languageDateList[m])
+                }
+            }
+        }
+    })
+}
+function getTextLanguagefi() {
+   let mylist = $('[lang-data-fi]')
+    $.each(mylist,function (i,it) {
+        for(let m in selectList){
+            if(selectList[m]==$(it).attr('lang-data-fi')){
+                if(languageTypeS=='zh-cn'){
+                    $(it).attr('data-filter',m)
+                }else {
+                    $(it).attr('data-filter',selectList[m])
+                }
+            }
+        }
+    })
+}
+function getTextHtLanguage() {
+   let mylist = $('[lang-data-ht]')
+    $.each(mylist,function (i,it) {
+        for(let m in languageDateList){
+            if(languageDateList[m]==$(it).attr('lang-data-ht')){
+                if(languageTypeS=='zh-cn'){
+                    $(it).html(m)
+                }else {
+                    $(it).html(languageDateList[m])
+                }
+            }
+        }
+    })
+}
+function getTextHtLanguageTow() {
+   let mylist = $('[lang-data-ht2]')
+    $.each(mylist,function (i,it) {
+        for(let m in languageDateListTow){
+            if(languageDateListTow[m]==$(it).attr('lang-data-ht2')){
+                if(languageTypeS=='zh-cn'){
+                    $(it).html(m)
+                }else {
+                    $(it).html(languageDateListTow[m])
+                }
+            }
+        }
+    })
+}
+function getTextHtLanguageThere() {
+   let mylist = $('[lang-data-ht3]')
+    $.each(mylist,function (i,it) {
+        for(let m in languageDateListThere){
+            if(languageDateListThere[m]==$(it).attr('lang-data-ht3')){
+                if(languageTypeS=='zh-cn'){
+                    $(it).html(m)
+                }else {
+                    $(it).html(languageDateListThere[m])
+                }
+            }
+        }
+    })
+}
+function getTextLanguageLable() {
+    let mylist = $('[lang-data-la]')
+    $.each(mylist,function (i,it) {
+        for(let m in languageDateList){
+            if(languageDateList[m]==$(it).attr('lang-data-la')){
+                if(languageTypeS=='zh-cn'){
+                    $(it).attr('label',m)
+                }else {
+                    $(it).attr('label',languageDateList[m])
+                }
+            }
+        }
+    })
+}
+
+var languageDateList={
+    '系统内置':'System default',
+    '隐藏IP + 矿池加速':'Hide IP + Pool to accelerate',
+    '开启加速并且隐藏连接矿池的IP，可以有效的预防抓包和特征提取，但您需要关注矿池延迟。':'Enabling acceleration and hiding the IP connected to the pool can effectively prevent packet capture and feature extraction, but you need to pay attention to the pool delay.',
+    '前往场所管理':'Go to site management',
+    '您还未创建分组':'You haven\'t created any groups yet',
+    '没有分组':'No groups',
+    '管理矿工':'Manage your workers',
+    '没有日志':'No logs',
+    '没有24小时内的矿工日志':'There is no miner\'s log within 24 hours',
+    '放大视图':'Magnify View',
+    '清除':'Clear',
+    '刷新':'Refresh',
+    '您的工人处于空闲状态':'Your worker is online but not mining.',
+    '平均延迟':'Avg. Latency',
+    '平均温度':'Avg. Temp',
+    '平均转速':'Avg. Fans',
+    '内核开发费':'kernelDevfee',
+    '开发费':'Devfee',
+    '您的机器处于离线状态，如需继续挖矿，请通过唤醒功能唤醒机器':'Your machine is offline. If you need to continue mining, please wake up the machine through the wake-up function',
+    '开启后，矿工不再关机':'After opening, the Worker will not shut down',
+    '禁止关机':'Disable Shutdown',
+    '当前矿机无挖矿数据':'No data on mining available for this worker.',
+    '您的矿工不在采矿时间段内。可以重置挖掘的挖掘时间段':'Your miner is not in the mining time period. You can reset the mining time period for mining',
+    '不在工作时间':'outTime',
+    '超频的GPU':'Overclock for',
+    '设备管理':'Workers',
+    '矿池钱包':'Address editor',
+    '超频配置':'Overclocking',
+    '矿机配置':'Worker Config',
+    '模板配置':'Config templates',
+    '场所管理':'Site Management',
+    '数据统计':'Mining statistics',
+    '日志管理':'24h Logs',
+    '日志':'Latest activity',
+    '系统预警':'Alerts',
+    '矿工':'Worker',
+    '托盘图标':'Tray icon',
+    '开启后，会在windows桌面右下角时间位置显示一个托盘图标':'When enabled, a tray icon will be displayed at the time position in the lower right corner of the windows desktop',
+    '算力':'Mining',
+    '最高温度':'Max. Temp',
+    '最大转速':'Max. Fans',
+    '矿池延迟':'Latency',
+    '功率':'Power',
+    '更新时间':'Uptime',
+    '预计收益/月':'Est. monthly',
+    '预计收益/天':'Est. daily',
+    '用户管理':'Key Management',
+    '退出登录':'Log out',
+    '操作':'Actions',
+    '删除':'Delete',
+    '修改':'Edit',
+    '重启机器':'Reboot machine',
+    '重启软件':'Restart software',
+    '详情':'Details',
+    '没有备注':'Without notes',
+    '用户名':'User',
+    '管理':'Management',
+    '分析':'Analytics',
+    '统计分析':'Statistics',
+    '全部统计':'Global statistics',
+    '分组统计':'Group statistics',
+    '矿工统计':'Worker statistics',
+    '过滤':'Filter results',
+    '展开视图':'Change to extended view',
+    '缩略视图':'Change to compact view',
+    "矿池":'Pools',
+    "钱包":'Wallets',
+    "名称":'Tag name',
+    "钱包地址":'Pool username or wallet address',
+    "矿池配置":'Config Pool',
+    '导出JSON':'Export (JSON)',
+    '导入JSON':'Import (JSON)',
+    '添加新配置':'Add new profile',
+    '显卡型号':'Video',
+    '显卡分类':'Type',
+    '风扇转速':'Fans',
+    '超频信息':'Clocks',
+    '导出':'Export',
+    '同步到场所':'Sync To Site',
+    // '复制模板':'Copy',
+    '删除':'Delete',
+    '功耗':'Pow',
+    '转速':'Static',
+    '核心':'Core',
+    '内存':'Mem',
+    '触发器':'Triggers',
+    '全部':'Any',
+	'总计':'Total',
+    '场所':'Site',
+    '全选':'Select all',
+    '提交':'Confirm',
+    '目标':'Target',
+    '您可以选择要将更改应用到的工作者或组。 将更改应用到一个组只会更新该组中的单个工作者':'You can select a worker or a group that you want to apply changes to.  Applying changes to a group will only update individual workers inside that group.',
+    '添加单台机器或场所':'Add an individual worker or groups',
+    '矿工配置模板':'Worker Config profile',
+    '选择配置文件应用于矿工':'Select Config profile for selected worker(s)',
+    '基础配置模板':'Setting profile',
+    '超频模板':'Overclock profile',
+    '选择超频模板应用于矿工':'Select OC profile for selected worker(s)',
+    '选择基础配置模板应用于矿工':'Select Setting profile for selected worker(s)',
+    '自动化模板':'Auto profile',
+    '选择自动化模板应用于矿工':'Select Auto profile for selected worker(s)',
+    '重置':'Reset',
+    '保存更改':'Save changes',
+    '保存':'Save',
+    '矿工模板':'WorkerConfig',
+    '基础配置':'Setting',
+    '邮箱':'E-mail',
+    '自动化':'Auto',
+    '添加新配置':'Add New Template',
+    '配置名':'TEMPLATE NAME',
+    '配置名称':'Template name',
+    '配置':'Template',
+    '矿池名':'MINING CLIENT',
+    '新增邮箱':'Add New E-mail',
+    '复制模板':'Copy',
+    '新增场所':'Add New Site',
+    '修改场所':'Edit Site',
+    '场所Key':'Site Key',
+    '平均功耗':'Avg.<br>Power',
+    '钱包地址':'Addr.',
+    '在线':'Online',
+    '离线':'Offline',
+    '故障':'Abn.',
+    '复制Key':'Copy Key',
+    '状态':'Status',
+    '空闲':'Idle',
+    '温度':'Temperature',
+    '高温':'Hot limit',
+    '过热':'Very hot limit',
+    '矿工问题':'Mining issues',
+    '无算力':'No speed',
+    '低效率':'Low efficiency',
+    '无温度':'No temperature',
+    '设置登陆Key':'Set Access key',
+    '登陆Key':'Access key',
+    '重复登陆Key':'Identify the key',
+    '登陆':'Login with key',
+    '登陆key':'Access key',
+    '无风扇':'No fans',
+    '无矿池':'No pool',
+    '无币种':'No coin',
+    '空闲GPUs':'Idle GPUs',
+    '缺少GPUs':'Missing GPUs',
+    '杂项':'Misc',
+    '备注':'Notes',
+    '空间不足':'Out of space',
+    '稳定性':'Stability',
+    '算力异常':'Poor stability rate',
+    '系统重启':'System reboots',
+    '控制台错误':'Console errors',
+    '标签':'Groups',
+    '分类':'Group',
+    '币种':'Coins',
+    '重启':'Restart',
+    '不执行':'No, keep it',
+    '确认重启':'Yes, restart it',
+    '确认删除':'Yes, delete it',
+    '设置邮箱':'Email Setting',
+    '取消':'Close',
+    'SMTP服务器':'SMTP Server',
+    '邮箱地址':'Email Account',
+    '在保存之前发送一个测试邮件。 确保电子邮件配置正确。':'Send a test Email before saving.  Make sure email configuration is correct.',
+    '邮箱密码/授权码':'Email Password/Authorization code',
+    '设置邮箱帐号信息，以便系统推送告警信息':'Set email account information here so that the system can push alarm messages',
+    '移除':'Remove',
+    '请问是否删除模版？':'Would you like to delete the template?',
+    '请问是否删除配置？':'Do you want to delete the configuration?',
+    '该操作会重启挖矿软件':'Please note that this action will restart your mining software only.',
+    '该操作会重启设备':'Please note that this action will reboot your mining machine.',
+    '是否删除设备':'Whether or not to delete.',
+    '在删除此配置之前，请确保在您的配置中不再使用此配置。':'Before deleting this tag, please make sure that it\'s no longer in use in your configurations.',
+    '请问是否删除邮箱地址？':'Do you want to delete the email address?',
+    '邮件测试':'Test E-mail',
+    '请问是否删除触发器？':'Do you want to delete the trigger?',
+    '请问是否复制该模版？':'Would you like to copy this template?',
+    '请问是否删除超频模板？':'Do you want to delete the overclocked template?',
+    '否':'No',
+    '是':'Yes',
+    '请问是否同步到场所？':'Is it synchronized to the site?',
+    '场所名称':'Site Name',
+    '您可以根据硬件选择挖矿核心，也可以选择你自定义的矿池，如果要加入运行参数，请查看核心官方文档。':'You can choose the mining core according to the hardware, or you can choose your own custom pool, to add operating parameters, please check the core official documentation.',
+    '命名您的配置模板':'Name your config template',
+    '矿工客户端':'Mining client',
+    '为这个模板选择配置':'Select client for this config template',
+    '简易版':'Simple',
+    '专业设置':'Advanced',
+    '密码':'Password',
+    '场所基础配置':'Site Setting',
+    '用于定义模版名称':'Used to define template names',
+    '不拦截关机':'Do not block shutdown function',
+    '打开此功能，系统不会拦截windows关机，请务必把计费设置成不超时关机，并设置结账重启。':'When enabled this switch, the system will not Block System shutdown function. Please be sure to set the billing system to shutdown without shutdown if timeout, and restart the system after Checking out.',
+    '隐藏挖矿界面':'Hide the software interface',
+    '关闭时，会挡在计费前，实时显示挖矿算力与时间':'When disable this switch, the interface will displayed at the front of billing sofeware',
+    'win7重启电脑':'System restart（Win7）',
+    'win10重启电脑':'System restart（Win10）',
+    '关机时间':'System will shutdown after idle for more than',
+    '空闲几秒后开始挖矿，和不挖矿时电脑空闲多久关机':'Start mining after a few idle seconds, and when not mining idle computer shutdown',
+    '秒':'Sec.',
+    '定时重启':'Restart the computer every',
+    '小时':'Hours',
+    '0表示不重启':'This function will disabled if it\'s 0.',
+    '上机重启显卡':'Restart the video card when login',
+    '顾客上机时，是否重启显卡以释放占用（释放时会黑屏2秒左右）':'When enabled this switch, the video card will restard when the customer login. (It may cause the screen to be black for over 2 seconds)',
+    '关闭机箱灯':'Turn off the chassis light',
+    '如果您的机箱支持控制开关时会在挖矿时关闭':'When enabled this switch,the chassis light will turn off when minning.',
+    '关闭键盘灯':'Turn off the keyboard light',
+    '如果您的键盘支持控制开关时会在挖矿时关闭':'When enabled this switch,the keyboard light will turn off when minning.(Keyboard support required)',
+    '关闭显示器':'Turn off the monitor',
+    '如果您的显示器支持控制开关时会在挖矿时关闭':'When enabled this switch,the monitor light will turn off when minning.',
+    '唤醒':'Wake up',
+    '电价':'Electricity costs',
+    '你的电价多少钱？':'What are your electricity costs?',
+    '矿工功耗是多少？':'What is the worker\'s power consumption?',
+    '手续费':'Earnings deduction percent',
+    '预估手续费的比例':'Adjust estimated earnings by provided percent.',
+    '设置高温警戒线':'Set a high temperature warning line',
+    '设置过热警戒线':'Set up overheating warning lines',
+    '你想暂停警报多长时间？':'For how long do you want to pause alerts?',
+    '你想暂停触发器多长时间？':'For how long do you want to pause triggers?',
+    '不暂停':'Don\'t pause',
+
+    '1小时':'For 1 hour',
+    '6小时':'For 6 hours',
+    '12小时':'For 12 hours',
+    '24小时':'For 24 hour',
+    '永久':'Permanently',
+    'GPU温度':'GPU Temperature',
+    '显存温度':'Memory Temperature',
+    '显存温度':'Memory Temperature',
+    '哈希算力':'Hashrate',
+    '效率':'Efficiency',
+    '消耗':'Consumption',
+    'GPU数量':'GPU count',
+    '拒绝份额':'Rejected shares',
+    '共享份额':'Shares count',
+    '配置错误':'Config errors',
+    '验证错误':'Auth errors',
+    '驱动错误':'Driver errors',
+    'GPU错误':'GPU errors',
+    '客户端错误':'Client errors',
+    '矿池错误':'Pool errors',
+    '矿工状态':'Worker status',
+    '不活跃':'Inactive',
+    '无响应':'Unresponsive',
+    '时间':'Time',
+    '收益':'Earnings',
+    '下降5%':'down by 5%',
+    '下降10%':'down by 10%',
+    '下降15%':'down by 15%',
+    '下降20%':'down by 20%',
+    '下降25%':'down by 25%',
+    '下降30%':'down by 30%',
+    '下降40%':'down by 40%',
+    '下降50%':'down by 50%',
+    '下降60%':'down by 60%',
+    '下降70%':'down by 70%',
+    '下降80%':'down by 80%',
+    '下降90%':'down by 90%',
+    '上升2%':'up by 2%',
+    '上升3%':'up by 3%',
+    '上升4%':'up by 4%',
+    '上升5%':'up by 5%',
+    '上升10%':'up by 10%',
+    '上升20%':'up by 20%',
+    '上升30%':'up by 30%',
+    '上升40%':'up by 40%',
+    '上升50%':'up by 50%',
+    '上升60%':'up by 60%',
+    '上升70%':'up by 70%',
+    '上升80%':'up by 80%',
+    '上升90%':'up by 90%',
+    '5分钟':'5 minutes',
+    '10分钟':'10 minutes',
+    '15分钟':'15 minutes',
+    '20分钟':'20 minutes',
+    '25分钟':'25 minutes',
+    '30分钟':'30 minutes',
+    '35分钟':'35 minutes',
+    '40分钟':'40 minutes',
+    '45分钟':'45 minutes',
+    '50分钟':'50 minutes',
+    '55分钟':'55 minutes',
+    '60分钟':'60 minutes',
+    '20分钟未改变':'same for 20 min',
+    '30分钟未改变':'same for 30 min',
+    '40分钟未改变':'same for 40 min',
+    '50分钟未改变':'same for 50 min',
+    '60分钟未改变':'same for 60 min',
+    '缺失':'Missing',
+    '选择方案':'Select action',
+    '关机':'Shut down machine',
+    '停止挖矿':'Stop mining',
+    '启动挖矿':'Start mining',
+    '设置矿工模版':'Set config',
+    '设置风扇':'Set fans',
+    '设置超频模版':'Set overclock',
+    '发送邮件':'Send email',
+    '执行':'Execute',
+    '添加触发器':'Add trigger',
+    '名字':'name',
+    '提示':'notice',
+    '此处配置可以设置系统的关机/重启相关配置':'You can set the system shutdown / restart configuration here. Reasonable shutdown and restart configuration can reduce power consumption',
+    '删除触发器':'Delete trigger',
+    '开关':'Enabled',
+    '免责声明':'Disclaimer',
+    '每个事件除了标准触发器外，还可以触发Webhook调用。 Webhook被定义为一个URL，你可以在其中使用特殊的标签来帮助你更好地识别被触发的事件。':'Each event can beside standard triggers also fire a call to your Webhook. Webhook is defined as an URL in which you can use special tags that will help you with better identification of an event that was triggered.',
+    '此处配置可以方便系统为您估算矿机的功耗和电费消耗':'This configuration allows the system to estimate the power and electricity consumption of the workers.',
+    '设置高温和过热的温度触发条件，以便系统针对此情况发出警报':'Set the temperature trigger conditions for high temperature and overheating so that the system can alarm for this condition',
+    '这是高级功能，所以请谨慎设置触发器，只有当你承担可能的负面/不希望的结果或意外行为的全部责任。':'This is advanced feature so please set triggers with caution and only if you take full responsibility for possible negative/undesired outcome or unexpected behaviour.',
+    '触发器设置的风扇和超频配置将会覆盖原先的配置':'Triggers with fan speed settings will override overclock profile settings.',
+    '描述':'Description',
+    '触发的元素':'Triggered elements',
+    '满足的条件':'Satisfied condition',
+    '执行的方案':'Implementation plan',
+    '可以输入事件发生时要执行的完整路径或命令/脚本。':'You can enter full path or command / script to be executed when certain event happens.',
+    '请注意，此操作将删除您的触发器。':'Please note that this action will delete your trigger.',
+    '配置页':'Config',
+    '显卡类型':'Video card type',
+    '快速填充':'Fill from database',
+    '选择GPU类型':'Select GPU model',
+    '功率限制':'Power limit',
+    '核心频率':'Core clock',
+    '锁频频率':'Locked core clock',
+    '核心电压':'Core voltage',
+    '显存电压':'Memory voltage',
+    '显存控制器':'Memory controller',
+    '显存状态电压':'Memory state voltage',
+    '禁用':'forbidden',
+    '启用':'start using',
+    '显存频率':'Memory clock',
+    '功率限制是GPU应该使用的最大功耗操作。不同的GPU型号可以接受不同的值，典型值为<code>120</code>,<code>160</code>,<code>180</code>,等。':'Power limit is the maximum power consumption that your GPU should use for operating. Different GPU models can accept different values, with typical values being <code>120</code>,<code>160</code>,<code>180</code>,etc.',
+    '功率限制是GPU运行时应该使用的功耗百分比。 不同的GPU型号可以接受不同的值，典型值有<code>70</code>,<code>80</code>,<code>90</code>等。 最大<code>100</code>表示GPU将使用100%的电量。':'Power limit is the amount of power consumption that your GPU should use for operating in percentage.Different GPU models can accept different values, with typical values being <code>70</code>,<code>80</code>, <code>90</code>, etc.The maximum value of <code>100</code> means that GPU will use 100% of the power.',
+    '核心频率是显卡上图形处理器运行的速度。 不同的GPU型号可以接受不同的MHz偏移核心时频率，典型的值是<code>-100</code>，<code>+100</code>，<code>+200</code>等。':'Core Clock is the speed at which the graphics processor on a video card operates.Different GPU models can accept different offset core clock values in MHz, with typical values being <code>-100</code>,<code>+100</code>,<code>+200</code>,etc.',
+    '核心频率是显卡上图形处理器运行的速度。 不同的GPU型号可以接受不同的MHz偏移核心时频率，典型的值是<code>900</code>，<code>1000</code>，<code>1100</code>等。':'Core Clock is the speed at which the graphics processor on a video card operates.Different GPU models can accept different offset core clock values in MHz, with typical values being <code>900</code>,<code>1000</code>,<code>1100</code>,etc.',
+    '如果你不知道默认值，检查矿机配置文件上的硬件表- Core Clock报告在Core列下。':'If you don\'t know the default value, check the hardware table on the worker\'s profile - Core Clock is reported under the core column.',
+    '使用锁频频率，你可以用绝对值定义核心频率，锁频频率设置将覆盖核心频率设置。':'With locked core clock you can define core clock in absolute value. The locked clock core settings will override the offset core clock settings.',
+    '此设置主要用于RTX卡。':'This settings is mainly used with RTX cards.',
+    '内存频率是显卡上的VRAM的速度。 不同的GPU型号可以接受不同的MHz偏移内存频率，典型的值有<code>-100</code>、<code>+100</code>、<code>+200</code>等。':'Memory clock is the speed of the VRAM on the graphics card.   Different GPU models can accept different offset memory clock values in MHz,with typical values being <code>-100</code>,<code>+100</code>,<code>+200</code>,etc.',
+    '如果你不知道默认值，检查矿机配置文件上的硬件表- Memory Clock报告在Memory列下。':'If you don\'t know the default value, check the hardware table on the worker\'s profile - Memory Clock is reported under the memory column',
+    '功率限制是你的GPU在运行时应该使用的额外功耗的百分比。 不同的GPU型号可以接受不同的值，典型的值有<code>-10</code>、<code>-20</code>、<code>-40</code>等。 设置为<code>-20</code>表示GPU将减少20%的功耗。':'Power limit is the amount of additional power consumption that your GPU should use for operating in percentage.  Different GPU models can accept different values, with typical values being <code>-10</code>,<code>-20</code>,<code>-40</code>, etc.  Setting a value <code>-20</code> means that GPU will use 20% less of the power.',
+    '核心电压用于控制功耗。 不同的GPU型号可以接受不同的核心电压值mV，典型值为<code>800</code>,<code>900</code>,<code>1000</code>等。  ':'Core voltage is used to control power consumption.  Different GPU models can accept different core voltage values in mV, with typical values being <code>800</code>,<code>900</code>,<code>1000</code>,etc.',
+    '如果您不知道默认值，请检查工作者配置文件中的硬件表—VDD报告在core列下。':'If you don\'t know the default value, check the hardware table on the worker\'s profile - VDD is reported under the core column.',
+    '内存频率是显卡上的VRAM的速度。 不同的GPU型号可以接受不同的内存频率(MHz)，典型的值有<code>1000</code>、<code>1100</code>、<code>1200</code>。':'Memory clock is the speed of the VRAM on the graphics card.  Different GPU models can accept different memory clock values in MHz, with typical values being <code>1000</code>, <code>1100</code>, <code>1200</code>,etc.',
+    '不同的GPU型号可以接受不同的内存电压值mV, Polaris的内存电压值为<code>1000</code>,Navi的内存电压值为<code>1350</code>。':'Different GPU models can accept different memory voltage values in mV, with typical value being <code>1000</code> for Polaris and <code>1350</code> for Navi.',
+    '保存并重置':'Save with restart',
+    '这是高级设置，使用它时，您将为可能的硬件损坏承担全部责任。 超频可能会使硬件保修失效。':'This is advanced setting and with using it, you take full responsibility for possible hardware damage.  Overclocking might void hardware warranty.',
+    '在此处统一配置矿机的属性、超频和触发器的模板':'You can configure the function, overclocking and triggert templates of the workers here.',
+    '确定要删除场所吗？':'Are you sure you want to delete the site?',
+    '此操作将更新您的软件。':'This action will update your software.',
+    '请注意，此操作将重新启动您的矿机。':'Please note that this action will reboot your mining machine.',
+    '选择了':'Action for',
+    '更新软件':'Update',
+    '请注意，此操作将关闭您的机器。':'Please note that this action will shut down your machine.',
+    '请注意，此操作只会重新启动软件。':'Please note that this action will restart your mining software only.',
+    '请注意，此操作将会停止挖矿。':'Please note that this action will stop the mining process.',
+    '请注意，此操作将会启动挖矿。':'Please note that this action will start the mining process.',
+    '请注意，此操作将关闭您的矿机，您将需要在该位置重新启动它们。 ':'Please note that this action will shutdown your mining machines and you will need to be at the location to turn them back on.',
+    '停止':'Stop',
+    '启动':'Start',
+    '请注意，此操作将关闭您的机器，并在30秒后启动它们。 如果您的主板不支持操作，那么机器将重新启动。':'Please note that this action will power down your machines and boot them up after 30 seconds.  If action is not supported by your motherboard then machines will reboot.',
+    '当前登录密匙:':'Login Key:',
+    '重置密匙':'Change Key',
+    '新增密匙':'Add New Key',
+    '重置用户密匙':'Update Key',
+    '用户密匙':'User key',
+    '新增用户密匙':'Add New User Key',
+    '修改用户密匙':'Edit User Key',
+    '语言':'Language',
+    '更新密钥后，原密钥将无法登录进行管理':'After updating the key, the original key will not be able to log in for management',
+    '修改配置':'Edit config',
+    '快照':'Snapshoot',
+    '延时重启':'Power cycle (30 sec)',
+    '查看网页':'console',
+    '的备注':'\'s notes',
+    '清空内容':'Clear content',
+    '每日收入':'Daily earnings',
+    '能量功耗':'Power cons.',
+    '功率效应':'Power eff.',
+    '外网IP':'Remote IP',
+    '内网IP':'Local IP',
+    '通信时间':'Last sync',
+    '系统监视器':'System specs',
+    '设备':'Drive',
+    '可用空间':'Free space',
+    '硬盘':'Disk',
+    '主板':'Motherboard',
+    '空余内存':'Free mem',
+    '版本':'Version',
+    '驱动':'Drivers',
+    '加密货币':'Crypto',
+    '内核':'Client',
+    '能量消耗':'Power consumption',
+    '在图表上显示触发事件':'Show trigger events on chart',
+    '配置更改':'Config changes',
+    '在图表上显示配置更改事件':'Show config changes events on chart',
+    '手动操作':'Manual actions',
+    '在图表上显示手动操作事件':'Show manual actions events on chart',
+    '调度':'Scheduler',
+    '在图表上显示调度程序事件':'Show scheduler events on chart',
+    '在图表上显示控制台错误事件':'Show console errors events on chart',
+    '1月':'Jan',
+    '2月':'Feb',
+    '3月':'Mar',
+    '4月':'Apr',
+    '5月':'May',
+    '6月':'Jun',
+    '7月':'Jul',
+    '8月':'Aug',
+    '9月':'Sep',
+    '10月':'Oct',
+    '11月':'Nov',
+    '12月':'Dec',
+    '星期一':'Mon',
+    '星期二':'Tue',
+    '星期三':'Wed',
+    '星期四':'Thu',
+    '星期五':'Fri',
+    '星期六':'Sat',
+    '星期日':'Sun',
+    '输出功率':'Power efficiency',
+    'GPU占用率':'Load',
+    '功率限制目标值':'Target value for power limit',
+    '核心频率的目标值':'Target value for core clock',
+    '内存频率的目标值':'Target value for memory clock',
+    '显示设置值':'Show set values',
+    '取消配置':'Deselect profile',
+    '跳转到超频配置':'Go to Overclock',
+    '没有事件':'No events',
+    '近三天没有特殊事件':'There was no special activity in the last 3 days.',
+    '暂停警报':'Pause alerts',
+    '暂停触发器':'Pause triggers',
+    '静态转数':'Static fans',
+    '应用':'Apply',
+    '应用重启':'Apply with restart',
+    '改变硬件的颜色':'Change hardware colors',
+    '切换 柱状图/折线图':'Switch between line/column charts',
+    '安全停机':'Safe shut down',
+    '日':'st',
+    '事件':'Event',
+    '查看矿工':'View worker',
+    '筛选项':'Filters',
+    '挖矿时段':'Mining time',
+    '结束：':'End：',
+    '数值':'Numerical value',
+    '显存状态电压':'Memory state voltage',
+    '核心状态':'Core state',
+    '用于设置挖矿的时间段，结束时间小于开始时间，表示第二天的时间段':'The end time is shorter than the start time. It indicates the time range of the next day',
+    '筛选您的结果，以更仔细地检查事件。':'Filter your results to examine the events more closely.',
+    '此操作将会启用矿工挖矿':'This operation will enable machine mining',
+    '此操作将会禁用矿工挖矿':'This action will disable mining',
+    '协议':'Proc.',
+    '端口':'Port',
+    '地址':'Host',
+    '矿池加速':'Pool to accelerate',
+    '唤醒机器':'Rouse Machine',
+    '该操作将会唤醒机器':'This operation will wake up the machine',
+    '延迟':'Delay',
+    '系统提示':'System Prompt',
+    '下载软件':'Download Software',
+    '对不起，没有获取到本机数据信息，请下载矿工客户端':'Sorry, the local data information is not obtained, please download miner client',
+    '今天':'Today',
+    '昨天':'Yesterday',
+    '上周同一天':'same day last week',
+    '最近七天':'Last 7 days',
+    '前7天':'previous 7 days',
+    '平均运行时间':'Avg. uptime',
+    '总平均功率':'Total avg. power',
+    '各币种的功耗':'Power efficiency per coin',
+    '各币种的算力':'Hashrate per coin',
+    '各币种的消耗电量':'Power consumption per coin',
+    '全局统计':'Global profitability',
+    'DWM优化':'DWM Optimize',
+    '优化矿机与矿池的链接方式，通过场所服务器中转来加快挖矿速度':'Optimize the link between the miner and the pool to speed up mining through site server transfer',
+    '优化windowsGPU占用，可以直接提升1%的算力。':'Optimize the windowsGPU occupancy, can directly increase the computing power by 1%.',
+}
+var languageDateListTow={
+    '矿工启动中':'Booting',
+    '暂停警报':'Paused alerts',
+    '暂停触发器':'Paused triggers',
+    '开始：':'Start：',
+    '日':'nd',
+    '15分钟':'For 15 minutes',
+    '30分钟':'For 30 minutes',
+    '1月':'January',
+    '2月':'February',
+    '3月':'March',
+    '4月':'April',
+    '5月':'May',
+    '6月':'June',
+    '7月':'July',
+    '8月':'August',
+    '9月':'September',
+    '10月':'October',
+    '11月':'November',
+    '12月':'December',
+    '配置':'Configure',
+    '风扇转速':'Fan speed',
+    '关机':'Shut down',
+    '强制关机':'Shut down (Force)',
+    '重启':'Reboot',
+    '标签':'Tag',
+    '确认重启':'Yes, reboot it',
+    '预估收益/月':'EST.<br>Monthly',
+    '矿工':'Workers',
+    '更新':'Update',
+    '算力':'Rate',
+    '矿池算力':'Pool',
+    '最高温度':'Max Tem.',
+    "钱包地址":'Pool username or wallet address',
+    "功耗":'Power consumption',
+    '高温':'Hot',
+    '备注':'Remarks',
+    '过热':'Very hot',
+    '更新软件':'Yes, update them',
+    '重启机器':'Yes, reboot them',
+    '重启软件':'Yes, restart them',
+    '启动挖矿':'Yes, start them',
+    '停止挖矿':'Yes, stop them',
+    '延时重启':'Yes, power cycle',
+    '关闭矿工':'Yes, shut them down',
+    '不执行':'No, keep them',
+    '取消':'Cancel',
+    '关联场所':'Relation Site',
+    '配置更改':'Config updated',
+    '温度':'Temp',
+    '不可挖矿':'unable',
+    '禁止挖矿':'disable',
+    '您的机器处于离线状态，可能是因为矿工未运行或机器尚未启动':'Your machine is offline, possibly because the miner is not running or the machine has not been started',
+    '您的机器没有达到挖矿标准，请升级硬件':'Your machine does not meet the mining standard, please upgrade the hardware',
+    'Win10 持续挖矿':'win10 AnyhowMining',
+    '即使矿工被占用，在不影响使用的情况下进行挖矿':'Even if the miners are occupied, they still dig, but ensure that the normal use of the game or computer is not affected',
+    '您的机器处于禁用状态，无法挖矿，如需要继续挖矿，请解除禁用。':'Your machine is disabled and cannot mining. If you need to continue mining, please remove the prohibition.',
+}
+var languageDateListThere={
+    '矿池地址':'PortAddress',
+    '基础配置':'Setting',
+    '日':'rd',
+    '算力':'Speed',
+    '停止挖矿':'Yes, stop it',
+    '关闭':'Yes, shut down',
+    '预估收益/月':'EST. Monthly',
+    '个矿工':'workers',
+    '个场所':'sites',
+    '延时重启':'Power cycle',
+    '平均功耗':'Avg. Power',
+    '复制':'Copy',
+    '备注':'Note',
+    '重置':'Update',
+    '矿工':'Mining',
+    '加速前':'Before speedup',
+    '矿机单独访问矿池':'The worker accesses the pool server separately.',
+    '网络链接易超时':'Network links tend to time out.',
+    '网络容易被劫持':'Network is prone to hijacking.',
+    '数据包接收慢':'Slow packet reception',
+    '数据容易暴露':'Data is easily exposed',
+    '加速后':'After speedup',
+    '服务器单独访问矿池并与各个矿机交换数据':'The server accesses the pool server separately and exchanges data with each workers.',
+    '网络链接更稳定':'More stable network connection.',
+    '数据传输更安全':'More Safety data transportation.',
+    '数据包接收快':'Fast packet reception.',
+    '数据私密性更高':'Higher data privacy.',
+}
+var languageDateListFour={
+    '算力':'hashrate',
+    '日':'th',
+    '矿池算力':'PoolSpeed',
+    '温度':'Temp',
+    '收益':'Est. income',
+    '净收益':'Est. earnings',
+    '成本':'El. costs',
+    '分组收益':'Group profitability',
+    '矿工收益':'Worker\'s profitability'
+}
+
+var selectList={
+    '空间不足':'nospace',
+    '在线':'online',
+    '离线':'offline',
+    '空闲':'idle',
+    '暂停警报':'alerts_pause',
+    '暂停触发器':'triggers_pause',
+    '高温':'hotlimit',
+    '过热':'veryhotlimit',
+    '无算力':'nospeed',
+    '低效率':'noefficiency',
+    '无温度':'notemperature',
+    '无风扇':'nofans',
+    '无矿池':'nopool',
+    '无币种':'nocoin',
+    '空闲GPUs':'idlegpus',
+    '缺少GPUs':'missinggpus',
+    '备注':'notes',
+    '算力异常':'stability',
+    '系统重启':'reboots',
+    '控制台错误':'console',
+}

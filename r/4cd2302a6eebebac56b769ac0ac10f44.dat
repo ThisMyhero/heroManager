@@ -1,0 +1,2930 @@
+var checkedNum = 0;
+var refreshStop = 0;
+var jsonWorkers = [];
+var toFixedValue = 2;
+if (currency == "BTC") {
+    toFixedValue = 5;
+}
+var groupsFrame;
+var coinsFrame;
+var clientsFrame;
+var wasHidden = 0;
+$(document).on('visibilitychange', function () {
+    if (document.visibilityState == 'hidden') {
+        if ($('.new_worker_menu').is(":visible")) {
+            wasHidden = 0;
+        } else {
+            wasHidden = 1;
+        }
+    } else {
+        wasHidden = 0;
+        workersRefresh(true);
+    }
+});
+var workersStabilityArray = [];
+if (workersStability != 'null') {
+    workersStabilityArray = JSON.parse(workersStability);
+}
+var workersRebootsArray = [];
+if (workersReboots != 'null') {
+    workersRebootsArray = JSON.parse(workersReboots);
+}
+var workersConsoleArray = [];
+if (workersConsole != 'null') {
+    workersConsoleArray = JSON.parse(workersConsole);
+}
+if ($('.discover_workers_menu').length > 0) {
+    var ps_discovery = new PerfectScrollbar('.discover_workers_menu #finish .frame', {
+        wheelSpeed: 1,
+        wheelPropagation: false,
+        suppressScrollX: true
+    });
+}
+if ($('.actions_submenu').length > 0) {
+    var ps_bulk_switch = new PerfectScrollbar('.actions_submenu .frame', {
+        wheelSpeed: 1,
+        minScrollbarLength: 20,
+        wheelPropagation: false,
+        suppressScrollX: true
+    });
+}
+(function ($) {
+    $(window).on("load", function () {
+        if (document.getElementById("groupsFrame") !== null) {
+            groupsFrame = new PerfectScrollbar('#groupsFrame', {wheelSpeed: 1, wheelPropagation: false});
+            groupsFrame.update();
+        }
+        if (document.getElementById("coinsFrame") !== null) {
+            coinsFrame = new PerfectScrollbar('#coinsFrame', {wheelSpeed: 1, wheelPropagation: false});
+            coinsFrame.update();
+        }
+        if (document.getElementById("clientsFrame") !== null) {
+            clientsFrame = new PerfectScrollbar('#clientsFrame', {wheelSpeed: 1, wheelPropagation: false});
+            clientsFrame.update();
+        }
+    });
+})(jQuery);
+var selectedWorkers = [];
+function selectAll(thisElem) {
+    totalNumWorkers = jsonWorkers.length;
+    if (checkedNum > 0) {
+        $('#checked_rows').hide();
+        $('th').removeClass('hidden');
+        $('#actions_menu').hide();
+        $('table .checkbox').removeClass('selected');
+        checkedNum = 0;
+        $('#count').html(0);
+        selectedWorkers = [];
+    } else {
+        $('table .checkbox').removeClass('selected');
+        $('table tr:visible .checkbox').addClass('selected');
+        $('#checked_rows').show();
+        $('th').addClass('hidden');
+        $('.check').show();
+        selectedWorkers = [];
+        $.each(jsonWorkers, function (wName, value) {
+            var searchFound = false;
+            var tagFound = false;
+            if (tag != '') {
+                var tagsTag = tag.split(":");
+                var tagsArray = value.groups.toLowerCase().split(",");
+                var tagsArrayFilter = value.filterString.split(",");
+                tagsArray = tagsArray.concat(tagsArrayFilter);
+                var tagsArrayNew = tagsArray.filter(function (el) {
+                    return el != null && el != "";
+                });
+                tagsArray = tagsArrayNew;
+                $.each(tagsTag, function (tagIndex, tagValue) {
+                    if (tagsArray.indexOf(tagValue) !== -1) {
+                        tagFound = true;
+                    } else {
+                        tagFound = false;
+                        return false;
+                    }
+                });
+            } else {
+                tagFound = true;
+            }
+            if (search != '') {
+                if (value['crypto'].toLowerCase().indexOf(search.toLowerCase()) >= 0 || value['name'].toLowerCase().indexOf(search.toLowerCase()) >= 0 || value['groups'].toLowerCase().indexOf(search.toLowerCase()) >= 0 || value['localip'].indexOf(search.toLowerCase()) >= 0 || value['remoteip'].indexOf(search.toLowerCase()) >= 0) {
+                    searchFound = true;
+                }
+            } else {
+                searchFound = true;
+            }
+            if (searchFound && tagFound) {
+                selectedWorkers.push(value['id']);
+                checkedNum++;
+                $('#count').html(checkedNum);
+            }
+        });
+    }
+}
+
+$(function () {
+    $('table').on('click', 'td .checkbox', function () {
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+            checkedNum--;
+            $('#count').html(checkedNum);
+            if (checkedNum == 0) {
+                $('#checked_rows').hide();
+                $('th').removeClass('hidden');
+                $('#actions_menu').hide();
+                selectedWorkers = [];
+
+            } else {
+                // var index = selectedWorkers.indexOf($(this).closest('[data-name]').attr('data-name'));
+                var index = selectedWorkers.indexOf($(this).closest('[data-id]').attr('data-id'));
+                if (index > -1) {
+                    selectedWorkers.splice(index, 1);
+                }
+            }
+        } else {
+            $(this).addClass('selected');
+            checkedNum++;
+            $('#checked_rows').show();
+            $('th').addClass('hidden');
+            $('#count').html(checkedNum);
+            $('.check').show();
+            selectedWorkers.push($(this).closest('[data-id]').attr('data-id'));
+        }
+    });
+    $('.filter_menu .checkbox').click(function () {
+        var filterVal = $(this).parent().attr('data-value');
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+            $('table .filter_' + filterVal).each(function () {
+                $(this).hide();
+            });
+        } else {
+            $(this).addClass('selected');
+            $('table .filter_' + filterVal).each(function () {
+                $(this).show();
+            });
+        }
+    });
+    $('#actions_button').click(function () {
+        $('#actions_menu').fadeToggle('fast');
+    });
+    $('#addNewWorker').click(function () {
+        $('.new_worker_menu').fadeToggle('fast');
+    });
+    var manualMode = 1;
+    $('#discoverNewWorker').click(function () {
+        if ($('#discoverNewWorker').parent().hasClass('button_group')) {
+            $('.discover_workers_menu').fadeToggle('fast');
+        } else {
+            if (manualMode == 1) {
+                $('.discover_workers_menu').show();
+                $('.add_new_worker_menu').hide();
+                $(this).html(_('Switch to manual mode'));
+                manualMode = 0;
+            } else {
+                $('.discover_workers_menu').hide();
+                $('.add_new_worker_menu').show();
+                $(this).html(_('Switch to Discovery tool'));
+                manualMode = 1;
+            }
+        }
+    });
+    $(document).mousedown(function (e) {
+        var container = $(".button_group .new_worker_menu");
+        if (!container.is(e.target) && container.has(e.target).length === 0 && (!$("#addNewWorker").is(e.target)) && (!$(".icon.plus").is(e.target)) && e.target.localName != 'html') {
+            container.hide();
+        }
+    });
+    $(document).mousedown(function (e) {
+        var container = $(".button_group .discover_workers_menu");
+        if (!container.is(e.target) && container.has(e.target).length === 0 && (!$("#discoverNewWorker").is(e.target)) && (!$(".icon.discover").is(e.target)) && e.target.localName != 'html') {
+            container.hide();
+        }
+    });
+    $('#type').change(function () {
+        if ($(this).val() == 'asic') {
+            $('#asic_login').show();
+            $('#system_asic').show();
+            $('#system_gpu').hide();
+            $('#tags .tag_system').html($('#system_asic option:selected').val());
+        } else {
+            $('#system_gpu').show();
+            $('#system_asic').hide();
+            $('#asic_login').hide();
+            $('#tags .tag_system').html($('#system_gpu option:selected').val());
+        }
+        $('#tags .tag_type').html($(this).val());
+    });
+    $('#system_asic,#system_gpu').change(function () {
+        if ($(this).val() == 'dragonmint') {
+            $('#sshpass').val('dragonadmin');
+            $('#sshuser').val('admin');
+        } else if ($(this).val() == 'antminer') {
+            $('#sshpass').val('admin');
+            $('#sshuser').val('root');
+        } else if ($(this).val() == 'aisen') {
+            $('#sshpass').val('root');
+            $('#sshuser').val('root');
+        } else if ($(this).val() == 'avalon') {
+            $('#sshpass').val('root');
+            $('#sshuser').val('root');
+        } else if ($(this).val() == 'obelisk') {
+            $('#sshpass').val('admin');
+            $('#sshuser').val('admin');
+        } else if ($(this).val() == 'blackminer') {
+            $('#sshpass').val('root');
+            $('#sshuser').val('root');
+        } else if ($(this).val() == 'strongu') {
+            $('#sshpass').val('root');
+            $('#sshuser').val('root');
+        } else if ($(this).val() == 'baikal') {
+            $('#sshpass').val('root');
+            $('#sshuser').val('admin');
+        } else if ($(this).val() == 'fusionsilicon') {
+            $('#sshpass').val('fusion');
+            $('#sshuser').val('fusion');
+        } else if ($(this).val() == 'innosilicon') {
+            $('#sshpass').val('innot1t2');
+            $('#sshuser').val('root');
+        } else if ($(this).val() == 'goldshell') {
+            $('#sshpass').val('123456789');
+            $('#sshuser').val('admin');
+        } else if ($(this).val() == 'ebang') {
+            $('#sshpass').val('admin');
+            $('#sshuser').val('admin');
+        } else if ($(this).val() == 'toddminer') {
+            $('#sshpass').val('admin');
+            $('#sshuser').val('admin');
+        } else if ($(this).val() == 'cheetah') {
+            $('#sshpass').val('admin');
+            $('#sshuser').val('admin');
+        } else if ($(this).val() == 'dayun') {
+            $('#sshpass').val('envision');
+            $('#sshuser').val('root');
+        } else if ($(this).val() == 'spondoolies') {
+            $('#sshpass').val('root');
+            $('#sshuser').val('root');
+        } else if ($(this).val() == 'hyperbit') {
+            $('#sshpass').val('bwcon');
+            $('#sshuser').val('root');
+        } else if ($(this).val() == 'whatsminer') {
+            $('#sshpass').val('root');
+            $('#sshuser').val('root');
+        }
+        $('#tags .tag_system').html($(this).val());
+    });
+    $("#tag").keyup(function (e) {
+        var value = $('#tag').val();
+        value = value.replace(/[^a-zA-Z0-9]+/g, "");
+        value = value.substring(0, 10);
+        $('#tag').val(value);
+        if ((e.which == 13 || e.which == 32) && value != '') {
+            $("#tags #tag").before('<div class="tag" data-value="' + value + '">' + value + ' <div class="icon close"></div></div>');
+            $('#tag').val('').focus();
+        }
+    });
+    $("#tags").click(function (event) {
+        if (event.target.id == "tags") {
+            $('#tag').focus();
+        }
+    });
+    $(document).on('click', '.tag .close', function () {
+        $(this).parent().remove();
+    });
+    $('#popup_type').change(function () {
+        if ($(this).val() == 'asic') {
+            $('.text.asic').show();
+            $('#popup_system_asic').show();
+            $('#popup_system_gpu').hide();
+            $('#rename_worker #popup_system_asic option').removeAttr('selected');
+            $('#rename_worker #popup_system_gpu option').removeAttr('selected');
+            $('#popup_system_asic option[value="antminer"]').attr("selected", "selected");
+            $('.asicpassword').val('admin');
+            $('.asicuser').val('root');
+            $('#groups .tag_system').html($('#popup_system_asic option:selected').val());
+        } else {
+            $('#popup_system_gpu').show();
+            $('#popup_system_asic').hide();
+            $('.text.asic').hide();
+            $('#groups .tag_system').html($('#popup_system_gpu option:selected').val());
+        }
+        $('#groups .tag_type').html($(this).val());
+    });
+    $('#popup_system_asic,#popup_system_gpu').change(function () {
+        if ($(this).val() == 'dragonmint') {
+            $('.asicpassword').val('dragonadmin');
+            $('.asicuser').val('admin');
+        } else if ($(this).val() == 'antminer') {
+            $('.asicpassword').val('admin');
+            $('.asicuser').val('root');
+        } else if ($(this).val() == 'aisen') {
+            $('.asicpassword').val('root');
+            $('.asicuser').val('root');
+        } else if ($(this).val() == 'avalon') {
+            $('.asicpassword').val('root');
+            $('.asicuser').val('root');
+        } else if ($(this).val() == 'obelisk') {
+            $('.asicpassword').val('admin');
+            $('.asicuser').val('admin');
+        } else if ($(this).val() == 'blackminer') {
+            $('.asicpassword').val('root');
+            $('.asicuser').val('root');
+        } else if ($(this).val() == 'strongu') {
+            $('.asicpassword').val('root');
+            $('.asicuser').val('root');
+        } else if ($(this).val() == 'baikal') {
+            $('.asicpassword').val('root');
+            $('.asicuser').val('admin');
+        } else if ($(this).val() == 'fusionsilicon') {
+            $('.asicpassword').val('fusion');
+            $('.asicuser').val('fusion');
+        } else if ($(this).val() == 'innosilicon') {
+            $('.asicpassword').val('innot1t2');
+            $('.asicuser').val('root');
+        } else if ($(this).val() == 'goldshell') {
+            $('.asicpassword').val('123456789');
+            $('.asicuser').val('admin');
+        } else if ($(this).val() == 'ebang') {
+            $('.asicpassword').val('admin');
+            $('.asicuser').val('admin');
+        } else if ($(this).val() == 'toddminer') {
+            $('.asicpassword').val('admin');
+            $('.asicuser').val('admin');
+        } else if ($(this).val() == 'cheetah') {
+            $('.asicpassword').val('admin');
+            $('.asicuser').val('admin');
+        } else if ($(this).val() == 'dayun') {
+            $('.asicpassword').val('envision');
+            $('.asicuser').val('root');
+        } else if ($(this).val() == 'spondoolies') {
+            $('.asicpassword').val('root');
+            $('.asicuser').val('root');
+        } else if ($(this).val() == 'hyperbit') {
+            $('.asicpassword').val('bwcon');
+            $('.asicuser').val('root');
+        } else if ($(this).val() == 'whatsminer') {
+            $('asicpassword').val('root');
+            $('.asicuser').val('root');
+        }
+        $('#groups .tag_system').html($(this).val());
+    });
+    $("#popup_tag").keyup(function (e) {
+        var value = $('#popup_tag').val();
+        value = value.replace(/[^a-zA-Z0-9]+/g, "");
+        value = value.substring(0, 10);
+        $('#popup_tag').val(value);
+        if ((e.which == 13 || e.which == 32) && value != '') {
+            $("#groups #popup_tag").before('<div class="tag" data-value="' + value + '">' + value + ' <div class="icon close"></div></div>');
+            $('#popup_tag').val('').focus();
+        }
+    });
+    $("#groups").click(function (event) {
+        if (event.target.id == "groups") {
+            $('#popup_tag').focus();
+        }
+    });
+    $('#button_addworker').on('click', function () {
+        var $this = $(this);
+        if ($this.hasClass('disabled')) {
+            return false;
+        }
+        $this.addClass('disabled');
+        $('.checkmark').hide();
+        $('.circle-loader').removeClass('load-complete');
+        $('.circle-loader, .message_err, .message_suc').hide();
+        $('.circle-loader').show();
+        var workerName = $('#workerName').val();
+        var type = $('#type').val();
+        if (type == 'asic') {
+            var system = $('#system_asic').val();
+            var asicIp = $('#ip').val();
+            var asicSSHuser = $('#sshuser').val();
+            var asicSSHpass = $('#sshpass').val();
+        } else {
+            var system = $('#system_gpu').val();
+            var asicIp = '';
+            var asicSSHuser = '';
+            var asicSSHpass = '';
+        }
+        var tags = '';
+        $('#tags').find('.tag').each(function () {
+            tags += ';' + $(this).attr('data-value') + ';';
+        });
+        var nonce = $('#nonce').val();
+        var data = '';
+        $.post(window.location.href, {
+            workerName: workerName,
+            sshuser: asicSSHuser,
+            sshpass: asicSSHpass,
+            asicIp: asicIp,
+            type: type,
+            system: system,
+            groups: tags,
+            nonce: nonce
+        }, function (response) {
+            data = response;
+            if (data == '1') {
+                if ($('#newWorker').val() == 'yes') {
+                    var d = new Date();
+                    d.setTime(d.getTime() + 24 * 60 * 60 * 1000 * 365);
+                    var expires = "expires=" + d.toLocaleTimeString();
+                    document.cookie = "cmode=automaticConfig;" + expires + ";path=/";
+                    window.location.replace("/worker/" + workerName);
+                } else {
+                    location.reload();
+                }
+            } else {
+                $('.circle-loader').hide();
+                $('.notification_row').addClass('finished');
+                $this.removeClass('disabled');
+                $('.message_err').html(data).show();
+                if (data == _("Set worker's name.")) {
+                    $('#workerName').addClass('error_value');
+                }
+                if (data.split('. ')[0] + '.' == _("Worker name already in use.")) {
+                    $('#workerName').addClass('error_value');
+                }
+                if (data == _('Worker name can only contain<br>letters, numbers, "_", "-".')) {
+                    $('#workerName').addClass('error_value');
+                }
+                if (data == _("Worker name shouldn't exceed 15 chars.")) {
+                    $('#workerName').addClass('error_value');
+                }
+                if (data == _("Invalid ASIC IP.")) {
+                    $('#ip').addClass('error_value');
+                }
+            }
+        });
+    });
+    $('table').on('click', '.tag', function () {
+        tag = $(this).text().toLowerCase();
+        $('#checked_rows').hide();
+        $('th').removeClass('hidden');
+        $('#actions_menu').hide();
+        $('table .checkbox').removeClass('selected');
+        checkedNum = 0;
+        selectedWorkers = [];
+        if ($('.search_result').html().indexOf('<div class="result">' + tag + ' <div class="icon close"></div></div>') == -1) {
+            $('.search_result').html($('.search_result').html() + '<div class="result">' + tag + ' <div class="icon close"></div></div>');
+            $('.filter_popup').find("#filter_group_" + $(this).text().toLowerCase() + "").prop('checked', true);
+        }
+        $('.search_result > .result').each(function () {
+            if (tag != '') {
+                tag = tag + ':' + $(this).text().trim();
+            } else {
+                tag = $(this).text().trim();
+            }
+        });
+        var d = new Date;
+        d.setTime(d.getTime() + 7 * 24 * 60 * 60 * 1000);
+        document.cookie = "workersFilter=" + tag + ";path=/;expires=" + d.toGMTString();
+        workersPage(page, search, tag, sort);
+    });
+    $('.icon.search').on('click', function () {
+        $("#search").focus();
+    });
+    var delay = (function () {
+        var timer = 0;
+        return function (callback, ms) {
+            clearTimeout(timer);
+            timer = setTimeout(callback, ms);
+        };
+    })();
+    $("#search").on('keyup', function () {
+        delay(function () {
+            search = $("#search").val().toLowerCase();
+            workersPage(page, search, tag, sort);
+            $('#checked_rows').hide();
+            $('th').removeClass('hidden');
+            $('#actions_menu').hide();
+            $('table .checkbox').removeClass('selected');
+            checkedNum = 0;
+            selectedWorkers = [];
+        }, 500);
+    });
+    $(document).on('click', '.result', function () {
+        $('#checked_rows').hide();
+        $('th').removeClass('hidden');
+        $('#actions_menu').hide();
+        $('table .checkbox').removeClass('selected');
+        checkedNum = 0;
+        selectedWorkers = [];
+        tag = '';
+        $('.filter_popup').find("#filter_" + $(this).text().toLowerCase().replace('(', '').replace(')', '').replace(' ', '') + "").prop('checked', false);
+        $('.filter_popup').find("#filter_group_" + $(this).text().toLowerCase().replace('(', '').replace(')', '').replace(' ', '') + "").prop('checked', false);
+        $('.search_result').html($('.search_result').html().replace('<div class="result">' + $(this).html() + '</div>', ''));
+        $('.search_result > .result').each(function () {
+            if (tag != '') {
+                tag = tag + ':' + $(this).text().trim();
+            } else {
+                tag = $(this).text().trim();
+            }
+        });
+        var d = new Date;
+        d.setTime(d.getTime() + 7 * 24 * 60 * 60 * 1000);
+        document.cookie = "workersFilter=" + tag + ";path=/;expires=" + d.toGMTString();
+        workersPage(page, search, tag, sort);
+    });
+    if (workers == null) {
+        preloaderHide();
+    } else {
+        workersInit();
+    }
+    $('.close,.close_popup').click(function () {
+        $('.popupbackground').fadeOut('fast');
+        $('.popup').fadeOut('fast');
+    });
+    $('table').on('click', '.icons_list_hamburger', function () {
+        if (!$(this).parent().children('.icons_list').hasClass('hide')) {
+            $(this).parent().children('.icons_list').addClass('hide');
+            refreshStop = 0;
+        } else {
+            $('.icons_list').addClass('hide');
+            $(this).parent().children('.icons_list').removeClass('hide');
+            refreshStop = 1;
+        }
+    });
+});
+var sort = '';
+var page = 1;
+var search = '';
+// var tag = getFilterTag();
+var tag = ''
+var start = 0;
+var end = 25;
+var pageHash = window.location.hash.substr(1);
+if (pageHash > 0) {
+    page = pageHash;
+}
+if ("onhashchange" in window) {
+    window.onhashchange = function () {
+        workersPage(window.location.hash.substr(1), search, tag, type);
+    }
+} else {
+    var storedHash = window.location.hash.substr(1);
+    window.setInterval(function () {
+        if (window.location.hash.substr(1) != storedHash) {
+            storedHash = window.location.hash.substr(1);
+            workersPage(storedHash, search, tag, type);
+        }
+    }, 100);
+}
+
+function workersSort(type) {
+    sort = type;
+    var d = new Date;
+    d.setTime(d.getTime() + 24 * 60 * 60 * 1000 * 15);
+    document.cookie = "workersSort=" + type + ";path=/;expires=" + d.toGMTString();
+    workersPage(page, search, tag, type);
+}
+
+function workersPage(currentPage, currentSearch, currentTag, currentSort) {
+    if (typeof currentPage == 'undefined' || currentPage == '') {
+        currentPage = page;
+    }
+    if (typeof currentSearch == 'undefined' || currentSearch == '') {
+        currentSearch = search;
+    }
+    if (typeof currentTag == 'undefined' || currentTag == '') {
+        currentTag = '';
+    }
+    if (typeof currentSort == 'undefined' || currentSort == '') {
+        currentSort = sort;
+    }
+    page = currentPage;
+    if (page > 0) {
+        if (history.pushState) {
+            history.pushState(null, null, '#' + page);
+        } else {
+            location.hash = '#' + page;
+        }
+    }
+    search = currentSearch.toLowerCase();
+    tag = currentTag.toLowerCase();
+    sort = currentSort;
+    start = (currentPage * 25) - 25;
+    end = start + 25;
+    var counter = 0;
+    var pages = 1;
+    $('.order_icon').removeClass('asc desc');
+    $('#sort_name').attr('onclick', "workersSort('nameDesc');");
+    $('#sort_Total').attr('onclick', "workersSort('totalDesc');");
+
+    $('#sort_pool').attr('onclick', "workersSort('poolDesc');");
+    $('#sort_workers').attr('onclick', "workersSort('workersDesc');");
+
+    $('#sort_online').attr('onclick', "workersSort('onlineDesc');");
+    $('#sort_offline').attr('onclick', "workersSort('offlineDesc');");
+
+    $('#sort_abnormal').attr('onclick', "workersSort('abnDesc');");
+    $('#sort_highest').attr('onclick', "workersSort('maxDesc');");
+
+    $('#sort_avg').attr('onclick', "workersSort('avgDesc');");
+    $('#sort_est').attr('onclick', "workersSort('estDesc');");
+
+    $('#sort_address').attr('onclick', "workersSort('addDesc');");
+    $('#sort_remarks').attr('onclick', "workersSort('descDesc');");
+    if (currentSort != '') {
+        jsonWorkers.sort(function (row1, row2) {
+            switch (currentSort) {
+                case 'nameDesc':
+                    var a = row2['name'];
+                    var b = row1['name'];
+                    $('#sort_name').attr('onclick', "workersSort('nameAsc');").addClass('desc');
+                    break;
+                case 'nameAsc':
+                    var a = row1['name'];
+                    var b = row2['name'];
+                    $('#sort_name').attr('onclick', "workersSort('nameDesc');").addClass('asc');
+                    break;
+
+                case 'totalDesc':
+                    var a = row2['totalHashRate'];
+                    var b = row1['totalHashRate'];
+                    $('#sort_Total').attr('onclick', "workersSort('totalAsc');").addClass('desc');
+                    break;
+                case 'totalAsc':
+                    var a = row1['totalHashRate'];
+                    var b = row2['totalHashRate'];
+                    $('#sort_Total').attr('onclick', "workersSort('totalDesc');").addClass('asc');
+                    break;
+
+                case 'poolDesc':
+                    var a = row2['poolHashRate'];
+                    var b = row1['poolHashRate'];
+                    $('#sort_pool').attr('onclick', "workersSort('poolAsc');").addClass('desc');
+                    break;
+                case 'poolAsc':
+                    var a = row1['poolHashRate'];
+                    var b = row2['poolHashRate'];
+                    $('#sort_pool').attr('onclick', "workersSort('poolDesc');").addClass('asc');
+                    break;
+
+                case 'workersDesc':
+                    var a = row2['online'];
+                    var b = row1['online'];
+                    $('#sort_workers').attr('onclick', "workersSort('workersAsc');").addClass('desc');
+                    break;
+                case 'workersAsc':
+                    var a = row1['online'];
+                    var b = row2['online'];
+                    $('#sort_workers').attr('onclick', "workersSort('workersDesc');").addClass('asc');
+                    break;
+
+                case 'onlineDesc':
+                    var a = row2['online'];
+                    var b = row1['online'];
+                    $('#sort_online').attr('onclick', "workersSort('onlineAsc');").addClass('desc');
+                    break;
+                case 'onlineAsc':
+                    var a = row1['online'];
+                    var b = row2['online'];
+                    $('#sort_online').attr('onclick', "workersSort('onlineDesc');").addClass('asc');
+                    break;
+
+                case 'offlineDesc':
+                    var a = row2['offline'];
+                    var b = row1['offline'];
+                    $('#sort_offline').attr('onclick', "workersSort('offlineAsc');").addClass('desc');
+                    break;
+                case 'offlineAsc':
+                    var a = row1['offline'];
+                    var b = row2['offline'];
+                    $('#sort_offline').attr('onclick', "workersSort('offlineDesc');").addClass('asc');
+                    break;
+
+                case 'abnDesc':
+                    var a = row2['abnormal'];
+                    var b = row1['abnormal'];
+                    $('#sort_abnormal').attr('onclick', "workersSort('abnAsc');").addClass('desc');
+                    break;
+                case 'abnAsc':
+                    var a = row1['abnormal'];
+                    var b = row2['abnormal'];
+                    $('#sort_abnormal').attr('onclick', "workersSort('abnDesc');").addClass('asc');
+                    break;
+
+                case 'maxDesc':
+                    var a = row2['highestTem'];
+                    var b = row1['highestTem'];
+                    $('#sort_highest').attr('onclick', "workersSort('maxAsc');").addClass('desc');
+                    break;
+                case 'maxAsc':
+                    var a = row1['highestTem'];
+                    var b = row2['highestTem'];
+                    $('#sort_highest').attr('onclick', "workersSort('maxDesc');").addClass('asc');
+                    break;
+
+                case 'avgDesc':
+                    var a = row2['avgPower'];
+                    var b = row1['avgPower'];
+                    $('#sort_avg').attr('onclick', "workersSort('avgAsc');").addClass('desc');
+                    break;
+                case 'avgAsc':
+                    var a = row1['avgPower'];
+                    var b = row2['avgPower'];
+                    $('#sort_avg').attr('onclick', "workersSort('avgDesc');").addClass('asc');
+                    break;
+
+                case 'estDesc':
+                    var a = row2['estMonthly'];
+                    var b = row1['estMonthly'];
+                    $('#sort_est').attr('onclick', "workersSort('estAsc');").addClass('desc');
+                    break;
+                case 'estAsc':
+                    var a = row1['estMonthly'];
+                    var b = row2['estMonthly'];
+                    $('#sort_est').attr('onclick', "workersSort('estDesc');").addClass('asc');
+                    break;
+
+                case 'addDesc':
+                    var a = row2['wallet'];
+                    var b = row1['wallet'];
+                    $('#sort_address').attr('onclick', "workersSort('addAsc');").addClass('desc');
+                    break;
+                case 'addAsc':
+                    var a = row1['wallet'];
+                    var b = row2['wallet'];
+                    $('#sort_address').attr('onclick', "workersSort('addDesc');").addClass('asc');
+                    break;
+
+                case 'descDesc':
+                    var a = row2['desc'];
+                    var b = row1['desc'];
+                    $('#sort_remarks').attr('onclick', "workersSort('descAsc');").addClass('desc');
+                    break;
+                case 'descAsc':
+                    var a = row1['desc'];
+                    var b = row2['desc'];
+                    $('#sort_remarks').attr('onclick', "workersSort('descDesc');").addClass('asc');
+                    break;
+
+
+            }
+            if (
+
+
+                currentSort == 'totalDesc' ||
+                currentSort == 'totalAsc' ||
+
+                currentSort == 'workersDesc' ||
+                currentSort == 'workersAsc' ||
+
+                currentSort == 'onlineDesc' ||
+                currentSort == 'onlineAsc' ||
+
+                currentSort == 'offlineDesc' ||
+                currentSort == 'offlineAsc' ||
+
+                currentSort == 'abnDesc' ||
+                currentSort == 'abnAsc' ||
+
+                currentSort == 'maxDesc' ||
+                currentSort == 'maxAsc' ||
+
+                currentSort == 'avgDesc' ||
+                currentSort == 'avgAsc' ||
+
+                currentSort == 'estDesc' ||
+                currentSort == 'estAsc' ||
+
+                currentSort == 'poolDesc' ||
+                currentSort == 'poolAsc'
+            )
+            {
+                if (a > b) return 1; else if (a < b) return -1;
+                return 0;
+            }
+
+
+            if(currentSort=='addDesc'||currentSort=='addAsc'){
+                if(a[0]==undefined){
+                    return -1
+                }
+                if(b[0]==undefined){
+                    return 1
+                }
+                if(a[0].name.localeCompare(b[0].name,'zh-CN')==0){
+                    return  a[0].address.localeCompare(b[0].address,'zh-CN')
+                }else{
+                    return a[0].name.localeCompare(b[0].name,'zh-CN')
+                }
+                return 0
+            }
+
+            if(currentSort=='descDesc'||currentSort=='descAsc'||currentSort == 'nameDesc' || currentSort == 'nameAsc'){
+
+                return a.localeCompare(b,'zh-CN')
+                // var reA = /[^a-zA-Z]/g;
+                // var reN = /[^0-9]/g;
+                // if (typeof a !== 'undefined') {
+                //     var aA = a.replace(reA, "");
+                //     var bA = b.replace(reA, "");
+                //     if (aA === bA) {
+                //         var aN = parseInt(a.replace(reN, ""), 10);
+                //         var bN = parseInt(b.replace(reN, ""), 10);
+                //         return aN === bN ? 0 : aN > bN ? 1 : -1;
+                //     } else {
+                //         return aA > bA ? 1 : -1;
+                //     }
+                // }
+            }
+            // if (currentSort == 'earningsAsc' || currentSort == 'earningsDesc' || currentSort == 'uptimeAsc' || currentSort == 'uptimeDesc') {
+            //     a = parseFloat(a);
+            //     b = parseFloat(b);
+            //     if (a > b) return 1; else if (a < b) return -1;
+            //     return 0;
+            // }
+
+        });
+    }
+    printWorkers();
+}
+
+function toSeconds(uptimeStr) {
+    var uptimeStrArray = (uptimeStr).split(' ');
+    uptimeSeconds = 0;
+    $.each(uptimeStrArray, function (timeI, timeD) {
+        if (timeD.indexOf('d') != -1) {
+            uptimeSeconds = uptimeSeconds + parseInt(timeD) * 24 * 60 * 60;
+        }
+        if (timeD.indexOf('h') != -1) {
+            uptimeSeconds = uptimeSeconds + parseInt(timeD) * 60 * 60;
+        }
+        if (timeD.indexOf('m') != -1) {
+            uptimeSeconds = uptimeSeconds + parseInt(timeD) * 60;
+        }
+        if (timeD.indexOf('s') != -1) {
+            uptimeSeconds = uptimeSeconds + parseInt(timeD);
+        }
+    });
+    return uptimeSeconds;
+}
+
+function workersInit() {
+    workersRefresh(true);
+}
+
+function workersRefresh(cache) {
+    if (wasHidden > 0) {
+        return;
+    }
+    if (checkedNum > 0 || refreshStop > 0) {
+        setTimeout(function () {
+            workersRefresh(false);
+        }, 5 * 1000);
+        return false;
+    }
+    var workersList = '';
+    if (typeof (Storage) !== "undefined" && cache) {
+    }
+    if (cacheExpired || workersList == '' || workersList == null) {
+        // var apiUrl = '/static-ssl.minerstat.farm/hercules.php?token=' + workerToken + '&count=' + workersCount;
+        var apiUrl = '/query?SITE,sitecfg,sitests'
+        if (demoAccount == 1) {
+            apiUrl = '/query?SITE,sitecfg,sitests';
+        }
+        $.getJSON(apiUrl, function (workersList) {
+            // loadWorkers(workersList);
+            jsonWorkers=workersList.SITE
+            console.log(jsonWorkers)
+            // if (workersList != '' && window.sessionStorage) {
+            //     sessionStorage.setItem(workerToken.toLowerCase() + ".workersList", JSON.stringify(workersList));
+            //     var newDate = new Date();
+            //     sessionStorage.setItem("lastUpdate", newDate.getTime());
+            // }
+            printWorkers()
+        });
+    }
+}
+
+var displayCounter;
+
+function printWorkers() {
+    var hiddenTab = '';
+    if (selectedWorkers.length < 1) {
+        $('#checked_rows').hide();
+    } else {
+        hiddenTab = 'hidden';
+    }
+
+    var workersArray = jsonWorkers;
+
+    var counter = 0;
+    displayCounter = 0;
+    var arrayLength = workersArray.length;
+    var workersHtml = '<tr><th class="flexCheckbox check_width ' + hiddenTab + '" style="padding-left: 15px"><div class="checkbox" onclick="selectAll(this);"></div></th><th class="flexStatus status_width"></th>';
+        if(sort=='nameDesc'){
+            workersHtml += '<th onclick="workersSort(\'nameAsc\');" class="flexWorker orderTh ordered' + hiddenTab + '"><div class="order_icon desc" id="sort_name"></div>' + _mx('Site') + '</th>';
+        }else if(sort == 'nameAsc'){
+            workersHtml += '<th onclick="workersSort(\'nameDesc\');" class="flexWorker orderTh ordered' + hiddenTab + '"><div class="order_icon asc" id="sort_name"></div>' +  _mx('Site') + '</th>';
+        }else {
+            workersHtml += '<th onclick="workersSort(\'nameAsc\');" class="flexWorker orderTh' + hiddenTab + '"><div class="order_icon" id="sort_name"></div>' +  _mx('Site') + '</th>';
+        }
+
+        if(sort=='totalDesc'){
+            workersHtml += '<th  onclick="workersSort(\'totalAsc\');" class="flexPower orderTh ordered' + hiddenTab + '"><div class="order_icon desc" id="sort_Total"></div>' + _mx2('Rate') + '</th>';
+        }else if(sort=='totalAsc'){
+            workersHtml += '<th  onclick="workersSort(\'totalDesc\');" class="flexPower orderTh ordered' + hiddenTab + '"><div class="order_icon asc" id="sort_Total"></div>' + _mx2('Rate')+ '</th>';
+        }else {
+            workersHtml += '<th  onclick="workersSort(\'totalAsc\');" class="flexPower orderTh' + hiddenTab + '"><div class="order_icon" id="sort_Total"></div>' + _mx2('Rate') + '</th>';
+        }
+
+        if(sort=='poolDesc'){
+            workersHtml += '<th  onclick="workersSort(\'poolAsc\');" class="flexPower orderTh ordered' + hiddenTab + '"><div class="order_icon desc" id="sort_pool"></div>' + _mx2('Pool') + '</th>';
+        }else if(sort=='poolAsc'){
+            workersHtml += '<th  onclick="workersSort(\'poolDesc\');" class="flexPower orderTh ordered' + hiddenTab + '"><div class="order_icon asc" id="sort_pool"></div>' +  _mx2('Pool') + '</th>';
+        }else {
+            workersHtml += '<th  onclick="workersSort(\'poolAsc\');" class="flexPower orderTh' + hiddenTab + '"><div class="order_icon" id="sort_pool"></div>' +  _mx2('Pool') + '</th>';
+        }
+
+        if(sort=='workersDesc'){
+            workersHtml += '<th onclick="workersSort(\'workersAsc\');" class="flexPower orderTh ordered' + hiddenTab + '"><div class="order_icon desc" id="sort_workers"></div>' + _mx2('Workers') + '</th>';
+        }else if(sort=='workersAsc'){
+            workersHtml += '<th onclick="workersSort(\'workersDesc\');" class="flexPower orderTh ordered' + hiddenTab + '"><div class="order_icon asc" id="sort_workers"></div>' +  _mx2('Workers') + '</th>'
+        }else {
+            workersHtml += '<th onclick="workersSort(\'workersAsc\');" class="flexPower orderTh' + hiddenTab + '"><div class="order_icon" id="sort_workers"></div>' +  _mx2('Workers') + '</th>'
+        }
+
+        // if(sort=='onlineDesc'){
+        //     workersHtml += '<th  onclick="workersSort(\'onlineAsc\');" class="flexPower orderTh ordered' + hiddenTab + '"><div class="order_icon desc" id="sort_online"></div>' + 'Online' + '</th>';
+        // }else if(sort=='onlineAsc'){
+        //     workersHtml += '<th  onclick="workersSort(\'onlineDesc\');" class="flexPower orderTh ordered' + hiddenTab + '"><div class="order_icon asc" id="sort_online"></div>' + 'Online' + '</th>';
+        // }else {
+        //     workersHtml += '<th  onclick="workersSort(\'onlineAsc\');" class="flexPower orderTh' + hiddenTab + '"><div class="order_icon" id="sort_online"></div>' + 'Online' + '</th>';
+        // }
+        //
+        // if(sort=='offlineDesc'){
+        //     workersHtml += '<th onclick="workersSort(\'offlineAsc\');" class="flexPower ordered orderTh' + hiddenTab + '"></div><div class="order_icon desc" id="sort_offline"></div>' +'Offline' + '</th>';
+        // }else if(sort=='offlineAsc'){
+        //     workersHtml += '<th onclick="workersSort(\'offlineDesc\');" class="flexPower ordered orderTh' + hiddenTab + '"></div><div class="order_icon asc" id="sort_offline"></div>' +'Offline' + '</th>';
+        // }else {
+        //     workersHtml += '<th onclick="workersSort(\'offlineAsc\');" class="flexPower orderTh' + hiddenTab + '"></div><div class="order_icon" id="sort_offline"></div>' +'Offline' + '</th>';
+        // }
+        //
+        // if(sort=='abnDesc'){
+        //     workersHtml += '<th onclick="workersSort(\'abnAsc\');" class="flexPower ordered orderTh' + hiddenTab + '"><div class="order_icon desc" id="sort_abnormal"></div>' + 'Abn.' + '</th>';
+        // }else if(sort=='abnAsc'){
+        //     workersHtml += '<th onclick="workersSort(\'abnDesc\');" class="flexPower ordered orderTh' + hiddenTab + '"><div class="order_icon asc" id="sort_abnormal"></div>' + 'Abn.' + '</th>';
+        // }else {
+        //     workersHtml += '<th onclick="workersSort(\'abnAsc\');" class="flexPower orderTh' + hiddenTab + '"><div class="order_icon" id="sort_abnormal"></div>' + 'Abn.' + '</th>';
+        // }
+
+        if(sort=='maxDesc'){
+            workersHtml += '<th onclick="workersSort(\'maxAsc\');" class="flexPower orderTh ordered' + hiddenTab + '"><div class="order_icon desc" id="sort_highest"></div>' + _mx2('Max Tem.') + '</th>';
+        }else if(sort=='maxAsc'){
+            workersHtml += '<th onclick="workersSort(\'maxDesc\');" class="flexPower orderTh ordered' + hiddenTab + '"><div class="order_icon asc" id="sort_highest"></div>' + _mx2('Max Tem.') + '</th>';
+        }else {
+            workersHtml += '<th onclick="workersSort(\'maxAsc\');" class="flexPower orderTh' + hiddenTab + '"><div class="order_icon" id="sort_highest"></div>' + _mx2('Max Tem.') + '</th>';
+        }
+
+        if (sort=='avgDesc'){
+            workersHtml += '<th onclick="workersSort(\'avgAsc\');" class="flexPower ordered orderTh  ' + hiddenTab + '"><div class="order_icon desc" id="sort_avg"></div>' +_mx('Avg.<br>Power') + '</th>';
+        }else if(sort=='avgAsc'){
+            workersHtml += '<th onclick="workersSort(\'avgDesc\');" class="flexPower ordered orderTh  ' + hiddenTab + '"><div class="order_icon asc" id="sort_avg"></div>' +_mx('Avg.<br>Power') + '</th>';
+        }else {
+            workersHtml += '<th onclick="workersSort(\'avgAsc\');" class="flexPower orderTh  ' + hiddenTab + '"><div class="order_icon" id="sort_avg"></div>' +_mx('Avg.<br>Power')+ '</th>';
+        }
+
+        if(sort=='estDesc'){
+            workersHtml += '<th onclick="workersSort(\'estAsc\');" class="flexPower ordered orderTh  ' + hiddenTab + '"><div class="order_icon desc" id="sort_est"></div>' + _mx2('EST.<br>Monthly') + '</th>';
+        }else if(sort=='estAsc'){
+            workersHtml += '<th onclick="workersSort(\'estDesc\');" class="flexPower ordered orderTh  ' + hiddenTab + '"><div class="order_icon asc" id="sort_est"></div>' + _mx2('EST.<br>Monthly') + '</th>';
+        }else {
+            workersHtml += '<th onclick="workersSort(\'estAsc\');" class="flexPower orderTh  ' + hiddenTab + '"><div class="order_icon" id="sort_est"></div>' + _mx2('EST.<br>Monthly') + '</th>';
+        }
+
+        if(sort=='addDesc'){
+            workersHtml += '<th onclick="workersSort(\'addAsc\');"  class="flexPower ordered orderTh ' + hiddenTab + '"><div class="order_icon desc" id="sort_address"></div>'+_mx('Addr.')+'</th>';
+        }else if(sort=='addAsc'){
+            workersHtml += '<th onclick="workersSort(\'addDesc\');"  class="flexPower ordered orderTh ' + hiddenTab + '"><div class="order_icon asc" id="sort_address"></div>'+_mx('Addr.')+'</th>';
+        }else {
+            workersHtml += '<th onclick="workersSort(\'addAsc\');"  class="flexPower orderTh ' + hiddenTab + '"><div class="order_icon" id="sort_address"></div>'+_mx('Addr.')+'</th>';
+        }
+
+        if(sort=='descDesc'){
+            workersHtml += '<th onclick="workersSort(\'descAsc\');" class="flexPower ordered orderTh  ' + hiddenTab + '"><div class="order_icon desc" id="sort_remarks"></div>' + 'Key' + '</th>';
+        }else if(sort=='descAsc'){
+            workersHtml += '<th onclick="workersSort(\'descDesc\');" class="flexPower ordered orderTh  ' + hiddenTab + '"><div class="order_icon asc" id="sort_remarks"></div>' + 'Key' + '</th>';
+        }else {
+            workersHtml += '<th onclick="workersSort(\'descAsc\');" class="flexPower orderTh  ' + hiddenTab + '"><div class="order_icon" id="sort_remarks"></div>' + 'Key' + '</th>';
+        }
+
+        // workersHtml += '<th  class="flexWorker orderTh ' + hiddenTab + '">' + _('Site Name') + '</th>';
+        // workersHtml += '<th  class="flexPower  ' + hiddenTab + '">' + 'Total<br>hashrate' + '</th>';
+        // workersHtml += '<th  class="flexPower  orderTh  ' + hiddenTab + '">' + 'Pool<br>hashrate' + '</th>';
+        // workersHtml += '<th  class="flexPower  orderTh  ' + hiddenTab + '">' + _('Workers') + '</th>';
+        // workersHtml += '<th  class="flexPower  orderTh  ' + hiddenTab + '">' + _('Online') + '</th>';
+        // workersHtml += '<th  class="flexPower  orderTh  ' + hiddenTab + '">' + _('Offline') + '</th>';
+        // workersHtml += '<th  class="flexPower  orderTh  ' + hiddenTab + '">' + _('Abnormal') + '</th>';
+        // workersHtml += '<th  class="flexPower  orderTh  ' + hiddenTab + '">' + 'Highest<br>Tem.' + '</th>';
+        // workersHtml += '<th  class="flexPower  orderTh  ' + hiddenTab + '">' +'Avg. <br>Power' + '</th>';
+        // workersHtml += '<th  class="flexPower  orderTh  ' + hiddenTab + '">' + 'EST. Daily/<br>Monthly' + '</th>';
+        // workersHtml += '<th  class="flexPower  orderTh  ' + hiddenTab + '">' + _('Address') + '</th>';
+        // workersHtml += '<th  class="flexPower  orderTh  ' + hiddenTab + '">' + 'Remarks' + '</th>';
+        // workersHtml += '<th  class="flexPower  orderTh  ' + hiddenTab + '">' + 'Site Key' + '</th>';
+
+        workersHtml += '<th class="flexActions align_right actions_width">' + _mx('Actions') + '</th></tr>';
+    $.each(workersArray, function (key, worker) {
+        if (displayCounter < end && displayCounter >= start) {
+            var canShow = true;
+        } else {
+            var canShow = false;
+        }
+        counter++;
+        $tags = (','  + worker.name + ',').toLowerCase();
+        var tagAll = tag.split(":");
+        var tagsCount = tagAll.length;
+        var tagsLoop = 0;
+        var tagsFound = 0;
+        let poolH=''
+        let totalH=''
+        let wN=''
+        let osObj='<div style="display: flex;justify-content: left;align-items: center;width: 100%"><div class="myTagCat">'+_mx('Total')+'</div><div class="myTagText">'+worker.workers+'</div></div>'
+        +'<div style="display: flex;justify-content: left;align-items: center;width: 100%"><div class="myTagCat">'+_mx('Online')+'</div><div class="myTagText">'+worker.online+'</div></div>'
+        +'<div style="display: flex;justify-content: left;align-items: center;width: 100%"><div class="myTagCat">'+_mx('Offline')+'</div><div class="myTagText">'+worker.offline+'</div></div>'
+        +'<div style="display: flex;justify-content: left;align-items: center;width: 100%"><div class="myTagCat"><A></A>'+_mx('Abn.')+'</div><div class="myTagText">'+worker.abnormal+'</div></div>'
+
+
+        if(worker.poolHashRate!=undefined){
+            poolH=(worker.poolHashRate/1000000.00).toFixed(2)+' MH/s'
+        }
+
+        if(worker.totalHashRate!=undefined){
+            totalH=(worker.totalHashRate/1000000.00).toFixed(2)+' MH/s'
+        }
+        if(worker.wallet.length>0){
+            let str=[]
+            let tox=''
+
+            $.each(worker.wallet,function (i,it) {
+                str.push(it.name)
+                tox+='<div>#'+it.name+': '+it.address+'</div>'
+            })
+            let tol='<div class="ttp">' +str.join('/')+
+                '<div class="tooltip">' +
+                    '<div class="arrow"></div>' + tox+'</div></div>'
+            wN=tol
+        }
+        $.each(tagAll, function (tKey, tVal) {
+            if (tVal != '' && search != '') {
+                if ($tags.indexOf(',' + tVal + ',') == -1 || $tags.indexOf(search) == -1) {
+                    var display = 'display:none;';
+                } else {
+                    tagsFound++;
+                }
+            } else if (tVal != '') {
+                if ($tags.indexOf(',' + tVal + ',') == -1) {
+                    var display = 'display:none;';
+                } else {
+                    tagsFound++;
+                }
+            } else if (search != '') {
+                if ($tags.indexOf(search) == -1) {
+                    var display = 'display:none;';
+                } else {
+                    tagsFound++;
+                }
+            } else {
+                tagsFound++;
+            }
+            tagsLoop++;
+            tagsCount--;
+            if (tagsCount == 0) {
+                if (tagsFound == tagsLoop) {
+                    displayCounter++;
+                    if (canShow) {
+                        var display = '';
+                    } else {
+                        var display = 'display:none;';
+                    }
+                    // var tags = '';
+                    // var tagsArray = worker.groups.split(",");
+                    // $.each(tagsArray, function (key, tag) {
+                    //     var tag = tag.replace(';', '');
+                    //     if (tag != '') {
+                    //         tags += '<span class="tag">' + tag + '</span>';
+                    //     }
+                    // });
+                    var borderAddOn = '';
+                    if (viewMode == 1) {
+                        borderAddOn = ' class="noborder"';
+                    }
+                    if (access == 'guest') {
+                        if (worker.mining_status != '-') {
+                            if (rigType == 'asic') {
+                                actions = '<div class="icons_list hide">';
+                                actions += '	<a data-tooltip="' + _('Statistics') + '" href="/worker-statistics/' + worker.name + '" class="icon_box"><div class="icon stats"></div></a>';
+                                actions += '	<a data-tooltip="' + _('Details') + '" href="/worker#' + worker.id + '" class="icon_box"><div class="icon details"></div></a>';
+                                actions += '</div>';
+                                actions += '<div class="icons_list_hamburger"></div>';
+                            } else {
+                                actions = '<div class="icons_list hide">';
+                                actions += '	<a data-tooltip="' + _('Statistics') + '" href="/worker-statistics/' + worker.name + '" class="icon_box"><div class="icon stats"></div></a>';
+                                actions += '	<a data-tooltip="' + _('Details') + '" href="/worker#' + worker.id + '" class="icon_box"><div class="icon details"></div></a>';
+
+                                actions += '</div>';
+                                actions += '<div class="icons_list_hamburger"></div>';
+                            }
+                        } else {
+                            actions = '<div class="icons_list hide">';
+                            actions += '	<a data-tooltip="' + _('Statistics') + '" href="/worker-statistics/' + worker.name + '" class="icon_box"><div class="icon stats"></div></a>';
+                            actions += '	<a data-tooltip="' + _('Details') + '" href="/worker#' + worker.id + '" class="icon_box"><div class="icon details"></div></a>';
+
+                            actions += '</div>';
+                            actions += '<div class="icons_list_hamburger"></div>';
+                        }
+                        var pauseTags = '';
+                        if (worker['pause_alerts'] == 1) {
+                            pauseTags += '<div data-tooltip="' + _('Alerts paused') + '" class="icon pause_alerts"></div>';
+                        }
+                        if (worker['pause_triggers'] == 1) {
+                            pauseTags += '<div data-tooltip="' + _('Triggers paused') + '" class="icon pause_triggers"></div>';
+                        }
+                        if (pauseTags != '') {
+                            pauseTags = '<div class="pause_icons">' + pauseTags + '</div>';
+                        }
+
+                        workersHtml += '<tr data-worker="' + worker.name.toLowerCase() + '" data-id="'+worker.id+'" data-name="' + worker.name + '" style="' + display + '"' + borderAddOn + '>';
+                        workersHtml += '	<td class="flexCheckbox check_width"><div class="checkbox"></div></td>';
+                        workersHtml += '	<td class="flexStatus status_width"></td>';
+                        workersHtml += '	<td class="flexWorker"><div class="worker_name_box"><span class="worker_name">' + worker.name + '</span></td>';
+                        workersHtml += '	<td data-responsive="' + _mx2("Rate") + '" class="flexMining mining_status"></div>' + totalH + '</td>';
+                        workersHtml += '	<td data-responsive="' + _mx2("Pool") + '" class="flexTemp filter_avgtemp">' + poolH + '</td>';
+                        workersHtml += '	<td data-responsive="' + _mx("Workers") + '" class="flexFans filter_avgfans">' + osObj + '</td>';
+                        // workersHtml += '	<td data-responsive="' + _("Online") + '" class="flexPower filter_watt">' + worker.online + '</td>';
+                        // workersHtml += '	<td data-responsive="' + _("Offline") + '" class="flexPower filter_watt">' + worker.offline + '</td>';
+                        // workersHtml += '	<td data-responsive="' + _("Abn.") + '" class="flexPower filter_watt">' + worker.abnormal + '</td>';
+                        workersHtml += '	<td data-responsive="' + _mx2("Max Tem.") + '" class="flexPower filter_watt">' + worker.highestTem + '%</td>';
+                        workersHtml += '	<td data-responsive="' + _mx3("Avg. Power") + '" class="flexUptime filter_uptime">' + worker.avgPower + 'W</td>';
+                        workersHtml += '	<td data-responsive="' + _mx3("EST. Monthly") + '" class="flexRevenue mining_revenue">' +worker.estMonthly + '</td>';
+                        workersHtml += '	<td data-responsive="' + _mx("Addr.") + '" class="flexRevenue mining_revenue">' + wN + '</td>';
+                        workersHtml += '	<td data-responsive="' + "Key" + '" class="flexRevenue mining_revenue" style="overflow:hide">' + worker.clientKey + '</td>';
+                        // workersHtml += '	<td data-responsive="' + _("Site Key") + '" class="flexRevenue mining_revenue">' + worker.clientKey + '</td>';
+                        workersHtml += '	<td class="flexActions align_right actions_width">' + actions + '</td>';
+                        workersHtml += '</tr>';
+                    } else {
+                        var cpuTooltip = _('CPU mining disabled');
+                        var cpuToggle = '';
+                        if (worker.client_cpu != '' && worker.client_cpu != 'disabled') {
+                            cpuTooltip = _('CPU mining enabled');
+                            cpuToggle = 'selected';
+                        }
+                        var switchTooltip = _('Profit switch disabled');
+                        var switchToggle = '';
+                        if (worker.profit_switch == '1') {
+                            switchTooltip = _('Profit switch enabled');
+                            switchToggle = 'selected';
+                        }
+                        var cpuHtml = '';
+                        var rigType = worker.type;
+                        var rigSystem = worker.system;
+                        if (rigSystem == 'linux') {
+                            rigSystem = 'msos';
+                        }
+                        if (rigSystem == 'win') {
+                            rigSystem = 'windows';
+                        }
+                        var clientsList = '<b>' + _('Load from template') + '</b>';
+                        var countTemplates = 0;
+                        var configTemplatesArray = [];
+                        var configTemplatesObj = {};
+                        jQuery.each(clients, function (client, data) {
+                            if ($.inArray(rigType, data['for']) !== -1 && $.inArray(rigSystem, data['for']) !== -1 && typeof data['templates'] != 'undefined') {
+                                $.each(data['templates'], function (index, value) {
+                                    configTemplatesArray.push(value.name.toLowerCase());
+                                    configTemplatesObj[value.name.toLowerCase()] = {};
+                                    configTemplatesObj[value.name.toLowerCase()]['id'] = value.id;
+                                    configTemplatesObj[value.name.toLowerCase()]['name'] = value.name;
+                                    configTemplatesObj[value.name.toLowerCase()]['client'] = client.toUpperCase();
+                                    countTemplates++;
+                                });
+                            }
+                            if (rigType != 'asic') {
+                                if ($.inArray(rigSystem, data['for']) !== -1 && $.inArray('cpu', data['for']) !== -1) {
+                                    cpuHtml = '<div class="divider"></div><div class="row"><label>' + _('CPU mining') + '</label><div data-tooltip="' + cpuTooltip + '" class="cpumining toggle" onclick="cpuMining(\'' + worker.name + '\');"><div class="bullet ' + cpuToggle + '"></div></div></div>';
+                                }
+                            }
+                        });
+                        configTemplatesArray.sort();
+                        jQuery.each(configTemplatesArray, function (configTemplateIndex, configTemplateName) {
+                            configTemplateData = configTemplatesObj[configTemplateName];
+                            clientsList += '<div class="row" data-template="' + configTemplateData['id'] + '">' + configTemplateData['name'] + '<small>' + configTemplateData['client'] + '</small></div>';
+                        });
+                        if (countTemplates == 0) {
+                            clientsList += '<div class="empty">' + _('No templates') + '</div><a class="button green" href="/config-templates/new" title="' + _('Create new template') + '">' + _('Create new template') + '</a>';
+                        }
+                        // var client = worker.client.toUpperCase();
+                        // clientsList = clientsList.replace('class="row">' + client, 'class="row selected">' + client);
+                        if (display == '') {
+                            if (worker.mining_status != '-') {
+                                if (rigType == 'asic') {
+                                    actions = '<div class="icons_list hide">';
+                                    actions += '	<div data-tooltip="' + _mx('Delete') + '" class="icon_box" onclick="deleteWorker(\'' + worker.name + '\','+worker.id+');"><div class="icon bin"></div></div>';
+                                    // actions += '	<a data-tooltip="' + _('Setting') + '" class="icon_box" href="/alerts#'+worker.id+'"><div class="icon profit_switch"></div></a>';
+                                    actions += '	<div data-tooltip="' + _mx('Edit') + '" class="icon_box" onclick="addSiteShow('+ worker.id +',\''+worker.name+'\',\''+worker.desc+'\',\''+worker.clientKey+'\');"><div class="icon rename"></div></div>';
+                                    // actions += '	<div data-tooltip="' + _('Reboot machine') + '" class="icon_box" onclick="rebootMachine(\'' + worker.name + '\');"><div class="icon reboot"></div></div>';
+                                    // actions += '	<div class="icon_box disabled"><div class="icon restart disabled"></div></div>';
+                                    // actions += '	<div data-tooltip="' + _('Update Key') + '" class="icon_box" onclick="showUpdateWin('+worker.id+');"><div class="icon restart"></div></div>';
+                                    actions += '	<div data-tooltip="' + _mx('Copy Key') + '" class="icon_box" onclick="copyKey(\''+worker.clientKey+'\');"><div class="icon duplicate"></div></div>';
+                                    // actions += '	<div class="switch_menu"><div class="frame">' + clientsList + '</div><div class="divider"></div><div class="row"><label>' + _('Profit switch') + '</label><div data-tooltip="' + switchTooltip + '" class="profitswitch toggle" onclick="profitSwitch(\'' + worker.name + '\');"><div class="bullet ' + switchToggle + '"></div></div></div></div>';
+                                    // actions += '	<a data-tooltip="' + _('Profit switch') + '" href="/profit-switch/' + worker.name + '" class="financialData icon_box"><div class="icon profit_switch"></div></a>';
+                                    actions += '	<a data-tooltip="' + _mx('Config') + '" onclick="linkConfig('+worker.id+')" class="financialData icon_box"><div class="icon config"></div></a>';
+                                    actions += '	<a data-tooltip="' + _mx('Details') + '" onclick="linkWorkers(\''+worker.name+'\')" class="icon_box"><div class="icon details"></div></a>';
+                                    actions += '</div>';
+                                    actions += '<div class="icons_list_hamburger"></div>';
+                                } else {
+                                    actions = '<div class="icons_list hide">';
+                                    actions += '	<div data-tooltip="' + _mx('Delete') + '" class="icon_box" onclick="deleteWorker(\'' + worker.name + '\','+worker.id+');"><div class="icon bin"></div></div>';
+                                    // actions += '	<a data-tooltip="' + _('Setting') + '" class="icon_box" href="/alerts#'+worker.id+'" ><div class="icon profit_switch"></div></a>';
+                                    actions += '	<div data-tooltip="' + _mx('Edit') + '" class="icon_box" onclick="addSiteShow('+ worker.id +',\''+worker.name+'\',\''+worker.desc+'\',\''+worker.clientKey+'\');"><div class="icon rename"></div></div>';
+                                    // actions += '	<div data-tooltip="' + _('Reboot machine') + '" class="icon_box" onclick="rebootMachine(\'' + worker.name + '\');"><div class="icon reboot"></div></div>';
+                                    // actions += '	<div data-tooltip="' + _('Restart software') + '" class="icon_box" onclick="restartSoftware(\'' + worker.name + '\');"><div class="icon restart"></div></div>';
+                                    // actions += '	<div data-tooltip="' + _('Update Key') + '" class="icon_box" onclick="showUpdateWin('+worker.id+');"><div class="icon restart"></div></div>';
+                                    actions += '	<div data-tooltip="' + _mx('Copy Key') + '" class="icon_box" onclick="copyKey(\''+worker.clientKey+'\');"><div class="icon duplicate"></div></div>';
+                                    // actions += '	<div class="switch_menu"><div class="frame">' + clientsList + '</div>' + cpuHtml + '<div class="divider"></div><div class="row"><label>' + _('Profit switch') + '</label><div data-tooltip="' + switchTooltip + '" class="profitswitch toggle" onclick="profitSwitch(\'' + worker.name + '\');"><div class="bullet ' + switchToggle + '"></div></div></div></div>';
+                                    // actions += '	<a data-tooltip="' + _('Profit switch') + '" href="/profit-switch/' + worker.name + '" class="financialData icon_box"><div class="icon profit_switch"></div></a>';
+                                    actions += '	<a data-tooltip="' + _mx('Config') + '" onclick="linkConfig('+worker.id+')" class="financialData icon_box"><div class="icon config"></div></a>';
+                                    actions += '	<a data-tooltip="' + _mx('Details') + '" onclick="linkWorkers(\''+worker.name+'\')" class="icon_box"><div class="icon details"></div></a>';
+                                    actions += '</div>';
+                                    actions += '<div class="icons_list_hamburger"></div>';
+                                }
+                            } else {
+                                actions = '<div class="icons_list hide">';
+                                actions += '	<div data-tooltip="' + _mx('Delete') + '" class="icon_box" onclick="deleteWorker(\'' + worker.name + '\','+worker.id+');"><div class="icon bin"></div></div>';
+                                // actions += '	<a data-tooltip="' + _('Setting') + '" class="icon_box" href="/alerts#'+worker.id+'" ><div class="icon profit_switch"></div></a>';
+                                actions += '	<div data-tooltip="' + _mx('Edit') + '" class="icon_box" onclick="addSiteShow('+ worker.id +',\''+worker.name+'\',\''+worker.desc+'\',\''+worker.clientKey+'\');"><div class="icon rename"></div></div>';
+                                // actions += '	<div data-tooltip="' + _('Update Key') + '" class="icon_box" onclick="showUpdateWin('+worker.id+');"><div class="icon restart"></div></div>';
+                                actions += '	<div data-tooltip="' + _mx('Copy Key') + '" class="icon_box" onclick="copyKey(\''+worker.clientKey+'\');"><div class="icon duplicate"></div></div>';
+                                // actions += '	<a data-tooltip="' + _('Profit switch') + '" href="/profit-switch/' + worker.name + '" class="financialData icon_box"><div class="icon profit_switch"></div></a>';
+                                actions += '	<a data-tooltip="' + _mx('Config') + '" onclick="linkConfig('+worker.id+')" class="financialData icon_box"><div class="icon config"></div></a>';
+                                actions += '	<a data-tooltip="' + _mx('Details') + '" onclick="linkWorkers(\''+worker.name+'\')" class="icon_box"><div class="icon details"></div></a>';
+                                actions += '</div>';
+                                actions += '<div class="icons_list_hamburger"></div>';
+                            }
+                            // if (selectedWorkers.indexOf(worker.name) > -1) {
+                            //     var selected = 'selected';
+                            // } else {
+                            //     var selected = '';
+                            // }
+                            if (selectedWorkers.indexOf(worker.id) > -1) {
+                                var selected = 'selected';
+                            } else {
+                                var selected = '';
+                            }
+                            var pauseTags = '';
+                            if (worker['pause_alerts'] == 1) {
+                                pauseTags += '<div data-tooltip="' + _('Alerts paused') + '" class="icon pause_alerts"></div>';
+                            }
+                            if (worker['pause_triggers'] == 1) {
+                                pauseTags += '<div data-tooltip="' + _('Triggers paused') + '" class="icon pause_triggers"></div>';
+                            }
+                            if (pauseTags != '') {
+                                pauseTags = '<div class="pause_icons">' + pauseTags + '</div>';
+                            }
+                            workersHtml += '<tr data-worker="' + worker.name.toLowerCase() + '" data-id="'+worker.id+'" data-name="' + worker.name + '" style="' + display + '"' + borderAddOn + '>';
+                            workersHtml += '	<td class="flexCheckbox check_width"><div class="checkbox ' + selected + '"></div></td>';
+                            workersHtml += '	<td class="flexStatus status_width"></td>';
+                            workersHtml += '	<td class="flexWorker"><div class="worker_name_box"><a class="flexMining worker_name" style="color: #fff">' + worker.name + '</a></td>';
+                            workersHtml += '	<td data-responsive="' + _mx2("Rate") + '" class="flexPower mining_status"></div>' + totalH + '</td>';
+                            workersHtml += '	<td data-responsive="' + _mx2("Pool") + '" class="flexPower mining_status"></div>' + poolH + '</td>';
+                            workersHtml += '	<td data-responsive="' + _mx("Workers") + '" class="flexPower filter_avgtemp">' + osObj + '</td>';
+                            // workersHtml += '	<td data-responsive="' + _("Online") + '" class="flexPower filter_avgfans">' + worker.online + '</td>';
+                            // workersHtml += '	<td data-responsive="' + _("Offline") + '" class="flexPower filter_watt">' + worker.offline + '</td>';
+                            // workersHtml += '	<td data-responsive="' + _("Abn.") + '" class="flexPower filter_uptime">' + worker.abnormal + '</td>';
+                            workersHtml += '	<td data-responsive="' + _mx2("Max Tem.") + '" class="flexPower mining_revenue">' + worker.highestTem + '℃</td>';
+                            workersHtml += '	<td data-responsive="' + _mx3("Avg. Power") + '" class="flexPower mining_revenue">' + worker.avgPower + 'W</td>';
+                            workersHtml += '	<td data-responsive="' + _mx3("EST. Monthly") + '" class="flexPower mining_revenue">' + worker.estMonthly+'</td>';
+                            workersHtml += '	<td data-responsive="' + _mx("Addr.") + '" class="flexPower mining_revenue">' + wN + '</td>';
+                            workersHtml += '	<td data-responsive="' + "Key" + '" class="flexPower mining_revenue" style="overflow:hidden !important;">' + worker.clientKey + '</td>';
+                            // workersHtml += '	<td data-responsive="' + _("Site Key") + '" class="flexPower mining_revenue">' + worker.clientKey + '</td>';
+                            workersHtml += '	<td class="flexActions align_right actions_width">' + actions + '</td>';
+                            workersHtml += '</tr>';
+                        }
+                    }
+                    if (viewMode == 1) {
+                        workersHtml += '<tr data-worker="' + worker.name.toLowerCase() + '" data-id="'+worker.id+'" data-name="' + worker.name + '" style="' + display + '" class="hardware_list">';
+                        workersHtml += '	<td colspan="10">';
+                        workersHtml += '		<div class="hardware_row">';
+                        if (typeof worker.hardware_list != 'undefined' && worker.hardware_list.length != 0) {
+                            var hardwareCount = 0;
+                            var speedCount = 0;
+                            jQuery.each(worker.hardware_list, function (hardwareIndex, hardwareData) {
+                                if (typeof hardwareData.speed != 'undefined') {
+                                    speedCount++;
+                                }
+                            });
+                            jQuery.each(worker.hardware_list, function (hardwareIndex, hardwareData) {
+                                var hardwareName = hardwareData.name;
+                                if (typeof hardwareName != 'undefined' && hardwareName != '') {
+                                    hardwareName = hardwareName.replace(/AMD|Nvidia|GeForce|MSI|Gigabyte|ASUS|ZOTAC|eVga|Sapphire|XFX|Radeon|Series|24GB|16GB|11GB|10GB|8GB|6GB|4GB|3GB|0GB/g, '');
+                                    hardwareName = hardwareName.replace('VII', 'Radeon VII');
+                                    if (hardwareName.indexOf('Ellesmere') != -1) {
+                                        hardwareName = '';
+                                    }
+                                    hardwareName = '#' + hardwareCount + ' ' + hardwareName;
+                                } else {
+                                    hardwareName = '#' + hardwareCount;
+                                }
+                                var hardwareFan = '-';
+                                if (typeof hardwareData.fan != 'undefined' && hardwareData.fan > 0) {
+                                    if (hardwareData.fan > 105) {
+                                        hardwareFan = hardwareData.fan + ' RPM';
+                                    } else {
+                                        if (hardwareData.fan > 105) {
+                                            hardwareData.fan = 100;
+                                        }
+                                        hardwareFan = hardwareData.fan + '%';
+                                    }
+                                }
+                                var elColor = 0;
+                                var tempColor = 0;
+                                var speedColor = 0;
+                                var tempAddOn = '';
+                                if (typeof worker.temp_hot != 'undefined' && worker.temp_hot != 'undefined' > 0 && hardwareData.temp >= worker.temp_hot) {
+                                    tempAddOn = '<div class="icon warning"></div>';
+                                    tempColor = 1;
+                                    elColor = 1;
+                                }
+                                if (typeof worker.temp_veryhot != 'undefined' && worker.temp_veryhot != 'undefined' > 0 && hardwareData.temp >= worker.temp_veryhot) {
+                                    tempAddOn = '<div class="icon hot"></div>';
+                                    tempColor = 2;
+                                    elColor = 2;
+                                }
+                                var hardwareTemp = '-';
+                                if (typeof hardwareData.temp != 'undefined') {
+                                    hardwareTemp = convertTemperature(hardwareData.temp) + temperature;
+                                }
+                                if (typeof hardwareData.temp2 != 'undefined') {
+                                    hardwareTemp += ' &middot; ' + convertTemperature(hardwareData.temp2) + temperature;
+                                }
+                                if (typeof hardwareData.memTemp != 'undefined') {
+                                    hardwareTemp += ' &middot; ' + convertTemperature(hardwareData.memTemp) + temperature;
+                                }
+                                var hardwarePower = '-';
+                                if (typeof hardwareData.power != 'undefined') {
+                                    hardwarePower = hardwareData.power + ' W';
+                                }
+                                var hardwareSpeed = '-';
+                                if (typeof hardwareData.speed != 'undefined') {
+                                    var convertedHashrate = convertHashrate(speedToHash(hardwareData.speed, worker.mining_unit), 'H/s');
+                                    hardwareSpeed = convertedHashrate.split(' ')[0] + '<span class="sub">' + convertedHashrate.split(' ')[1] + '</span>';
+                                } else {
+                                    if (speedCount > 0 && worker.type != 'asic') {
+                                        elColor = 2;
+                                        speedColor = 2;
+                                    }
+                                }
+                                workersHtml += '		<div class="hardware_el color' + elColor + '">';
+                                workersHtml += '			<div class="hardware_header">' + hardwareName + '</div>';
+                                if (speedCount > 0) {
+                                    workersHtml += '			<div class="el_row el_hashrate color' + speedColor + '"><b>' + hardwareSpeed + '</b></div>';
+                                    workersHtml += '			<div class="divider"></div>';
+                                }
+                                workersHtml += '			<div class="el_row el_data color' + tempColor + '">' + hardwareTemp + '</div>';
+                                workersHtml += '			<div class="el_row el_data">' + hardwareFan + '</div>';
+                                workersHtml += '			<div class="el_row el_data">' + hardwarePower + '</div>';
+                                if (typeof hardwareData.core != 'undefined' || typeof hardwareData.vddc != 'undefined' || typeof hardwareData.memory != 'undefined' || typeof hardwareData.mvdd != 'undefined') {
+                                    workersHtml += '			<div class="hardware_tooltip">';
+                                    workersHtml += '				<div class="el_row">';
+                                    if (typeof hardwareData.core != 'undefined' && hardwareData.core != '') {
+                                        workersHtml += '<label>CORE</label>' + '<b>' + hardwareData.core + ' MHz</b>';
+                                    }
+                                    if (typeof hardwareData.vddc != 'undefined' && hardwareData.vddc != '') {
+                                        workersHtml += '<label>VDDC</label>' + '<b>' + hardwareData.vddc + ' mV</b>';
+                                    }
+                                    if (typeof hardwareData.memory != 'undefined' && hardwareData.memory != '') {
+                                        workersHtml += '<label>MEM</label>' + '<b>' + hardwareData.memory + ' MHz</b>';
+                                    }
+                                    if (typeof hardwareData.mvdd != 'undefined' && hardwareData.mvdd != '') {
+                                        workersHtml += '<label>MVDD</label>' + '<b>' + hardwareData.mvdd + ' mV</b>';
+                                    }
+                                    workersHtml += '				</div>';
+                                    workersHtml += '			</div>';
+                                }
+                                workersHtml += '		</div>';
+                                hardwareCount++;
+                            });
+                        }
+                        workersHtml += '		</div>';
+                        workersHtml += '	</td>';
+                        workersHtml += '</tr>';
+                    }
+                }
+            }
+        });
+        if (counter == arrayLength) {
+            $('table').html(workersHtml);
+            $('.loader_frame').removeClass('display');
+            var pagesHtml = '';
+            pages = Math.ceil(displayCounter / 25);
+            if (pages > 0) {
+                for (p = 1; p <= pages; p++) {
+                    if (p == page) {
+                        pagesHtml += '<div class="page selected" onclick="workersPage(' + p + ');">' + p + '</div>';
+                    } else {
+                        pagesHtml += '<div class="page" onclick="workersPage(' + p + ');">' + p + '</div>';
+                    }
+                }
+                $('.pages').html(pagesHtml);
+            }
+        }
+    });
+    if (userPermission == 'technical' || userPrimaryPermission == 'technical') {
+        $('.flexRevenue').hide();
+        $('.financialData').hide();
+    }
+}
+
+$('table').on('click', '.switch_menu > .frame > .row', function () {
+    if ($(this).hasClass('selected')) {
+        $('.switch_menu').fadeOut('fast');
+        return false;
+    }
+    var workerName = $(this).closest('tr').attr('data-worker');
+    var template = $(this).attr('data-template');
+    var nonce = $('#nonce').val();
+    if (workerName == '' || template == '' || nonce == '') {
+        return false;
+    }
+    $.post(window.location.href, {worker: workerName, template: template, nonce: nonce}, function (response) {
+        $('.switch_menu').fadeOut('fast');
+    });
+});
+$('#rename_worker .green').on('click', function () {
+    if ($(this).attr('data-wn') == '' || $(this).hasClass('disabled')) {
+        return false;
+    }
+    var groupUnfinished = $('#popup_tag').val();
+    if (groupUnfinished != '') {
+        $('#popup_tag').before('<div class="tag" data-value="' + groupUnfinished + '">' + groupUnfinished + ' <div class="icon close"></div></div>');
+        $('#popup_tag').val('');
+    }
+    $('#rename_worker .outlined_button, #rename_worker .green').addClass('disabled');
+    $('.checkmark').hide();
+    $('.circle-loader').removeClass('load-complete');
+    $('.circle-loader, .message_err, .message_suc').hide();
+    $('.circle-loader').show();
+    var workerName = $(this).attr('data-wn');
+    var nonce = $('#nonce').val();
+    var newName = $('#rename_worker input').val();
+    if (newName == '') {
+        return false;
+    }
+    var ip = $('#rename_worker .asicip').val();
+    var username = $('#rename_worker .asicuser').val();
+    var password = $('#rename_worker .asicpassword').val();
+    var type = $('#rename_worker #popup_type').val();
+    var systemAsic = $('#rename_worker #popup_system_asic').val();
+    var systemGpu = $('#rename_worker #popup_system_gpu').val();
+    var groups = '';
+    $('#rename_worker #groups').find('.tag').each(function () {
+        groups += ';' + $(this).attr('data-value') + ';';
+    });
+    $.post(window.location.href, {
+        worker: workerName,
+        groups: groups,
+        type: type,
+        systemAsic: systemAsic,
+        systemGpu: systemGpu,
+        name: newName,
+        ip: ip,
+        username: username,
+        password: password,
+        nonce: nonce
+    }, function (response) {
+        if (response == '1') {
+            workersRefresh(false);
+            $('.circle-loader').addClass('load-complete');
+            $('.notification_row').addClass('finished');
+            $('.checkmark').show();
+            $('.message_suc').show();
+            setTimeout(function () {
+                $('#rename_worker').fadeOut('fast');
+                $('.popupbackground').fadeOut('fast');
+                setTimeout(function () {
+                    $('#rename_worker .outlined_button, #rename_worker .green').removeClass('disabled');
+                    $('.checkmark').hide();
+                    $('.circle-loader').removeClass('load-complete');
+                    $('.circle-loader, .message_err, .message_suc').hide();
+                }, 100);
+            }, 1200);
+            location.reload();
+        } else {
+            $('.circle-loader').hide();
+            $('.notification_row').addClass('finished');
+            $('#rename_worker .outlined_button, #rename_worker .green').removeClass('disabled');
+            $('.message_err').show();
+        }
+        setTimeout(function () {
+            $('#rename_worker .outlined_button, #rename_worker .green').removeClass('disabled');
+        }, 2010);
+    });
+});
+
+function editNote(wn) {
+    var nonce = $('#nonce').val();
+    $.post(window.location.href, {workerNote: wn, nonce: nonce}, function (response) {
+        $('#edit_note textarea').val(response);
+    });
+    var scrollTop = $(window).scrollTop() + 20;
+    $('#edit_note').css('top', scrollTop + 'px');
+    $('#edit_note .title').html(wn + '\'s notes');
+    $('.popupbackground').fadeToggle();
+    $('#edit_note').fadeToggle('fast');
+    $('#edit_note .green').attr('data-wn', wn);
+}
+
+$('.reset_button').click(function () {
+    $('#edit_note textarea').val('');
+});
+$('#edit_note .green').on('click', function () {
+    if ($(this).attr('data-wn') == '' || $(this).hasClass('disabled')) {
+        return false;
+    }
+    $('#edit_note .outlined_button, #edit_note .green').addClass('disabled');
+    $('.checkmark').hide();
+    $('.circle-loader').removeClass('load-complete');
+    $('.circle-loader, .message_err, .message_suc').hide();
+    $('.circle-loader').show();
+    var workerName = $(this).attr('data-wn');
+    var nonce = $('#nonce').val();
+    var note = $('#edit_note textarea').val();
+    $.post(window.location.href, {worker: workerName, note: note, nonce: nonce}, function (response) {
+        if (response == '1') {
+            workersRefresh(false);
+            $('.circle-loader').addClass('load-complete');
+            $('.notification_row').addClass('finished');
+            $('.checkmark').show();
+            $('.message_suc').show();
+            setTimeout(function () {
+                $('#edit_note').fadeOut('fast');
+                $('.popupbackground').fadeOut('fast');
+                setTimeout(function () {
+                    $('#edit_note .outlined_button, #edit_note .green').removeClass('disabled');
+                    $('.checkmark').hide();
+                    $('.circle-loader').removeClass('load-complete');
+                    $('.circle-loader, .message_err, .message_suc').hide();
+                }, 100);
+            }, 1200);
+        } else {
+            $('.circle-loader').hide();
+            $('.notification_row').addClass('finished');
+            $('#edit_note .outlined_button, #edit_note .green').removeClass('disabled');
+            $('.message_err').show();
+        }
+        setTimeout(function () {
+            $('#edit_note .outlined_button, #edit_note .green').removeClass('disabled');
+        }, 4500);
+    });
+});
+
+function renameWorker(wn) {
+    $('#rename_worker .asic > input').val('');
+    $('#rename_worker .asic').hide();
+    $('#rename_worker .asicpassword').val('admin');
+    $('#rename_worker .asicuser').val('root');
+    $('#rename_worker #popup_system_asic').hide();
+    $('#rename_worker #popup_system_gpu').hide();
+    $('#rename_worker #popup_type option').prop('selected', false);
+    $('#rename_worker #popup_type option').removeAttr('selected');
+    $('#rename_worker #popup_system_asic option').prop('selected', false);
+    $('#rename_worker #popup_system_asic option').removeAttr('selected');
+    $('#rename_worker #popup_system_gpu option').prop('selected', false);
+    $('#rename_worker #popup_system_gpu option').removeAttr('selected');
+    $('#rename_worker #groups .tag').remove();
+    var workersArray = $.parseJSON(workers);
+    var counterOfWorkers = 0;
+    $.each(workersArray, function (key, worker) {
+        counterOfWorkers++;
+        if (worker.workersName == wn) {
+            var groupsList = (worker.workersGroups).split(';');
+            $.each(groupsList, function (gi, gn) {
+                if (gn != '') {
+                    $('#popup_tag').before('<div class="tag" data-value="' + gn + '">' + gn + ' <div class="icon close"></div></div>');
+                }
+            });
+            if (worker.workersType == 'asic') {
+                $('#rename_worker .asic').show();
+                $('#rename_worker #popup_system_asic').show();
+                $('#popup_type option[value="asic"]').prop('selected', true);
+                $('#popup_type option[value="asic"]').attr("selected", "selected");
+                $('#popup_system_asic option[value="' + worker.workersSystem + '"]').prop('selected', true);
+                $('#popup_system_asic option[value="' + worker.workersSystem + '"]').attr("selected", "selected");
+                var wlist = sessionStorage.getItem(workerToken.toLowerCase() + ".workersList");
+                var wtemp = $.parseJSON(wlist);
+                $.each(wtemp, function (w, d) {
+                    if (w == wn) {
+                        $('#rename_worker .asic .asicip').val(d.info.os.localip);
+                        $('#rename_worker .asic .asicuser').val(d.info.auth.user);
+                        $('#rename_worker .asic .asicpassword').val(d.info.auth.pass);
+                        return;
+                    }
+                });
+            } else {
+                if (worker.workersType == 'amd') {
+                    $('#popup_type option[value="amd"]').prop('selected', true);
+                    $('#popup_type option[value="amd"]').attr("selected", "selected");
+                }
+                if (worker.workersType == 'nvidia') {
+                    $('#popup_type option[value="nvidia"]').prop('selected', true);
+                    $('#popup_type option[value="nvidia"]').attr("selected", "selected");
+                }
+                if (worker.workersSystem == 'msos' || worker.workersSystem == 'linux') {
+                    $('#popup_system_gpu option[value="msos"]').prop('selected', true);
+                    $('#popup_system_gpu option[value="msos"]').attr("selected", "selected");
+                }
+                if (worker.workersSystem == 'windows') {
+                    $('#popup_system_gpu option[value="windows"]').prop('selected', true);
+                    $('#popup_system_gpu option[value="windows"]').attr("selected", "selected");
+                }
+                $('#rename_worker #popup_system_gpu').show();
+            }
+            return;
+        }
+    });
+    var nonce = $('#nonce').val();
+    var scrollTop = $(window).scrollTop() + 20;
+    $('#rename_worker').css('top', scrollTop + 'px');
+    $('.popupbackground').fadeToggle();
+    $('#rename_worker').fadeToggle('fast');
+    $('#rename_worker > .text > .row > .chars_left').html((15 - wn.length) + ' ' + _('chars left'));
+    $('#rename_worker > .text > .row > .wn').val(wn);
+    $('#rename_worker .green').attr('data-wn', wn);
+}
+
+function deleteWorker(wn,id) {
+    $('#worker_delete .title').html(_mx('Delete') + ' ' + wn + '?');
+    $('#worker_delete .gray').text(_mx('No, keep it'));
+    $('#worker_delete .red').text(_mx('Yes, delete it'));
+    $('.popupbackground').fadeToggle();
+    $('#worker_delete').fadeToggle('fast');
+    $('#worker_delete .red').attr('data-wn', id);
+}
+
+$('#worker_delete .red').on('click', function () {
+    if ($(this).attr('data-wn') == '' || $(this).hasClass('disabled')) {
+        return false;
+    }
+    $('#worker_delete .outlined_button, #worker_delete .red').addClass('disabled');
+    $('.checkmark').hide();
+    $('.circle-loader').removeClass('load-complete');
+    $('.circle-loader, .message_err, .message_suc').hide();
+    $('.circle-loader').show();
+    var id = $(this).attr('data-wn');
+    var nonce = $('#nonce').val();
+    delSite(id)
+    // $.post(window.location.href, {workerDelete: workerName, nonce: nonce}, function (response) {
+    //     if (response == '1') {
+    //         var workersCountTotal = 0;
+    //         $("#workersList > [data-name]").each(function () {
+    //             if (!($(this).css('display') == 'none' || $(this).css("visibility") == "hidden")) {
+    //                 workersCountTotal++;
+    //             }
+    //         });
+    //         workersCountTotal = workersCountTotal - (1 + (workerName.match(/,/g) || []).length);
+    //         if (workersCountTotal < 1) {
+    //             location.reload();
+    //             return;
+    //         }
+    //         $('.subscription_plan .row p b:first').html(workersCountTotal);
+    //         $('.circle-loader').addClass('load-complete');
+    //         $('.notification_row').addClass('finished');
+    //         $('.checkmark').show();
+    //         $('.message_suc').show();
+    //         setTimeout(function () {
+    //             $('#worker_delete').fadeOut('fast');
+    //             $('.popupbackground').fadeOut('fast');
+    //             setTimeout(function () {
+    //                 $('#worker_delete .outlined_button, #worker_delete .red').removeClass('disabled');
+    //                 $('.checkmark').hide();
+    //                 $('.circle-loader').removeClass('load-complete');
+    //                 $('.circle-loader, .message_err, .message_suc').hide();
+    //             }, 100);
+    //         }, 1200);
+    //         deselectAll();
+    //         var workersArray = workerName.split(',');
+    //         for (var i = 0; i < workersArray.length; i++) {
+    //             $('tr[data-worker="' + workersArray[i].toLowerCase() + '"]').fadeOut('fast');
+    //         }
+    //     } else {
+    //         $('.circle-loader').hide();
+    //         $('.notification_row').addClass('finished');
+    //         $('#worker_delete .outlined_button, #worker_delete .red').removeClass('disabled');
+    //         $('.message_err').show();
+    //     }
+    //     setTimeout(function () {
+    //         $('#worker_delete .outlined_button, #worker_delete .red').removeClass('disabled');
+    //     }, 4500);
+    // });
+});
+
+function restartSoftware(wn) {
+    $('#software_restart .title').html(_('Restart') + ' ' + wn + '?');
+    $('#software_restart .gray').text(_('No, keep it'));
+    $('#software_restart .blue').text(_('Yes, restart it'));
+    $('.popupbackground').fadeToggle();
+    $('#software_restart').fadeToggle('fast');
+    $('#software_restart .blue').attr('data-wn', wn);
+}
+
+$('#software_restart .blue').on('click', function () {
+    if ($(this).attr('data-wn') == '' || $(this).hasClass('disabled')) {
+        return false;
+    }
+    $('#software_restart .outlined_button, #software_restart .blue').addClass('disabled');
+    $('.checkmark').hide();
+    $('.circle-loader').removeClass('load-complete');
+    $('.circle-loader, .message_err, .message_suc').hide();
+    $('.circle-loader').show();
+    var workerName = $(this).attr('data-wn');
+    var nonce = $('#nonce').val();
+    $.post(window.location.href, {restartSoftware: workerName, nonce: nonce}, function (response) {
+        if (response == '1') {
+            $('.circle-loader').addClass('load-complete');
+            $('.notification_row').addClass('finished');
+            $('.checkmark').show();
+            $('.message_suc').show();
+            setTimeout(function () {
+                $('#software_restart').fadeOut('fast');
+                $('.popupbackground').fadeOut('fast');
+                setTimeout(function () {
+                    $('#software_restart .outlined_button, #software_restart .blue').removeClass('disabled');
+                    $('.checkmark').hide();
+                    $('.circle-loader').removeClass('load-complete');
+                    $('.circle-loader, .message_err, .message_suc').hide();
+                }, 100);
+            }, 1200);
+            deselectAll();
+        } else {
+            $('.circle-loader').hide();
+            $('.notification_row').addClass('finished');
+            $('#software_restart .outlined_button, #software_restart .blue').removeClass('disabled');
+            $('.message_err').show();
+        }
+        setTimeout(function () {
+            $('#software_restart .outlined_button, #software_restart .blue').removeClass('disabled');
+        }, 4500);
+    });
+});
+
+function openSwitch(thisEl) {
+    if ($(thisEl).hasClass('disabled') == false) {
+        if ($(thisEl).parent().children('.switch_menu').is(':visible')) {
+            $('.switch_menu').hide();
+            $(thisEl).parent().children('.switch_menu').fadeOut('fast');
+            refreshStop = 0;
+        } else {
+            $('.switch_menu').hide();
+            $(thisEl).parent().children('.switch_menu').fadeIn('fast');
+            refreshStop = 1;
+        }
+    }
+}
+
+function rebootMachine(wn) {
+    $('#hardware_reboot .title').html(_('Reboot') + ' ' + wn + '?');
+    $('#hardware_reboot .gray').text(_('No, keep it'));
+    $('#hardware_reboot .blue').text(_('Yes, reboot it'));
+    $('.popupbackground').fadeToggle();
+    $('#hardware_reboot').fadeToggle('fast');
+    $('#hardware_reboot .blue').attr('data-wn', wn);
+}
+
+$('#hardware_reboot .blue').on('click', function () {
+    if ($(this).attr('data-wn') == '' || $(this).hasClass('disabled')) {
+        return false;
+    }
+    $('#hardware_reboot .outlined_button, #hardware_reboot .blue').addClass('disabled');
+    $('.checkmark').hide();
+    $('.circle-loader').removeClass('load-complete');
+    $('.circle-loader, .message_err, .message_suc').hide();
+    $('.circle-loader').show();
+    var workerName = $(this).attr('data-wn');
+    var nonce = $('#nonce').val();
+    $.post(window.location.href, {rebootMachine: workerName, nonce: nonce}, function (response) {
+        if (response == '1') {
+            $('.circle-loader').addClass('load-complete');
+            $('.notification_row').addClass('finished');
+            $('.checkmark').show();
+            $('.message_suc').show();
+            setTimeout(function () {
+                $('#hardware_reboot').fadeOut('fast');
+                $('.popupbackground').fadeOut('fast');
+                setTimeout(function () {
+                    $('#hardware_reboot .outlined_button, #hardware_reboot .blue').removeClass('disabled');
+                    $('.checkmark').hide();
+                    $('.circle-loader').removeClass('load-complete');
+                    $('.circle-loader, .message_err, .message_suc').hide();
+                }, 100);
+            }, 1200);
+            deselectAll();
+        } else {
+            $('.circle-loader').hide();
+            $('.notification_row').addClass('finished');
+            $('#hardware_reboot .outlined_button, #hardware_reboot .blue').removeClass('disabled');
+            $('.message_err').show();
+        }
+        setTimeout(function () {
+            $('#hardware_reboot .outlined_button, #hardware_reboot .blue').removeClass('disabled');
+        }, 4500);
+    });
+});
+$('#workerName').on('keyup', function (event) {
+    var str = $(this).val();
+    str = str.replace(/[^A-Za-z-0-9_-]/g, "").substring(0, 15);
+    if ($(this).val() != str) {
+        $(this).val(str);
+    }
+    var chars = (15 - $(this).val().length) + ' ' + _('chars left');
+    $('.chars_left').html(chars);
+});
+$('#rename_worker .wn').on('keyup', function (event) {
+    var str = $(this).val();
+    str = str.replace(/[^A-Za-z-0-9_-]/g, "").substring(0, 15);
+    if ($(this).val() != str) {
+        $(this).val(str);
+    }
+    var chars = (15 - $(this).val().length) + ' ' + _('chars left');
+    $('#rename_worker .chars_left').html(chars);
+});
+
+function cpuMining(workerName) {
+    var nonce = $('#nonce').val();
+    var $worker = $('tr[data-worker="' + workerName.toLowerCase() + '"]');
+    if ($worker.find('.cpumining .bullet').hasClass('selected')) {
+        var statusCPU = 0;
+    } else {
+        var statusCPU = 1;
+    }
+    $.post('/workers', {'cpuMining': workerName, 'status': statusCPU, 'nonce': nonce}, function (response) {
+        if (response == '1') {
+            if (statusCPU == 0) {
+                $worker.find('.cpumining .bullet').removeClass('selected');
+                $worker.find('.cpumining .toggle').attr('data-tooltip', _('CPU mining disabled'));
+            } else {
+                $worker.find('.cpumining .bullet').addClass('selected');
+                $worker.find('.cpumining .toggle').attr('data-tooltip', _('CPU mining enabled'));
+            }
+        }
+    });
+}
+
+function profitSwitch(workerName) {
+    var nonce = $('#nonce').val();
+    var $worker = $('tr[data-worker="' + workerName.toLowerCase() + '"]');
+    if ($worker.find('.profitswitch .bullet').hasClass('selected')) {
+        var statusProfitSwitch = 0;
+    } else {
+        var statusProfitSwitch = 1;
+    }
+    $.post('/workers', {'profitSwitch': workerName, 'status': statusProfitSwitch, 'nonce': nonce}, function (response) {
+        if (statusProfitSwitch == '0') {
+            $worker.find('.profitswitch .bullet').removeClass('selected');
+            $worker.find('.profitswitch').attr('data-tooltip', _('Profit switch disabled'));
+        } else {
+            $worker.find('.profitswitch .bullet').addClass('selected');
+            $worker.find('.profitswitch').attr('data-tooltip', _('Profit switch enabled'));
+        }
+    });
+}
+
+$('#worker_shutdown .red').on('click', function () {
+    if ($(this).attr('data-wn') == '' || $(this).hasClass('disabled')) {
+        return false;
+    }
+    $('#worker_shutdown .outlined_button, #worker_shutdown .red').addClass('disabled');
+    $('.checkmark').hide();
+    $('.circle-loader').removeClass('load-complete');
+    $('.circle-loader, .message_err, .message_suc').hide();
+    $('.circle-loader').show();
+    var workerName = $(this).attr('data-wn');
+    var nonce = $('#nonce').val();
+    $.post(window.location.href, {workerShutdownSafe: workerName, nonce: nonce}, function (response) {
+        if (response == '1') {
+            $('.circle-loader').addClass('load-complete');
+            $('.notification_row').addClass('finished');
+            $('.checkmark').show();
+            $('.message_suc').show();
+            setTimeout(function () {
+                $('#worker_shutdown').fadeOut('fast');
+                $('.popupbackground').fadeOut('fast');
+                setTimeout(function () {
+                    $('#worker_shutdown .outlined_button, #worker_shutdown .red').removeClass('disabled');
+                    $('.checkmark').hide();
+                    $('.circle-loader').removeClass('load-complete');
+                    $('.circle-loader, .message_err, .message_suc').hide();
+                }, 100);
+            }, 1200);
+            deselectAll();
+        } else {
+            $('.circle-loader').hide();
+            $('.notification_row').addClass('finished');
+            $('#worker_shutdown .outlined_button, #worker_shutdown .red').removeClass('disabled');
+            $('.message_err').show();
+        }
+        setTimeout(function () {
+            $('#worker_shutdown .outlined_button, #worker_shutdown .red').removeClass('disabled');
+        }, 4500);
+    });
+});
+$('#worker_power_cycle .red').on('click', function () {
+    if ($(this).attr('data-wn') == '' || $(this).hasClass('disabled')) {
+        return false;
+    }
+    $('#worker_power_cycle .outlined_button, #worker_power_cycle .red').addClass('disabled');
+    $('.checkmark').hide();
+    $('.circle-loader').removeClass('load-complete');
+    $('.circle-loader, .message_err, .message_suc').hide();
+    $('.circle-loader').show();
+    var workerName = $(this).attr('data-wn');
+    var nonce = $('#nonce').val();
+    $.post(window.location.href, {workerPowerCycle: workerName, nonce: nonce}, function (response) {
+        if (response == '1') {
+            $('.circle-loader').addClass('load-complete');
+            $('.notification_row').addClass('finished');
+            $('.checkmark').show();
+            $('.message_suc').show();
+            setTimeout(function () {
+                $('#worker_power_cycle').fadeOut('fast');
+                $('.popupbackground').fadeOut('fast');
+                setTimeout(function () {
+                    $('#worker_power_cycle .outlined_button, #worker_power_cycle .red').removeClass('disabled');
+                    $('.checkmark').hide();
+                    $('.circle-loader').removeClass('load-complete');
+                    $('.circle-loader, .message_err, .message_suc').hide();
+                }, 100);
+            }, 1200);
+            deselectAll();
+        } else {
+            $('.circle-loader').hide();
+            $('.notification_row').addClass('finished');
+            $('#worker_power_cycle .outlined_button, #worker_power_cycle .red').removeClass('disabled');
+            $('.message_err').show();
+        }
+        setTimeout(function () {
+            $('#worker_power_cycle .outlined_button, #worker_power_cycle .red').removeClass('disabled');
+        }, 4500);
+    });
+});
+$('#software_update .blue').on('click', function () {
+    if ($(this).attr('data-wn') == '' || $(this).hasClass('disabled')) {
+        return false;
+    }
+    $('#software_update .outlined_button, #software_update .blue').addClass('disabled');
+    $('.checkmark').hide();
+    $('.circle-loader').removeClass('load-complete');
+    $('.circle-loader, .message_err, .message_suc').hide();
+    $('.circle-loader').show();
+    var workerName = $(this).attr('data-wn');
+    var nonce = $('#nonce').val();
+    $.post(window.location.href, {update: workerName, nonce: nonce}, function (response) {
+        if (response == '1') {
+            $('.circle-loader').addClass('load-complete');
+            $('.notification_row').addClass('finished');
+            $('.checkmark').show();
+            $('.message_suc').show();
+            setTimeout(function () {
+                $('#software_update').fadeOut('fast');
+                $('.popupbackground').fadeOut('fast');
+                setTimeout(function () {
+                    $('#software_update .outlined_button, #software_update .blue').removeClass('disabled');
+                    $('.checkmark').hide();
+                    $('.circle-loader').removeClass('load-complete');
+                    $('.circle-loader, .message_err, .message_suc').hide();
+                }, 100);
+            }, 1200);
+            deselectAll();
+        } else {
+            $('.circle-loader').hide();
+            $('.notification_row').addClass('finished');
+            $('#software_update .outlined_button, #software_update .blue').removeClass('disabled');
+            $('.message_err').show();
+        }
+        setTimeout(function () {
+            $('#software_update .outlined_button, #software_update .blue').removeClass('disabled');
+        }, 4500);
+    });
+});
+$('#software_start .blue').on('click', function () {
+    if ($(this).attr('data-wn') == '' || $(this).hasClass('disabled')) {
+        return false;
+    }
+    $('#software_start .outlined_button, #software_start .blue').addClass('disabled');
+    $('.checkmark').hide();
+    $('.circle-loader').removeClass('load-complete');
+    $('.circle-loader, .message_err, .message_suc').hide();
+    $('.circle-loader').show();
+    var workerName = $(this).attr('data-wn');
+    var nonce = $('#nonce').val();
+    $.post(window.location.href, {startMining: workerName, nonce: nonce}, function (response) {
+        if (response == '1') {
+            $('.circle-loader').addClass('load-complete');
+            $('.notification_row').addClass('finished');
+            $('.checkmark').show();
+            $('.message_suc').show();
+            setTimeout(function () {
+                $('#software_start').fadeOut('fast');
+                $('.popupbackground').fadeOut('fast');
+                setTimeout(function () {
+                    $('#software_start .outlined_button, #software_start .blue').removeClass('disabled');
+                    $('.checkmark').hide();
+                    $('.circle-loader').removeClass('load-complete');
+                    $('.circle-loader, .message_err, .message_suc').hide();
+                }, 100);
+            }, 1200);
+            deselectAll();
+        } else {
+            $('.circle-loader').hide();
+            $('.notification_row').addClass('finished');
+            $('#software_start .outlined_button, #software_start .blue').removeClass('disabled');
+            $('.message_err').show();
+        }
+        setTimeout(function () {
+            $('#software_start .outlined_button, #software_start .blue').removeClass('disabled');
+        }, 4500);
+    });
+});
+$('#software_stop .blue').on('click', function () {
+    if ($(this).attr('data-wn') == '' || $(this).hasClass('disabled')) {
+        return false;
+    }
+    $('#software_stop .outlined_button, #software_stop .blue').addClass('disabled');
+    $('.checkmark').hide();
+    $('.circle-loader').removeClass('load-complete');
+    $('.circle-loader, .message_err, .message_suc').hide();
+    $('.circle-loader').show();
+    var workerName = $(this).attr('data-wn');
+    var nonce = $('#nonce').val();
+    $.post(window.location.href, {stopMining: workerName, nonce: nonce}, function (response) {
+        if (response == '1') {
+            $('.circle-loader').addClass('load-complete');
+            $('.notification_row').addClass('finished');
+            $('.checkmark').show();
+            $('.message_suc').show();
+            setTimeout(function () {
+                $('#software_stop').fadeOut('fast');
+                $('.popupbackground').fadeOut('fast');
+                setTimeout(function () {
+                    $('#software_stop .outlined_button, #software_stop .blue').removeClass('disabled');
+                    $('.checkmark').hide();
+                    $('.circle-loader').removeClass('load-complete');
+                    $('.circle-loader, .message_err, .message_suc').hide();
+                }, 100);
+            }, 1200);
+            deselectAll();
+        } else {
+            $('.circle-loader').hide();
+            $('.notification_row').addClass('finished');
+            $('#software_stop .outlined_button, #software_stop .blue').removeClass('disabled');
+            $('.message_err').show();
+        }
+        setTimeout(function () {
+            $('#software_stop .outlined_button, #software_stop .blue').removeClass('disabled');
+        }, 4500);
+    });
+});
+$('#search_templates').keyup(function () {
+    var searchQuery = $(this).val();
+    var countResults = 0;
+    $('#actions_submenu_switch .frame .empty').remove();
+    if (searchQuery == '') {
+        $('#actions_submenu_switch .frame .row').show();
+        if (ps_bulk_switch != null) {
+            ps_bulk_switch.update();
+        }
+    } else {
+        searchQuery = searchQuery.toLowerCase();
+        $('#actions_submenu_switch .frame .row').each(function () {
+            var profileStr = $(this).text();
+            if (profileStr != '') {
+                profileStr = profileStr.toLowerCase();
+                profileStr = profileStr.replace('<small>', '----');
+                profileStr = profileStr.replace('</small>', '');
+                if (profileStr.indexOf(searchQuery) != -1) {
+                    $(this).show();
+                    countResults++;
+                } else {
+                    $(this).hide();
+                }
+            }
+        });
+        if (countResults == 0) {
+            $('#actions_submenu_switch .frame').append('<div class="empty">' + _('No results') + '</div>');
+        }
+        if (ps_bulk_switch != null) {
+            ps_bulk_switch.update();
+        }
+    }
+});
+
+function openSubmenu(type) {
+    if (type == 'switch') {
+        $('#actions_submenu_command').hide();
+        $('#actions_submenu_relocate').hide();
+        $('#actions_submenu_switch').toggle();
+        ps_bulk_switch.update();
+        $('#search_templates').focus();
+    }
+    if (type == 'command') {
+        $('#actions_submenu_switch').hide();
+        $('#actions_submenu_relocate').hide();
+        $('#actions_submenu_command').toggle();
+    }
+    if (type == 'relocate') {
+        $('#actions_submenu_switch').hide();
+        $('#actions_submenu_command').hide();
+        $('#actions_submenu_relocate').toggle();
+    }
+}
+
+$(document).mousedown(function (e) {
+    if (!$("#actions_submenu_switch").is(e.target) && $("#actions_submenu_switch").has(e.target).length === 0 && !$(".submenu_row").is(e.target)) {
+        $("#actions_submenu_switch").hide();
+    }
+});
+$(document).mousedown(function (e) {
+    if (!$("#actions_submenu_command").is(e.target) && $("#actions_submenu_command").has(e.target).length === 0 && !$(".submenu_row").is(e.target)) {
+        $("#actions_submenu_command").hide();
+    }
+});
+$(document).mousedown(function (e) {
+    if (!$("#actions_submenu_relocate").is(e.target) && $("#actions_submenu_relocate").has(e.target).length === 0 && !$(".submenu_row").is(e.target)) {
+        $("#actions_submenu_relocate").hide();
+    }
+});
+
+function massAction(type) {
+    if (checkedNum > 0) {
+        $('#actions_menu').hide();
+        var workersInAction = '';
+        let myWorkersInfo=''
+
+        $.each(selectedWorkers, function (wName, value) {
+            workersInAction = workersInAction + ',' + value;
+        });
+        workersInAction = workersInAction.substr(1);
+        if (type == 'delete') {
+            $('#worker_delete .title').html(_('Delete') + ' ' + checkedNum + ' ' + _('workers') + '?');
+            if (checkedNum > 1) {
+                $('#worker_delete .gray').text(_('No, keep them'));
+                $('#worker_delete .red').text(_('Yes, delete them'));
+            }
+            $('.popupbackground').fadeToggle();
+            $('#worker_delete').fadeToggle('fast');
+            $('#worker_delete .red').attr('data-wn', workersInAction);
+        }
+        if (type == 'shutdown') {
+            $('#worker_shutdown .title').html(_mx2('Shut down') + ' ' + checkedNum + ' ' + _mx3('sites') + '?');
+            if (checkedNum > 1) {
+                $('#worker_shutdown .gray').text(_mx2('No, keep them'));
+                $('#worker_shutdown .red').text(_mx2('Yes, shut them down'));
+            }
+            $('.popupbackground').fadeToggle();
+            $('#worker_shutdown').fadeToggle('fast');
+            $('#worker_shutdown .red').attr('data-wn', workersInAction);
+        }
+        if (type == 'powercycle') {
+            $('#worker_power_cycle .title').html(_mx3('Power cycle') + ' ' + checkedNum + ' ' + _mx3('sites') + '?');
+            if (checkedNum > 1) {
+                $('#worker_power_cycle .gray').text(_mx2('No, keep them'));
+                $('#worker_power_cycle .red').text(_mx2('Yes, power cycle'));
+            }
+            $('.popupbackground').fadeToggle();
+            $('#worker_power_cycle').fadeToggle('fast');
+            $('#worker_power_cycle .red').attr('data-wn', workersInAction);
+        }
+        if (type == 'reboot') {
+            $('#hardware_reboot .title').html(_mx2('Reboot') + ' ' + checkedNum + ' ' + _mx3('sites') + '?');
+            if (checkedNum > 1) {
+                $('#hardware_reboot .gray').text(_mx2('No, keep them'));
+                $('#hardware_reboot .blue').text(_mx2('Yes, reboot them'));
+            }
+            $('.popupbackground').fadeToggle();
+            $('#hardware_reboot').fadeToggle('fast');
+            $('#hardware_reboot .blue').attr('data-wn', workersInAction);
+        }
+        if (type == 'restart') {
+            $('#software_restart .title').html(_mx('Restart') + ' ' + checkedNum + ' ' + _mx3('sites') + '?');
+            if (checkedNum > 1) {
+                $('#software_restart .gray').text(_mx2('No, keep them'));
+                $('#software_restart .blue').text(_mx2('Yes, restart them'));
+            }
+            $('.popupbackground').fadeToggle();
+            $('#software_restart').fadeToggle('fast');
+            $('#software_restart .blue').attr('data-wn', workersInAction);
+        }
+        if (type == 'stop') {
+            $('#software_stop .title').html(_mx('Stop') + ' ' + checkedNum + ' ' + _mx3('sites') + '?');
+            if (checkedNum > 1) {
+                $('#software_stop .gray').text(_mx2('No, keep them'));
+                $('#software_stop .blue').text(_mx2('Yes, stop them'));
+            }
+            $('.popupbackground').fadeToggle();
+            $('#software_stop').fadeToggle('fast');
+            $('#software_stop .blue').attr('data-wn', workersInAction);
+        }
+        if (type == 'start') {
+            $('#software_start .title').html(_mx('Start') + ' ' + checkedNum + ' ' + _mx3('sites') + '?');
+            if (checkedNum > 1) {
+                $('#software_start .gray').text(_mx2('No, keep them'));
+                $('#software_start .blue').text(_mx2('Yes, start them'));
+            }
+            $('.popupbackground').fadeToggle();
+            $('#software_start').fadeToggle('fast');
+            $('#software_start .blue').attr('data-wn', workersInAction);
+        }
+        if (type == 'update') {
+            $('#software_update .title').html(_mx2('Update') + ' ' + checkedNum + ' ' + _mx3('sites') + '?');
+            if (checkedNum > 1) {
+                $('#software_update .gray').text(_mx2('No, keep them'));
+                $('#software_update .blue').text(_mx2('Yes, update them'));
+            }
+            $('.popupbackground').fadeToggle();
+            $('#software_update').fadeToggle('fast');
+            $('#software_update .blue').attr('data-wn', workersInAction);
+        }
+        if (type == 'command') {
+            if (workersInAction != '') {
+                var workerName = workersInAction;
+                var nonce = $('#nonce').val();
+                var selectedCommand = $('#command').val();
+                $.post(window.location.href, {
+                    commandTo: workerName,
+                    'command': selectedCommand,
+                    nonce: nonce
+                }, function (response) {
+                    if (response == '1') {
+                        $('.circle-loader').addClass('load-complete');
+                        $('.notification_row').addClass('finished');
+                        $('.checkmark').show();
+                        $('.message_suc').show();
+                        deselectAll();
+                    } else {
+                        $('.circle-loader').hide();
+                        $('.notification_row').addClass('finished');
+                        $('#software_restart .outlined_button, #software_restart .blue').removeClass('disabled');
+                        $('.message_err').show();
+                    }
+                });
+            }
+        }
+        if (type == 'switch') {
+            if (workersInAction != '') {
+                var workerName = workersInAction;
+                var nonce = $('#nonce').val();
+                var selectedTemplate = '';
+                if (typeof $('#actions_submenu_switch').find('.selected').data('template') != 'undefined') {
+                    selectedTemplate = $('#actions_submenu_switch').find('.selected').data('template');
+                }
+                var subProfitSwitch = $('#actions_submenu_switch #submenu_profitswitch option:selected').val();
+                var subCpu = $('#actions_submenu_switch #submenu_cpu option:selected').val();
+                $.post(window.location.href, {
+                    switchTo: workerName,
+                    switchTemplate: selectedTemplate,
+                    switchProfit: subProfitSwitch,
+                    switchCpu: subCpu,
+                    nonce: nonce
+                }, function (response) {
+                    if (response == '1') {
+                        $('.circle-loader').addClass('load-complete');
+                        $('.notification_row').addClass('finished');
+                        $('.checkmark').show();
+                        $('.message_suc').show();
+                        deselectAll();
+                    } else {
+                        $('.circle-loader').hide();
+                        $('.notification_row').addClass('finished');
+                        $('#software_restart .outlined_button, #software_restart .blue').removeClass('disabled');
+                        $('.message_err').show();
+                    }
+                });
+            }
+        }
+        if (type == 'relocate') {
+            if (workersInAction != '') {
+                var workerName = workersInAction;
+                var nonce = $('#nonce').val();
+                var userRelocate = $('#submenu_relocate option:selected').val();
+                $.post(window.location.href, {
+                    workerRelocate: workerName,
+                    userRelocate: userRelocate,
+                    nonce: nonce
+                }, function (response) {
+                    if (response == '1') {
+                        $.each(selectedWorkers, function (wName, value) {
+                            $('#workersList > tr[data-name="' + value + '"]').remove();
+                        });
+                        $('.circle-loader').addClass('load-complete');
+                        $('.notification_row').addClass('finished');
+                        $('.checkmark').show();
+                        $('.message_suc').show();
+                        deselectAll();
+                    } else {
+                        $('.circle-loader').hide();
+                        $('.notification_row').addClass('finished');
+                        $('.message_err').show();
+                    }
+                });
+            }
+        }
+        if (type == 'export') {
+            if (workersInAction != '') {
+                var workerName = workersInAction;
+                var nonce = $('#nonce').val();
+                $.post(window.location.href, {workerExport: workerName, nonce: nonce}, function (response) {
+                    if (response != '0') {
+                        var blob = new Blob([response], {type: 'application/octet-stream'});
+                        var today = new Date();
+                        var dd = String(today.getDate()).padStart(2, '0');
+                        var mm = String(today.getMonth() + 1).padStart(2, '0');
+                        var yyyy = today.getFullYear();
+                        today = yyyy + '-' + mm + '-' + dd;
+                        saveAs(blob, "workers-export-" + today + ".ms");
+                    }
+                });
+            }
+        }
+        if (type == 'edit') {
+            var nonce = $('#nonce').val();
+            localStorage.setItem('myWorkes',workersInAction)
+            localStorage.setItem('myType','site')
+            window.location.href="/config#mx";
+            // $.post('/config', {massEdit: workersInAction, nonce: nonce}, function (response) {
+            //     if (response == '1') {
+            //         preloaderShow();
+            //         window.location.replace("/config");
+            //         return false;
+            //     }
+            // });
+        }
+    }
+}
+
+$('#actions_submenu_switch .frame .row').click(function () {
+    $('#actions_submenu_switch .frame .row').removeClass('selected');
+    $(this).addClass('selected');
+});
+var getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)), sURLVariables = sPageURL.split('&'),
+        sParameterName, i;
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+    }
+};
+$('.filter_el').click(function () {
+    $('.filter_popup').toggle();
+    groupsFrame.update();
+    coinsFrame.update();
+    clientsFrame.update();
+});
+$('.filter_popup').on('change', 'input', function () {
+    page = 1;
+    window.location.hash = 1;
+    tag = $(this).data('filter').toString().toLowerCase();
+    var allTags = $('.search_result').html();
+    if (this.checked == false) {
+        allTags = allTags.replace('<div class="result">' + tag + ' <div class="icon close"></div></div>', '');
+        tag = '';
+    } else {
+        if (allTags.indexOf('<div class="result">' + tag + ' <div class="icon close"></div></div>') == -1) {
+            allTags = allTags + '<div class="result">' + tag + ' <div class="icon close"></div></div>';
+        }
+    }
+    $('.search_result').html(allTags);
+    $('.search_result > .result').each(function () {
+        if (tag != '') {
+            tag = tag + ':' + $(this).text().trim();
+        } else {
+            tag = $(this).text().trim();
+        }
+    });
+    $('#checked_rows').hide();
+    $('th').removeClass('hidden');
+    $('#actions_menu').hide();
+    $('table .checkbox').removeClass('selected');
+    checkedNum = 0;
+    selectedWorkers = [];
+    var d = new Date;
+    d.setTime(d.getTime() + 7 * 24 * 60 * 60 * 1000);
+    document.cookie = "workersFilter=" + tag + ";path=/;expires=" + d.toGMTString();
+    workersPage(page, search, tag, sort);
+});
+$(document).mousedown(function (e) {
+    if (!$(".filter_popup").is(e.target) && $(".filter_popup").has(e.target).length === 0 && !$(".filter_el").is(e.target) && !$(".icon.filter").is(e.target)) {
+        $(".filter_popup").hide();
+    }
+    if (!$(".icons_list_hamburger").is(e.target) && !$(".icon_box").is(e.target) && !$(".icon_box .icon").is(e.target) && !$(".switch_menu").find(e.target)) {
+        $(".icons_list").addClass('hide');
+        $(".switch_menu").hide();
+        refreshStop = 0;
+    }
+});
+
+function deselectAll() {
+    $('#checked_rows').hide();
+    $('th').removeClass('hidden');
+    $('#actions_menu').hide();
+    $('table .checkbox').removeClass('selected');
+    checkedNum = 0;
+    $('#count').html(0);
+    selectedWorkers = [];
+}
+
+$('.view_el').on("click", function () {
+    $('.loader_frame').addClass('display');
+    if (viewMode == 0) {
+        $('.view_el .icon').removeClass('view_compact');
+        $('.view_el .icon').addClass('view_extended');
+        $('.view_el').attr("data-tooltip", _('Change to compact view'));
+        viewMode = 1;
+    } else {
+        $('.view_el .icon').removeClass('view_extended');
+        $('.view_el .icon').addClass('view_compact');
+        $('.view_el').attr("data-tooltip", _('Change to extended view'));
+        viewMode = 0;
+    }
+    var d = new Date();
+    d.setTime(d.getTime() + 3600 * 1000 * 24 * 7);
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = "msWorkersView=" + viewMode + ";" + expires + ";path=/";
+    setTimeout(function () {
+        workersRefresh(true);
+    }, 500);
+});
+
+function flarePing(url) {
+    return new Promise(function (resolve, reject) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/" + url.replace(/\./g, '-') + ".lanflare.com:8008?discover=1");
+        xhr.send()
+        const timer = setTimeout(function () {
+            done();
+            xhr.abort();
+        }, 1000);
+
+        function done() {
+            clearTimeout(timer);
+            xhr.removeEventListener('error', error);
+        }
+
+        function error(e) {
+            reject(e);
+            done();
+        }
+
+        xhr.addEventListener('load', function () {
+            resolve(xhr.response + '|' + url);
+            done();
+        });
+        xhr.addEventListener('error', error);
+    });
+}
+
+function flareUp(flare) {
+    var nonce = $('#nonce').val();
+    if (!$('.discover_workers_menu').find("[data-flare='" + flare + "']").find('.button').hasClass('finished')) {
+        $('.discover_workers_menu').find("[data-flare='" + flare + "']").find('.button').addClass('waiting').html('<div class="bullet_1"></div><div class="bullet_2"></div><div class="bullet_3"></div>');
+        $.post(window.location.href, {flareUp: flare, nonce: nonce}, function (response) {
+            setTimeout(function () {
+                if (response == '0') {
+                    $('.discover_workers_menu').find("[data-flare='" + flare + "']").find('.button').removeClass('waiting').addClass('failed').html(_('Failed'));
+                } else if (response == '1') {
+                    $('.discover_workers_menu #start, .discover_workers_menu #error, .discover_workers_menu #finish').hide();
+                    $('.discover_workers_menu #limit').show();
+                } else {
+                    var xhr2 = new XMLHttpRequest();
+                    xhr2.open("GET", response);
+                    xhr2.send();
+                    $('.discover_workers_menu').find("[data-flare='" + flare + "']").find('.button').removeClass('waiting').addClass('finished').html(_('Added'));
+                    workersRefresh(false);
+                }
+            }, 1000);
+        });
+    }
+}
+
+function flareScan() {
+    var flareCount = 0;
+    $('.discover_workers_menu #start, .discover_workers_menu #error, .discover_workers_menu #finish').hide();
+    $('.discover_workers_menu .frame').html('');
+    $('.discover_workers_menu #load').show();
+    var nonce = $('#nonce').val();
+    $.post(window.location.href, {flareCheck: '1', nonce: nonce}, function (response) {
+        if (response == '0') {
+            $('.discover_workers_menu #start, .discover_workers_menu #load, .discover_workers_menu #finish').hide();
+            $('.discover_workers_menu #error').show();
+        } else {
+            flareNet = response.split(";");
+
+            function flareLoop() {
+                if ((flareCount + 1) % 5 === 0) {
+                    timer = 1000;
+                } else {
+                    timer = 100;
+                }
+                setTimeout(function () {
+                    flarePing(flareNet[flareCount]).then(function (reply) {
+                        $('.discover_workers_menu #start, .discover_workers_menu #error, .discover_workers_menu #load').hide();
+                        $('.discover_workers_menu #finish').show();
+                        locdat = reply.split("|");
+                        locdat[0] = reply.split("-")[0];
+                        foundWorker = '<div class="row" data-flare="' + reply + '"><div class="element"><div class="tags"><div class="tag">' + locdat[0] + '</div><div class="tag tag_ip">' + locdat[1] + '</div></div></div><div class="element"><div class="button green" onclick="flareUp(\'' + reply + '\');">Add</div></div></div>';
+                        $('.discover_workers_menu .frame').append(foundWorker);
+                        ps_discovery.update();
+                    });
+                    flareCount++;
+                    if (flareCount < flareNet.length) {
+                        flareLoop();
+                    } else {
+                        setTimeout(function () {
+                            if ($('.discover_workers_menu .frame').html() == '') {
+                                $('.discover_workers_menu #load, .discover_workers_menu #error, .discover_workers_menu #finish').hide();
+                                $('.discover_workers_menu #error').show();
+                            }
+                        }, 3000);
+                    }
+                }, timer);
+            }
+
+            flareLoop();
+        }
+    });
+}
+
+function getFilterTag() {
+    var tagFromCookie = '';
+    var tagCookie = (document.cookie).split(';');
+    $.each(tagCookie, function (tci, tcv) {
+        if (tcv.indexOf('workersFilter') != -1) {
+            tagFromCookie = tcv.split('=')[1];
+        }
+    });
+    if (tagFromCookie != '') {
+        var tagFromCookieArray = tagFromCookie.split(':');
+        var tagFromCookieStr = '';
+        var tagFromCookieJson = {};
+        $.each(tagFromCookieArray, function (tci, tcv) {
+            if (typeof tagFromCookieJson[tcv] == 'undefined' || tagFromCookieJson[tcv] == null) {
+                tagFromCookieJson[tcv] = 1;
+                tagFromCookieStr += '<div class="result">' + tcv + ' <div class="icon close"></div></div>';
+            }
+        });
+        $('.search_result').html(tagFromCookieStr);
+    }
+    return tagFromCookie;
+}
+
+var newWorkerType = '';
+var newWorkerSystem = '';
+var newWorkerASICIP = '';
+var newWorkerASICUsername = '';
+var newWorkerASICPassword = '';
+var newWorkerName = '';
+
+function newWorkerSelectType(workerType, thisEl) {
+    $('.add_new_worker_step .message.red').hide();
+    newWorkerType = workerType;
+    $('.amd_element').removeClass('selected');
+    $('.nvidia_element').removeClass('selected');
+    $('.asic_element').removeClass('selected');
+    $(thisEl).addClass('selected');
+    $('#continueToSystem').removeClass('disabled');
+}
+
+function newWorkerSelectSystem(workerSystem, thisEl) {
+    $('.add_new_worker_step .message.red').hide();
+    newWorkerSystem = workerSystem;
+    $('.msos_element').removeClass('selected');
+    $('.windows_element').removeClass('selected');
+    $(thisEl).addClass('selected');
+    $('#continueToName').removeClass('disabled');
+}
+
+$('#new_worker_system_asic > .row > #ip').keyup(function () {
+    $('#continueToName').removeClass('disabled');
+});
+
+function newWorkerContinue(step, thisEl) {
+    $('.add_new_worker_step .message.red').hide();
+    if (!$(thisEl).hasClass('disabled')) {
+        $('.add_new_worker_step').hide();
+        $('#new_worker_' + step).show();
+        if (step == 'system') {
+            $('.steps .step_2').addClass('selected');
+            if (newWorkerType == 'asic') {
+                $('#new_worker_system_gpu').hide();
+                $('#new_worker_system_asic').show();
+            } else {
+                $('#new_worker_system_asic').hide();
+                $('#new_worker_system_gpu').show();
+            }
+        }
+        if (step == 'name') {
+            if (newWorkerType == 'asic') {
+                newWorkerSystem = $('#new_worker_system_asic > .row > #system_asic').val();
+                newWorkerASICIP = $('#new_worker_system_asic > .row > #ip').val();
+                newWorkerASICUsername = $('#new_worker_system_asic > .row > #sshuser').val();
+                newWorkerASICPassword = $('#new_worker_system_asic > .row > #sshpass').val();
+            }
+            $('.steps .step_3').addClass('selected');
+        }
+    } else {
+        $('.add_new_worker_step .message.red').show();
+    }
+}
+
+function newWorkerBack(step, thisEl) {
+    if ($(thisEl).hasClass('selected')) {
+        $('.add_new_worker_step').hide();
+        $('#new_worker_' + step).show();
+        if (step == 'system') {
+            $('.msos_element').removeClass('selected');
+            $('.windows_element').removeClass('selected');
+            $('.steps .step_3').removeClass('selected');
+            $('#continueToName').addClass('disabled');
+            newWorkerSystem = '';
+            newWorkerName = '';
+        }
+        if (step == 'type') {
+            $('.amd_element').removeClass('selected');
+            $('.nvidia_element').removeClass('selected');
+            $('.asic_element').removeClass('selected');
+            $('.msos_element').removeClass('selected');
+            $('.windows_element').removeClass('selected');
+            $('.steps .step_3').removeClass('selected');
+            $('.steps .step_2').removeClass('selected');
+            $('#continueToSystem').addClass('disabled');
+            $('#continueToName').addClass('disabled');
+            newWorkerType = '';
+            newWorkerSystem = '';
+            newWorkerName = '';
+        }
+    }
+}
+
+$('#button_addfirstworker').on('click', function () {
+    newWorkerName = $('#new_worker_name .row #workerName').val();
+    var $this = $(this);
+    if ($this.hasClass('disabled')) {
+        return false;
+    }
+    $this.addClass('disabled');
+    $('.checkmark').hide();
+    $('.circle-loader').removeClass('load-complete');
+    $('.circle-loader, .message_err, .message_suc').hide();
+    $('.circle-loader').show();
+    var workerName = newWorkerName;
+    var type = newWorkerType;
+    if (type == 'asic') {
+        var system = newWorkerSystem;
+        var asicIp = newWorkerASICIP;
+        var asicSSHuser = newWorkerASICUsername;
+        var asicSSHpass = newWorkerASICPassword;
+    } else {
+        var system = newWorkerSystem;
+        var asicIp = '';
+        var asicSSHuser = '';
+        var asicSSHpass = '';
+    }
+    var tags = '';
+    var nonce = $('#nonce').val();
+    var data = '';
+
+    $.post(window.location.href, {
+        workerName: workerName,
+        sshuser: asicSSHuser,
+        sshpass: asicSSHpass,
+        asicIp: asicIp,
+        type: type,
+        system: system,
+        groups: tags,
+        nonce: nonce
+    }, function (response) {
+        data = response;
+        if (data == '1') {
+            var d = new Date();
+            d.setTime(d.getTime() + 24 * 60 * 60 * 1000 * 365);
+            var expires = "expires=" + d.toLocaleTimeString();
+            document.cookie = "cmode=automaticConfig;" + expires + ";path=/";
+            window.location.replace("/worker/" + workerName);
+        } else {
+            $('.circle-loader').hide();
+            $('.notification_row').addClass('finished');
+            $this.removeClass('disabled');
+            $('.message_err').html(data).show();
+        }
+    });
+});
+
+
+// window.onload=function () {
+//   $.post('/sitequery',function () {
+//
+//   })
+// }
+//新增窗口关闭
+$('.popupbackground').on('click',function () {
+    if(this.style.display!='none'){
+        EditWinClose()
+    }
+})
+function EditWinClose() {
+    $('.popupbackground').fadeOut('fast');
+    $('#siteAdd').hide()
+    $('#siteAdd').attr('data-id','')
+    $('#siteName').val('')
+    $('#siteRemarks').val('')
+}
+//新增site窗口
+function addSiteShow(id,name,remark,key) {
+    if(id!=undefined){
+        $('#siteAdd .title').html(_mx('Edit Site'))
+        $('#siteAdd').attr('data-id',id)
+        $('#siteName').val(name)
+        $('#siteRemarks').val(remark)
+        $('#siteKey').val(key)
+        $('#keyShowDiv').show()
+    }else {
+        $('#siteAdd .title').html(_mx('Add New Site'))
+        $('#siteAdd').attr('data-id','')
+        $('#siteName').val('')
+        $('#siteRemarks').val('')
+        $('#keyShowDiv').hide()
+    }
+    $('.popupbackground').fadeToggle();
+    $('#siteAdd').show()
+}
+//新增场所接口
+function saveSite() {
+    let name=$('#siteName').val()
+    let remark=$('#siteRemarks').val()
+    let id=$('#siteAdd').attr('data-id')
+    if(name.replace(/(^\s*)|(\s*$)/g, "").length===0){
+        $('#myError').html('The name cannot be empty')
+        $('#myError').show()
+        return
+    }else {
+        $('#myError').hide()
+    }
+
+    let obj = {
+        name:name,
+        remark:remark,
+        id:(id==undefined||id=='')?undefined:id
+    }
+    $('#myLoading').show()
+    $.ajax({
+        url:'/site',
+        type:'post',
+        data:obj,
+        success:function (res) {
+            if(res==1){
+                $('#myLoading').addClass('load-complete');
+                $('#myLoading .checkmark').show()
+                let x=setTimeout(function () {
+                    $('#myLoading').removeClass('load-complete');
+                    $('#myLoading').hide();
+                    $('#myLoading .checkmark').hide()
+                    EditWinClose()
+                    $.getJSON('/query?SITE,sitecfg,sitests', function (workersList) {
+                        // loadWorkers(workersList);
+                        jsonWorkers=workersList
+                        // if (workersList != '' && window.sessionStorage) {
+                        //     sessionStorage.setItem(workerToken.toLowerCase() + ".workersList", JSON.stringify(workersList));
+                        //     var newDate = new Date();
+                        //     sessionStorage.setItem("lastUpdate", newDate.getTime());
+                        // }
+                        printWorkers()
+                    });
+                    clearTimeout(x)
+                },2000)
+            }else {
+                $('#myLoading').hide();
+                $('#myError').html('Error')
+                $('#myError').show()
+            }
+        }
+    })
+}
+//删除接口
+function delSite(id){
+    $('.circle-loader').show()
+    $.ajax({
+        url:'/site',
+        type:'post',
+        data:{
+            delete:id
+        },
+        success:function (res) {
+            if(res==1){
+                $('.circle-loader').addClass('load-complete');
+                $('.notification_row').addClass('finished');
+                $('.checkmark').show();
+                let x=setTimeout(function () {
+                    $('.circle-loader').removeClass('load-complete');
+                    $('.notification_row').removeClass('finished');
+                    $('.checkmark').hide();
+                    $('.circle-loader').hide()
+                    $('#worker_delete').hide()
+                    $('.popupbackground').fadeToggle();
+                    $.getJSON('/query?SITE,sitecfg,sitests', function (workersList) {
+                        // loadWorkers(workersList);
+                        jsonWorkers=workersList
+                        // if (workersList != '' && window.sessionStorage) {
+                        //     sessionStorage.setItem(workerToken.toLowerCase() + ".workersList", JSON.stringify(workersList));
+                        //     var newDate = new Date();
+                        //     sessionStorage.setItem("lastUpdate", newDate.getTime());
+                        // }
+                        printWorkers()
+                    });
+                    $('#worker_delete .outlined_button, #worker_delete .red').removeClass('disabled');
+                    clearTimeout(x)
+                },2000)
+            }else {
+                $('#worker_delete .outlined_button, #worker_delete .red').removeClass('disabled');
+                $('.circle-loader').hide();
+                $('.message_err').show();
+            }
+        }
+    })
+}
+
+//同步Key值
+function updateKey() {
+    $('.circle-loader').show()
+    $.ajax({
+        url:'/site',
+        type:'post',
+        data:{
+            update: $('#update_site').attr('data-id')
+        },
+        success:function (res) {
+            if(res==1){
+
+                $('.circle-loader').addClass('load-complete');
+                $('.notification_row').addClass('finished');
+                $('.checkmark').show();
+                let x=setTimeout(function () {
+                    EditWinClose()
+                    $('.circle-loader').removeClass('load-complete');
+                    $('.notification_row').removeClass('finished');
+                    $('.checkmark').hide();
+                    $('.circle-loader').hide()
+                    $('#update_site').hide()
+                    $('.popupbackground').fadeOut();
+                    $.getJSON('/query?SITE,sitecfg,sitests', function (workersList) {
+                        // loadWorkers(workersList);
+                        jsonWorkers=workersList
+                        // if (workersList != '' && window.sessionStorage) {
+                        //     sessionStorage.setItem(workerToken.toLowerCase() + ".workersList", JSON.stringify(workersList));
+                        //     var newDate = new Date();
+                        //     sessionStorage.setItem("lastUpdate", newDate.getTime());
+                        // }
+                        printWorkers()
+                    });
+                    $('#update_site .outlined_button, #update_site .red').removeClass('disabled');
+                    clearTimeout(x)
+                },2000)
+            }else {
+                $('#update_site .outlined_button, #update_site .red').removeClass('disabled');
+                $('.circle-loader').hide();
+                $('.message_err').show();
+            }
+        }
+    })
+}
+//显示同步key值弹窗
+function showUpdateWin(id) {
+    $('#update_site').attr('data-id',id)
+    $('.popupbackground').fadeIn();
+    $('#update_site').show()
+}
+
+//修改窗里面调用
+// function showEditUpdateWin() {
+//     let id= $('#siteAdd').attr('data-id')
+//     showUpdateWin(id)
+// }
+
+function linkConfig(id) {
+    localStorage.setItem('myWorkes',id)
+    localStorage.setItem('myType','site')
+    window.location.href='/config#mx'
+}
+function linkWorkers(name) {
+    localStorage.setItem('linkName',name)
+    window.location.replace('/workers')
+}
+//复制Key键
+function copyKey(text) {
+   const strDom=document.createElement('input')
+    strDom.setAttribute('value',text)
+    document.body.appendChild(strDom)
+    $(strDom).select()
+    document.execCommand('copy')
+    document.body.removeChild(strDom)
+    alert('复制成功')
+}

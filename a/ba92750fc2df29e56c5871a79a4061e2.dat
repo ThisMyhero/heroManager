@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en-US" translate="no">
+<head>
+    <title>Worker config</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preload" href="./css/themes/light/global.css?v=1635430962" as="style"/>
+    <link rel="preload" href="./js/jquery.js" as="script"/>
+    <meta name="robots" content="noindex">
+    <link href="./css/themes/light/global.css" id="css" rel="stylesheet" type="text/css">
+    <link href="./css/themes/dark/global.css" rel="stylesheet" type="text/css">
+    <link href="./css/themes/light/config.css" rel="stylesheet" type="text/css">
+    <link href="./css/themes/dark/config.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<noscript>
+    <iframe src="/www.googletagmanager.com/ns.html?id=GTM-KJ552JD" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe>
+</noscript>
+<header>
+
+</header>
+<div class="page">
+    <div class="menu">
+        <div id="main_menu">
+
+        </div>
+    </div>
+    <script>
+        var options = ["(WORKER)", "(MODE:SINGLE)", "(MODE:DUAL)", "(EMAIL)", "(POOL:98989)", "(POOL:ETC)", "(POOL:ETH)", "(POOL:GGB)", "(POOL:RVN)", "(WALLET:ETH)"];
+        var optionsValues = '{"(POOL:98989)":"psaoaso.545:6565","(POOL:ETC)":"eu1-etc.ethermine.org:14444","(POOL:ETH)":"eu1.ethermine.org:14444","(POOL:GGB)":"eu1-etc.ethermine.org:14444","(POOL:RVN)":"stratum-ravencoin.flypool.org:13333","(WALLET:ETH)":"0x72a3c52c692f2b200be6d78a585bb557f688ed9d"}';
+    </script>
+    <div class="content config">
+        <div class="title_row">
+            <div class="title_left">
+                <div class="title_navigation">
+                    <a href="/workers" title="All workers" lang-data-ht="Workers">Workers</a>
+                    &rsaquo;
+                    <h1  lang-data-ht="Config">Config</h1>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="col_3_4">
+                <div class="box">
+                    <div class="row">
+                        <div class="client">
+                            <label lang-data-ht2="Workers">Workers</label>
+                            <p class="sub" lang-data-ht="Add an individual worker or groups">Add an individual worker or groups</p>
+                        </div>
+                        <div class="edit_box">
+                            <div class="select_target">
+                                <input type="text" placeholder=""/>
+                            </div>
+                            <div class="temp_row">
+                                <div id="select_target_menu">
+                                    <div class="frame">
+                                        <input type="text" id="searchMenu" style="width: 99%"/>
+                                        <div class="divider"></div>
+                                        <div class="row first">
+                                            <div class="title" lang-data-ht="Site">Site</div>
+                                            <div class="action" onclick="selectAll('target_site');" lang-data-ht="Select all">Select all</div>
+                                        </div>
+                                        <div id="target_site">
+
+                                        </div>
+<!--                                        <div class="divider"></div>-->
+<!--                                        <div class="row first">-->
+<!--                                            <div class="title">Groups</div>-->
+<!--                                            <div class="action" onclick="selectAll('target_groups');">Select all</div>-->
+<!--                                        </div>-->
+<!--                                        <div id="target_groups">-->
+<!--                                            <div class="row" data-target="NVIDIA" data-group="yes">-->
+<!--                                                <div class="checkbox"></div>-->
+<!--                                                <label>NVIDIA (1)</label>-->
+<!--                                            </div>-->
+<!--                                            <div class="row" data-target="WINDOWS" data-group="yes">-->
+<!--                                                <div class="checkbox"></div>-->
+<!--                                                <label>WINDOWS (2)</label>-->
+<!--                                            </div>-->
+<!--                                            <div class="row" data-target="TESTGROUP" data-group="yes">-->
+<!--                                                <div class="checkbox"></div>-->
+<!--                                                <label>TESTGROUP (2)</label>-->
+<!--                                            </div>-->
+<!--                                            <div class="row" data-target="AMD" data-group="yes">-->
+<!--                                                <div class="checkbox"></div>-->
+<!--                                                <label>AMD (1)</label>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+                                        <div class="divider"></div>
+                                        <div class="row first">
+                                            <div class="title" lang-data-ht2="Workers">Workers</div>
+                                            <div class="action" onclick="selectAll('target_workers');" lang-data-ht="Select all">Select all</div>
+                                        </div>
+                                        <div id="target_workers">
+                                            <div class="row" data-target="home" data-group="no">
+                                                <div class="checkbox"></div>
+                                                <label>home</label>
+                                            </div>
+                                            <div class="row" data-target="WORKER001" data-group="no">
+                                                <div class="checkbox"></div>
+                                                <label>WORKER001</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="button green" lang-data-ht="Confirm">Confirm</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col_1_4">
+                <h2 lang-data-ht="Target">Target</h2>
+                <p lang-data-ht="You can select a worker or a group that you want to apply changes to.  Applying changes to a group will only update individual workers inside that group.">You can select a worker or a group that you want to apply changes to. Applying changes to a group
+                    will only update individual workers inside that group.</p>
+            </div>
+        </div>
+        <div id="configContent">
+            <div class="container">
+                <div class="col_3_4">
+                    <div class="box">
+                        <div class="row selectable" >
+                            <div class="client">
+                                <label lang-data-ht="Worker Config profile">Worker Config profile</label>
+                                <p class="sub" lang-data-ht="Select Config profile for selected worker(s)">Select Config profile for selected worker(s)</p>
+                            </div>
+                            <div class="edit_box" style="display: flex">
+                                <select id="workerList">
+
+
+                                </select>
+                                <div style="margin-left: 10px" lang-data-ti="Edit" data-tooltip="edit" class="my_config_icon_edit"></div>
+                            </div>
+                        </div>
+                        <div class="row selectable">
+                            <div class="client">
+                                <label lang-data-ht="Setting profile">Setting profile</label>
+                                <p class="sub" lang-data-ht="Select Setting profile for selected worker(s)">Select Setting profile for selected worker(s)</p>
+                            </div>
+                            <div class="edit_box" style="display: flex">
+                                <select id="settingList">
+                                    <option selected="selected" value="">No profile</option>
+
+                                </select>
+                                <div style="margin-left: 10px" lang-data-ti="Edit" data-tooltip="edit" class="my_config_icon_edit"></div>
+                            </div>
+                        </div>
+                        <div class="row selectable">
+                            <div class="client">
+                                <label lang-data-ht="Overclock profile">Overclock profile</label>
+                                <p class="sub" lang-data-ht="Select OC profile for selected worker(s)">Select OC profile for selected worker(s)</p>
+                            </div>
+                            <div class="edit_box" style="display: flex">
+                                <select id="overclockList">
+                                    <option selected="selected" value="">No profile</option>
+
+                                </select>
+                                <div style="margin-left: 10px" lang-data-ti="Edit" data-tooltip="edit" class="my_config_icon_edit"></div>
+                            </div>
+                        </div>
+                        <div class="row selectable">
+                            <div class="client">
+                                <label lang-data-ht="Auto profile">Auto profile</label>
+                                <p class="sub" lang-data-ht="Select Auto profile for selected worker(s)">Select Auto profile for selected worker(s)</p>
+                            </div>
+                            <div class="edit_box" style="display: flex">
+                                <select id="autoList">
+                                    <option selected="selected" value="">No profile</option>
+
+                                </select>
+                                <div style="margin-left: 10px" lang-data-ti="Edit" data-tooltip="edit" class="my_config_icon_edit"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col_1_4">
+                    <h2 lang-data-ht="notice"></h2>
+                    <p lang-data-ht="You can configure the function, overclocking and triggert templates of the workers here."></p>
+                </div>
+            </div>
+
+            <div id="saveContainer" class="container floating">
+                <div class="floating_shadow"></div>
+                <div class="col_3_4">
+                    <div class="action_row buttons">
+                        <div class="circle-loader">
+                            <div class="checkmark draw"></div>
+                        </div>
+                        <div class="message_suc">Finished</div>
+                        <div class="message_err">Error</div>
+                        <a onclick="skipSaving();" href="/config" class="button_empty" lang-data-ht="Reset">Reset</a>
+                        <div class="button green" lang-data-ht="Save changes">Save changes</div>
+                    </div>
+                </div>
+                <div class="col_1_4"></div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" value="271ab0270bbf45b35d4e6bbde5e85e8e2193112e4e33501c36b5e998a72ec94f" id="nonce"/>
+    <div class="popupbackground_empty"></div>
+    <div class="popupbackground close_popup"></div>
+    <div class="popup" id="click_away">
+        <div class="close"></div>
+        <div class="title">Confirmation</div>
+        <div class="text">You have unsaved changes. Are you sure you want to leave this page?</div>
+        <div class="action_row">
+            <div class="outlined_button gray close_popup">No, stay on this page</div>
+            <div class="button red">Yes, leave this page</div>
+        </div>
+    </div>
+    <script>
+        var selectedMiningClient = '';
+        var selectedMiningClientCPU = '';
+        var workerSystem = '';
+        var workerType = '';
+        var workerLink = '';
+    </script>
+</div>
+
+<script>
+    var currency = "CNY";
+    var currencyValue = 6.405705;
+    var temperature = "°C";
+    var userPermission = "owner";
+    var userPrimaryPermission = "";
+
+    [
+        "./js/jquery.js", "./js/gettext.js", "./js/perfect-scrollbar.js",'./js/language.js', "./js/templates/global.js", "./js/templates/config.js"
+    ].forEach(function (src) {
+        var script = document.createElement("script");
+        script.src = src;
+        script.async = false;
+        document.head.appendChild(script);
+    });
+</script>
+</body>
+</html>

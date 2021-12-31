@@ -1,0 +1,383 @@
+
+var containerFixed = 1;
+var psx = [];
+var fx = 0;
+
+
+$(document).scroll(function () {
+    if ($(window).scrollTop() < ($(document).height() - $(window).height() - 180)) {
+        if (containerFixed == 0) {
+            $('.scroll_up').fadeIn('fast');
+            $('.scroll_down').fadeIn('fast');
+            $('#saveContainer').hide();
+            $('#saveContainer').addClass('floating');
+            $('#saveContainer').fadeIn();
+            $('#saveContainer > .floating_shadow').show();
+            containerFixed = 1;
+        }
+    } else {
+        if (containerFixed == 1) {
+            $('.scroll_up').fadeOut('fast');
+            $('.scroll_down').fadeOut('fast');
+            $('#saveContainer').hide();
+            $('#saveContainer').removeClass('floating');
+            $('#saveContainer').show();
+            $('#saveContainer > .floating_shadow').hide();
+            containerFixed = 0;
+        }
+    }
+});
+window.onload=function(){
+    if(getQueryVariable('s')=='edit'||getQueryVariable('s')=='copy'){
+        getInfoItem()
+    }
+}
+
+
+$('.mytoggle').on('click',function () {
+    let mythis=$(this).find('.bullet')[0]
+    if($(mythis).attr('data-dis')=='0'){
+        return
+    }
+    if($(mythis).hasClass('selected')){
+        $(mythis).removeClass('selected')
+    }else {
+        $(mythis).addClass('selected')
+    }
+    if($(mythis).attr('data-via')=='no_shutdown'){
+        if($(mythis).hasClass('selected')){
+            // $('#hide_wk').removeClass('disabled')
+            $('#hide_Win7').removeClass('disabled')
+            $('#hide_Win10').removeClass('disabled')
+            // $('#hide_wk .bullet').attr('data-dis','1')
+            $('#hide_Win7 .bullet').attr('data-dis','1')
+            $('#hide_Win10 .bullet').attr('data-dis','1')
+        }else {
+            // $('#hide_wk').addClass('disabled')
+            $('#hide_Win7').addClass('disabled')
+            $('#hide_Win10').addClass('disabled')
+            // $('#hide_wk .bullet').attr('data-dis','0')
+            $('#hide_Win7 .bullet').attr('data-dis','0')
+            $('#hide_Win10 .bullet').attr('data-dis','0')
+            // $('#hide_wk .bullet').removeClass('selected')
+            $('#hide_Win7 .bullet').removeClass('selected')
+            $('#hide_Win10 .bullet').removeClass('selected')
+        }
+    }
+
+    if($(mythis).attr('data-via')=='HideIP'){
+        if($(mythis).hasClass('selected')&&!$('#poolAccelerate').hasClass('selected')){
+            $('#poolAccelerate .bullet').addClass('selected')
+        }
+    }
+})
+
+//获取数据
+function getHtmlData(e){
+    if($(e).hasClass('display')){
+        return false
+    }
+    let fileName=$('#fileName').val()
+    if(fileName.replace(/(^\s*)|(\s*$)/g, "").length===0){
+        $('#fileName').css('border-color','#ff7a6c')
+        return false
+    }else {
+        $('#fileName').css('border-color','rgba(255,255,255,0.15)')
+        $('#errInfo').hide()
+    }
+    let obj={}
+    let listSlidingBlock=$('[data-via]')
+    //时间对象
+    let dateList=[]
+
+    $.each(listSlidingBlock,function (i,it) {
+            obj[$(it).attr('data-via')]=$(it).hasClass('selected')?'1':'0'
+    })
+    $.each($('.my_in_time'),function (i,it) {
+        let obj={}
+        if($(it).find('.myTimeInput')[0].innerHTML.indexOf('--')==-1&&$(it).find('.myTimeInput')[1].innerHTML.indexOf('--')==-1){
+            obj['s']=$(it).find('.myTimeInput')[0].innerText.replace(/\n/g,'')
+            obj['e']=$(it).find('.myTimeInput')[1].innerText.replace(/\n/g,'')
+            dateList.push(obj)
+        }
+    })
+    obj['OffTime']=$('#OffTime input').val()
+    obj['restartTime']=$('#restartTime input').val()
+    obj['electricity_costs']=$('#electricity_costs input').val()
+    obj['power_consumption']=$('#power_consumption input').val()
+    obj['deduction_fee']=$('#deduction_fee input').val()
+    obj['hot_value']=$('#hot_value input').val()
+    obj['stopAlerts']=$('#stopAlerts select').val()
+    obj['stopTriggers']=$('#stopTriggers select').val()
+    obj['very_hot_value']=$('#very_hot_value input').val()
+    obj['fileName']=fileName
+    obj['dateList']=dateList
+    $(e).addClass('display')
+    let dataObj={
+        name:fileName,
+        config:JSON.stringify(obj),
+        id:getQueryVariable('s')=='edit'?getQueryVariable('id'):undefined
+    }
+    let type = getQueryVariable('s')=='edit'?'set':'add'
+    setAdd(dataObj,e,type)
+}
+
+//数据回填
+function setAdd(data,e,type) {
+    $('.circle-loader').show()
+
+    $.ajax({
+        url:'/WorkerConfig?a='+type,
+        data:data,
+        type:'post',
+        success:function (res) {
+            if(!Number(res.code)){
+                $('.checkmark,.message_suc').show()
+                $('.circle-loader').addClass('load-complete')
+                setTimeout(function () {
+                    $('.circle-loader').removeClass('load-complete')
+                    $('.circle-loader').hide()
+                    $('.checkmark,.message_suc').hide()
+                    $(e).removeClass('display')
+                    window.location.replace('/site-config-templates')
+                },1000)
+            }else {
+                $('.message_err').show()
+                $('.circle-loader').hide()
+                $(e).removeClass('display')
+            }
+        }
+    })
+}
+
+function getInfoItem() {
+    $.ajax({
+        url:'/WorkerConfig?a=get',
+        dataType:'json',
+        data:{
+            id:getQueryVariable('id')
+        },
+        type:'get',
+        success:function (res) {
+            setDomData(res)
+        },
+        error:function (res) {
+
+        }
+    })
+}
+function setDomData(data) {
+
+    $('#OffTime input').val(data['OffTime'])
+    $('#restartTime input').val(data['restartTime'])
+    $('#electricity_costs input').val(data['electricity_costs'])
+    $('#power_consumption input').val(data['power_consumption'])
+    $('#deduction_fee input').val(data['deduction_fee'])
+    $('#hot_value input').val(data['hot_value'])
+    $('#very_hot_value input').val(data['very_hot_value'])
+    $('#stopAlerts select').val(data['stopAlerts'])
+    $('#stopTriggers select').val(data['stopTriggers'])
+    $('#fileName').val(data['fileName'])
+
+    let listSlidingBlock=$('[data-via]')
+    $.each(listSlidingBlock,function (i,it) {
+        if(data[$(it).attr('data-via')]=='1'){
+            $(it).addClass('selected')
+        }
+    })
+
+    if(data['no_shutdown']=='0'){
+        // $('#hide_wk').addClass('disabled')
+        $('#hide_Win7').addClass('disabled')
+        $('#hide_Win10').addClass('disabled')
+        // $('#hide_wk .bullet').attr('data-dis','0')
+        $('#hide_Win7 .bullet').attr('data-dis','0')
+        $('#hide_Win10 .bullet').attr('data-dis','0')
+        // $('#hide_wk .bullet').removeClass('selected')
+        $('#hide_Win7 .bullet').removeClass('selected')
+        $('#hide_Win10 .bullet').removeClass('selected')
+    }else {
+        // $('#hide_wk').removeClass('disabled')
+        $('#hide_Win7').removeClass('disabled')
+        $('#hide_Win10').removeClass('disabled')
+        // $('#hide_wk .bullet').attr('data-dis','1')
+        $('#hide_Win7 .bullet').attr('data-dis','1')
+        $('#hide_Win10 .bullet').attr('data-dis','1')
+    }
+    let dateStr=''
+    $.each(data['dateList'],function (i,it) {
+        if(i==0){
+            dateStr+='<div class="my_in_time" style="display: flex;margin-top: 20px">\n' +
+                '                                        <div style="display: flex;align-items: center;margin-left: 10px">\n' +
+                '                                            <div style="margin-left: 10px">'+_mx2('Start：')+'</div>\n' +
+                '                                            <div class="input_time_wk">\n' +
+                '                                                <div class="myTimeInput"><div class="xs_t">'+it.s.split(':')[0]+'</div> : <div class="fz_t">'+it.s.split(':')[1]+'</div></div>\n' +
+                '                                                <div class="timeLabel" style="display:none">\n' +
+                '                                                    <ul class="my_h_ul ps"><li>00</li><li>01</li><li>02</li><li>03</li><li>04</li><li>05</li><li>06</li><li>07</li><li>08</li><li>09</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></ul>\n' +
+                '                                                    <ul class="my_m_ul ps"><li>00</li><li>01</li><li>02</li><li>03</li><li>04</li><li>05</li><li>06</li><li>07</li><li>08</li><li>09</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><li>24</li><li>25</li><li>26</li><li>27</li><li>28</li><li>29</li><li>30</li><li>31</li><li>32</li><li>33</li><li>34</li><li>35</li><li>36</li><li>37</li><li>38</li><li>39</li><li>40</li><li>41</li><li>42</li><li>43</li><li>44</li><li>45</li><li>46</li><li>47</li><li>48</li><li>49</li><li>50</li><li>51</li><li>52</li><li>53</li><li>54</li><li>55</li><li>56</li><li>57</li><li>58</li><li>59</li><div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></ul>\n' +
+                '                                                </div>\n' +
+                '                                            </div>\n' +
+                '                                        </div>\n' +
+                '                                        <div style="display: flex;align-items: center;margin-left: 10px">\n' +
+                '                                            <div style="margin-left: 10px">'+_mx("End：")+'</div>\n' +
+                '                                            <div class="input_time_wk">\n' +
+                '                                                <div class="myTimeInput"><div class="xs_t">'+it.e.split(':')[0]+'</div> : <div class="fz_t">'+it.e.split(':')[1]+'</div></div>\n' +
+                '                                                <div class="timeLabel" style="display: none;">\n' +
+                '                                                    <ul class="my_h_ul ps"><li>00</li><li>01</li><li>02</li><li>03</li><li>04</li><li>05</li><li>06</li><li>07</li><li>08</li><li>09</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></ul>\n' +
+                '                                                    <ul class="my_m_ul ps"><li>00</li><li>01</li><li>02</li><li>03</li><li>04</li><li>05</li><li>06</li><li>07</li><li>08</li><li>09</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><li>24</li><li>25</li><li>26</li><li>27</li><li>28</li><li>29</li><li>30</li><li>31</li><li>32</li><li>33</li><li>34</li><li>35</li><li>36</li><li>37</li><li>38</li><li>39</li><li>40</li><li>41</li><li>42</li><li>43</li><li>44</li><li>45</li><li>46</li><li>47</li><li>48</li><li>49</li><li>50</li><li>51</li><li>52</li><li>53</li><li>54</li><li>55</li><li>56</li><li>57</li><li>58</li><li>59</li><div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></ul>\n' +
+                '                                                </div>'+
+                '                                            </div>\n' +
+                '                                        </div>\n' +
+                '                                        <div class="icon jia" onclick="addTimeLabel()"></div>\n' +
+                '                                    </div>'
+        }else {
+            dateStr+='<div class="my_in_time" style="display: flex;margin-top: 20px">\n' +
+                '                                        <div style="display: flex;align-items: center;margin-left: 10px">\n' +
+                '                                            <div style="margin-left: 10px">'+_mx2('Start：')+'</div>\n' +
+                '                                            <div class="input_time_wk">\n' +
+                '                                                <div class="myTimeInput"><div class="xs_t">'+it.s.split(':')[0]+'</div> : <div class="fz_t">'+it.s.split(':')[1]+'</div></div>\n' +
+                '                                                <div class="timeLabel" style="display: none;">\n' +
+                '                                                    <ul class="my_h_ul ps"><li>00</li><li>01</li><li>02</li><li>03</li><li>04</li><li>05</li><li>06</li><li>07</li><li>08</li><li>09</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></ul>\n' +
+                '                                                    <ul class="my_m_ul ps"><li>00</li><li>01</li><li>02</li><li>03</li><li>04</li><li>05</li><li>06</li><li>07</li><li>08</li><li>09</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><li>24</li><li>25</li><li>26</li><li>27</li><li>28</li><li>29</li><li>30</li><li>31</li><li>32</li><li>33</li><li>34</li><li>35</li><li>36</li><li>37</li><li>38</li><li>39</li><li>40</li><li>41</li><li>42</li><li>43</li><li>44</li><li>45</li><li>46</li><li>47</li><li>48</li><li>49</li><li>50</li><li>51</li><li>52</li><li>53</li><li>54</li><li>55</li><li>56</li><li>57</li><li>58</li><li>59</li><div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></ul>\n' +
+                '                                                </div>'+
+                '                                            </div>\n' +
+                '                                        </div>\n' +
+                '                                        <div style="display: flex;align-items: center;margin-left: 10px">\n' +
+                '                                            <div style="margin-left: 10px">'+_mx('End：')+'</div>\n' +
+                '                                            <div class="input_time_wk">\n' +
+                '                                                <div class="myTimeInput"><div class="xs_t">'+it.e.split(':')[0]+'</div> : <div class="fz_t">'+it.e.split(':')[1]+'</div></div>\n' +
+                '<div class="timeLabel" style="display: none;">\n' +
+                '                                                    <ul class="my_h_ul ps"><li>00</li><li>01</li><li>02</li><li>03</li><li>04</li><li>05</li><li>06</li><li>07</li><li>08</li><li>09</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></ul>\n' +
+                '                                                    <ul class="my_m_ul ps"><li>00</li><li>01</li><li>02</li><li>03</li><li>04</li><li>05</li><li>06</li><li>07</li><li>08</li><li>09</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><li>24</li><li>25</li><li>26</li><li>27</li><li>28</li><li>29</li><li>30</li><li>31</li><li>32</li><li>33</li><li>34</li><li>35</li><li>36</li><li>37</li><li>38</li><li>39</li><li>40</li><li>41</li><li>42</li><li>43</li><li>44</li><li>45</li><li>46</li><li>47</li><li>48</li><li>49</li><li>50</li><li>51</li><li>52</li><li>53</li><li>54</li><li>55</li><li>56</li><li>57</li><li>58</li><li>59</li><div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></ul>\n' +
+                '                                                </div>'+
+                '                                            </div>\n' +
+                '                                        </div>\n' +
+                '                                        <div class="icon jia" onclick="addTimeLabel()"></div>\n' +
+                '                                        <div class="icon chax" onclick="delTimeLable(this)"></div>\n' +
+                '                                    </div>'
+        }
+        $('#time_list_label').html(dateStr)
+        setLiClick()
+
+    })
+}
+
+function ResetWin() {
+ window.location.reload()
+}
+//获取Url参数
+function getQueryVariable(variable)
+{
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i=0;i<vars.length;i++) {
+        var pair = vars[i].split("=");
+        if(pair[0] == variable){return pair[1];}
+    }
+    return(false);
+}
+
+//设置下拉选项
+function setTimeLabel() {
+    let hStr=''
+    let mStr=''
+   for(i=0;i<=23;i++){
+       if(i<10){
+           hStr+='<li>0'+i+'</li>'
+       }else {
+           hStr+='<li>'+i+'</li>'
+       }
+
+   }
+   for(i=0;i<=59;i++){
+       if(i<10){
+           mStr+='<li>0'+i+'</li>'
+       }else {
+           mStr+='<li>'+i+'</li>'
+       }
+   }
+  let h_time=document.getElementsByClassName('my_h_ul')
+   $.each(h_time,function (i,it) {
+        $(it).html(hStr)
+   })
+    let m_time=document.getElementsByClassName('my_m_ul')
+   $.each(m_time,function (i,it) {
+        $(it).html(mStr)
+   })
+}
+
+
+//设置事件
+function setLiClick(){
+    $('.myTimeInput').unbind("click");
+    $('.my_h_ul li').unbind("click");
+    $('.my_m_ul li').unbind("click");
+    $('.myTimeInput').on('click',function () {
+        if($(this).parent().find('.timeLabel').is(':visible')){
+            $(this).parent().find('.timeLabel').hide()
+            $(this).removeClass('myTimeInputSelected')
+        }else {
+            $(this).parent().find('.timeLabel').hide().show()
+            $(this).addClass('myTimeInputSelected')
+        }
+    })
+
+    $('.my_h_ul li').on('click',function () {
+        $(this).parent().parent().parent().find('.xs_t').html($(this).text())
+    })
+
+    $('.my_m_ul li').on('click',function () {
+        $(this).parent().parent().parent().find('.fz_t').html($(this).text())
+    })
+
+    $('.my_h_ul,.my_m_ul').each(function () {
+        psx[fx] = new PerfectScrollbar($(this)[0], {
+            wheelSpeed: 0.1,
+            wheelPropagation: true,
+            minScrollbarLength: 20,
+            suppressScrollX: true
+        });
+        fx++;
+    });
+}
+
+$(document).click(function (e) {
+    let mx=e.target
+    if(!$(mx).is(".input_time_wk *")&&!$(mx).is('.input_time_wk *')){
+        $('.timeLabel').hide()
+        $('.myTimeInput').removeClass('myTimeInputSelected')
+    }
+})
+setTimeLabel()
+setLiClick()
+function addTimeLabel(){
+    let str='<div class="my_in_time" style="display: flex;margin-top: 20px">\n' +
+        '                                        <div style="display: flex;align-items: center;margin-left: 10px">\n' +
+        '                                            <div style="margin-left: 10px">'+_mx2('Start：')+'</div>\n' +
+        '                                            <div class="input_time_wk">\n' +
+        '                                                <div class="myTimeInput"><div class="xs_t">--</div> : <div class="fz_t">--</div></div>\n' +
+        '<div class="timeLabel" style="display: none;">\n' +
+        '                                                    <ul class="my_h_ul ps"><li>00</li><li>02</li><li>03</li><li>04</li><li>05</li><li>06</li><li>07</li><li>08</li><li>09</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></ul>\n' +
+        '                                                    <ul class="my_m_ul ps"><li>00</li><li>01</li><li>02</li><li>03</li><li>04</li><li>05</li><li>06</li><li>07</li><li>08</li><li>09</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><li>24</li><li>25</li><li>26</li><li>27</li><li>28</li><li>29</li><li>30</li><li>31</li><li>32</li><li>33</li><li>34</li><li>35</li><li>36</li><li>37</li><li>38</li><li>39</li><li>40</li><li>41</li><li>42</li><li>43</li><li>44</li><li>45</li><li>46</li><li>47</li><li>48</li><li>49</li><li>50</li><li>51</li><li>52</li><li>53</li><li>54</li><li>55</li><li>56</li><li>57</li><li>58</li><li>59</li><div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></ul>\n' +
+        '                                                </div>'+
+        '                                            </div>\n' +
+        '                                        </div>\n' +
+        '                                        <div style="display: flex;align-items: center;margin-left: 10px">\n' +
+        '                                            <div style="margin-left: 10px">'+_mx('End：')+'</div>\n' +
+        '                                            <div class="input_time_wk">\n' +
+        '                                                <div class="myTimeInput"><div class="xs_t">--</div> : <div class="fz_t">--</div></div>\n' +
+        '<div class="timeLabel" style="display: none;">\n' +
+        '                                                    <ul class="my_h_ul ps"><li>00</li><li>01</li><li>02</li><li>03</li><li>04</li><li>05</li><li>06</li><li>07</li><li>08</li><li>09</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></ul>\n' +
+        '                                                    <ul class="my_m_ul ps"><li>00</li><li>01</li><li>02</li><li>03</li><li>04</li><li>05</li><li>06</li><li>07</li><li>08</li><li>09</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><li>24</li><li>25</li><li>26</li><li>27</li><li>28</li><li>29</li><li>30</li><li>31</li><li>32</li><li>33</li><li>34</li><li>35</li><li>36</li><li>37</li><li>38</li><li>39</li><li>40</li><li>41</li><li>42</li><li>43</li><li>44</li><li>45</li><li>46</li><li>47</li><li>48</li><li>49</li><li>50</li><li>51</li><li>52</li><li>53</li><li>54</li><li>55</li><li>56</li><li>57</li><li>58</li><li>59</li><div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></ul>\n' +
+        '                                                </div>'+
+        '                                            </div>\n' +
+        '                                        </div>\n' +
+        '                                        <div class="icon jia" onclick="addTimeLabel()"></div>\n' +
+        '                                        <div class="icon chax" onclick="delTimeLable(this)"></div>\n' +
+        '                                    </div>'
+    $('#time_list_label').append(str)
+    setLiClick()
+}
+function delTimeLable(e) {
+    $(e).parent()[0].remove()
+}

@@ -1,0 +1,1065 @@
+.content.config .checkbox {
+    border-color: rgba(255, 255, 255, .1);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, .1)
+}
+
+.content.config .container {
+    border-color: rgba(255, 255, 255, .05)
+}
+
+.content.config .container .divider {
+    border-color: rgba(255, 255, 255, .05)
+}
+
+.content.config .container .box .row {
+    border-color: rgba(255, 255, 255, .05)
+}
+
+.content.config .container .box .row .client label {
+    color: #fff
+}
+
+.content.config .container .box .row .client p.sub {
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.config .container .box .row .client p.params {
+    border-color: rgba(255, 255, 255, .1)
+}
+
+.content.config .container .box .row .client .hw .tag {
+    background: rgba(255, 255, 255, .1)
+}
+
+.content.config .container .box .row .client .hw .text {
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.config .container .box .row .client .algos .text {
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.config .container .box .row .client .algos .tag {
+    background: rgba(255, 255, 255, .05);
+    color: rgba(255, 255, 255, .3)
+}
+
+.content.config .container .box .row .edit_box select option.unsupported {
+    color: rgba(255, 255, 255, .2)
+}
+
+.content.config .container .box .row .edit_box .select_target {
+    border-color: rgba(255, 255, 255, .05);
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.config .container .box .row .edit_box .select_target input[type=text]::-webkit-input-placeholder {
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.config .container .box .row .edit_box .select_target input[type=text]:-moz-placeholder {
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.config .container .box .row .edit_box .select_target input[type=text]::-moz-placeholder {
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.config .container .box .row .edit_box .select_target input[type=text]:-ms-input-placeholder {
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.config .container .box .row .edit_box .select_target .tag {
+    background: rgba(255, 255, 255, .05);
+    color: #fff
+}
+
+.content.config .container .box .row .edit_box .select_target .tag:hover {
+    background: rgba(255, 255, 255, .1);
+    color: #fff
+}
+
+.content.config .container .box .row .edit_box .select_target .tag .icon.close {
+    background-image: url(/images/sprite_icons_button_dark.svg?v=2)
+}
+
+.content.config .container .box .row .edit_box #select_target_menu {
+    background: #434c61;
+    box-shadow: 0 5px 80px rgba(0, 0, 0, .3)
+}
+
+.content.config .container .box .row .edit_box #select_target_menu .frame .row:hover {
+    background: rgba(255, 255, 255, .05)
+}
+
+.content.config .container .box .row .edit_box #select_target_menu .frame .row.first:hover {
+    background: transparent
+}
+
+.content.config .container .box .row .edit_box #select_target_menu .frame::-webkit-scrollbar-track {
+    background-color: rgba(255, 255, 255, .05)
+}
+
+.content.config .container .box .row .edit_box #select_target_menu .frame::-webkit-scrollbar {
+    background-color: rgba(255, 255, 255, .05)
+}
+
+.content.config .container .box .row .edit_box #select_target_menu .frame::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, .6)
+}
+
+.content.config .container .box .row .edit_box #select_target_menu .frame .row .checkbox {
+    border-color: rgba(255, 255, 255, .1);
+    background: 0 0
+}
+
+.content.config .container .box .row .edit_box #select_target_menu .frame .row .checkbox.selected {
+    background: transparent url(/images/tick_green.svg) no-repeat -4px -3px
+}
+
+.content.config .container .box .row .edit_box #select_target_menu .frame .row label {
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.config .container .box .row .edit_box #select_target_menu .frame .title {
+    color: #fff
+}
+
+.content.config .container .box .row .edit_box #select_target_menu .frame .action {
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.config .container .box .row .edit_box #tags {
+    border-color: rgba(255, 255, 255, .05)
+}
+
+.content.config .container .box .row .edit_box #tags input[type=text]::-webkit-input-placeholder {
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.config .container .box .row .edit_box #tags input[type=text]:-moz-placeholder {
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.config .container .box .row .edit_box #tags input[type=text]::-moz-placeholder {
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.config .container .box .row .edit_box #tags input[type=text]:-ms-input-placeholder {
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.config .container .box .row .edit_box #tags .tag {
+    background: rgba(255, 255, 255, .05);
+    color: #fff
+}
+
+.content.config .container .box .row .edit_box #tags .tag:hover {
+    background: rgba(255, 255, 255, .1);
+    color: #fff
+}
+
+.content.config .container .box .row .edit_box #tags .tag .icon.close {
+    background-image: url(/images/sprite_icons_button_dark.svg?v=2)
+}
+
+.content.config .container .box .row .edit_box .textarea {
+    border-color: rgba(255, 255, 255, .1);
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.config .container .box .row .edit_box .textarea:focus {
+    border-color: #52cca5;
+    box-shadow: 0 0 0 1px #52cca5
+}
+
+.content.config .container .box .row .edit_box textarea {
+    border-color: rgba(255, 255, 255, .1);
+    color: rgba(255, 255, 255, .6);
+    background: 0 0
+}
+
+.content.config .container .box .row .edit_box textarea:focus {
+    border-color: #52cca5;
+    box-shadow: 0 0 0 1px #52cca5
+}
+
+.content.config .container .box .row .edit_box .textarea mark.tag {
+    background: #6574ff
+}
+
+.content.config .container .box .row .edit_box .reset_row {
+    color: rgba(255, 255, 255, .3)
+}
+
+.content.config .container .box .row .edit_box .reset_button {
+    color: rgba(255, 255, 255, .3)
+}
+
+.content.config .container .box .row .edit_box .reset_button .reset_menu {
+    background: #434c61;
+    box-shadow: 0 5px 80px rgba(0, 0, 0, .3);
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.config .container .box .row .edit_box .reset_button .reset_menu .reset_list .template {
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.config .container .box .row .edit_box .reset_button .reset_menu .reset_list .template:hover {
+    background: rgba(255, 255, 255, .05)
+}
+
+.content.config .container .box .row .edit_box .reset_button .reset_menu .reset_list .search_el {
+    background: rgba(255, 255, 255, .05);
+    border-bottom: 0
+}
+
+.content.config .container .box .row .edit_box .reset_button .reset_menu .reset_list .search_el .icon.search {
+    background-image: url(/images/sprite_icons_button_dark.svg?v=22)
+}
+
+.content.config .container .box .row .edit_box .select_button .selected_option {
+    border-color: rgba(255, 255, 255, .1);
+    background-image: url(/images/arrow_down_dark.svg)
+}
+
+.content.config .container .box .row .edit_box .select_button .selected_option b {
+    color: #fff
+}
+
+.content.config .container .box .row .edit_box .select_button .selected_option .tags .tag {
+    background: rgba(255, 255, 255, .05);
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown {
+    background: #434c61
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter {
+    border-color: rgba(255, 255, 255, .1)
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element {
+    border-color: rgba(255, 255, 255, .1)
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element .selected_coin .icon.noimage {
+    border-color: rgba(255, 255, 255, .2)
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element .selected_coin input {
+    color: #fff
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element .selected_coin input::placeholder {
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element .icons_dropdown {
+    background: #4c556a
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element .icons_dropdown .frame .row:hover {
+    background: rgba(255, 255, 255, .06)
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element .icons_dropdown .frame .row .text .ticker {
+    color: #fff
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element .icons_dropdown .frame .row .text .algo {
+    color: rgba(255, 255, 255, .5)
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element .icon.search {
+    background-image: url(/images/sprite_icons_button_dark.svg?v=2)
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element .selected_coin .search_icon {
+    background-image: url(/images/sprite_icons_button_dark.svg?v=2)
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr:hover {
+    background: rgba(255, 255, 255, .06)
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr .th {
+    border-color: rgba(255, 255, 255, .1);
+    color: #fff
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr .td b {
+    color: #fff
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr .td small {
+    color: rgba(255, 255, 255, .5)
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr .td .tag {
+    color: #fff;
+    border-color: #fff
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr.private .td b {
+    color: #acb5ff
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr.private .td small {
+    color: rgba(172, 181, 255, .5)
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr.private .td .tag {
+    color: #acb5ff;
+    border-color: #acb5ff
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_selected_option {
+    border-color: rgba(255, 255, 255, .1);
+    background-image: url(/images/arrow_down_dark.svg)
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_selected_option .text b {
+    color: #fff
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_selected_option .text small {
+    color: rgba(255, 255, 255, .5)
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_selected_option .row.empty .image {
+    border-color: rgba(255, 255, 255, .2)
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown.display {
+    background: #434c61
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .row.partner .text b {
+    color: #acb5ff
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .row.partner .text small {
+    color: rgba(172, 181, 255, .5)
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .search_box {
+    border-color: transparent;
+    background: rgba(255, 255, 255, .05)
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .search_box input {
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .search_box .icon.search {
+    background-image: url(/images/sprite_icons_button_dark.svg?v=2)
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .subgroup {
+    border-color: rgba(255, 255, 255, .1);
+    color: #fff
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .row:hover {
+    background: rgba(255, 255, 255, .05)
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .row.selected {
+    background: rgba(255, 255, 255, .05)
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .row.selected:hover {
+    background: rgba(255, 255, 255, .05)
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .row.selected b {
+    color: #fff
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .icon {
+    background-image: url(/images/sprite_icons_button_dark.svg?v=2)
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .text b {
+    color: #fff
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .text small {
+    color: rgba(255, 255, 255, .5)
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .add_new_element {
+    background: rgba(255, 255, 255, .05);
+    border-color: transparent
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .add_new_element .title {
+    color: #fff
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .add_new_element .row:hover {
+    background: 0 0
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .add_new_element .row .element label {
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .add_new_element .row .element .input_area_with_tag.pool_tag input[type=text] {
+    border-color: rgba(255, 255, 255, .15);
+    color: rgba(255, 255, 255, .6);
+    background: 0 0
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .add_new_element .row .element .input_area_with_tag.pool_tag input[type=text]:focus {
+    border-color: #52cca5
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .add_new_element .row .element .input_area_with_tag.wallet_tag input[type=text] {
+    border-color: rgba(255, 255, 255, .15);
+    color: rgba(255, 255, 255, .6);
+    background: 0 0
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .add_new_element .row .element .input_area_with_tag.wallet_tag input[type=text]:focus {
+    border-color: #52cca5
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .add_new_element .row .element .input_area_with_tag .tag {
+    background: rgba(255, 255, 255, .08);
+    color: #fff
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .add_new_element .row .element .input_area input[type=text] {
+    border-color: rgba(255, 255, 255, .15);
+    color: rgba(255, 255, 255, .6);
+    background: 0 0
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .add_new_element .row .element .input_area input[type=text]:focus {
+    border-color: #52cca5
+}
+
+.content.config .container .box .row.disabled .client {
+    opacity: .4;
+    cursor: default
+}
+
+.content.config .container .box .row.disabled .client .hw .tag {
+    background: rgba(255, 255, 255, .1)
+}
+
+.content.config .container .box .row.disabled .client .hw .text {
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.config .container .box .row.disabled .client p.sub {
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.config .container .box .row.disabled .client p.params {
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.config .container .box .row.disabled .edit_box {
+    opacity: .4
+}
+
+.content.config .container .box .row.disabled .edit_box .textarea {
+    cursor: default
+}
+
+.content.config .container .box .row.disabled .edit_box .textarea mark.tag {
+    background: rgba(255, 255, 255, .2);
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.config .container .box .row.disabled .reset_row {
+    cursor: default;
+    color: rgba(255, 255, 255, .1)
+}
+
+.content.config .container .box .row.disabled .reset_button {
+    cursor: default;
+    color: rgba(255, 255, 255, .1)
+}
+
+.content.config .container .box .row.disabled .reset_button:hover {
+    color: rgba(255, 255, 255, .1)
+}
+
+.content.config .container .box .row.disabled .edit_box #tags input[type=text]:disabled {
+    background: rgba(255, 255, 255, .05);
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.config .container .box .row.disabled .edit_box #tags input[type=text]:disabled::-webkit-input-placeholder {
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.config .container .box .row.disabled .edit_box #tags input[type=text]:disabled:-moz-placeholder {
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.config .container .box .row.disabled .edit_box #tags input[type=text]:disabled::-moz-placeholder {
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.config .container .box .row.disabled .edit_box #tags input[type=text]:disabled:-ms-input-placeholder {
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.config .container .box .row .edit_box .tabs {
+}
+
+.content.config .container .box .row .edit_box .tabs .tab {
+    border-color: transparent;
+    color: rgba(255, 255, 255, .6);
+    background: rgba(255, 255, 255, .04)
+}
+
+.content.config .container .box .row .edit_box .tabs .tab:hover {
+    background: rgba(255, 255, 255, .08)
+}
+
+.content.config .container .box .row .edit_box .tabs .tab.selected {
+    border-color: rgba(255, 255, 255, .1);
+    border-bottom-color: #343d52;
+    color: #fff;
+    background: #343d52
+}
+
+.content.config .container .box .row .edit_box .tabs .tab.selected:hover {
+    background: #343d52
+}
+
+.content.config .container .box .row .edit_box #automaticConfig {
+    border-color: rgba(255, 255, 255, .1)
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row_config_generated {
+    border-color: rgba(255, 255, 255, .1);
+    background: #343d52
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row_config_generated .automatic_config {
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row_config_generated .icon.edit {
+    background-image: url(/images/sprite_icons_button_dark.svg?v=2)
+}
+
+.content.config .container .box .row_load {
+    border-color: rgba(255, 255, 255, .1);
+    background: #343d52
+}
+
+.content.config .container .box .row_load .ghost_button {
+    color: rgba(255, 255, 255, .5)
+}
+
+.content.config .container .box .row_load .ghost_button:hover {
+}
+
+.content.config .container .action_row.buttons .button_empty {
+    color: rgba(255, 255, 255, .3)
+}
+
+.content.config .container .action_row.buttons .button_empty:hover {
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.config .container .col_1_4 table {
+    border-color: rgba(255, 255, 255, .05)
+}
+
+.content.config .container .col_1_4 table tr td .tag {
+    background: #6574ff
+}
+
+.content.config .container .col_1_4 table tr td .tag.undefined {
+    background: #ff5b56
+}
+
+.content.config .container .col_1_4 table tr td .tag.amd {
+    background: rgba(255, 255, 255, .1)
+}
+
+.content.config .container .col_1_4 table tr td .tag.nvidia {
+    background: rgba(255, 255, 255, .1)
+}
+
+.content.config .container .col_1_4 table tr td .tag.windows {
+    background: rgba(255, 255, 255, .1)
+}
+
+.content.config .container .col_1_4 table tr td .tag.msos {
+    background: rgba(255, 255, 255, .1)
+}
+
+.content.config .container .col_1_4 table tr td .tag.baikal {
+    background: rgba(255, 255, 255, .1)
+}
+
+.content.config .container .col_1_4 table tr td .tag.antminer {
+    background: rgba(255, 255, 255, .1)
+}
+
+.content.config .container .col_1_4 table tr td .tag.dragonmint {
+    background: rgba(255, 255, 255, .1)
+}
+
+.content.config .container .col_1_4 table tr td .tag.innosilicon {
+    background: rgba(255, 255, 255, .1)
+}
+
+.content.config .container .col_1_4 table tr td .tag.dayun {
+    background: rgba(255, 255, 255, .1)
+}
+
+.content.config .container .col_1_4 table tr td .tag.spondoolies {
+    background: rgba(255, 255, 255, .1)
+}
+
+.content.config .container .col_1_4 table tr td .tag.cpu {
+    background: rgba(255, 255, 255, .1)
+}
+
+.content.config .container .col_1_4 table tr td .tag.asic {
+    background: rgba(255, 255, 255, .1)
+}
+
+.content.config .container .col_1_4 .icon.info {
+    background-image: url(/images/sprite_icons_dark_v2.svg)
+}
+
+#options {
+    background: #434c61;
+    box-shadow: 0 5px 80px rgba(0, 0, 0, .3)
+}
+
+#options .search_box {
+    border-color: transparent;
+    background: rgba(255, 255, 255, .05)
+}
+
+#options .search_box input {
+    border-color: rgba(255, 255, 255, .15);
+    color: rgba(255, 255, 255, .6);
+    background: 0 0
+}
+
+#options .search_box input:focus {
+    border-color: #52cca5
+}
+
+#options .search_box .icon.search {
+    background-image: url(/images/sprite_icons_button_dark.svg?v=2)
+}
+
+#options .frame li:hover {
+    background: rgba(255, 255, 255, .05)
+}
+
+#options .frame li {
+    color: #fff
+}
+
+#options .frame li small {
+    color: rgba(255, 255, 255, .5)
+}
+
+#options .frame li.selected {
+    background: rgba(255, 255, 255, .05)
+}
+
+#options .frame li.selected:hover {
+    background: rgba(255, 255, 255, .05)
+}
+
+#options .frame li.partner {
+    color: #acb5ff
+}
+
+#options .frame li.partner small {
+    color: rgba(172, 181, 255, .5)
+}
+
+#options .frame li .icon {
+    background-image: url(/images/sprite_icons_button_dark.svg?v=2)
+}
+
+#options .frame::-webkit-scrollbar-track {
+    background-color: rgba(255, 255, 255, .05)
+}
+
+#options .frame::-webkit-scrollbar {
+    background-color: rgba(255, 255, 255, .05)
+}
+
+#options .frame::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, .6)
+}
+
+#options .divider {
+    border-color: rgba(255, 255, 255, .1)
+}
+
+#options .add_new_element {
+    background: rgba(255, 255, 255, .05);
+    border-color: transparent
+}
+
+#options .add_new_element .title {
+    color: #fff
+}
+
+#options .add_new_element .row .element label {
+    color: rgba(255, 255, 255, .6)
+}
+
+#options .add_new_element .row .element .input_area_with_tag.pool_tag input[type=text] {
+    border-color: rgba(255, 255, 255, .15);
+    color: rgba(255, 255, 255, .6);
+    background: 0 0
+}
+
+#options .add_new_element .row .element .input_area_with_tag.pool_tag input[type=text]:focus {
+    border-color: #52cca5
+}
+
+#options .add_new_element .row .element .input_area_with_tag.wallet_tag input[type=text] {
+    border-color: rgba(255, 255, 255, .15);
+    color: rgba(255, 255, 255, .6);
+    background: 0 0
+}
+
+#options .add_new_element .row .element .input_area_with_tag.wallet_tag input[type=text]:focus {
+    border-color: #52cca5
+}
+
+#options .add_new_element .row .element .input_area_with_tag .tag {
+    background: rgba(255, 255, 255, .08);
+    color: #fff
+}
+
+#options .add_new_element .row .element .input_area input[type=text] {
+    border-color: rgba(255, 255, 255, .15);
+    color: rgba(255, 255, 255, .6);
+    background: 0 0
+}
+
+#options .add_new_element .row .element .input_area input[type=text]:focus {
+    border-color: #52cca5
+}
+
+.content.config .container .container .col_1_2 .box h3 {
+    color: #fff
+}
+
+.content.config .container .container .col_1_2 .box .icon.multitune {
+    background-image: url(/images/sprite_icons_dark_v2.svg)
+}
+
+.content.config .container .col_1_4 p a {
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.config .container .container .col_1_2 .box .row.advanced.fans .tabs .tab:hover {
+    background: rgba(255, 255, 255, .01)
+}
+
+.content.config .container .container .col_1_2 .box .row.advanced.fans .tabs .tab.selected {
+    background: rgba(255, 255, 255, .03);
+    color: #fff
+}
+
+.content.config .container .container .col_1_2 .box .row.advanced.fans .tabs .tab.selected:hover {
+    background: rgba(255, 255, 255, .03)
+}
+
+.content.config .container .container .col_1_2 .box .row.advanced.fans .fixed_fans {
+    background: rgba(255, 255, 255, .03)
+}
+
+.content.config .container .container .col_1_2 .box .row.advanced.fans .auto_fans {
+    background: rgba(255, 255, 255, .03)
+}
+
+.content.config .container .container .col_1_2 .box .row .clocktune_values .clocktune_values_box .row label.value {
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.config .container .container .col_1_2 .box .row .clocktune_values {
+    background: #434c61;
+    box-shadow: 0 5px 80px rgba(0, 0, 0, .3)
+}
+
+.content.clocktune .box_table table tr td .tag {
+    background: rgba(255, 255, 255, .1);
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.clocktune .filter_row .button.white {
+    background: rgba(255, 255, 255, .08)
+}
+
+.content.clocktune .box_table table tr td a:link, .content.clocktune .box_table table tr td a:visited, .content.clocktune .box_table table tr td a:active {
+    color: #fff
+}
+
+.content.clocktune .box_table table tr td a:hover, .content.clocktune .box_table table tr td a:visited:hover {
+    color: #52cca5
+}
+
+.content.clocktune .box_table table.clocktuneTable tr td {
+    border-color: rgba(255, 255, 255, .2)
+}
+
+.content.clocktune .box_table table.clocktuneTable tr.subrow td.borderTop {
+    border-color: rgba(255, 255, 255, .05)
+}
+
+.content.clocktune .box_table table.clocktuneTable tr td .used {
+    color: #343d52;
+    background: #fff
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .row .parameter_box .parameter_name {
+    color: #fff
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .row .parameter_box input.parameter_value {
+    color: #fff
+}
+
+.content.config.amd_tweak .container .box .row .client .tags .tag {
+    background: rgba(255, 255, 255, .05);
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.config.amd_tweak .container .box .row .client .tags .tag b {
+    color: #fff
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .popup_intro {
+    background: rgba(52, 61, 82, .95)
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .popup_intro .popup_frame {
+    background: #434c61;
+    box-shadow: 0 0 30px rgba(0, 0, 0, .1)
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .popup_intro .popup_frame .close .icon_close {
+    background-image: url(/images/sprite_icons_button_dark.svg?v=2);
+    opacity: .3
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .popup_intro .popup_frame .close .icon_close:hover {
+    opacity: 1
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .popup_intro .popup_frame label {
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .popup_intro .popup_frame textarea {
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .popup_intro .popup_frame .divider {
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .popup_intro .popup_frame .action_row {
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .popup_intro .popup_frame .action_row .button.green {
+}
+
+.content.bios_flashing .container .box .row .edit_box .action .buttons .notification.green .tick_box .tick:after {
+    background: #232d43
+}
+
+.content.bios_flashing .container .box .row .edit_box .action .buttons .notification.green .tick_box .tick:before {
+    background: #232d43
+}
+
+.content.bios_flashing .container .box .row .edit_box .action .buttons .notification.red .tick_box .tick:after {
+    background: #232d43
+}
+
+.content.bios_flashing .container .box .row .edit_box .action .buttons .notification.red .tick_box .tick:before {
+    background: #232d43
+}
+
+.content.bios_flashing .container .box .row .edit_box .action small {
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.bios_flashing .checkbox.selected {
+    background-image: url(/images/tick_green_dark.svg)
+}
+
+.content.bios_flashing .container .box .edit_table table tr td.mini_title {
+    color: #fff;
+    border-color: rgba(255, 255, 255, .1)
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .gpu_name .tag {
+    background: rgba(255, 255, 255, .1);
+    color: rgba(255, 255, 255, .8)
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .status {
+    background: rgba(255, 255, 255, .1);
+    color: rgba(255, 255, 255, .8)
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .status.pending {
+    background: rgba(255, 255, 255, .1);
+    color: rgba(255, 255, 255, .8)
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .status.pending .bullet_1 {
+    background: rgba(255, 255, 255, .8)
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .status.pending .bullet_2 {
+    background: rgba(255, 255, 255, .8)
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .status.pending .bullet_3 {
+    background: rgba(255, 255, 255, .8)
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .status.flashing {
+    background: #5767ff;
+    color: #fff
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .status.flashing .bullet_1 {
+    background: #fff
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .status.flashing .bullet_2 {
+    background: #fff
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .status.flashing .bullet_3 {
+    background: #fff
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .status.error {
+    background: #ff5b56;
+    color: #fff
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .status.finished {
+    background: rgba(82, 204, 165, .1);
+    color: #52cca5
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .flexBios .icon {
+    background-image: url(/images/sprite_icons_dark_v2.svg?v=5)
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .flexBios .icon.loading {
+    border: 1px solid rgba(255, 255, 255, .2);
+    border-right-color: #fff
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .flexBios.disabled:after {
+    background: rgba(52, 61, 82, .6)
+}
+
+.content.bios_flashing .empty_state .loader .loading {
+    border-color: rgba(255, 255, 255, .1);
+    border-left-color: #52cca5
+}
+
+@media (max-width: 1600px) {
+    .content.clocktune .box_table table.clocktuneTable .clocktuneName {
+        border-color: rgba(255, 255, 255, .2)
+    }
+}
+
+@media (max-width: 960px) {
+    .content.clocktune .box_table table tr .shw2 {
+        border-color: rgba(255, 255, 255, .1)
+    }
+}
+
+@media (max-width: 740px) {
+    .content.bios_flashing .container .box .edit_table table tr td .shw2 .row:last-child {
+        border-color: rgba(255, 255, 255, .1)
+    }
+
+    .content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr {
+        border-color: rgba(255, 255, 255, .1)
+    }
+}
+#my_select_target_menu {
+    background: #434c61;
+    box-shadow: 0 5px 80px rgba(0, 0, 0, .3)
+}
+
+#my_select_target_menu .frame .row:hover {
+    background: rgba(255, 255, 255, .05)
+}
+
+#my_select_target_menu .frame .row.first:hover {
+    background: transparent
+}
+#my_select_target_menu .frame .first {
+    border-bottom: 1px solid #fff;
+    color: #fff;
+}
+
+#my_select_target_menu .frame::-webkit-scrollbar-track {
+    background-color: rgba(255, 255, 255, .05)
+}
+
+#my_select_target_menu .frame::-webkit-scrollbar {
+    background-color: rgba(255, 255, 255, .05)
+}
+
+#my_select_target_menu .frame::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, .6)
+}
+
+#my_select_target_menu .frame .row .checkbox {
+    border-color: rgba(255, 255, 255, .1);
+    background: 0 0
+}
+
+#my_select_target_menu .frame .row .checkbox.selected {
+    background: transparent url(/images/tick_green.svg) no-repeat -4px -3px
+}
+
+#my_select_target_menu .frame .row label {
+    color: rgba(255, 255, 255, .6)
+}
+#my_select_target_menu .frame .row .mytext {
+    color: rgba(255, 255, 255, .6)
+}
+
+
+#my_select_target_menu .frame .action {
+    color: rgba(255, 255, 255, .4)
+}
+.my_config_icon_edit{
+    /*background-image:url(/images/sprite_icons_button_dark.svg) no-repeat;*/
+    width: 18px;
+    height: 18px;
+    background: url(/images/sprite_icons_button_dark.svg?v=6) no-repeat;
+    background-size: 54px 900px;
+    background-position: -35px -198px;
+    margin: 5px 6px 5px 0;
+    float: right;
+    cursor: pointer;
+}
+.my_config_icon_edit:hover{
+    background-position: -17px -198px;
+}
