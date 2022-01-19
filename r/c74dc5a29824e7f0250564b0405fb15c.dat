@@ -1,0 +1,480 @@
+
+function setEcharts(x,y,l,id) {
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById(id));
+    // 指定图表的配置项和数据
+    var option = {
+        grid:{
+          left:'10px',
+          right:'10px',
+          top:'10px',
+          bottom:'50px'
+        },
+        legend: {
+            bottom: 5,
+            icon:'circle',
+            data: l,
+            formatter: [
+                '{a|{name}}'
+            ].join('\n'),
+            textStyle: {
+                color:'#fff',
+                fontSize:13,
+                height: 8,
+                rich: {
+                    a: {
+                        verticalAlign: 'bottom',
+                    },
+                }
+            },
+            itemStyle:{
+                // color:'#343d52',
+                // borderColor: 'rgba(0,0,0,0)',
+                option:0.5
+            }
+        },
+        tooltip : {
+            trigger: 'axis',
+            backgroundColor:'#343d52',
+            borderColor:'#343d52',
+            textStyle: { // 提示框浮层的文本样式。
+                color: '#fff',
+                fontStyle: 'normal',
+                fontWeight: 'normal',
+                fontFamily: 'sans-serif',
+                fontSize: 14,
+            },
+            formatter: function(arg) {
+
+                let str=getData(arg[0].name,2)+'<br>'
+                if(search_type=='SITEHASHRATE'||search_type=='SITEPOOLSPEED'){
+                    $.each(arg,function (i,it) {
+                        str+=it.marker+' '+it.seriesName+': '+convertHashrate(speedToHash(it.value,'H'),'H/s')+'<br>'
+                    })
+                }else if(search_type=='SITETEMP'){
+                    str+=arg[0].marker+' '+arg[0].seriesName+': '+arg[0].value+'°C<br>'
+                }else if(search_type=='SITEPOWER'){
+                    str+=arg[0].marker+' '+arg[0].seriesName+': '+wattOutput(arg[0].value)+'<br>'
+                }else if(search_type=='SITELATENCY'){
+                    str+=arg[0].marker+' '+arg[0].seriesName+': '+arg[0].value+'ms<br>'
+                }
+                return str
+            }
+        },
+        xAxis: {
+            axisLabel: {
+                formatter: function (a) {
+                    return getData(a,1);
+                }
+            },
+            type: 'category',
+            boundaryGap: false,
+            data: x
+        },
+        yAxis: {
+            axisLabel: {
+                formatter: function () {
+                    return "";
+                }
+            },
+            dispaly: "none",
+            "axisLine": {       //y轴
+                "show": false
+            },
+            "axisTick": {       //y轴刻度线
+                "show": false
+            },
+            "splitLine": {     //网格线
+                lineStyle:{
+                    'color':['#6e7079']
+                },
+                "show": true
+            },
+            display:'none',
+            type: 'value',
+        },
+        series: y
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option,true);
+}
+
+function addSiteShow(id,name,remark,key) {
+    if(id!=undefined){
+        $('#siteAdd .title').html(_mx('Edit Site'))
+        $('#siteAdd').attr('data-id',id)
+        $('#siteName').val(name)
+        $('#siteRemarks').val(remark)
+        $('#siteKey').val(key)
+        $('#keyShowDiv').show()
+    }else {
+        $('#siteAdd .title').html(_mx('Add New Site'))
+        $('#siteAdd').attr('data-id','')
+        $('#siteName').val('')
+        $('#siteRemarks').val('')
+        $('#keyShowDiv').hide()
+    }
+    $('.popupbackground').fadeToggle();
+    $('#siteAdd').show()
+}
+
+//新增窗口关闭
+$('.popupbackground').on('click',function () {
+    if(this.style.display!='none'){
+        EditWinClose()
+    }
+})
+function EditWinClose() {
+    $('.popupbackground').fadeOut('fast');
+    $('#siteAdd').hide()
+    $('#siteAdd').attr('data-id','')
+    $('#siteName').val('')
+    $('#siteRemarks').val('')
+}
+//删除
+function deleteWorker(wn,id) {
+    $('#worker_delete .title').html(_mx('Delete') + ' ' + wn + '?');
+    $('#worker_delete .gray').text(_mx('No, keep it'));
+    $('#worker_delete .red').text(_mx('Yes, delete it'));
+    $('.popupbackground').fadeToggle();
+    $('#worker_delete').fadeToggle('fast');
+    $('#worker_delete .red').attr('data-wn', id);
+}
+$('.close,.close_popup').click(function () {
+    $('.popupbackground').fadeOut('fast');
+    $('.popup').fadeOut('fast');
+});
+$('#worker_delete .red').on('click', function () {
+    if ($(this).attr('data-wn') == '' || $(this).hasClass('disabled')) {
+        return false;
+    }
+    $('#worker_delete .outlined_button, #worker_delete .red').addClass('disabled');
+    $('.checkmark').hide();
+    $('.circle-loader').removeClass('load-complete');
+    $('.circle-loader, .message_err, .message_suc').hide();
+    $('.circle-loader').show();
+    var id = $(this).attr('data-wn');
+    var nonce = $('#nonce').val();
+    delSite(id)
+});
+
+//新增场所接口
+function saveSite() {
+    let name=$('#siteName').val()
+    let remark=$('#siteRemarks').val()
+    let id=$('#siteAdd').attr('data-id')
+    if(name.replace(/(^\s*)|(\s*$)/g, "").length===0){
+        $('#myError').html('The name cannot be empty')
+        $('#myError').show()
+        return
+    }else {
+        $('#myError').hide()
+    }
+
+    let obj = {
+        name:name,
+        remark:remark,
+        id:(id==undefined||id=='')?undefined:id
+    }
+    $('#myLoading').show()
+    $.ajax({
+        url:'/site',
+        type:'post',
+        data:obj,
+        success:function (res) {
+            if(res==1){
+                $('#myLoading').addClass('load-complete');
+                $('#myLoading .checkmark').show()
+                let x=setTimeout(function () {
+                    $('#myLoading').removeClass('load-complete');
+                    $('#myLoading').hide();
+                    $('#myLoading .checkmark').hide()
+                    EditWinClose()
+                    getEhartsInfo()
+                    clearTimeout(x)
+                },2000)
+            }else {
+                $('#myLoading').hide();
+                $('#myError').html('Error')
+                $('#myError').show()
+            }
+        }
+    })
+}
+function delSite(id){
+    $('.circle-loader').show()
+    $.ajax({
+        url:'/site',
+        type:'post',
+        data:{
+            delete:id
+        },
+        success:function (res) {
+            if(res==1){
+                $('.circle-loader').addClass('load-complete');
+                $('.notification_row').addClass('finished');
+                $('.checkmark').show();
+                let x=setTimeout(function () {
+                    $('.circle-loader').removeClass('load-complete');
+                    $('.notification_row').removeClass('finished');
+                    $('.checkmark').hide();
+                    $('.circle-loader').hide()
+                    $('#worker_delete').hide()
+                    $('.popupbackground').fadeToggle();
+                    getEhartsInfo()
+                    $('#worker_delete .outlined_button, #worker_delete .red').removeClass('disabled');
+                    clearTimeout(x)
+                },2000)
+            }else {
+                $('#worker_delete .outlined_button, #worker_delete .red').removeClass('disabled');
+                $('.circle-loader').hide();
+                $('.message_err').show();
+            }
+        }
+    })
+}
+
+//复制Key键
+function copyKey(text) {
+    const strDom=document.createElement('input')
+    strDom.setAttribute('value',text)
+    document.body.appendChild(strDom)
+    $(strDom).select()
+    document.execCommand('copy')
+    document.body.removeChild(strDom)
+    alert('复制成功')
+}
+
+function linkConfig(id) {
+    localStorage.setItem('myWorkes',id)
+    localStorage.setItem('myType','site')
+    window.location.href='/config#mx'
+}
+
+var search_type='SITEHASHRATE'
+//选择类型
+$('.label_site_type').on('click',function () {
+    if($(this).hasClass('is_type_label')){
+        return
+    }
+    let list = $('.label_site_type')
+    $.each(list,function (i,it) {
+        $(it).removeClass('is_type_label')
+    })
+    $(this).addClass('is_type_label')
+    search_type=$(this).data('type')
+    getEhartsInfo()
+})
+getEhartsInfo()
+var currency='$'
+var currencyValue='1'
+function getEhartsInfo() {
+    $.ajax({
+        url:'/QUERY?SITE,SITECFG,SITESTS,STANDARD,'+search_type,
+        dataType:'json',
+        type:'get',
+        success:function (res) {
+
+            currency=res.STANDARD.currency
+            currencyValue=res.STANDARD.currencyValue
+            setSiteItem(res.SITE)
+            // setData(res.SITE[0][search_type])
+        }
+    })
+}
+
+function setData(data,id) {
+    let seriesx=[]
+    let seriesl=[]
+    let seriesy=[]
+    if(search_type=='SITEHASHRATE'||search_type=='SITEPOOLSPEED'){
+        $.each(data,function (i,it) {
+            seriesl.push(i)
+            let y=[]
+            let x=[]
+            $.each(it,function (j,k) {
+                x.push(j)
+                y.push(k)
+            })
+           let obj= {
+               name:i,
+               data: y,
+               // symbol:'none',
+               type: 'line',
+               showSymbol: false,
+               areaStyle:{
+                   normal:{
+                       color:new echarts.graphic.LinearGradient(0,0,0,1,[
+                           {
+                               offset: 0,
+                               color:"rgba(25,163,223, 0.5)"
+                           },{
+                               offset: 1,
+                               color:"rgba(25,163,223, 0)"
+                           }
+                       ])
+                   }
+               },
+               smooth: true
+           }
+         seriesy.push(obj)
+         seriesx=x
+        })
+    }else {
+        let y=[]
+        let x=[]
+        let name=''
+        if(search_type=='SITETEMP'){
+            name=_mx('Temperature')
+        }else if(search_type=='SITEPOWER'){
+            name=_mx('Pow')
+        }else if(search_type=='SITELATENCY'){
+            name=_mx('Latency')
+        }
+        seriesl.push(name)
+        $.each(data,function (i,it) {
+             y.push(it)
+             x.push(i)
+        })
+        seriesx=x
+        let obj= {
+            name:name,
+            data: y,
+            type: 'line',
+            // symbol:'none',
+            showSymbol: false,
+            areaStyle:{
+                normal:{
+                    color:new echarts.graphic.LinearGradient(0,0,0,1,[
+                        {
+                            offset: 0,
+                            color:"rgba(25,163,223, 0.8)"
+                        },{
+                            offset: 1,
+                            color:"rgba(25,163,223, 0)"
+                        }
+                    ])
+                }
+            },
+            smooth: true
+        }
+        seriesy.push(obj)
+    }
+    setEcharts(seriesx,seriesy,seriesl,id)
+}
+
+function getData(timestamp,type) {
+    var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+    var Y = date.getFullYear() + '-';
+    var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+    var D = date.getDate();
+    var h = date.getHours();
+    var m = date.getMinutes();
+    var s = date.getSeconds();
+    if(type==1){
+        h<10?h='0'+h:h
+        m<10?m='0'+m:m
+        return h+':'+m;
+    }else {
+        h<10?h='0'+h:h
+        m<10?m='0'+m:m
+        return Y+M+D+' '+h+':'+m;
+    }
+}
+
+function setSiteItem(data) {
+    let str=''
+    $.each(data,function (i,it) {
+        let per=0
+        if(it.estBeforeyDay!=0){
+            per=(((it.estyDay-it.estBeforeyDay)/it.estBeforeyDay)*100).toFixed(2)
+        }
+        str+='<div class="item_echarts_info" data-name-filtr="'+it.name.toLowerCase()+'">\n' +
+        '                <div class="site_name_info">\n' +
+        '                    <div class="divx">\n' +
+        '                        <div onclick="toinfo('+it.id+',\''+it.name+'\')" class="t1">'+it.name+'</div>\n' +
+        '                        <div class="t2">'+convertHashrate(speedToHash(it.totalHashRate,'H'),'H/s')+'</div>\n' +
+        '                    </div>\n' +
+        '                </div>\n'
+        if(JSON.stringify(it[search_type])=='{}'){
+            str+='                <div class="echarts_info" style="line-height: 200px;text-align: center">'+_mx3('No Data')+'</div>\n'
+        }else {
+            str+='                <div class="echarts_info" id="showit_'+it.id+'"></div>\n'
+        }
+
+        str+='                <div class="site_info_wk">\n' +
+        '                    <div class="s_tl_txt">'+_mx3('Earnings yesterday')+'</div>\n' +
+        '                    <div class="txt_m_wk">\n' +
+        '                        <div class="m_t1_w">'+(it.estyDay*currencyValue).toFixed(2)+' '+currency+'</div>\n'
+        if(per>0){
+            str+= '<div class="m_t2_r">'+per+'%</div>\n'+
+            '  <div class="my_icon arrow_up"></div>\n'
+        }else if(per<0){
+            str+= '<div class="m_t2_r" style="color: #ff564f">'+per+'%</div>\n'+
+                '  <div class="my_icon arrow_down"></div>\n'
+        }else {
+            str+= '<div class="m_t2_r" style="display: none">'+per+'%</div>\n'+
+                '  <div class="my_icon arrow_up" style="display: none"></div>\n'
+        }
+
+        str+='</div>\n' +
+        '        <div class="mining_info_wk">\n' +
+        '            <div class="item_ix">\n' +
+        '                <div class="ix_t1">'+_mx('Online')+'</div>\n' +
+        '                <div class="ix_t2">'+it.online+'/'+it.workers+'</div>\n' +
+        '            </div>\n' +
+        '            <div class="item_ix">\n' +
+        '                <div class="ix_t1">'+_mx('Abn.')+'</div>\n' +
+        '                <div class="ix_t2">'+it.abnormal+'</div>\n' +
+        '            </div>\n' +
+        '        </div>\n' +
+        '        <div class="icon_acc_wk">\n' +
+        '            <div class="my_s_icon icon_info"  data-tooltip="'+_mx('Details')+'" onclick="toinfo('+it.id+',\''+it.name+'\')" style="margin-left: 30px"><div class="zzc"></div></div>\n' +
+        '            <div class="my_s_icon icon_config" onclick="linkConfig('+it.id+')" data-tooltip="'+_mx('Template')+'"><div class="zzc"></div></div>\n' +
+        '            <div class="my_s_icon icon_copy" onclick="copyKey(\''+it.clientKey+'\')" data-tooltip="'+_mx3('Copy')+' key"><div class="zzc"></div></div>\n' +
+        '            <div class="my_s_icon icon_edit" onclick="addSiteShow('+it.id+',\''+it.name+'\',\''+it.desc+'\',\''+it.clientKey+'\')" data-tooltip="'+_mx('Edit')+'"><div class="zzc"></div></div>\n' +
+        '            <div class="my_s_icon icon_del" onclick="deleteWorker(\''+it.name+'\','+it.id+')" data-tooltip="'+_mx('Delete')+'"><div class="zzc"></div></div>\n' +
+        '        </div>\n' +
+        '    </div>\n' +
+        '</div>'
+    })
+    $('#site_list').html(str)
+    $.each(data,function (i,it) {
+        if(JSON.stringify(it[search_type])!='{}'){
+            setData(it[search_type],'showit_'+it.id)
+        }
+    })
+}
+function toinfo(id,name){
+    window.location.href=`/global-statistics-info#${name},${id}`
+}
+$('#search').on('change',function () {
+    let x=$('.item_echarts_info')
+    let m=$(this).val().toLowerCase()
+    $.each(x,function (i,it) {
+        if($(it).attr('data-name-filtr').indexOf(m)==-1){
+            $(it).hide()
+        }else {
+            $(it).show()
+        }
+    })
+})
+function wattOutput(watt) {
+    var wattValue = watt;
+    var wattUnit = ' W';
+    if (wattValue / 1000 > 1) {
+        wattValue /= 1000;
+        wattUnit = ' kW';
+        if (wattValue / 1000 > 1) {
+            wattValue /= 1000;
+            wattUnit = ' MW';
+        }
+    }
+    wattValue = Math.round(wattValue * 1000) / 1000;
+    return wattValue + wattUnit;
+}
+//下载客户端
+function DownloadClient() {
+   window.open('https://dx.dxdx.me/r/client.zip')
+}
