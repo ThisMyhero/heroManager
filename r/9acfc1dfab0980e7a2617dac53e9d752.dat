@@ -1,0 +1,2535 @@
+var currency=''
+var currencyValue=1
+var siteListObj=[] //场所对象
+var workersListObj={}//矿工对象 
+var workersListObjIn={}//定时器矿工对象
+//选中的场所ID
+var select_site_id=''
+var worker_eachart={}
+var sortType='1'
+var descAndAsc='1'
+var logType='1'
+var logMinId=''
+//搜索机器名字的全局参数
+var workerNameSearch=''
+//状态参数数组
+var search_type_list=[]
+//场所定时器参数
+var siteListCardIn=undefined
+
+var color_list=[ "#7b8fed" , "#05f8d6" , "#0082fc", "#fdd845", "#22ed7c", "#09b0d3", "#1d27c9", "#f9e264", "#f47a75", "#009db2", "#024b51", "#0780cf", "#765005"]
+//事件注册
+function inciRegster() {
+    $('.item_card').on('click',function () {
+        if($(this).hasClass('is_card')){
+            return
+        }
+        let list = $('.item_card')
+        $.each(list,function (i,it) {
+            $(it).removeClass('is_card')
+        })
+        $(this).addClass('is_card')
+        let sthis=$(this)
+        sortType='1'
+        descAndAsc='1'
+        let cx=$('.cbg')
+        $.each(cx,function (i,it) {
+            $(it).find('.cbgx').removeClass('icon_g')
+        })
+        $('#search_info').val('')
+        let x_h=$('.Tab_type')
+        sortType='1'
+        descAndAsc='1'
+        $.each(x_h,function (i,it) {
+            $(it).attr('dex','0')
+            $(it).removeClass('isType')
+            $(it).find('.my_icon_x').removeClass('arrow_px_up arrow_px_down arrow_px_none')
+            if(i==0){
+                $(it).attr('dex','1')
+                $(it).addClass('isType')
+                $(it).find('.my_icon_x').addClass('arrow_px_up')
+            }else {
+                $(it).find('.my_icon_x').addClass('arrow_px_none')
+            }
+        })
+        workerNameSearch=''
+        search_type_list=[]
+        $('.worker_list').html(
+            ' <div class="spinner">\n' +
+            '                    <div class="bounce1"></div>\n' +
+            '                    <div class="bounce2"></div>\n' +
+            '                    <div class="bounce3"></div>\n' +
+            '                </div>'
+        )
+        $.each(siteListObj,function (i,it) {
+            if(it.id==Number(sthis.attr('my-id'))){
+                setlabelCard(it)
+                getWorkerList(it.id,1)
+                select_site_id=it.id
+                getEachartData(it.id)
+                clearInterval(workerListIn)
+                workerListIn=setInterval("getWorkerList('"+it.id+"')",4000)
+            }
+        })
+    })
+
+    $('#search').on('keyup',function () {
+        let x=$('.item_card')
+        let m=$(this).val().toLowerCase()
+        $.each(x,function (i,it) {
+            if($(it).attr('data-name-filtr').indexOf(m)==-1){
+                $(it).hide()
+            }else {
+                $(it).show()
+            }
+        })
+    })
+
+    $('.Tab_type').on('click',function () {
+        let x=$('.Tab_type')
+        sortType=$(this).attr('data-type')
+        if($(this).hasClass('isType')){
+            if($(this).attr('dex')=='1'){
+                descAndAsc='2'
+                $(this).attr('dex','2')
+                $(this).find('.my_icon_x').addClass('arrow_px_down')
+                $(this).find('.my_icon_x').removeClass('arrow_px_up')
+            }else if($(this).attr('dex')=='2'||$(this).attr('dex')=='0'){
+                descAndAsc='1'
+                $(this).attr('dex','1')
+                $(this).find('.my_icon_x').addClass('arrow_px_up')
+                $(this).find('.my_icon_x').removeClass('arrow_px_down')
+            }
+        }else {
+            $.each(x,function (i,it) {
+                $(it).removeClass('isType')
+                $(it).attr('dex','0')
+                $(it).find('.my_icon_x').removeClass('arrow_px_up arrow_px_down')
+                $(it).find('.my_icon_x').addClass('arrow_px_none')
+            })
+            $(this).addClass('isType')
+            $(this).find('.my_icon_x').addClass('arrow_px_up')
+            $(this).find('.my_icon_x').removeClass('arrow_px_none')
+            if($(this).attr('dex')=='1'){
+                descAndAsc='2'
+                $(this).attr('dex','2')
+                $(this).find('.my_icon_x').addClass('arrow_px_down')
+                $(this).find('.my_icon_x').removeClass('arrow_px_up')
+            }else if($(this).attr('dex')=='2'||$(this).attr('dex')=='0'){
+                descAndAsc='1'
+                $(this).attr('dex','1')
+                $(this).find('.my_icon_x').addClass('arrow_px_up')
+                $(this).find('.my_icon_x').removeClass('arrow_px_down')
+            }
+        }
+        setList()
+    })
+
+    $('#Woker_info_win .info_wkx .item').on('click',function () {
+        let list = $('#Woker_info_win .info_wkx .item')
+        if($(this).hasClass('is_item')){
+            return
+        }
+        $.each(list,function (i,it) {
+            $(it).removeClass('is_item')
+        })
+        $(this).addClass('is_item')
+        clickFunction($(this).attr('data-type'))
+    })
+
+    // $('#search_info').on('change',function () {
+    //     let x=$('.item_worker')
+    //     let m=$('.icon_g')
+    //     let m_list=[]
+    //     $.each(m,function (i,it) {
+    //         m_list.push($(it).attr('data-type'))
+    //     })
+    //     workerNameSearch=$(this).val().toLowerCase()
+    //     $.each(x,function (i,it) {
+    //        if(m_list.length==0){
+    //            if($(it).attr('data-name').indexOf(workerNameSearch)==-1){
+    //                $(it).hide()
+    //            }else {
+    //                $(it).show()
+    //            }
+    //        } else {
+    //            if($(it).attr('data-name').indexOf(workerNameSearch)!=-1&&m_list.indexOf($(it).attr('data-state'))!=-1){
+    //                $(it).show()
+    //            }else {
+    //                $(it).hide()
+    //            }
+    //        }
+    //     })
+    // })
+
+    $('#search_info').keyup(function (e) {
+        let x=$('.item_worker')
+        let m=$('.icon_g')
+        search_type_list=[]
+        $.each(m,function (i,it) {
+            $.each($(it).attr('data-type').split(','),function (j,k) {
+                search_type_list.push(k)
+            })
+        })
+        workerNameSearch=$(this).val().toLowerCase()
+        $.each(x,function (i,it) {
+            if(search_type_list.length==0){
+                if($(it).attr('data-name').indexOf(workerNameSearch)==-1){
+                    $(it).hide()
+                }else {
+                    $(it).show()
+                }
+            } else {
+                if($(it).attr('data-name').indexOf(workerNameSearch)!=-1&&search_type_list.indexOf($(it).attr('data-state'))!=-1){
+                    $(it).show()
+                }else {
+                    $(it).hide()
+                }
+            }
+        })
+    })
+
+    $('#search_info_p').keyup(function (e) {
+        let x=$('.item_worker')
+        let m=$('.icon_g')
+        search_type_list=[]
+        $.each(m,function (i,it) {
+            $.each($(it).attr('data-type').split(','),function (j,k) {
+                search_type_list.push(k)
+            })
+        })
+        workerNameSearch=$(this).val().toLowerCase()
+        $.each(x,function (i,it) {
+            if(search_type_list.length==0){
+                if($(it).attr('data-name').indexOf(workerNameSearch)==-1){
+                    $(it).hide()
+                }else {
+                    $(it).show()
+                }
+            } else {
+                if($(it).attr('data-name').indexOf(workerNameSearch)!=-1&&search_type_list.indexOf($(it).attr('data-state'))!=-1){
+                    $(it).show()
+                }else {
+                    $(it).hide()
+                }
+            }
+        })
+    })
+
+    $('.cbg').on('click',function () {
+        if($(this).find('.cbgx').hasClass('icon_g')){
+            $(this).find('.cbgx').removeClass('icon_g')
+        }else {
+            $(this).find('.cbgx').addClass('icon_g')
+        }
+        let x=$('.item_worker')
+        let m=$('.icon_g')
+        search_type_list=[]
+        $.each(m,function (i,it) {
+            $.each($(it).attr('data-type').split(','),function (j,k) {
+                search_type_list.push(k)
+            })
+        })
+        $.each(x,function (i,it) {
+            if(search_type_list.length==0){
+                if($(it).attr('data-name').indexOf(workerNameSearch)==-1){
+                    $(it).hide()
+                }else {
+                    $(it).show()
+                }
+            } else {
+                if($(it).attr('data-name').indexOf(workerNameSearch)!=-1&&search_type_list.indexOf($(it).attr('data-state'))!=-1){
+                    $(it).show()
+                }else {
+                    $(it).hide()
+                }
+            }
+        })
+    })
+}
+
+getSiteList(1)
+
+function getSiteList(type) {
+    $.ajax({
+        url:'/QUERY?SITE,SITECFG,SITESTS,STANDARD',
+        dataType:'json',
+        type:'get',
+        success:function (res) {
+            currency=res.STANDARD.currency
+            currencyValue=res.STANDARD.currencyValue
+            siteListObj=res.SITE
+            if(type==1){
+                setSiteListCard(siteListObj,1)
+            }else {
+                updataData(siteListObj)
+            }
+        }
+    })
+}
+//设置数据卡
+function setlabelCard(data) {
+    //名字
+    $('.site_name').html(data.name+'<small>(id:'+data.id+')</small>')
+    //今日收益
+    $('#ets_money').html((data.estyDay*currencyValue).toFixed(2))
+
+    //昨日同比
+    let per=0
+    if(data.estBeforeyDay!=0){
+        per=(((data.estyDay-data.estBeforeyDay)/data.estBeforeyDay)*100).toFixed(2)
+    }
+    $('#ets_bfb').html(per)
+    $('#ets_icon').removeClass('arrow_down')
+    $('#ets_icon').removeClass('arrow_up')
+    $('#ets_icon').removeClass('arrow_none')
+    if(per>0){
+        $('#ets_icon').addClass('arrow_up')
+        $('#ets_bfb').parent().removeClass('scu red')
+        $('#ets_bfb').parent().removeClass('scu')
+        $('#ets_bfb').parent().addClass('scu')
+    }else if(per<0){
+        $('#ets_icon').addClass('arrow_down')
+        $('#ets_bfb').parent().removeClass('scu red')
+        $('#ets_bfb').parent().removeClass('scu')
+        $('#ets_bfb').parent().addClass('red')
+    }else {
+        $('#ets_icon').addClass('arrow_none')
+    }
+
+    //近七日比较
+    let perW=0
+    if(data.estLastWeek!=0){
+        perW=(((data.estWeek-data.estLastWeek)/data.estLastWeek)*100).toFixed(2)
+    }
+    $('#ets_hx').html(perW)
+    $('#ets_mx').removeClass('arrow_down')
+    $('#ets_mx').removeClass('arrow_up')
+    $('#ets_mx').removeClass('arrow_none')
+    if(perW>0){
+        $('#ets_mx').addClass('arrow_up')
+        $('#ets_hx').parent().removeClass('scu red')
+        $('#ets_hx').parent().removeClass('scu')
+        $('#ets_hx').parent().addClass('scu')
+    }else if(perW<0){
+        $('#ets_mx').addClass('arrow_down')
+        $('#ets_hx').parent().removeClass('scu red')
+        $('#ets_hx').parent().removeClass('scu')
+        $('#ets_hx').parent().addClass('red')
+    }else {
+        $('#ets_mx').addClass('arrow_none')
+    }
+
+    //在线总数
+    $('#o_wk').html(data.online)
+    $('#o_sum').html(data.workers)
+
+    //故障机数
+    $('#ab_w').html(data.abnormal)
+
+    //平均温度
+    $('#avg_t').html(data.avgTem)
+    //最高转速
+    $('#avg_f').html(data.maxFan)
+
+    //效率
+    if((data.accept+data.reject)>0){
+        $('#m_xl').html(((data.accept/(data.accept+data.reject))*100).toFixed(2))
+    }else {
+        $('#m_xl').html(0)
+    }
+
+    //平均功耗
+    $('#avg_p').html(data.avgPower)
+
+    //平均功率效应
+    let m=0
+    let unit='HW'
+    if(data.power>0){
+        let x=convertHashrate(data.totalHashRate/data.power,'H/s')
+        m=x.split(' ')[0]
+        unit=x.split(' ')[1].replace('H/s','Hw')
+    }
+    $('#avg_x').html(m)
+    $('#avg_ut').html(unit)
+
+}
+//第一次渲染
+function setSiteListCard(data,type) {
+    if(data.length==0){
+        $('.worker_list').html(' <div style="margin-top: 120px;width: 100%">\n' +
+            '                <div style="text-align: center;font-size: 20px" lang-data-ht="\'Site\' is not set for this user">'+_mx('\'Site\' is not set for this user')+'</div>\n' +
+            '                <a href="/site-echarts" style="display: block;width: 150px;text-align: center;margin: 0 auto;margin-top: 20px" class="button green" lang-data-ht="Click settings">'+_mx('Click settings')+'</a>\n' +
+            '            </div>')
+        return
+    }
+    let str=''
+    let options=''
+    $.each(data,function (i,it) {
+       options+='<option value="'+it.id+'">'+it.name+'</option>'
+        let per=0
+        if(it.estBeforeyDay!=0){
+            per=(((it.estyDay-it.estBeforeyDay)/it.estBeforeyDay)*100).toFixed(2)
+        }
+        if(i==0&&type==1){
+            str+='<div class="item_card is_card" id="s_'+it.id+'" my-id="'+it.id+'" id-name="'+it.name+'" data-name-filtr="'+it.name.toLowerCase()+','+it.name_qp+','+it.name_sp+'">\n'
+            setlabelCard(it)
+            getEachartData(it.id)
+            getWorkerList(it.id,1)
+            select_site_id=it.id
+            workerListIn=setInterval("getWorkerList('"+it.id+"')",4000)
+            siteListCardIn=setInterval("getSiteList(2)",4000)
+        }else {
+            str+='<div class="item_card" id="s_'+it.id+'" my-id="'+it.id+'" id-name="'+it.name+'" data-name-filtr="'+it.name.toLowerCase()+','+it.name_qp+','+it.name_sp+'">\n'
+        }
+
+          str+='          <div class="title">'+it.name+'<small>(id:'+it.id+')</small></div>\n' +
+            '                <div class="info_card">\n' +
+            '                    <div class="info_card_t">\n' +
+            '                        <div class="sl">'+convertHashrate(speedToHash(it.totalHashRate,'H'),'H/s')+'</div>\n' +
+            '                        <div style="display: flex;justify-content: space-between">\n' +
+            '                            <div class="zx" style="margin-right: 5px"><span style="color: rgba(255,255,255,0.4)" data-tooltip="'+_mx('Online')+':'+it.online+','+_mx('Gameing')+':'+it.anyhow+','+_mx('Offline')+':'+it.offline+'"><sapn style="color:#0b9607">'+it.online+'</sapn>/<sapn style="color:#07927d">'+it.anyhow+'</sapn>/<sapn style="color:rgba(255,255,255,0.6)">'+it.offline+'</span></span></div>\n' +
+            // '                            <div class="abt">'+_mx('Offline')+' <span style="color: #fff"></span></div>\n' +
+            '                        </div>\n' +
+            '                    </div>\n' +
+            '                    <div class="info_card_b">\n' +
+            '                        <div style="display: flex;align-content: baseline">\n' +
+            '                            <div>'+_mx('EST.Y')+'</div>\n' +
+            '                            <div class="mex" style="margin-left: 10px;color: #fff">'+(it.estyDay*currencyValue).toFixed(2)+' '+currency+'</div>\n' +
+            '                        </div>\n' +
+            '                        <div class="meh" style="display: flex">\n'
+
+            if(per>0){
+              str+=  '                            <div style="margin-right: 5px;color: #52cca5">'+per+'%</div>\n' +
+                    '                            <div class="my_icon arrow_up"></div>\n'
+            }else if(per<0){
+                str+=  '                            <div style="margin-right: 5px;color: #ff5253">'+per+'%</div>\n' +
+                    '                            <div class="my_icon arrow_down"></div>\n'
+            }else {
+                str+=  '                            <div style="margin-right: 5px;color: #ff5253;display: none">'+per+'%</div>\n' +
+                    '                            <div class="my_icon arrow_down" style="display: none"></div>\n'
+            }
+
+
+           str+= '                          </div>\n' +
+                '                    </div>\n' +
+                '                </div>\n' +
+                '            </div>'
+    })
+    $('#list_card').html(str)
+    $('#select_site').html(options)
+    inciRegster()
+}
+
+//定时器渲染
+function updataData(data) {
+    $.each(data,function (i,it) {
+        let per=0
+        if(it.estBeforeyDay!=0){
+            per=(((it.estyDay-it.estBeforeyDay)/it.estBeforeyDay)*100).toFixed(2)
+        }
+        $('#s_'+it.id).find('.sl').html(convertHashrate(speedToHash(it.totalHashRate,'H'),'H/s'))
+        $('#s_'+it.id).find('.zx').html('<span style="color: rgba(255,255,255,0.4)" data-tooltip="'+_mx('Online')+':'+it.online+','+_mx('Gameing')+':'+it.anyhow+','+_mx('Offline')+':'+it.offline+'"><sapn style="color:#0b9607">'+it.online+'</sapn>/<sapn style="color:#07927d">'+it.anyhow+'</sapn>/<sapn style="color:rgba(255,255,255,0.6)">'+it.offline+'</span></span>')
+        $('#s_'+it.id).find('.mex').html((it.estyDay*currencyValue).toFixed(2)+' '+currency)
+        if(per>0){
+            $('#s_'+it.id).find('.meh').html('<div style="margin-right: 5px;color: #52cca5">'+per+'%</div><div class="my_icon arrow_up"></div>')
+        }else if(per<0){
+            $('#s_'+it.id).find('.meh').html('  <div style="margin-right: 5px;color: #ff5253">'+per+'%</div><div class="my_icon arrow_down"></div>')
+        }else {
+            $('#s_'+it.id).find('.meh').html('  <div style="margin-right: 5px;color: #ff5253;display: none">'+per+'%</div><div class="my_icon arrow_down" style="display: none"></div>')
+        }
+        if(it.id==select_site_id){
+            setlabelCard(it)
+        }
+    })
+}
+
+var workerListIn=0
+function setWorkerListDom(data) {
+    let str=''
+    let online_num=0
+    let anyhowmining_num=0
+    let anyhow_idle_num=0
+    let idle_num=0
+    let disable_num=0
+    let unable_num=0
+    let offline_num=0
+    if(data.length==0){
+        $('.worker_list').html(' <div style="margin-top: 120px;width: 100%">\n' +
+            '                <div style="text-align: center;font-size: 20px" lang-data-ht="\'Site\' is not set for this user">'+_mx('No worker have been set up in the site')+'</div>\n' +
+            '                <div onclick="downWinC()"  style="display: block;width: 150px;text-align: center;margin: 0 auto;margin-top: 20px" class="button blue" lang-data-ht="Click settings">'+_mx('Download client')+'</div>\n' +
+            '            </div>')
+        return
+    }
+    $.each(data,function(i,it){
+        //统计个状态数量
+        switch (it.info.status) {
+            case 'offline':
+                offline_num++
+                break
+            case 'online':
+                online_num++
+                break
+            case 'anyhowmining':
+                anyhowmining_num++
+                break
+            case 'anyhow_idle':
+                anyhow_idle_num++
+                break
+            case 'disable':
+                disable_num++
+                break
+            case 'unable':
+                unable_num++
+                break
+            case 'idle':
+                idle_num++
+                break
+            case 'starting':
+                idle_num++
+                break
+            default:
+                offline_num++
+                break
+        }
+        //过滤状态
+        let s_bo=''
+        if(search_type_list.length==0&&workerNameSearch==''){
+            s_bo=''
+        }else if(search_type_list.length>0&&workerNameSearch==''){
+             if (search_type_list.indexOf(it.info.status)==-1){
+                 s_bo='display: none'
+            }else {
+                 s_bo=''
+             }
+        }else if(search_type_list.length>0&&workerNameSearch!=''){
+            if (search_type_list.indexOf(it.info.status)!=-1&&it.info.name.indexOf(workerNameSearch)!=-1){
+                s_bo=''
+            }else {
+                s_bo='display: none'
+            }
+        }
+        //实时算力
+        let ss_h=Math.ceil(it.mining.hashrate.hashrate) 
+        let ss_h_unit=it.mining.hashrate.hashrate_unit
+        //矿池算力
+        let p_h=Math.ceil(it.mining.hashrate.poolspeed)
+        //拒绝率
+        let reject=0
+        if((it.mining.shares.accepted_share+it.mining.shares.rejected_share)>0){
+             reject= (it.mining.shares.rejected_share/(it.mining.shares.accepted_share+it.mining.shares.rejected_share)*100).toFixed(2)
+        }
+        let v_obj=getNumberV(it.hardware,it.info.hot,it.info.veryHot)
+        str+=' <div class="item_worker" style="'+s_bo+'" onclick="clickOpenWin('+it.info.id+',\''+it.info.name+'\',\''+it.info.status+'\')" id="w_'+it.info.id+'" data-name="'+it.info.name.toLowerCase()+'" data-state="'+it.info.status+'">\n' +
+        '                    <div class="item_head_wk '+getWorkerState(it.info.status,it.mining.hashrate.hashrate,1)+'">\n' +
+        '                        <div class="t1" data-tooltip="'+it.info.name+'">'+(it.info.name.length>9?it.info.name.substring(0,6)+'..':it.info.name)+'<div style="margin-left: 4px">('+getWorkerState(it.info.status,it.mining.hashrate.hashrate,2)+')</div></div>\n' +
+        '                        <div class="t2">'+getTime(it.info.onlineTime)+'</div>\n' +
+        '                    </div>\n' +
+        '                    <div class="worker_h_info '+getWorkerState(it.info.status,it.mining.hashrate.hashrate,3)+'">\n' +
+        '                        <div class="in_it" style="margin-left: 12px">\n' +
+        '                            <div class="t1">'+ss_h+'<small>'+ss_h_unit+'</small></div>\n' +
+        '                            <div class="t2">'+_mx3('Realtime<br>Hashrate')+'</div>\n' +
+        '                        </div>\n' +
+        '                        <div class="in_it">\n' +
+        '                            <div class="t1">'+p_h+'<small>'+ss_h_unit+'</small></div>\n' +
+        '                            <div class="t2">'+_mx3('Realtime<br>Hashrate')+'</div>\n' +
+        '                        </div>\n' +
+        '                        <div class="in_it" style="margin-right: 12px">\n' +
+        '                            <div class="t1">'+reject+'<small>%</small></div>\n' +
+        '                            <div class="t2">'+_mx3('Rejection<br>Hashrate')+'</div>\n' +
+        '                        </div>\n' +
+        '                    </div>\n' +
+        '                    <div class="GPU_list_wk">\n' +
+        '                        <div class="GPU_c">\n' +
+        '                            <div style="display: flex;">\n'
+         $.each(it.hardware,function(ic,ix){
+            str+='<div data-tooltip="#'+(ic+1)+'" worker-id="'+it.info.id+'" colorBG="'+getWorkerState(ix.status)+'" data-bus="'+(ic+1)+'" class="bgk '+getWorkerState(ix.status)+'" onclick="showGPUwin(this)"></div>'
+         })   
+        str+='                            </div>\n' +
+        '                        </div>\n' +
+        '                        <div class="v_wk">\n'
+        if(v_obj.num>0){
+            str+='<div>'+v_obj.name+' ('+v_obj.num+')</div>\n'+
+            '<div>'+_mx3('Max.')+' <span style="color: '+v_obj.tempC+';font-size: 16px">'+v_obj.temp+'°C</span></div>\n'
+        }
+        else{
+            str+='<div style="height:32px"></div>\n'+
+                    '<div><span style="color: #ff564f;font-size: 16px"></span></div>\n'
+        }
+       
+       str+= '                        </div>\n' +
+        '                    </div>\n' +
+        '                    <div class="echarts_wk" id="cm'+it.info.id+'">\n' +
+           _mx3('No Data') +
+        '                    </div>\n' +
+        '                </div>'
+    })
+
+    $('#online_num').html(online_num)
+    $('#anyhowmining_num').html(anyhowmining_num)
+    $('#anyhow_idle_num').html(anyhow_idle_num)
+    $('#idle_num').html(idle_num)
+    $('#disable_num').html(disable_num)
+    $('#offline_num').html(offline_num)
+    $('#unable_num').html(unable_num)
+
+    $('.worker_list').html(str)
+    setFromData(worker_eachart)
+
+}
+
+function setEchrts(id,data,xz) {
+   let x=id
+   let myChart= echarts.init(document.getElementById(x));
+    var option = {
+        backgroundColor: '#343d52',//背景色
+        grid:{
+            left:'0px',
+            right:'0px',
+            top:'0px',
+            bottom:'0px'
+        },
+        tooltip: {
+            trigger: 'axis',
+            backgroundColor:'#343d52',
+            borderColor:'#343d52',
+            textStyle: { // 提示框浮层的文本样式。
+                color: '#fff',
+                fontStyle: 'normal',
+                fontWeight: 'normal',
+                fontFamily: 'sans-serif',
+                fontSize: 14,
+            },
+            formatter: function(arg) {
+                let str='<div style="display: flex;justify-content: left;align-items: center">'+getData(arg[0].name,2)+'</div>'
+                $.each(arg,function (i,it) {
+                    if(it.seriesName==_mxEc('hashrate')||it.seriesName==_mxEc('pool')){
+                        str+='<div style="display: flex;justify-content: left;align-items: center">'+it.marker+' '+it.seriesName+': '+convertHashrate(speedToHash(it.value,'H'),'H/s')+'</div>'
+                    }
+                    // if(it.seriesName==_mxEc('latency')){
+                    //     str+='<div style="display: flex;justify-content: left;align-items: center">'+it.marker+' '+it.seriesName+': '+it.value+'ms</div>'
+                    // }
+                    // if(it.seriesName==_mxEc('pow')){
+                    //     str+='<div style="display: flex;justify-content: left;align-items: center">'+it.marker+' '+it.seriesName+': '+wattOutput(it.value)+'</div>'
+                    // }
+                    // if(it.seriesName==_mxEc('fan')){
+                    //     str+='<div style="display: flex;justify-content: left;align-items: center">'+it.marker+' '+it.seriesName+': '+it.value+'%</div>'
+                    // }
+                    // if(it.seriesName==_mxEc('temp')){
+                    //     str+='<div style="display: flex;justify-content: left;align-items: center">'+it.marker+' '+it.seriesName+': '+it.value+'°C</div>'
+                    // }
+                    // if(it.seriesName==_mxEc('send')||it.seriesName==_mxEc('rejected')){
+                    //     str+='<div style="display: flex;justify-content: left;align-items: center">'+it.marker+' '+it.seriesName+': '+it.value+'</div>'
+                    // }
+                })
+                return str
+            }
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: xz
+        },
+        yAxis: {
+            type: 'value',
+            "splitLine": {     //网格线
+                "show": false
+            },
+        },
+        series:data
+    };
+    myChart.clear()
+    myChart.setOption(option,true)
+}
+
+//显示GPU信息弹窗
+function showGPUwin(e) {
+    let m=$(e)
+    // console.log(m.attr('worker-id'))
+
+    let dataV=[]
+    let workerName=''
+    $.each(workersListObj,function (i,it) {
+        if(it.info.id==m.attr('worker-id')){
+            dataV=it
+            workerName=it.info.name
+        }
+    })
+    let hot = dataV.info.hot
+    let vhot = dataV.info.veryHot
+    $('#w_name').html(workerName)
+    $.each(dataV.hardware,function(i,it){
+        if((i+1)==m.attr('data-bus')){
+            $('#g_bh').html('#'+(i+1))
+            $('#g_typ').html(it.name.indexOf('NVIDIA GeForce')!=-1?it.name.split('NVIDIA GeForce')[1]:it.name)
+            $('#g_wd').html(it.temp)
+            $('#g_wd').css('color',getHot(it.temp,hot,vhot))
+            $('#g_wd_u').css('color',getHot(it.temp,hot,vhot))
+            $('#g_sl').html(Math.ceil(it.speed))
+            $('#g_js').html(Math.ceil(it.speed))
+            if((it.reject+it.accept)>0){
+                $('#jjl').html((it.reject/(it.reject+it.accept)*100).toFixed(2))
+            }else{
+                $('#jjl').html(0)
+            }
+            getGPUItemInfo(m.attr('worker-id'),(i+1))
+        }
+    })
+    $('#GPU_Win').show()
+    $('#vxc_bg').addClass(m.attr('colorBG'))
+    $('.popupbackground').fadeIn()
+    event.stopPropagation()
+}
+//关闭GPU信息窗口
+function closeGPUwin() {
+    $('#GPU_Win').hide()
+    $('#g_bh').html('')
+    $('#g_typ').html('')
+    $('#g_wd').html('')
+    $('#g_sl').html('')
+    $('#g_js').html('')
+    $('#jjl').html('')
+    $('#win_echatrs').html( _mx3('No Data'))
+    $('.popupbackground').fadeOut()
+}
+
+$('.popupbackground').on('click',function () {
+    $('.popup').hide()
+    $('.popupbackground').fadeOut()
+    closeGPUwin()
+    clickCloseWin()
+    closeEd()
+})
+
+//获取场所机器ID
+function getWorkerList(id,type) {
+    $.ajax({
+        url:'query?WORKERS2',
+        data:{
+            WORKERS2NID:id,
+        },
+        dataType:'json',
+        type:'post',
+        success:function (res) {
+            if(type==1){
+                workersListObj=res.WORKERS2
+                setList()
+            }else{
+                workersListObjIn=res.WORKERS2
+                setIntDom()
+            }
+        }
+    })
+}
+
+//获取计算数据
+function getEachartData(id) {
+    $.ajax({
+        url:'query?STATISTIC,STATISTICHR,STATISTICPHR',
+        async:false,
+        data:{
+            STATISTICNID:id,
+        },
+        dataType:'json',
+        type:'post',
+        success:function (res) {
+            worker_eachart=res.STATISTIC[id]
+        }
+    })
+}
+//排序
+function setList(){
+
+    workersListObj.sort(function(row1,row2){
+         switch (sortType) {
+             case "1":
+                 if(descAndAsc=='1'){
+                     var a=row1.info.name
+                     var b=row2.info.name
+                 }else if(descAndAsc=='2'){
+                     var b=row1.info.name
+                     var a=row2.info.name
+                 }
+                 break
+             case "2":
+                 if(descAndAsc=='1'){
+                     var a=getWorkerState(row1.info.status,row1.mining.hashrate.hashrate,4)
+                     var b=getWorkerState(row2.info.status,row2.mining.hashrate.hashrate,4)
+                 }else if(descAndAsc=='2'){
+                     var b=getWorkerState(row1.info.status,row1.mining.hashrate.hashrate,4)
+                     var a=getWorkerState(row2.info.status,row2.mining.hashrate.hashrate,4)
+                 }
+
+                 break
+             case "3":
+                 if(descAndAsc=='1'){
+                     var a=row1.mining.hashrate.hashrate
+                     var b=row2.mining.hashrate.hashrate
+                 }else if(descAndAsc=='2'){
+                     var b=row1.mining.hashrate.hashrate
+                     var a=row2.mining.hashrate.hashrate
+                 }
+
+                 break
+             case "4":
+                 if(descAndAsc=='1'){
+                     var a=-1
+                     var b=-1
+                     if(row1.hardware.length>0){
+                         a=row1.hardware[0].temp
+                     }
+                     if(row2.hardware.length>0){
+                         b=row2.hardware[0].temp
+                     }
+                 }else if(descAndAsc=='2'){
+                     var a=-1
+                     var b=-1
+                     if(row1.hardware.length>0){
+                         b=row1.hardware[0].temp
+                     }
+                     if(row2.hardware.length>0){
+                         a=row2.hardware[0].temp
+                     }
+                 }
+                 break
+             case "5":
+                 if(descAndAsc=='1'){
+                     var a=row1.info.onlineTime
+                     var b=row2.info.onlineTime
+                 }else if(descAndAsc=='2'){
+                     var b=row1.info.onlineTime
+                     var a=row2.info.onlineTime
+                 }
+                 break
+         }
+        if(sortType=='1'){
+            return a.localeCompare(b,'zh-CN')
+        }
+        if (a > b) return 1;
+        else if (a < b) return -1;
+        return 0;
+    })
+    setWorkerListDom(workersListObj)
+}
+
+//机器状态获取
+function getWorkerState(type,vax,h){
+     switch(type){
+         case 'normal':
+             return 'col1'
+         case 'offline':
+             if(h==1){
+                return 'col5'
+             }else if(h==2){
+                return _mx('Offline')
+             }else if(h==3){
+                // return 'col55'
+                return 'col5'
+             }else if(h==4){
+                 return 7
+             }
+         case 'online':
+            if(h==1){
+                return 'col1'
+             }else if(h==2){
+                return _mx('Normal')
+             }else if(h==3){
+                return 'col1'
+                // return 'col11'
+             }else if(h==4){
+                return 1
+            }
+         case 'anyhowmining':
+            if(h==1){
+                return 'col2'
+             }else if(h==2){
+                return _mx('Part work')
+             }else if(h==3){
+                return 'col2'
+                // return 'col22'
+             }else if(h==4){
+                return 3
+            }
+        case 'anyhow_idle':
+            if(h==1){
+                return 'col3'
+             }else if(h==2){
+                return _mx('Occupied')
+             }else if(h==3){
+                return 'col3'
+                // return 'col33'
+             }else if(h==4){
+                return 2
+            }
+         case 'disable':
+            if(h==1){
+                return 'col6'
+             }else if(h==2){
+                return _mx('MNF')
+             }  else if(h==3){
+                return 'col6'
+                // return 'col66'
+             }else if(h==4){
+                return 4
+            }
+         case 'unable':
+            if(h==1){
+                return 'col7'
+             }else if(h==2){
+                return _mx('UAM')
+             } else if(h==3){
+                return 'col7'
+                // return 'col77'
+             }else if(h==4){
+                return 5
+            }
+        case 'idle':
+            if(h==1){
+                return 'col4'
+             }else if(h==2){
+                return _mx('Idle')
+             } else if(h==3){
+                return 'col4'
+                // return 'col44'
+             }else if(h==4){
+                return 5
+            }
+        case 'starting':
+            if(h==1){
+                return 'col4'
+             }else if(h==2){
+                return _mx('starting')
+             } else if(h==3){
+                return 'col4'
+                // return 'col44'
+             }else if(h==4){
+                return 5
+            }
+         default :
+             if(h==1){
+                 return 'col5'
+             }else if(h==2){
+                 return _mx('Offline')
+             }else if(h==3){
+                 return 'col5'
+                 // return 'col55'
+             }else if(h==4){
+                 return 7
+             }
+     }   
+}
+
+//显卡分组
+function getNumberV(data,hot,vhot){
+  let obj={}
+  let temp=0
+  let tempC='#fff'
+  $.each(data,function(i,it){
+      if(obj[it.name]==undefined){
+          obj[it.name]=1
+      }else{
+          obj[it.name]=obj[it.name]+1
+      }
+      if(it.temp>temp){
+          temp=it.temp
+      }
+  })
+  if(temp>=hot){
+    tempC='#ffe14c' 
+  }
+  if(temp>=vhot){
+    tempC='#ff564f'
+  }
+  let str={
+      name:'',num:0,temp:temp,tempC:tempC
+  }
+  $.each(obj,function(i,it){
+      if(str.num<it){
+          str.name=i
+          str.num=it
+      }
+  })
+
+  if(str.name.indexOf('NVIDIA GeForce')!=-1){
+      str.name=str.name.split('NVIDIA GeForce')[1]
+  }
+  if(str.name.indexOf('AMD Radeon')!=-1){
+      str.name=str.name.split('AMD Radeon')[1]
+  }
+  return str
+}
+
+function getHot(num,hot,vhot){
+    let tempC='#fff'
+    if(num>=hot){
+        tempC='#ffe14c' 
+      }
+      if(num>=vhot){
+        tempC='#ff564f'
+      }
+      return tempC
+}
+
+//获取天数
+function getTime(num){
+   let d=num/86400
+   let h=num/60/60
+   let m=parseInt(num/60)%60
+   if(d>1){
+       return d.toFixed(1)+'天'
+   }else if(h>1){
+       return h.toFixed(1)+'时'
+   }else{
+       return m.toFixed(1)+'分'
+   }
+}
+
+//定时器渲染机器节点
+function setIntDom(){
+    let status=false
+    let addList=[]
+
+    $.each(workersListObj,function(i,it){
+        let x=0
+          $.each(workersListObjIn,function(j,k){
+                if(j==i){
+                    x=1
+                }
+          })
+        if(!x){
+          $('#w_'+i).remove()
+          status=true
+        }    
+    })
+    //深度复制
+    workersListObj=JSON.parse(JSON.stringify(workersListObjIn))
+    let online_num=0
+    let anyhowmining_num=0
+    let anyhow_idle_num=0
+    let idle_num=0
+    let disable_num=0
+    let unable_num=0
+    let offline_num=0
+    $.each(workersListObj,function(i,it){
+        //统计个状态数量
+        switch (it.info.status) {
+            case 'offline':
+                offline_num++
+                break
+            case 'online':
+                online_num++
+                break
+            case 'anyhowmining':
+                anyhowmining_num++
+                break
+            case 'anyhow_idle':
+                anyhow_idle_num++
+                break
+            case 'disable':
+                disable_num++
+                break
+            case 'unable':
+                unable_num++
+                break
+            case 'idle':
+                idle_num++
+                break
+            case 'starting':
+                idle_num++
+                break
+            default:
+                offline_num++
+                break
+        }
+        //过滤状态
+        let s_bo=''
+        if(search_type_list.length==0&&workerNameSearch==''){
+            s_bo=''
+        }else if(search_type_list.length>0&&workerNameSearch==''){
+            if (search_type_list.indexOf(it.info.status)==-1){
+                s_bo='display: none'
+            }else {
+                s_bo=''
+            }
+        }else if(search_type_list.length>0&&workerNameSearch!=''){
+            if (search_type_list.indexOf(it.info.status)!=-1&&it.info.name.indexOf(workerNameSearch)!=-1){
+                s_bo=''
+            }else {
+                s_bo='display: none'
+            }
+        }
+        //实时算力
+        let ss_h=Math.ceil(it.mining.hashrate.hashrate)
+        let ss_h_unit=it.mining.hashrate.hashrate_unit
+        //矿池算力
+        let p_h=Math.ceil(it.mining.hashrate.poolspeed)
+        //拒绝率
+        let reject=0
+        if((it.mining.shares.accepted_share+it.mining.shares.rejected_share)>0){
+            reject= (it.mining.shares.rejected_share/(it.mining.shares.accepted_share+it.mining.shares.rejected_share)*100).toFixed(2)
+        }
+        let v_obj=getNumberV(it.hardware,it.info.hot,it.info.veryHot)
+        if($('#w_'+it.info.id)!=undefined){
+            $('#w_'+it.info.id).attr('data-state',it.info.status)
+            $('#w_'+it.info.id+' .item_head_wk').removeClass('col1 col2 col3 col4 col5 col6 col7')
+            $('#w_'+it.info.id+' .item_head_wk').addClass(getWorkerState(it.info.status,it.mining.hashrate.hashrate,1))
+            $('#w_'+it.info.id+' .item_head_wk').html('<div class="t1" data-tooltip="'+it.info.name+'">'+(it.info.name.length>9?it.info.name.substring(0,6)+'..':it.info.name)+'<div style="margin-left: 4px">('+getWorkerState(it.info.status,it.mining.hashrate.hashrate,2)+')</div></div><div class="t2">'+getTime(it.info.onlineTime)+'</div>\n')
+            
+            // $('#w_'+it.info.id+' .worker_h_info').removeClass('col11 col22 col33 col44 col55 col66 col77')
+            $('#w_'+it.info.id+' .worker_h_info').removeClass('col1 col2 col3 col4 col5 col6 col7')
+            $('#w_'+it.info.id+' .worker_h_info').addClass(getWorkerState(it.info.status,it.mining.hashrate.hashrate,3))
+            $('#w_'+it.info.id+' .worker_h_info').html('<div class="in_it" style="margin-left: 12px">\n' +
+            '                            <div class="t1">'+ss_h+'<small>'+ss_h_unit+'</small></div>\n' +
+            '                            <div class="t2">'+_mx3('Realtime<br>Hashrate')+'</div>\n' +
+            '                        </div>\n' +
+            '                        <div class="in_it">\n' +
+            '                            <div class="t1">'+p_h+'<small>'+ss_h_unit+'</small></div>\n' +
+            '                            <div class="t2">'+_mx3('Accept<br>Hashrate')+'</div>\n' +
+            '                        </div>\n' +
+            '                        <div class="in_it" style="margin-right: 12px">\n' +
+            '                            <div class="t1">'+reject+'<small>%</small></div>\n' +
+            '                            <div class="t2">'+_mx3('Rejection<br>Hashrate')+'</div>\n' +
+            '                        </div>\n')
+
+            var str_x='<div class="GPU_c">'+
+                        '<div style="display: flex;justify-content: space-between">'+
+            $.each(it.hardware,function(ic,ix){
+                str_x+='<div data-tooltip="#'+(ic+1)+'" worker-id="'+it.info.id+'" data-bus="'+(ic+1)+'" class="bgk '+getWorkerState(ix.status)+'" onclick="showGPUwin(this)"></div>'
+            })
+            str_x+='</div>'+
+                    '</div>'+
+                    '<div class="v_wk">'
+            if(v_obj.num>0){
+                str_x+='<div>'+v_obj.name+' ('+v_obj.num+')</div>\n'+
+                '<div>'+_mx3('Max.')+' <span style="color: '+v_obj.tempC+';font-size: 16px">'+v_obj.temp+'°C</span></div>\n'
+                }
+            else{
+                str_x+='<div style="height:32px"></div>\n'+
+                '<div><span style="color: #ff564f;font-size: 16px"></span></div>\n'
+                }
+            str_x+='</div>'
+              $('#w_'+i+' .GPU_list_wk').html(str_x)
+        }else{
+            status=true
+            var str_m=''
+            str_m+=' <div class="item_worker" style="'+s_bo+'" onclick="clickOpenWin('+it.info.id+',\''+it.info.name+'\',\''+it.info.status+'\')" id="w_'+it.info.id+'" data-name="'+it.info.name.toLowerCase()+'" data-state="'+it.info.status+'">\n' +
+              '                    <div class="item_head_wk '+getWorkerState(it.info.status,it.mining.hashrate.hashrate,1)+'">\n' +
+              '                        <div class="t1">'+it.info.name+'<div style="margin-left: 4px">('+getWorkerState(it.info.status,it.mining.hashrate.hashrate,2)+')</div></div>\n' +
+              '                        <div class="t2">'+getTime(it.info.onlineTime)+'</div>\n' +
+              '                    </div>\n' +
+              '                    <div class="worker_h_info '+getWorkerState(it.info.status,it.mining.hashrate.hashrate,3)+'">\n' +
+              '                        <div class="in_it" style="margin-left: 12px">\n' +
+              '                            <div class="t1">'+ss_h+'<small>'+ss_h_unit+'</small></div>\n' +
+              '                            <div class="t2">'+_mx3('Realtime<br>Hashrate')+'</div>\n' +
+              '                        </div>\n' +
+              '                        <div class="in_it">\n' +
+              '                            <div class="t1">'+p_h+'<small>'+ss_h_unit+'</small></div>\n' +
+              '                            <div class="t2">'+_mx3('Realtime<br>Hashrate')+'</div>\n' +
+              '                        </div>\n' +
+              '                        <div class="in_it" style="margin-right: 12px">\n' +
+              '                            <div class="t1">'+reject+'<small>%</small></div>\n' +
+              '                            <div class="t2">'+_mx3('Rejection<br>Hashrate')+'</div>\n' +
+              '                        </div>\n' +
+              '                    </div>\n' +
+              '                    <div class="GPU_list_wk">\n' +
+              '                        <div class="GPU_c">\n' +
+              '                            <div style="display: flex;">\n'
+               $.each(it.hardware,function(ic,ix){
+                   str_m+='<div data-tooltip="#'+(ic+1)+'" worker-id="'+it.info.id+'" data-bus="'+(ic+1)+'" class="bgk '+getWorkerState(ix.status)+'" onclick="showGPUwin(this)"></div>'
+               })
+            str_m+='                            </div>\n' +
+              '                        </div>\n' +
+              '                        <div class="v_wk">\n'
+              if(v_obj.num>0){
+                  str_m+='<div>'+v_obj.name+' ('+v_obj.num+')</div>\n'+
+                  '<div>'+_mx3('Max.')+' <span style="color: '+v_obj.tempC+';font-size: 16px">'+v_obj.temp+'°C</span></div>\n'
+              }
+              else{
+                  str_m+='<div style="height:32px"></div>\n'+
+                          '<div><span style="color: #ff564f;font-size: 16px"></span></div>\n'
+              }
+
+            str_m+= '                        </div>\n' +
+              '                    </div>\n' +
+              '                    <div class="echarts_wk" id="cm'+it.info.id+'">\n' +
+              _mx3('No Data') +
+              '                    </div>\n' +
+              '                </div>'
+              }
+            addList.push(it.info.id)
+            $('.worker_list').append(str_m)
+            // setEchrts(i)
+    })
+
+    $('#online_num').html(online_num)
+    $('#anyhowmining_num').html(anyhowmining_num)
+    $('#anyhow_idle_num').html(anyhow_idle_num)
+    $('#idle_num').html(idle_num)
+    $('#disable_num').html(disable_num)
+    $('#offline_num').html(offline_num)
+    $('#unable_num').html(unable_num)
+    // setList()
+    if(status){
+        getEachartData()
+    }
+}
+
+//设置弹窗表格
+function setWinEacharts(x,y,h,s) {
+    let xmx=$('#win_eachrts .xm_e')[0]
+    let myChart= echarts.init(xmx);
+    let option={
+        grid:{
+            left:'10px',
+            right:'10px',
+            top:'40px',
+            bottom:'20px'
+        },
+        tooltip: {
+            trigger: 'axis',
+            backgroundColor:'#343d52',
+            borderColor:'#343d52',
+            textStyle: { // 提示框浮层的文本样式。
+                color: '#fff',
+                fontStyle: 'normal',
+                fontWeight: 'normal',
+                fontFamily: 'sans-serif',
+                fontSize: 14,
+            },
+            formatter: function(arg) {
+                let str='<div style="display: flex;justify-content: left;align-items: center">'+getData(arg[0].name,2)+'</div>'
+                $.each(arg,function (i,it) {
+                  if(it.seriesName==_mxEc('hashrate')||it.seriesName==_mxEc('pool')){
+                     str+='<div style="display: flex;justify-content: left;align-items: center">'+it.marker+' '+it.seriesName+': '+convertHashrate(speedToHash(it.value,'H'),'H/s')+'</div>'
+                  }
+                  if(it.seriesName==_mxEc('latency')){
+                     str+='<div style="display: flex;justify-content: left;align-items: center">'+it.marker+' '+it.seriesName+': '+it.value+'ms</div>'
+                  }
+                  if(it.seriesName==_mxEc('pow')){
+                     str+='<div style="display: flex;justify-content: left;align-items: center">'+it.marker+' '+it.seriesName+': '+wattOutput(it.value)+'</div>'
+                  }
+                  if(it.seriesName==_mxEc('fan')){
+                     str+='<div style="display: flex;justify-content: left;align-items: center">'+it.marker+' '+it.seriesName+': '+it.value+'%</div>'
+                  }
+                  if(it.seriesName==_mxEc('temp')){
+                     str+='<div style="display: flex;justify-content: left;align-items: center">'+it.marker+' '+it.seriesName+': '+it.value+'°C</div>'
+                  }
+                  if(it.seriesName==_mxEc('send')||it.seriesName==_mxEc('rejected')){
+                     str+='<div style="display: flex;justify-content: left;align-items: center">'+it.marker+' '+it.seriesName+': '+it.value+'</div>'
+                  }
+                })
+                return str
+            }
+        },
+        legend: {
+            top: 5,
+            icon:'circle',
+            formatter: [
+                '{a|{name}}'
+            ].join('\n'),
+            selected:s,
+            textStyle: {
+                color:'#fff',
+                fontSize:13,
+                height: 8,
+                rich: {
+                    a: {
+                        verticalAlign: 'bottom',
+                    },
+                }
+            },
+            data: h
+        },
+        xAxis: [
+            {
+                axisLabel: {
+                    formatter: function (a) {
+                        return getData(a,1);
+                    }
+                },
+                type: 'category',
+                data: x,
+                boundaryGap:false,
+            }
+        ],
+        yAxis: [
+            {//第一个y轴位置在左侧
+                position:'left',
+                type : 'value',
+                axisLabel: {
+                    formatter: function () {
+                        return "";
+                    }
+                },
+                dispaly: "none",
+                "axisLine": {       //y轴
+                    "show": false
+                },
+                "axisTick": {       //y轴刻度线
+                    "show": false
+                },
+                "splitLine": {     //网格线
+                    lineStyle:{
+                        'color':['#6e7079']
+                    },
+                    "show": false
+                },
+                display:'none',
+            },{//第一个y轴位置在左侧
+                position:'left',
+                type : 'value',
+                axisLabel: {
+                    formatter: function () {
+                        return "";
+                    }
+                },
+                dispaly: "none",
+                "axisLine": {       //y轴
+                    "show": false
+                },
+                "axisTick": {       //y轴刻度线
+                    "show": false
+                },
+                "splitLine": {     //网格线
+                    lineStyle:{
+                        'color':['#6e7079']
+                    },
+                    "show": false
+                },
+                display:'none',
+            },{//第一个y轴位置在左侧
+                position:'left',
+                type : 'value',
+                axisLabel: {
+                    formatter: function () {
+                        return "";
+                    }
+                },
+                dispaly: "none",
+                "axisLine": {       //y轴
+                    "show": false
+                },
+                "axisTick": {       //y轴刻度线
+                    "show": false
+                },
+                "splitLine": {     //网格线
+                    lineStyle:{
+                        'color':['#6e7079']
+                    },
+                    "show": false
+                },
+                display:'none',
+            },{//第一个y轴位置在左侧
+                position:'left',
+                type : 'value',
+                axisLabel: {
+                    formatter: function () {
+                        return "";
+                    }
+                },
+                dispaly: "none",
+                "axisLine": {       //y轴
+                    "show": false
+                },
+                "axisTick": {       //y轴刻度线
+                    "show": false
+                },
+                "splitLine": {     //网格线
+                    lineStyle:{
+                        'color':['#6e7079']
+                    },
+                    "show": false
+                },
+                display:'none',
+            },{//第一个y轴位置在左侧
+                position:'left',
+                type : 'value',
+                axisLabel: {
+                    formatter: function () {
+                        return "";
+                    }
+                },
+                dispaly: "none",
+                "axisLine": {       //y轴
+                    "show": false
+                },
+                "axisTick": {       //y轴刻度线
+                    "show": false
+                },
+                "splitLine": {     //网格线
+                    lineStyle:{
+                        'color':['#6e7079']
+                    },
+                    "show": false
+                },
+                display:'none',
+            }
+        ],
+        series: y
+    }
+    myChart.setOption(option)
+}
+
+//列表数据整理
+function setFromData(data) {
+    let obj={}
+    let count=0
+    // let datex=[]
+    $.each(data,function (i,it) {
+        obj[i]=[]
+        let datex=[]
+        $.each(it,function (j,k) {
+            count=0
+            $.each(k,function (m,x) {
+                datex=[]
+                let y=[]
+                $.each(x,function (n,h) {
+                    datex.push(n)
+                    y.push(h)
+                })
+                // console.log(count++)
+                let name_x=''
+                if(m=='poolspeed'){
+                    name_x='pool'
+                }else {
+                    name_x=m
+                }
+                let xx={
+                    name:_mxEc(name_x),
+                    data: y,
+                    type: 'line',
+                    // symbol:'none',
+                    showSymbol: false,
+                    itemStyle: {
+                        normal: {
+                            color: color_list[count],
+                            lineStyle:{
+                                width:1//设置线条粗细
+                            }
+                        }
+                    },
+                    areaStyle:{
+                        normal:{
+                            color:new echarts.graphic.LinearGradient(0,0,0,1,[
+                                {
+                                    offset: 0,
+                                    color:color_list[count]+'77'
+                                },{
+                                    offset: 1,
+                                    color:"rgba(75,199,212,0)"
+                                }
+                            ])
+                        }
+                    },
+                    smooth: true
+                }
+                count++
+                obj[i].push(xx)
+            })
+        })
+        setEchrts('cm'+i,obj[i],datex)
+    })
+}
+
+//请求单张显卡数据
+function getGPUItemInfo(wid,gid) {
+   $.ajax({
+       url:'/query?STATISTICVDO',
+       dataType:'json',
+       type:'post',
+       data:{
+           STATISTICVDOMID:wid,
+           STATISTICVDOVIDX:gid
+       },
+       success:function (res) {
+            let xz=[]
+            let objy=[]
+            let count=0
+            $.each(res.STATISTICVDO[gid],function (i,it) {
+                count=0
+                $.each(it,function (j,k) {
+                    let y=[]
+                    xz=[]
+                    $.each(k,function (m,x) {
+
+                        y.push(x)
+                        xz.push(m)
+                    })
+                    count++
+                    let name_x=''
+                    if(j=='poolspeed'){
+                        name_x='pool'
+                    }else {
+                        name_x=j
+                    }
+                    let xx={
+                        name:_mxEc(name_x),
+                        data: y,
+                        type: 'line',
+                        // symbol:'none',
+                        showSymbol: false,
+                        itemStyle: {
+                            normal: {
+                                color: color_list[count],
+                                lineStyle:{
+                                    width:1//设置线条粗细
+                                }
+                            }
+                        },
+                        areaStyle:{
+                            normal:{
+                                color:new echarts.graphic.LinearGradient(0,0,0,1,[
+                                    {
+                                        offset: 0,
+                                        color:color_list[count]+'77'
+                                    },{
+                                        offset: 1,
+                                        color:"rgba(75,199,212,0)"
+                                    }
+                                ])
+                            }
+                        },
+                        smooth: true
+                    }
+                    objy.push(xx)
+                })
+            })
+           // $('#win_echatrs').html('暂无数据')
+           $('#win_echatrs').remove()
+           $('#GPU_Win .text').append('<div class="GPU_echart" id="win_echatrs">\n' +
+               _mx3('No Data')+
+               '            </div>')
+           setEchrts('win_echatrs',objy,xz)
+       }
+   })
+}
+
+var cachex=undefined
+var textLog=""
+var isScrollLock=true
+var lockNumbe=1
+//获取弹窗软件日志数据
+function getLogText() {
+    $.ajax({
+        url:`/softlog?mid=${logMinId}&cache=${cachex}`,
+        dataType:'json',
+        type:'post',
+        success:function (res) {
+            if(res.type=="wait"){
+                $('#pre_win_1').html('无日志')
+            }else if(res.type=="new"){
+                let str=res.context.replace(/[<]/g,"&lt;").replace(/\r\n/g,"<br>")
+                $('#pre_win_1').html(str)
+                if($('#pre_win_1').is(':visible')){
+                    $('#pre_win_1')[0].scrollTop= $('#pre_win_1')[0].scrollHeight
+                }
+            }else {
+                let str=res.context.replace(/[<]/g,"&lt;").replace(/\r\n/g,"<br>")
+                if($('#pre_win_1').is(':visible')){
+                    if(getScrollState(1)){
+                        $('#pre_win_1').append(str)
+                        $('#pre_win_1')[0].scrollTop= $('#pre_win_1')[0].scrollHeight
+                    }else {
+                        if(!isScrollLock){
+                            isScrollLock=true
+                            lockNumbe= setTimeout(function () {
+                                $('#pre_win_1')[0].scrollTop= $('#pre_win_1')[0].scrollHeight
+                                isScrollLock=false
+                            },1000*60*3)
+                        }
+                    }
+                }
+            }
+            cachex=res.cache
+        }
+    })
+}
+
+//获取核心日志数据
+function minerlog() {
+    $.ajax({
+        url:`/minerlog?mid=${logMinId}&cache=${cachex}`,
+        dataType:'json',
+        type:'post',
+        success:function (res) {
+            if(res.type=="wait"){
+                $('#pre_win_2').html('无日志')
+            }else if(res.type=="new"){
+                let str=res.context.replace(/[<]/g,"&lt;").replace(/\r\n/g,"<br>")
+                $('#pre_win_2').html(str)
+                if($('#pre_win_2').is(':visible')){
+                    $('#pre_win_2')[0].scrollTop= $('#pre_win_2')[0].scrollHeight
+                }
+            }else {
+                let str=res.context.replace(/[<]/g,"&lt;").replace(/\r\n/g,"<br>")
+                if($('#pre_win_2').is(':visible')){
+                    if(getScrollState(2)){
+                        $('#pre_win_2').append(str)
+                        $('#pre_win_2')[0].scrollTop= $('#pre_win_2')[0].scrollHeight
+                    }else {
+                        if(!isScrollLock){
+                            isScrollLock=true
+                            lockNumbe= setTimeout(function () {
+                                $('#pre_win_2')[0].scrollTop= $('#pre_win_2')[0].scrollHeight
+                                isScrollLock=false
+                            },1000*60*3)
+                        }
+                    }
+                }
+            }
+            cachex=res.cache
+        }
+    })
+}
+
+//开启大弹窗
+function clickOpenWin(id,name,type) {
+    logMinId=id
+    $('#Woker_info_win').attr('my-id',id)
+    $('#Woker_info_win').show()
+    $('#inf_xxx').html(name)
+    $('.popupbackground').fadeIn()
+    setClickWin(type,name)
+    getInfoEachart(id)
+}
+
+//关闭大弹窗
+function clickCloseWin() {
+    $('#Woker_info_win').attr('my-id','')
+    $('#Woker_info_win').hide()
+    clearInterval(logInt)
+    let list = $('#Woker_info_win .info_wkx .item')
+    let xlist= $('#ha_wk .lav_ut .che_item input')
+    $('#ha_wk').show()
+    $('#pre_win_1').hide()
+    $('#pre_win_2').hide()
+    $('#pre_win_3').hide()
+    $('#img_win').hide()
+    $('.oc_wk').hide()
+    $('#pre_win_1').html('')
+    $('#pre_win_2').html('')
+    $('#pre_win_3').html('')
+    $('#oclink').attr('onclick','')
+    $('#oc_name').val('')
+    $('#power').val('')
+    $('#temp').val('')
+    $('#core').val('')
+    $('#mem').val('')
+    $('#mvolt').val('')
+    $('#cvolt').val('')
+    $('#fan').val('')
+    $('#imgWin_1').val('#')
+    $('#imgWin_2').show()
+    $('#imgWin_1').hide()
+    $.each(xlist,function (i,it) {
+        $(it).removeAttr('checked')
+        if(i==0){
+            $(it).attr('checked','checked')
+        }
+    })
+
+    $.each(list,function (i,it) {
+        $(it).removeClass('is_item')
+        if(i==0){
+            $(it).addClass('is_item')
+        }
+    })
+
+    $('#win_eachrts').html('<div style="width: 100%;height: 100%" class="xm_e">\n' +
+        _mx3('No Data') +
+        '                </div>')
+    $('.popupbackground').fadeOut()
+}
+
+//错误日志
+function getLogErr() {
+    $.ajax({
+        url:`/errlog?mid=${logMinId}&cache=${cachex}`,
+        dataType:'json',
+        type:'post',
+        success:function (res) {
+            if(res.type=="wait"){
+                $('#pre_win_3').html('无日志')
+            }else if(res.type=="new"){
+                let str=res.context.replace(/[<]/g,"&lt;").replace(/\r\n/g,"<br>")
+                $('#pre_win_3').html(str)
+                if($('#pre_win_3').is(':visible')){
+                    $('#pre_win_3')[0].scrollTop= $('#pre_win_3')[0].scrollHeight
+                }
+            }else {
+                let str=res.context.replace(/[<]/g,"&lt;").replace(/\r\n/g,"<br>")
+                if($('#pre_win').is(':visible')){
+                    if(getScrollState(3)){
+                        $('#pre_win_3').append(str)
+                        $('#pre_win_3')[0].scrollTop= $('#pre_win_3')[0].scrollHeight
+                    }else {
+                        if(!isScrollLock){
+                            isScrollLock=true
+                            lockNumbe= setTimeout(function () {
+                                $('#pre_win_3')[0].scrollTop= $('#pre_win_3')[0].scrollHeight
+                                isScrollLock=false
+                            },1000*60*3)
+                        }
+                    }
+                }
+            }
+            cachex=res.cache
+        }
+    })
+}
+
+//判断滚动条是否到底
+function getScrollState(num) {
+    let scrollTop = $('#pre_win_'+num)[0].scrollTop;
+    let scrollHeight = $('#pre_win_'+num)[0].scrollHeight;
+    let windowHeight = $('#pre_win_'+num)[0].clientHeight;
+    if(scrollTop + windowHeight == scrollHeight){
+        return true
+    }else {
+        return false
+    }
+
+}
+
+//获取超频数据
+function getOCdata() {
+  $.ajax({
+      url:'/query?OVERCLOCK2',
+      dataType:'json',
+      type:'post',
+      data:{
+          OVERCLOCK2MID:logMinId
+      },
+      success:function (res) {
+          if (res.OVERCLOCK2.length!=0&&res.OVERCLOCK2[0].id!=0){
+              $('#info_oc_form').show()
+              $('#info_oc_msg').hide()
+              if(res.OVERCLOCK2[0].desc!=''){
+                  $('#oc_name').val(res.OVERCLOCK2[0].video+' ('+res.OVERCLOCK2[0].desc+')')
+              }else {
+                  $('#oc_name').val(res.OVERCLOCK2[0].video)
+              }
+
+              $('#oclink').attr('onclick','OClink("'+res.OVERCLOCK2[0].id+'")')
+
+              $.each(res.OVERCLOCK2[0].nvidia,function (i,it) {
+                  $('#'+i).val(it)
+              })
+          }else {
+              $('#info_oc_form').hide()
+              $('#info_oc_msg').show()
+          }
+      }
+  })
+}
+
+var logInt=0
+//label栏方法执行
+function clickFunction(type) {
+        switch (type) {
+            case '1':
+                $('#ha_wk').show()
+                $('.oc_wk').hide()
+                $('#pre_win_1').hide()
+                $('#pre_win_2').hide()
+                $('#pre_win_3').hide()
+                $('#img_win').hide()
+                break
+            case '2':
+                $('.oc_wk').show()
+                getOCdata()
+                $('#ha_wk').hide()
+                $('#pre_win_1').hide()
+                $('#pre_win_2').hide()
+                $('#pre_win_3').hide()
+                $('#img_win').hide()
+                break
+            case '3':
+                clearInterval(logInt)
+                $('#pre_win_1').show()
+                $('.oc_wk').hide()
+                $('#ha_wk').hide()
+                $('#pre_win_2').hide()
+                $('#pre_win_3').hide()
+                $('#img_win').hide()
+                logType='1'
+                break
+            case '4':
+                clearInterval(logInt)
+                $('#pre_win_2').show()
+                $('.oc_wk').hide()
+                $('#ha_wk').hide()
+                $('#pre_win_1').hide()
+                $('#pre_win_3').hide()
+                $('#img_win').hide()
+                logType='2'
+                break
+            case '5':
+                clearInterval(logInt)
+                $('#pre_win_3').show()
+                $('.oc_wk').hide()
+                $('#ha_wk').hide()
+                $('#pre_win_1').hide()
+                $('#pre_win_2').hide()
+                $('#img_win').hide()
+                logType='3'
+                break
+            case '6':
+                $('#pre_win_3').hide()
+                $('.oc_wk').hide()
+                $('#ha_wk').hide()
+                $('#pre_win_1').hide()
+                $('#pre_win_2').hide()
+                $('#img_win').show()
+                errImg()
+                break
+        }
+        if($('#pre_win_1').is(':visible')||$('#pre_win_2').is(':visible')||$('#pre_win_3').is(':visible')){
+            cachex=''
+            isScrollLock=true
+            clearTimeout(lockNumbe)
+            logInt=setInterval(function () {
+                if(logType=='1'){
+                    getLogText()
+                }else if (logType=='2'){
+                    minerlog()
+                }else if(logType=='3'){
+                    getLogErr()
+                }
+            },1000)
+        }else {
+            clearInterval(logInt)
+        }
+}
+
+//超频跳转
+function OClink(id) {
+   window.location.href='/clocktune/new#s=edit&id='+id
+}
+
+var win_data_obj=''
+//获取弹窗数据
+function getInfoEachart(id) {
+   $.ajax({
+       url:'/query?STATISTICMINER',
+       dataType:'json',
+       type:'post',
+       data:{
+           STATISTICMINERID:id
+       },
+       success:function (res) {
+           win_data_obj=res.STATISTICMINER[id]
+            setDataList()
+       }
+   })
+}
+//设置数据格式
+function setDataList() {
+    let time=[]
+    let tcz=[]
+    let obj= {
+        'hashrate': [],
+        'pool': [],
+        'latency': [],
+        'pow': [],
+        'fan': [],
+        'temp': [],
+        'send': [],
+        'rejected': []
+    }
+    let dataObj=[]
+    let lendList=[]
+    let lendObj={}
+    let count=0
+    $.each(win_data_obj,function (i,it) {
+        time.push(i)
+        obj['hashrate'].push(it[0])
+        obj['pool'].push(it[1])
+        obj['latency'].push(it[2])
+        obj['pow'].push(it[3])
+        obj['fan'].push(it[4])
+        obj['temp'].push(it[5])
+        obj['send'].push(it[6])
+        obj['rejected'].push(it[7])
+        tcz.push(70)
+    })
+    $.each(obj,function (i,it) {
+        count++
+        if(i=='hashrate'||i=='pool'){
+            lendObj[_mxEc(i)]=true
+        }else {
+            lendObj[_mxEc(i)]=false
+        }
+        lendList.push(_mxEc(i))
+        let xx={
+            name:_mxEc(i),
+            data: it,
+            type: getEachartTypeX(i),
+            yAxisIndex: getIndex(i),
+            showSymbol: false,
+            itemStyle: {
+                normal: {
+                    color: color_list[count],
+                    lineStyle:{
+                        width:1//设置线条粗细
+                    }
+                }
+            },
+            areaStyle:{
+                normal:{
+                    color:new echarts.graphic.LinearGradient(0,0,0,1,[
+                        {
+                            offset: 0,
+                            color:color_list[count]+'80'
+                        },{
+                            offset: 1,
+                            color:"rgba(75,199,212,0)"
+                        }
+                    ])
+                }
+            },
+            smooth: true
+        }
+        dataObj.push(xx)
+    })
+    let xx={
+        name:'tcz',
+        data: tcz,
+        type:'line',
+        yAxisIndex: 4,
+        symbol:'none',
+        showSymbol: false,
+        itemStyle: {
+            normal: {
+                color: 'rgba(0,0,0,0)',
+                lineStyle:{
+                    width:0//设置线条粗细
+                }
+            }
+        },
+        areaStyle:{
+            normal:{
+                color:new echarts.graphic.LinearGradient(0,0,0,1,[
+                    {
+                        offset: 0,
+                        color:'rgba(0,0,0,0)'
+                    },{
+                        offset: 1,
+                        color:'rgba(0,0,0,0)'
+                    }
+                ])
+            }
+        },
+        smooth: true
+    }
+    dataObj.push(xx)
+    setWinEacharts(time,dataObj,lendList,lendObj)
+}
+function getData(timestamp,type) {
+    var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+    var Y = date.getFullYear() + '-';
+    var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+    var D = date.getDate();
+    var h = date.getHours();
+    var m = date.getMinutes();
+    var s = date.getSeconds();
+    if(type==1){
+        h<10?h='0'+h:h
+        m<10?m='0'+m:m
+        return h+':'+m;
+    }else {
+        h<10?h='0'+h:h
+        m<10?m='0'+m:m
+        return Y+M+D+' '+h+':'+m;
+    }
+}
+function wattOutput(watt) {
+    var wattValue = watt;
+    var wattUnit = ' W';
+    if (wattValue / 1000 > 1) {
+        wattValue /= 1000;
+        wattUnit = ' kW';
+        if (wattValue / 1000 > 1) {
+            wattValue /= 1000;
+            wattUnit = ' MW';
+        }
+    }
+    wattValue = Math.round(wattValue * 1000) / 1000;
+    return wattValue + wattUnit;
+}
+function getIndex(i) {
+    switch (i) {
+        case 'hashrate':
+            return 0
+        case 'pool':
+            return 0
+        case 'latency':
+            return 1
+        case 'pow':
+            return 2
+        case 'fan':
+            return 3
+        case 'temp':
+            return 3
+        case 'send':
+            return 4
+        case 'rejected':
+            return 4
+    }
+}
+function getEachartTypeX(i) {
+    switch (i) {
+        case 'hashrate':
+            return 'line'
+        case 'pool':
+            return 'line'
+        case 'latency':
+            return 'line'
+        case 'pow':
+            return 'line'
+        case 'fan':
+            return 'line'
+        case 'temp':
+            return 'line'
+        case 'send':
+            return 'bar'
+        case 'rejected':
+            return 'bar'
+    }
+}
+
+//设置按钮事件
+function setClickWin(type,name) {
+
+    switch(type){
+        case 'offline':
+            $('#worker_info_soft').hide()
+            $('#worker_info_cq').hide()
+            $('#worker_info_st').hide()
+            $('#worker_info_sa').hide()
+            $('#worker_info_gj').hide()
+            $('#worker_info_hx').show()
+            $('#label_jt').hide()
+            $('#newDataHtml').hide()
+            break
+        case 'online':
+            $('#worker_info_soft').show()
+            $('#worker_info_cq').show()
+            $('#worker_info_st').show()
+            $('#worker_info_sa').hide()
+            $('#worker_info_gj').show()
+            $('#worker_info_hx').hide()
+            $('#label_jt').show()
+            break
+        case 'anyhowmining':
+            $('#worker_info_soft').hide()
+            $('#worker_info_cq').hide()
+            $('#worker_info_st').hide()
+            $('#worker_info_sa').hide()
+            $('#worker_info_gj').hide()
+            $('#worker_info_hx').hide()
+            $('#label_jt').show()
+            break
+        case 'anyhow_idle':
+            $('#worker_info_soft').hide()
+            $('#worker_info_cq').hide()
+            $('#worker_info_st').hide()
+            $('#worker_info_sa').hide()
+            $('#worker_info_gj').hide()
+            $('#worker_info_hx').hide()
+            $('#label_jt').show()
+            break
+        case 'disable':
+            $('#worker_info_soft').show()
+            $('#worker_info_cq').show()
+            $('#worker_info_st').hide()
+            $('#worker_info_sa').show()
+            $('#worker_info_gj').show()
+            $('#worker_info_hx').hide()
+            $('#label_jt').show()
+            break
+        case 'unable':
+            $('#worker_info_soft').show()
+            $('#worker_info_cq').show()
+            $('#worker_info_st').hide()
+            $('#worker_info_sa').hide()
+            $('#worker_info_gj').show()
+            $('#worker_info_hx').hide()
+            $('#label_jt').show()
+            break
+        case 'idle':
+            $('#worker_info_soft').show()
+            $('#worker_info_cq').show()
+            $('#worker_info_st').hide()
+            $('#worker_info_sa').show()
+            $('#worker_info_gj').show()
+            $('#worker_info_hx').hide()
+            $('#label_jt').show()
+           break
+    }
+    $('#worker_info_btn').attr('onclick','toWorkerLink(\''+logMinId+'\')')
+    $('#worker_info_soft').attr('onclick','restartSoftware(\''+logMinId+'\',\''+name+'\')')
+    $('#worker_info_cq').attr('onclick','shutdownMachine(\''+logMinId+'\',\''+name+'\')')
+    $('#worker_info_st').attr('onclick','stopMining(\''+logMinId+'\',\''+name+'\')')
+    $('#worker_info_sa').attr('onclick','startMining(\''+logMinId+'\',\''+name+'\')')
+    $('#worker_info_gj').attr('onclick','shutdownMachineSafe(\''+logMinId+'\',\''+name+'\')')
+    $('#worker_info_hx').attr('onclick','rouseMachine(\''+logMinId+'\',\''+name+'\')')
+}
+
+//关闭弹窗
+function closeEd(type) {
+      switch (type) {
+          case '1':
+              $('#software_restart').hide()
+              break
+          case '2':
+              $('#worker_shutdown').hide()
+              break
+          case '3':
+              $('#software_stop').hide()
+              break
+          case '4':
+              $('#software_start').hide()
+              break
+          case '5':
+              $('#worker_shutdown_safe').hide()
+              break
+          case '6':
+              $('#select_site_win').hide()
+              $('#select_site').val(select_site_id)
+              $('.popupbackground').fadeOut()
+              break
+          case '7':
+              $('#consoleWin').hide()
+              $('#consoleWin iframe').attr('src','')
+              break
+          default:
+              $('#worker_shutdown_safe').hide()
+              $('#software_start').hide()
+              $('#software_stop').hide()
+              $('#worker_shutdown').hide()
+              $('#software_restart').hide()
+              $('#select_site_win').hide()
+              $('#select_site').val(select_site_id)
+              break
+      }
+    clClickWin()
+}
+
+//跳转到详情页
+function toWorkerLink(id) {
+  window.location.href=`/worker#${id}`
+}
+//重启软件
+function restartSoftware(id,name) {
+    if (!$('#restartSoftware').hasClass('disabled')) {
+        $('#software_restart .title').html(name);
+        $('.popupbackground').fadeIn();
+        $('#software_restart').fadeToggle();
+        endClickWin()
+    }
+}
+//重启请求
+$('#software_restart .blue').on('click', function () {
+    if ($(this).hasClass('disabled')) {
+        return false;
+    }
+    $('#software_restart .outlined_button, #software_restart .blue').addClass('disabled');
+    $('.checkmark').hide();
+    $('.circle-loader').removeClass('load-complete');
+    $('.circle-loader, .message_err, .message_suc').hide();
+    $('.circle-loader').show();
+    var nonce = $('#nonce').val();
+    $.post('/workers', {restartSoftware: logMinId}, function (response) {
+        if (response == '1') {
+            $('.circle-loader').addClass('load-complete');
+            $('.notification_row').addClass('finished');
+            $('.checkmark').show();
+            $('.message_suc').show();
+            setTimeout(function () {
+                $('#software_restart').fadeOut('fast');
+                clClickWin()
+                setTimeout(function () {
+                    $('#software_restart .outlined_button, #software_restart .blue').removeClass('disabled');
+                    $('.checkmark').hide();
+                    $('.circle-loader').removeClass('load-complete');
+                    $('.circle-loader, .message_err, .message_suc').hide();
+                }, 500);
+            }, 3000);
+        } else {
+            $('.circle-loader').hide();
+            $('.notification_row').addClass('finished');
+            $('#software_restart .outlined_button, #software_restart .blue').removeClass('disabled');
+            $('.message_err').show();
+        }
+        setTimeout(function () {
+            $('#software_restart .outlined_button, #software_restart .blue').removeClass('disabled');
+        }, 4500);
+    });
+});
+
+//重启机器
+function shutdownMachine(id,name) {
+    if (!$('#shutdownMachine').hasClass('disabled')) {
+        $('#worker_shutdown .title').html(name);
+        $('.popupbackground').fadeIn();
+        $('#worker_shutdown').fadeToggle('fast');
+        endClickWin()
+    }
+}
+$('#worker_shutdown .red').on('click', function () {
+    if ($(this).hasClass('disabled')) {
+        return false;
+    }
+    $('#worker_shutdown .outlined_button, #worker_shutdown .red').addClass('disabled');
+    $('.checkmark').hide();
+    $('.circle-loader').removeClass('load-complete');
+    $('.circle-loader, .message_err, .message_suc').hide();
+    $('.circle-loader').show();
+    var nonce = $('#nonce').val();
+    $.post('/workers', {workerShutdown: logMinId}, function (response) {
+        if (response == '1') {
+            $('.circle-loader').addClass('load-complete');
+            $('.notification_row').addClass('finished');
+            $('.checkmark').show();
+            $('.message_suc').show();
+            setTimeout(function () {
+                clClickWin()
+                $('#worker_shutdown').fadeOut('fast');
+                setTimeout(function () {
+                    $('#worker_shutdown .outlined_button, #worker_shutdown .red').removeClass('disabled');
+                    $('.checkmark').hide();
+                    $('.circle-loader').removeClass('load-complete');
+                    $('.circle-loader, .message_err, .message_suc').hide();
+                }, 500);
+            }, 3000);
+        } else {
+            $('.circle-loader').hide();
+            $('.notification_row').addClass('finished');
+            $('#worker_shutdown .outlined_button, #worker_shutdown .red').removeClass('disabled');
+            $('.message_err').show();
+        }
+        setTimeout(function () {
+            $('#worker_shutdown .outlined_button, #worker_shutdown .red').removeClass('disabled');
+        }, 4500);
+    });
+});
+
+//停止挖矿
+function stopMining(id,name) {
+    if (!$('#stopMining').hasClass('disabled')) {
+        $('#software_stop .title').html(name);
+        $('.popupbackground').fadeIn();
+        $('#software_stop').fadeToggle('fast');
+        endClickWin()
+    }
+}
+$('#software_stop .blue').on('click', function () {
+    if ($(this).hasClass('disabled')) {
+        return false;
+    }
+    $('#software_stop .outlined_button, #software_stop .blue').addClass('disabled');
+    $('.checkmark').hide();
+    $('.circle-loader').removeClass('load-complete');
+    $('.circle-loader, .message_err, .message_suc').hide();
+    $('.circle-loader').show();
+    var nonce = $('#nonce').val();
+    $.post('/workers', {stopMining: logMinId}, function (response) {
+        if (response == '1') {
+            $('.circle-loader').addClass('load-complete');
+            $('.notification_row').addClass('finished');
+            $('.checkmark').show();
+            $('.message_suc').show();
+            setTimeout(function () {
+                $('#software_stop').fadeOut('fast');
+                clClickWin()
+                setTimeout(function () {
+                    $('#software_stop .outlined_button, #software_stop .blue').removeClass('disabled');
+                    $('.checkmark').hide();
+                    $('.circle-loader').removeClass('load-complete');
+                    $('.circle-loader, .message_err, .message_suc').hide();
+                }, 500);
+            }, 3000);
+        } else {
+            $('.circle-loader').hide();
+            $('.notification_row').addClass('finished');
+            $('#software_stop .outlined_button, #software_stop .blue').removeClass('disabled');
+            $('.message_err').show();
+        }
+        setTimeout(function () {
+            $('#software_stop .outlined_button, #software_stop .blue').removeClass('disabled');
+        }, 4500);
+    });
+});
+
+//启动挖矿
+function startMining(id,name) {
+    if (!$('#startMining').hasClass('disabled')) {
+        $('#software_start .title').html(name);
+        $('.popupbackground').fadeIn();
+        $('#software_start').fadeToggle('fast');
+        endClickWin()
+    }
+}
+$('#software_start .blue').on('click', function () {
+    if ($(this).hasClass('disabled')) {
+        return false;
+    }
+    $('#software_start .outlined_button, #software_start .blue').addClass('disabled');
+    $('.checkmark').hide();
+    $('.circle-loader').removeClass('load-complete');
+    $('.circle-loader, .message_err, .message_suc').hide();
+    $('.circle-loader').show();
+    var nonce = $('#nonce').val();
+    $.post('/workers', {startMining: logMinId}, function (response) {
+        if (response == '1') {
+            $('.circle-loader').addClass('load-complete');
+            $('.notification_row').addClass('finished');
+            $('.checkmark').show();
+            $('.message_suc').show();
+            setTimeout(function () {
+                clClickWin()
+                $('#software_start').fadeOut('fast');
+                setTimeout(function () {
+                    $('#software_start .outlined_button, #software_start .blue').removeClass('disabled');
+                    $('.checkmark').hide();
+                    $('.circle-loader').removeClass('load-complete');
+                    $('.circle-loader, .message_err, .message_suc').hide();
+                }, 500);
+            }, 3000);
+        } else {
+            $('.circle-loader').hide();
+            $('.notification_row').addClass('finished');
+            $('#software_start .outlined_button, #software_start .blue').removeClass('disabled');
+            $('.message_err').show();
+        }
+        setTimeout(function () {
+            $('#software_start .outlined_button, #software_start .blue').removeClass('disabled');
+        }, 4500);
+    });
+});
+
+//关机
+function shutdownMachineSafe(id,name) {
+    if (!$('#shutdownMachine').hasClass('disabled')) {
+        $('#worker_shutdown_safe .title').html(name);
+        $('.popupbackground').fadeIn();
+        $('#worker_shutdown_safe').fadeToggle('fast');
+        endClickWin()
+    }
+}
+$('#worker_shutdown_safe .red').on('click', function () {
+    if ($(this).hasClass('disabled')) {
+        return false;
+    }
+    $('#worker_shutdown_safe .outlined_button, #worker_shutdown_safe .red').addClass('disabled');
+    $('.checkmark').hide();
+    $('.circle-loader').removeClass('load-complete');
+    $('.circle-loader, .message_err, .message_suc').hide();
+    $('.circle-loader').show();
+    var nonce = $('#nonce').val();
+    $.post('/workers', {workerShutdownSafe: logMinId}, function (response) {
+        if (response == '1') {
+            $('.circle-loader').addClass('load-complete');
+            $('.notification_row').addClass('finished');
+            $('.checkmark').show();
+            $('.message_suc').show();
+            setTimeout(function () {
+                clClickWin()
+                $('#worker_shutdown_safe').fadeOut('fast');
+                setTimeout(function () {
+                    $('#worker_shutdown_safe .outlined_button, #worker_shutdown_safe .red').removeClass('disabled');
+                    $('.checkmark').hide();
+                    $('.circle-loader').removeClass('load-complete');
+                    $('.circle-loader, .message_err, .message_suc').hide();
+                }, 500);
+            }, 3000);
+        } else {
+            $('.circle-loader').hide();
+            $('.notification_row').addClass('finished');
+            $('#worker_shutdown_safe .outlined_button, #worker_shutdown_safe .red').removeClass('disabled');
+            $('.message_err').show();
+        }
+        setTimeout(function () {
+            $('#worker_shutdown_safe .outlined_button, #worker_shutdown_safe .red').removeClass('disabled');
+        }, 4500);
+    });
+});
+
+//唤醒机器
+function rouseMachine(id,name) {
+    if (!$('#rouseMachine').hasClass('disabled')) {
+        $('#RouseMachineWin .title').html(name);
+        $('.popupbackground').fadeIn();
+        $('#RouseMachineWin').fadeToggle('fast');
+        endClickWin()
+    }
+}
+$('#RouseMachineWin .blue').on('click', function () {
+    if ($(this).hasClass('disabled')) {
+        return false;
+    }
+    $('#RouseMachineWin .outlined_button, #RouseMachineWin .blue').addClass('disabled');
+    $('.checkmark').hide();
+    $('.circle-loader').removeClass('load-complete');
+    $('.circle-loader, .message_err, .message_suc').hide();
+    $('.circle-loader').show();
+    var nonce = $('#nonce').val();
+    $.post('/workers', {wakeUp: logMinId}, function (response) {
+        if (response == '1') {
+            $('.circle-loader').addClass('load-complete');
+            $('.notification_row').addClass('finished');
+            $('.checkmark').show();
+            $('.message_suc').show();
+            setTimeout(function () {
+                $('#rouseMachine').fadeOut('fast');
+                clClickWin()
+                setTimeout(function () {
+                    $('#RouseMachineWin .outlined_button, #RouseMachineWin .blue').removeClass('disabled');
+                    $('.checkmark').hide();
+                    $('.circle-loader').removeClass('load-complete');
+                    $('.circle-loader, .message_err, .message_suc').hide();
+                }, 500);
+            }, 3000);
+        } else {
+            $('.circle-loader').hide();
+            $('.notification_row').addClass('finished');
+            $('#RouseMachineWin .outlined_button, #RouseMachineWin .blue').removeClass('disabled');
+            $('.message_err').show();
+        }
+        setTimeout(function () {
+            $('#RouseMachineWin .outlined_button, #RouseMachineWin .blue').removeClass('disabled');
+        }, 4500);
+    });
+});
+
+//全部按钮禁止
+function endClickWin() {
+    $('#zzc_info_wk').show()
+}
+//解除按钮
+function clClickWin() {
+    $('#zzc_info_wk').hide()
+}
+
+function myBigImg(e) {
+    var imgsrc = $(e).attr("src");
+    var opacityBottom = '<div class="opacityBottom" style = "display:none"><img class="bigImg" src="' + imgsrc + '"></div>';
+    $(document.body).append(opacityBottom);
+    toBigImg();//变大函数
+}
+function toBigImg() {
+    $(".opacityBottom").addClass("opacityBottom");//添加遮罩层
+    $(".opacityBottom").show();
+    $("html,body").addClass("none-scroll");//下层不可滑动
+    $(".bigImg").addClass("bigImg");//添加图片样式
+    $(".opacityBottom").click(function () {//点击关闭
+        $("html,body").removeClass("none-scroll");
+        $(".opacityBottom").remove();
+    });
+}
+let myErrImgT=0
+let errLock=1
+function errImg() {
+
+       myErrImgT=setTimeout(function () {
+           var url = `/WorkerInfo?a=screenshot&mid=${logMinId}`;
+           var xhr = new XMLHttpRequest();
+           xhr.open('GET', url, true);
+           xhr.responseType = "blob";
+           xhr.setRequestHeader("client_type", "DESKTOP_WEB");
+           // xhr.setRequestHeader("desktop_web_access_key", _desktop_web_access_key);
+           xhr.onload = function() {
+               errLock=1
+               if(this.response.type == 'image/jpeg'){
+                   $("#imgWin_1").attr('src',window.URL.createObjectURL(this.response));
+                   $("#imgWin_1").show()
+                   $("#imgWin_2").hide()
+                   $('#imgLoading').hide()
+               }else {
+                   if(!$('#img_win').is(':hidden')){
+                       errImg()
+                   }
+               }
+
+           }
+           xhr.send();
+       },1000)
+
+}
+function RefreshImg(e) {
+    if(errLock==0){
+        return
+    }
+    $('#imgLoading').show()
+    errLock=0
+    errImg()
+}
+
+//打开窗口
+function showWinSelect(){
+    $('#select_site_win').show()
+    $('#select_site').val(select_site_id)
+    $('.popupbackground').fadeIn();
+}
+
+//确认切换
+function switchSite() {
+    idx=$('#select_site').val()
+    sortType='1'
+    descAndAsc='1'
+    let cx=$('.cbg')
+    $.each(cx,function (i,it) {
+        $(it).find('.cbgx').removeClass('icon_g')
+    })
+    $('#search_info').val('')
+    let x_h=$('.Tab_type')
+    sortType='1'
+    descAndAsc='1'
+    $.each(x_h,function (i,it) {
+        $(it).attr('dex','0')
+        $(it).removeClass('isType')
+        $(it).find('.my_icon_x').removeClass('arrow_px_up arrow_px_down arrow_px_none')
+        if(i==0){
+            $(it).attr('dex','1')
+            $(it).addClass('isType')
+            $(it).find('.my_icon_x').addClass('arrow_px_up')
+        }else {
+            $(it).find('.my_icon_x').addClass('arrow_px_none')
+        }
+    })
+    workerNameSearch=''
+    search_type_list=[]
+    $('.worker_list').html(
+        ' <div class="spinner">\n' +
+        '                    <div class="bounce1"></div>\n' +
+        '                    <div class="bounce2"></div>\n' +
+        '                    <div class="bounce3"></div>\n' +
+        '                </div>'
+    )
+    $.each(siteListObj,function (i,it) {
+        if(it.id==Number(idx)){
+            setlabelCard(it)
+            getWorkerList(it.id,1)
+            select_site_id=it.id
+            getEachartData(it.id)
+            clearInterval(workerListIn)
+            workerListIn=setInterval("getWorkerList('"+it.id+"')",4000)
+        }
+    })
+    closeEd('6')
+}
+
+$('#newDataHtml').on('click',function () {
+    $('#consoleWin').show()
+    $('.my_p_zzc').show()
+    $('#consoleWin iframe').attr('src','/minerWeb?mid='+logMinId)
+})
+$('.my_p_zzc').on('click',function () {
+    $('#consoleWin').hide()
+    $('.my_p_zzc').hide()
+    $('#consoleWin iframe').attr('src','')
+})
+function downWinC() {
+   window.open('https://dx.dxdx.me/r/client.zip')
+}
