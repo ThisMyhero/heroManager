@@ -1,0 +1,1399 @@
+var groupProfitabilityColor = '#5767ff';
+var chartTitle = $('.page .content h1').css("color");
+var titleColor = $('.page .content h1').css("color");
+var borderColor = $('.page .content .title_row').css("border-bottom-color");
+var borderLightColor = $('.page .content .title_row').css("border-bottom-color");
+var navigatorBorder = $('.page .content .title_row').css("border-bottom-color");
+var navigatorFill = "rgba(87,103,255,0.2)";
+var navigatorHandles = $('.page .menu .subscription_plan p').css("color");
+var navigatorBackground = 'transparent';
+var buttonColor = $('.page .content h1').css("color");
+var buttonFillHover = $('.page .content h1').css("color");
+var buttonColorHover = $('.button.blue').css("color");
+var buttonDisabledFill = "transparent";
+var buttonDisabledColor = $('.content.stats .box_table table.groupMining tr td .text small').css("color");
+var buttonSelectedFill = buttonFillHover;
+var buttonSelectedColor = buttonColorHover;
+var hiddenColor = 'transparent';
+var tooltipBackgroundColor = $('header .user_menu').css("background-color");
+var tooltipBoxShadow = $('header .user_menu').css("box-shadow");
+var tooltipBorderColor = $('header .user_menu').css("background-color");
+var tooltipDateColor = $('header .user_menu .link').css("color");
+var tooltipDarkerColor = $('.page .content h1').css("color");
+var legendColor = $('.page .content h1').css("color");
+var legendHiddenColor = $('.page .menu .subscription_plan small').css("color");
+var averageDailyColor = $('body').css("background-color");
+var titleSize = '20px';
+var smallSize = $('.content.stats .data_row .element .change').css("font-size");
+var fontWeightLight = '300';
+var fontWeightBold = '600';
+var selectorTop = 20;
+var tooltipHeaderFontSize = '18px';
+var group = myGetHref();
+if(theme=='dark'){
+	averageDailyColor = 'rgba(255,255,255,0.2)';
+	
+	buttonFillHover = 'rgba(255,255,255,0.1)';
+	buttonSelectedFill = 'rgba(255,255,255,0.1)';
+	
+	navigatorFill = "rgba(255,255,255,0.05)";
+	
+	tooltipDarkerColor = '#ffffff';
+	
+	borderColor = 'rgba(255,255,255,0.1)';
+	borderLightColor = 'rgba(255,255,255,0.05)';
+	
+	groupProfitabilityColor = '#6574ff';
+}
+
+if(theme=='hacker'){
+	averageDailyColor = 'rgba(255,255,255,0.5)';
+	
+	fontWeightLight = '500';
+	smallSize = '11px';
+	titleSize = '12px';
+	
+	selectorTop = 36;
+	fontWeightBold = '400';
+	buttonColor = 'rgba(255,255,255,0.6)';
+	buttonFillHover = '#50b951';
+	buttonColorHover = '#1a1a1a';
+	buttonDisabledFill = "transparent";
+	buttonDisabledColor = 'rgba(255,255,255,0.2)';
+	buttonSelectedFill = '#50b951';
+	buttonSelectedColor = '#1a1a1a';
+	
+	navigatorFill = "rgba(255,255,255,0.1)";
+	
+	borderColor = 'rgba(255,255,255,0.1)';
+	borderLightColor = 'rgba(255,255,255,0.08)';
+	
+	legendColor = 'rgba(255,255,255,1)';
+	legendHiddenColor = 'rgba(255,255,255,0.2)';
+	
+	tooltipHeaderFontSize = '14px';
+	tooltipDateColor = 'rgba(255,255,255,0.4)';	
+	
+	groupProfitabilityColor = '#50b951';
+}
+
+if(theme=='electric'){
+	averageDailyColor = 'rgba(255,255,255,0.5)';
+	
+	buttonColor = 'rgba(255,255,255,0.6)';
+	buttonFillHover = '#02dcff';
+	buttonColorHover = '#001432';
+	buttonDisabledFill = "transparent";
+	buttonDisabledColor = 'rgba(255,255,255,0.2)';
+	buttonSelectedFill = '#02dcff';
+	buttonSelectedColor = '#001432';
+	
+	navigatorFill = "rgba(255,255,255,0.1)";
+	
+	borderColor = 'rgba(255,255,255,0.1)';
+	borderLightColor = 'rgba(255,255,255,0.08)';
+	
+	legendColor = 'rgba(255,255,255,1)';
+	legendHiddenColor = 'rgba(255,255,255,0.2)';
+	
+	groupProfitabilityColor = '#02dcff';
+}
+
+if(theme=='radioactive'){
+	averageDailyColor = 'rgba(255,255,255,0.5)';
+	
+	selectorTop = 32;
+	
+	buttonColor = 'rgba(255,255,255,0.6)';
+	buttonFillHover = '#ffdd00';
+	buttonColorHover = '#1f262d';
+	buttonDisabledFill = "transparent";
+	buttonDisabledColor = 'rgba(255,255,255,0.2)';
+	buttonSelectedFill = '#ffdd00';
+	buttonSelectedColor = '#1f262d';
+	
+	navigatorFill = "rgba(255,255,255,0.05)";
+	
+	borderColor = 'rgba(255,255,255,0.1)';
+	borderLightColor = 'rgba(255,255,255,0.08)';
+	
+	legendColor = 'rgba(255,255,255,1)';
+	legendHiddenColor = 'rgba(255,255,255,0.2)';
+	
+	groupProfitabilityColor = '#ffdd00';
+	
+}
+
+if(theme=='office'){
+	selectorTop = 32;
+	
+	borderColor = 'rgba(0,0,0,0.1)';
+	borderLightColor = 'rgba(0,0,0,0.05)';
+	navigatorHandles = '#e2e5ef';
+	navigatorBorder = '#e2e5ef';
+	navigatorFill = "rgba(0,0,0,0.05)";
+}
+
+function getDayTimestamp(aTimestamp){
+	return aTimestamp - aTimestamp%(24*60*60);
+}
+
+Highcharts.setOptions({
+    lang: {
+        shortMonths: [
+            _('Jan'),_('Feb'),_('Mar'),_('Apr'),_('May'),_('Jun'),_('Jul'),_('Aug'),_('Sep'),_('Oct'),_('Nov'),_('Dec')
+        ],
+        shortWeekdays: [
+           _('Mon'), _('Tue'), _('Wed'), _('Thu'), _('Fri'), _('Sat'), _('Sun')
+        ],
+		rangeSelectorZoom: _('Zoom')
+    }
+});
+
+var groupFullName = group;
+
+$("#groupsList").change(function(){
+	var timestamX=new Date().getTime()
+	if($("#groupsList").val()=='all'){
+		window.location.replace("/group-statistics/all?sx="+timestamX+"#all")
+	}else {
+
+		window.location.replace("/group-statistics/group?sx="+timestamX+"#" + $("#groupsList").val())
+	}
+  }
+);
+	
+function loadGroups(group){
+	//if(typeof group == 'undefined' || group == 'all'){ var getQuery = '/api.minerstat.com/v2/stats/' + workerToken; }else{ var getQuery = '/api.minerstat.com/v2/stats/' + workerToken + '/group/' + group; }
+	var getQuery = '/v2/stats?name=' + group;
+	if (group == 'all') {
+		getQuery = '/v2/stats?name';
+	}
+	if(demoAccount==1){
+		getQuery = '/v2/demo-worker';
+	}
+	$.getJSON(getQuery, function(data){
+		if(typeof data.error=='undefined'){
+			var groupsData = {};
+			var dataCount = 0;
+			var groupStatisticsBody = '';
+			var groupFound = 0;
+			
+			// Generate groups
+			var groupSelectOptions = {};
+			$.each(data, function(workerName, workerData){
+				var groups  = workerData["info"]["groups"].split(',');
+				var system  = workerData["info"]["system"];
+				var type = workerData["info"]["type"];
+				if(system=='linux'){ system = 'msos'; }
+				if(system=='win'){ system = 'windows'; }
+				$.each(groups, function(groupIndex, groupName){
+					if(groupName!=system){
+						groupSelectOptions[groupName.toLowerCase()] = groupName;
+					}
+				});
+				// console.log('groups',groups)
+			});
+			
+			var groupsSortedArray = [];
+
+			$.each(groupSelectOptions, function(groupName, groupValue){
+				groupsSortedArray.push(groupName);
+			});
+			groupsSortedArray.sort();
+			$('#groupsList').html('<option value="all">' + _('All groups') + '</option>');
+
+			$.each(groupsSortedArray, function(groupIndex, groupNameLowercase){
+				var groupName = groupSelectOptions[groupNameLowercase];
+				var groupSelected = '';
+				if(group == groupName.toLowerCase()){
+					groupSelected = ' selected="selected"';
+					$('#groupTitle').html(groupName);
+					groupFound = 1;
+				}
+				$('#groupsList').append('<option class="groupsListOption" ' + groupSelected + 'value="' + groupName.toLowerCase() + '">' + groupName + '</option>');
+			});
+			
+			if(group=='all'){
+				
+				var totalOnline = 0;
+				var totalWorkers = 0;
+				var totalTemp = 0;
+				var totalPower = 0;
+				var totalIncome = 0;
+				var totalCosts = 0;
+				var costsSet = 0;
+				
+				$.each(data, function(workerName, workerData){
+					var workerCounted = 0;
+					var groups  = workerData["info"]["groups"].split(',');
+					var system 	= workerData["info"]["system"];
+					if(system=='linux'){ system = 'msos'; }
+					if(system=='win'){ system = 'windows'; }
+					var type		= workerData["info"]["type"];
+					$.each(groups, function(groupIndex, groupNameOr){
+						var groupName = groupNameOr.toLowerCase();
+						if(groupName!=system && groupName!=type){
+							if(groupsData[groupName]==null){
+								groupsData[groupName] = {};
+								groupsData[groupName]['totalWorkers'] = 0;
+								groupsData[groupName]['onlineWorkers'] = 0;
+								groupsData[groupName]['normalTempWorkers'] = 0;
+								groupsData[groupName]['minTemp'] = 999999;
+								groupsData[groupName]['maxTemp'] = 0;
+								groupsData[groupName]['sumTemp'] = 0;
+								groupsData[groupName]['countTemp'] = 0;
+								groupsData[groupName]['hotMin'] = 999999;
+								groupsData[groupName]['minEfficiency'] = 999999;
+								groupsData[groupName]['maxEfficiency'] = 0;
+								groupsData[groupName]['sumEfficiency'] = 0;
+								groupsData[groupName]['countEfficiency'] = 0;
+								groupsData[groupName]['powerConsumption'] = 0;
+								groupsData[groupName]['estIncome'] = 0;
+								groupsData[groupName]['elCosts'] = 0;
+								groupsData[groupName]['coins'] = {};
+								dataCount++;
+							}
+							
+							groupsData[groupName]['totalWorkers']++;
+							if(workerCounted==0){ totalWorkers++; }
+							
+							if(workerData["info"]["status"]=="online"){
+								groupsData[groupName]['onlineWorkers']++;
+								if(workerCounted==0){ totalOnline++; }
+							}
+							
+							var powerSum = 0;
+							
+							var normalTempCount = -1;
+							if(typeof workerData["hardware"] != 'undefined'){
+								normalTempCount = 0;
+								$.each(workerData["hardware"], function(hardwareIndex, hardwareData){
+									if(hardwareData["temp"]>0){
+										
+										if(hardwareData["temp"]>=workerData['info']['hot']){
+											normalTempCount++;
+											debugger
+										}
+										
+										if(hardwareData["temp"] < groupsData[groupName]['minTemp']){
+											groupsData[groupName]['minTemp'] = hardwareData["temp"];
+										}
+										
+										if(hardwareData["temp"] > groupsData[groupName]['maxTemp']){
+											groupsData[groupName]['maxTemp'] = hardwareData["temp"];
+										}
+										
+										groupsData[groupName]['sumTemp'] += hardwareData["temp"];
+										groupsData[groupName]['countTemp']++;
+										
+									}
+									
+									if(hardwareData["power"]>0){
+										powerSum += hardwareData["power"];
+									}
+									
+								});
+							}
+							
+							if(workerData['info']['hot'] < groupsData[groupName]['hotMin']){
+								groupsData[groupName]['hotMin'] = workerData['info']['hot'];
+							}
+
+							// debugger
+							if(normalTempCount==0){
+								groupsData[groupName]['normalTempWorkers']++;
+								if(workerCounted==0){ totalTemp++; }
+							}
+							
+							if(workerData["info"]["status"]=="online" && typeof workerData["mining"] != 'undefined' && typeof workerData["mining"]["shares"] != 'undefined'){
+								var efficiency = 0;
+								if(workerData["mining"]["shares"]["accepted_share"] + workerData["mining"]["shares"]["rejected_share"]>0){
+									efficiency = workerData["mining"]["shares"]["accepted_share"]/(workerData["mining"]["shares"]["accepted_share"] + workerData["mining"]["shares"]["rejected_share"]);
+								}
+								
+								if(efficiency < groupsData[groupName]['minEfficiency']){
+									groupsData[groupName]['minEfficiency'] = efficiency;
+								}
+								
+								if(efficiency > groupsData[groupName]['maxEfficiency']){
+									groupsData[groupName]['maxEfficiency'] = efficiency;
+								}
+								
+								groupsData[groupName]['sumEfficiency'] += efficiency;
+								groupsData[groupName]['countEfficiency']++;
+							}
+
+							if(typeof workerData["info"]["consumption"] != 'undefined' && parseInt(workerData["info"]["consumption"]) > 0){
+								if(workerData["info"]["consumption"].toString().indexOf('+')!=-1){
+									powerSum += parseInt(workerData["info"]["consumption"]);
+								}else if(workerData["info"]["consumption"].toString().indexOf('+')==-1){
+									powerSum = parseInt(workerData["info"]["consumption"]);
+								}
+							}
+							
+							groupsData[groupName]['powerConsumption'] += powerSum;
+
+							if(workerCounted==0){ totalPower += powerSum;	}
+							if(typeof workerData["info"]["electricity"] != 'undefined' && workerData["info"]["electricity"] > 0){
+								groupsData[groupName]['elCosts'] += 24*powerSum*workerData["info"]["electricity"]/1000;
+								if(workerCounted==0){ totalCosts += 24*powerSum*workerData["info"]["electricity"]/1000 }
+							}
+							
+							if(typeof workerData["revenue"] != 'undefined' && typeof workerData["revenue"]["usd_day"] != 'undefined' && workerData["revenue"]["usd_day"] > 0){
+								groupsData[groupName]['estIncome'] += workerData["revenue"]["usd_day"];
+								if(workerCounted==0){ totalIncome += workerData["revenue"]["usd_day"]; }
+							}
+							
+							if(typeof workerData["mining"] != 'undefined' && typeof workerData["mining"]["crypto"] != 'undefined' && workerData["mining"]["crypto"] != ''){
+								groupsData[groupName]['coins'][workerData["mining"]["crypto"]] = 1;
+							}
+							
+							if(typeof workerData["mining"] != 'undefined' && typeof workerData["mining"]["crypto_dual"] != 'undefined' && workerData["mining"]["crypto_dual"] != ''){
+								groupsData[groupName]['coins'][workerData["mining"]["crypto_dual"]] = 1;
+							}
+							
+							if(typeof workerData["mining"] != 'undefined' && typeof workerData["mining"]["crypto_cpu"] != 'undefined' && workerData["mining"]["crypto_cpu"] != ''){
+								groupsData[groupName]['coins'][workerData["mining"]["crypto_cpu"]] = 1;
+							}
+							workerCounted++;
+						}
+					});
+					workerCounted = 0;
+				});
+				
+				if(dataCount==0){
+					groupStatisticsBody = '<div class="empty_state"><div class="empty_icon no_worker"><div class="empty_icon wait_stats"></div></div><div class="title">' + _mx('No groups') + '</div><div class="text">' + _mx("You haven't created any groups yet") + '</div><div class="row"><a href="/site" class="button green">' + _mx("Go to site management") + '</a></div></div>';
+					$('#groupStatisticsBody').html(groupStatisticsBody);	
+					preloaderHide();
+				}else{
+					
+					groupStatisticsBody += '<div class="box_table">';
+					groupStatisticsBody += '	<table class="groupsAll">';
+					groupStatisticsBody += '		<tr>';
+					groupStatisticsBody += '			<th>' + _mx('Group') + '</th>';
+					groupStatisticsBody += '			<th class="rmv2">' + _mx('Online') + '</th>';
+					groupStatisticsBody += '			<th class="rmv2">' + _mx4('Temp') + ' < ' + _mx('Hot limit') + '</th>';
+					groupStatisticsBody += '			<th class="rmv2">' + _mx4('Temp') + '</th>';
+					groupStatisticsBody += '			<th class="rmv2">' + _mx('Efficiency') + '</th>';
+					groupStatisticsBody += '			<th class="rmv2">' + _mx('Power') + '</th>';
+					groupStatisticsBody += '			<th class="rmv2">' + _mx4('Est. income') + '</th>';
+					groupStatisticsBody += '			<th class="rmv2">' + _mx4('El. costs') + '</th>';
+					groupStatisticsBody += '			<th class="rmv2">' + _mx4('Est. earnings') + '</th>';
+					groupStatisticsBody += '			<th class="rmv2">' + _mx('Coins') + '</th>';
+					groupStatisticsBody += '		</tr>';
+					
+					
+					var groupsDataSortedArray = [];
+					var groupsDataSortedKeys = {};
+
+					$.each(groupsData, function(groupsDataName, groupsDataData){
+						groupsDataSortedArray.push(groupsDataName.toLowerCase());
+						groupsDataSortedKeys[groupsDataName.toLowerCase()] = groupsDataName;
+					});
+					groupsDataSortedArray.sort();
+					
+					
+					$.each(groupsDataSortedArray, function(groupsDataSortedIndex, groupsDataSortedName){
+						
+						groupsDataName = groupsDataSortedKeys[groupsDataSortedName];
+						groupsDataData = groupsData[groupsDataName];
+						
+						var onlinePercentage = 0;
+						var onlineClass = '';
+						if(groupsDataData['totalWorkers']>0){
+							onlinePercentage = Math.round(100*groupsDataData['onlineWorkers']/groupsDataData['totalWorkers']);
+							if(onlinePercentage<90){
+								onlineClass = ' red';
+							}
+						}
+
+						var normalTempPercentage = 0;
+						var normalTempClass = '';
+						if(groupsDataData['onlineWorkers']>0){
+							// debugger
+							normalTempPercentage = Math.round(groupsDataData['onlineWorkers']/100*groupsDataData['normalTempWorkers']);
+							if(normalTempPercentage<90){
+								normalTempClass = ' red';
+							}
+						}
+
+						var minTemperature = '-';
+						var avgTemperature = '-';
+						var maxTemperature = '-';
+						
+						var minTemperatureClass = '';
+						var maxTemperatureClass = '';
+						var avgTemperatureClass = '';
+
+						if(groupsDataData['minTemp']!=999999){
+							minTemperature = convertTemperature(groupsDataData['minTemp']) + temperature;
+							maxTemperature = convertTemperature(groupsDataData['maxTemp']) + temperature;
+							avgTemperature = Math.round(convertTemperature(groupsDataData['sumTemp']/groupsDataData['countTemp'])) + temperature;
+							
+							if(groupsDataData['minTemp']>=groupsDataData['hotMin']){
+								minTemperatureClass = ' red';
+							}
+							
+							if(groupsDataData['maxTemp']>=groupsDataData['hotMin']){
+								maxTemperatureClass = ' red';
+							}
+							
+							if(groupsDataData['sumTemp']/groupsDataData['countTemp']>=groupsDataData['hotMin']){
+								avgTemperatureClass = ' red';
+							}
+						}
+						
+						
+						var minEfficiency = '-';
+						var avgEfficiency = '-';
+						var maxEfficiency = '-';
+						
+						var minEfficiencyClass = '';
+						var maxEfficiencyClass = '';
+						var avgEfficiencyClass = '';
+
+						if(groupsDataData['minEfficiency']!=999999){
+							minEfficiency = Math.round(100*groupsDataData['minEfficiency']) + '%';
+							maxEfficiency = Math.round(100*groupsDataData['maxEfficiency']) + '%';
+							avgEfficiency = Math.round(100*groupsDataData['sumEfficiency']/groupsDataData['countEfficiency']) + '%';
+							
+							if(groupsDataData['minEfficiency']<0.95){
+								minEfficiencyClass = ' red';
+							}
+							
+							if(groupsDataData['maxEfficiency']<0.95){
+								maxEfficiencyClass = ' red';
+							}
+							
+							if(groupsDataData['sumEfficiency']/groupsDataData['countEfficiency']<0.95){
+								avgEfficiencyClass = ' red';
+							}
+						}
+						
+						
+						var powerConsumption = '-';
+						var estIncome = '-';
+						var elCosts = '-';
+						var estEarnings = '-';
+						if(groupsDataData['powerConsumption']>0){
+							powerConsumption = convertWatt(groupsDataData['powerConsumption'],"W");
+						}
+						
+						if(groupsDataData['elCosts']>0){
+							estIncome = (currencyValue*groupsDataData['estIncome']).toFixed(2) + ' ' + currency;
+							elCosts = (currencyValue*groupsDataData['elCosts']).toFixed(2) + ' ' + currency;
+							estEarnings = (currencyValue*groupsDataData['estIncome'] - currencyValue*groupsDataData['elCosts']).toFixed(2) + ' ' + currency;
+							costsSet = 1;
+						}else if(groupsDataData['estIncome']>0){
+							estEarnings = (currencyValue*groupsDataData['estIncome']).toFixed(2) + ' ' + currency;
+						}
+						
+						var coinsList = '';
+						if(groupsDataData['coins']!=null){
+							$.each(groupsDataData['coins'], function(coinName, coinValue){
+								coinsList += '<img data-tooltip="' + coinName + '" width="32" height="32" onError="this.onerror=null;this.src=\'/32/no.png\';" src="/32/' + getIcon(coinName) + '.png"/>';
+							});
+						}
+						
+						groupStatisticsBody += '<tr>';
+						groupStatisticsBody += '	<td>';
+						groupStatisticsBody += '		<a href="/group-statistics/group#' + groupsDataName.toLowerCase() +'">' + groupsDataName + '</a>';
+						groupStatisticsBody += '		<div class="shw2">';
+						groupStatisticsBody += '			<div class="row">';
+						groupStatisticsBody += '				<div class="element">';
+						groupStatisticsBody += '					<div class="title">' + _mx('Online') + '</div>';
+						groupStatisticsBody += '					<div class="info"><div class="mini_stats"><div class="number">' + groupsDataData['onlineWorkers'] + '<small>/' + groupsDataData['totalWorkers'] + '</small></div><div class="progress_bar"><div class="progress' + onlineClass + '" style="width:' + onlinePercentage + '%"></div></div></div></div>';
+						groupStatisticsBody += '				</div>';
+						groupStatisticsBody += '				<div class="element">';
+						groupStatisticsBody += '					<div class="title">' + _mx4('Temp') + '</div>';
+						groupStatisticsBody += '					<div class="info"><div class="mini_stats"><div class="number">' + groupsDataData['normalTempWorkers'] + '<small>/' + groupsDataData['onlineWorkers'] + '</small></div><div class="progress_bar"><div class="progress' + normalTempClass + '" style="width:' + normalTempPercentage + '%"></div></div></div></div>';
+						groupStatisticsBody += '				</div>';
+						groupStatisticsBody += '				<div class="element">';
+						groupStatisticsBody += '					<div class="title">' + _mx4('Temp') + '</div>';
+						groupStatisticsBody += '					<div class="info"><div class="mini_stats"><div class="temps"><div class="temp' + minTemperatureClass + '">' + minTemperature + '<small>Min</small></div><div class="temp' + avgTemperatureClass + '">' + avgTemperature + '<small>Avg</small></div><div class="temp' + maxTemperatureClass + '">' + maxTemperature + '<small>Max</small></div></div></div></div>';
+						groupStatisticsBody += '				</div>';
+						groupStatisticsBody += '				<div class="element">';
+						groupStatisticsBody += '					<div class="title">' + _mx('Efficiency') + '</div>';
+						groupStatisticsBody += '					<div class="info"><div class="mini_stats"><div class="temps"><div class="temp' + minEfficiencyClass + '">' + minEfficiency + '<small>Min</small></div><div class="temp' + avgEfficiencyClass + '">' + avgEfficiency + '<small>Avg</small></div><div class="temp' + maxEfficiencyClass + '">' + maxEfficiency + '<small>Max</small></div></div></div></div>';
+						groupStatisticsBody += '				</div>';
+						groupStatisticsBody += '				<div class="element">';
+						groupStatisticsBody += '					<div class="title">' + _mx('Power') + '</div>';
+						groupStatisticsBody += '					<div class="info">' + powerConsumption + '</div>';
+						groupStatisticsBody += '				</div>';
+						groupStatisticsBody += '				<div class="element">';
+						groupStatisticsBody += '					<div class="title">' + _mx4('Est. income') + '</div>';
+						groupStatisticsBody += '					<div class="info">' + estIncome + '</div>';
+						groupStatisticsBody += '				</div>';
+						groupStatisticsBody += '				<div class="element">';
+						groupStatisticsBody += '					<div class="title">' + _mx4('El. costs') + '</div>';
+						groupStatisticsBody += '					<div class="info">' + elCosts + '</div>';
+						groupStatisticsBody += '				</div>';
+						groupStatisticsBody += '				<div class="element">';
+						groupStatisticsBody += '					<div class="title">' + _mx4('Est. earnings') + '</div>';
+						groupStatisticsBody += '					<div class="info">' + estEarnings + '</div>';
+						groupStatisticsBody += '				</div>';
+						groupStatisticsBody += '			</div>';
+						groupStatisticsBody += '		</div>';
+						groupStatisticsBody += '	</td>';
+						groupStatisticsBody += '	<td class="rmv2"><div class="mini_stats"><div class="number">' + groupsDataData['onlineWorkers'] + '<small>/' + groupsDataData['totalWorkers'] + '</small></div><div class="progress_bar"><div class="progress' + onlineClass + '" style="width:' + onlinePercentage + '%"></div></div></div></td>';
+						groupStatisticsBody += '	<td class="rmv2"><div class="mini_stats"><div class="number">' + groupsDataData['normalTempWorkers'] + '<small>/' + groupsDataData['onlineWorkers'] + '</small></div><div class="progress_bar"><div class="progress' + normalTempClass + '" style="width:' + normalTempPercentage + '%"></div></div></div></td>';
+						groupStatisticsBody += '	<td class="rmv2"><div class="mini_stats"><div class="temps"><div class="temp' + minTemperatureClass + '">' + minTemperature + '<small>Min</small></div><div class="temp' + avgTemperatureClass + '">' + avgTemperature + '<small>Avg</small></div><div class="temp' + maxTemperatureClass + '">' + maxTemperature + '<small>Max</small></div></div></div></td>';
+						groupStatisticsBody += '	<td class="rmv2"><div class="mini_stats"><div class="temps"><div class="temp' + minEfficiencyClass + '">' + minEfficiency + '<small>Min</small></div><div class="temp' + avgEfficiencyClass + '">' + avgEfficiency + '<small>Avg</small></div><div class="temp' + maxEfficiencyClass + '">' + maxEfficiency + '<small>Max</small></div></div></div></td>';
+						groupStatisticsBody += '	<td class="rmv2">' + powerConsumption + '</td>';
+						groupStatisticsBody += '	<td class="rmv2">' + estIncome + '</td>';
+						groupStatisticsBody += '	<td class="rmv2">' + elCosts + '</td>';
+						groupStatisticsBody += '	<td class="rmv2">' + estEarnings + '</td>';
+						groupStatisticsBody += '	<td class="rmv2"><div class="coins">' + coinsList + '</div></td>';
+						groupStatisticsBody += '</tr>';		
+					});
+					
+					var totalOnlineClass='';
+					var totalOnlinePercentage='';
+					if(totalWorkers>0){
+						totalOnlinePercentage = Math.round(100*totalOnline/totalWorkers);
+						if(totalOnlinePercentage<90){
+							totalOnlineClass = ' red';
+						}
+					}
+
+					var totalTempPercentage = 0;
+					var totalTempClass = '';
+					if(totalOnline>0){
+						totalTempPercentage = Math.round(100*totalTemp/totalOnline);
+						if(totalTempPercentage<90){
+							totalTempClass = ' red';
+						}
+					}
+
+					groupStatisticsBody += '<tr class="totalTr">';
+					groupStatisticsBody += '	<td>' + _('Total') + '</td>';
+					groupStatisticsBody += '	<td class="rmv2"><div class="mini_stats"><div class="number">' + totalOnline + '<small>/' + totalWorkers + '</small></div><div class="progress_bar"><div class="progress' + totalOnlineClass + '" style="width:' + totalOnlinePercentage + '%"></div></div></div></td>';
+					groupStatisticsBody += '	<td class="rmv2"><div class="mini_stats"><div class="number">' + totalTemp + '<small>/' + totalOnline + '</small></div><div class="progress_bar"><div class="progress' + totalTempClass + '" style="width:' + totalTempPercentage + '%"></div></div></div></td>';
+					groupStatisticsBody += '	<td class="rmv2"></td>';
+					groupStatisticsBody += '	<td class="rmv2"></td>';
+					groupStatisticsBody += '	<td class="rmv2">' + convertWatt(totalPower,"W") + '</td>';
+					if(costsSet!=0){
+						groupStatisticsBody += '	<td class="rmv2">' + (currencyValue*totalIncome).toFixed(2) + ' ' + currency + '</td>';
+					}else{
+						groupStatisticsBody += '	<td class="rmv2">-</td>';
+					}
+					if(costsSet!=0){
+						groupStatisticsBody += '	<td class="rmv2">' + (currencyValue*totalCosts).toFixed(2) + ' ' + currency + '</td>';
+					}else{
+						groupStatisticsBody += '	<td class="rmv2">-</td>';	
+					}
+					groupStatisticsBody += '	<td class="rmv2">' + (currencyValue*totalIncome - currencyValue*totalCosts).toFixed(2) + ' ' + currency + '</td>';
+					groupStatisticsBody += '	<td class="rmv2"></td>';
+					groupStatisticsBody += '</tr>';	
+					
+					
+					groupStatisticsBody += '	</table>';
+					groupStatisticsBody += '</div>';
+					$('#groupStatisticsBody').html(groupStatisticsBody);	
+					preloaderHide();
+				}
+				
+				setTimeout(function(){ loadGroups('all'); }, 31 * 1000);
+				
+			}else{
+				// if(groupFound==0){
+				// 	window.location.href = "/group-statistics/all";
+				// }
+				
+				var totalWorkers = 0;
+				var onlineWorkers = 0;
+				var normalTempWorkers = 0;
+				var totalWatt = 0;
+				var totalEarnings = 0;
+				var totalElectricity = 0;
+				var sumEfficiency = 0;
+				var countEfficiency = 0;
+				var totalEfficiency = 0;
+				var totalEfficiencyCount = 0;
+				
+				var poolsList = {};
+				var countPools = 0;
+				var coinsList = {};
+				var countCoins = 0;
+				
+				var coinExchanges = {};
+				
+				$.each(data, function(workerName, workerData){
+
+					var groups  	= workerData["info"]["groups"].split(',');
+					var system 	 	= workerData["info"]["system"];
+					if(system=='linux'){ system = 'msos'; }
+					if(system=='win'){ system = 'windows'; }
+					var type		= workerData["info"]["type"];
+					$.each(groups, function(groupIndex, groupName){
+						// if(groupName!=system && groupName!=type && groupName.toLowerCase()==group){
+						if(groupName!=system && groupName!=type){
+							groupFullName = groupName;
+							
+							totalWorkers++;
+
+							if(workerData["info"]["status"]=="online"){
+								onlineWorkers++;
+							}
+							
+							var normalTempCount = -1;
+							var powerHardwareSum = 0;
+							if(typeof workerData["hardware"] != 'undefined'){
+								normalTempCount = 0;
+								$.each(workerData["hardware"], function(hardwareIndex, hardwareData){
+									if(hardwareData["temp"]>0){
+										if(hardwareData["temp"]>=workerData['info']['hot']){
+											normalTempCount++;
+										}
+									}
+									if(typeof hardwareData["power"] != 'undefined'){
+										powerHardwareSum += hardwareData["power"];
+									}
+								});
+							}
+
+							if(normalTempCount==0){
+								normalTempWorkers++;
+							}
+
+							var workerCosts = 0;
+							var thisWattCount = 0;
+
+							if(typeof workerData["info"] != 'undefined' && typeof workerData["info"]["consumption"] != 'undefined' && parseInt(workerData["info"]["consumption"]) > 0){
+								if(workerData["info"]["consumption"].toString().indexOf('+')!=-1){
+									thisWattCount = powerHardwareSum + parseInt(workerData["info"]["consumption"]);
+									totalWatt += powerHardwareSum + parseInt(workerData["info"]["consumption"]);
+								}else if(workerData["info"]["consumption"].toString().indexOf('+')==-1){
+									thisWattCount = workerData["info"]["consumption"];
+									totalWatt += workerData["info"]["consumption"];
+								}
+							}else{
+								thisWattCount = powerHardwareSum;
+								totalWatt += powerHardwareSum;
+							}
+							
+							if(thisWattCount>0 && workerData["info"]["electricity"] != 'undefined' && workerData["info"]["electricity"] > 0){
+								workerCosts = 24*parseFloat(thisWattCount)*parseFloat(workerData["info"]["electricity"])/1000;
+							}
+							
+
+							if (typeof workerData["mining"] != 'undefined' && workerData["mining"]["crypto"]!=0 && workerData["mining"]["crypto"]!='' && workerData["mining"]["crypto"]!=null){
+	
+								if (coinsList[workerData["mining"]["crypto"]]==null){
+									coinsList[workerData["mining"]["crypto"]] = [0,0,0,'',0,0,0];
+									coinsList[workerData["mining"]["crypto"]][0] = 1;
+									coinsList[workerData["mining"]["crypto"]][1] = thisWattCount;
+									coinsList[workerData["mining"]["crypto"]][2] = speedToHash(parseFloat(workerData["mining"]["hashrate"]["hashrate"]),workerData["mining"]["hashrate"]["hashrate_unit"]);
+									coinsList[workerData["mining"]["crypto"]][3] = "H";
+									coinsList[workerData["mining"]["crypto"]][4] = workerData["revenue"]["coin"];
+									if (workerData["revenue"]["cprice"]!=null){
+										coinsList[workerData["mining"]["crypto"]][5] = parseFloat(workerData["revenue"]["usd_day"]) - workerCosts;
+									}else{
+										coinsList[workerData["mining"]["crypto"]][5] = 0;
+									}
+									coinsList[workerData["mining"]["crypto"]][6] = parseFloat(workerCosts);
+								}else{
+									coinsList[workerData["mining"]["crypto"]][0] += 1;
+									coinsList[workerData["mining"]["crypto"]][1] += thisWattCount;
+									coinsList[workerData["mining"]["crypto"]][2] += speedToHash(parseFloat(workerData["mining"]["hashrate"]["hashrate"]),workerData["mining"]["hashrate"]["hashrate_unit"]);
+									coinsList[workerData["mining"]["crypto"]][3]  = "H";
+									coinsList[workerData["mining"]["crypto"]][4] += parseFloat(workerData["revenue"]["coin"]);
+									if (workerData["revenue"]["cprice"]!=null){
+										coinsList[workerData["mining"]["crypto"]][5] += parseFloat(workerData["revenue"]["usd_day"]) - workerCosts;
+									}else{
+										coinsList[workerData["mining"]["crypto"]][5] += 0;
+									}
+									coinsList[workerData["mining"]["crypto"]][6] += workerCosts;
+								}
+								coinExchanges[workerData["mining"]["crypto"]] = workerData["revenue"]["cprice"];
+								countCoins++;
+							}
+
+							if (typeof workerData["mining"] != 'undefined' && typeof workerData["mining"]["shares"] != 'undefined' && parseInt(workerData["mining"]["shares"]["accepted_share"])+parseInt(workerData["mining"]["shares"]["rejected_share"])>0){
+								sumEfficiency += (parseInt(workerData["mining"]["shares"]["accepted_share"])/(parseInt(workerData["mining"]["shares"]["accepted_share"]) + parseInt(workerData["mining"]["shares"]["rejected_share"])));
+								countEfficiency++;
+							}
+							
+							// If dual mining
+							if (typeof workerData["mining"] != 'undefined' && workerData["mining"]["crypto_dual"]!=0 && workerData["mining"]["crypto_dual"]!='' && workerData["mining"]["crypto_dual"]!=null){
+								if (coinsList[workerData["mining"]["crypto_dual"]]==null){
+									coinsList[workerData["mining"]["crypto_dual"]] = [0,0,0,'',0,0,0];
+									coinsList[workerData["mining"]["crypto_dual"]][0] = 1;
+									coinsList[workerData["mining"]["crypto_dual"]][1] = 0;
+									coinsList[workerData["mining"]["crypto_dual"]][2] = speedToHash(parseFloat(workerData["mining"]["hashrate"]["hashrate_dual"]),workerData["mining"]["hashrate"]["hashrate_unit_dual"]);
+									coinsList[workerData["mining"]["crypto_dual"]][3] = "H";
+									coinsList[workerData["mining"]["crypto_dual"]][4] = workerData["revenue"]["coin_dual"];
+									if (workerData["revenue"]["cprice_dual"]!=null){
+										coinsList[workerData["mining"]["crypto_dual"]][5] = parseFloat(workerData["revenue"]["usd_day_dual"]);
+									}else{
+										coinsList[workerData["mining"]["crypto_dual"]][5] = 0;
+									}
+								}else{
+									coinsList[workerData["mining"]["crypto_dual"]][0] += 0;
+									coinsList[workerData["mining"]["crypto_dual"]][1] += 0;
+									coinsList[workerData["mining"]["crypto_dual"]][2] += speedToHash(parseFloat(workerData["mining"]["hashrate"]["hashrate_dual"]), workerData["mining"]["hashrate"]["hashrate_unit_dual"]);
+									coinsList[workerData["mining"]["crypto_dual"]][3]  = "H";
+									coinsList[workerData["mining"]["crypto_dual"]][4] += workerData["revenue"]["coin_dual"];
+									if (workerData["revenue"]["cprice_dual"]!=null){
+										coinsList[workerData["mining"]["crypto_dual"]][5] += parseFloat(workerData["revenue"]["usd_day_dual"]);
+									}else{
+										coinsList[workerData["mining"]["crypto_dual"]][5] += 0;
+									}
+								}
+								if (typeof workerData["mining"] != 'undefined' && typeof workerData["mining"]["shares"] != 'undefined' && parseInt(workerData["mining"]["shares"]["accepted_share_dual"])+parseInt(workerData["mining"]["shares"]["rejected_share_dual"])>0){
+									sumEfficiency += (parseInt(workerData["mining"]["shares"]["accepted_share_dual"])/(parseInt(workerData["mining"]["shares"]["accepted_share_dual"]) + parseInt(workerData["mining"]["shares"]["rejected_share_dual"])));
+									countEfficiency++;
+								}
+								if(coinsList[workerData["mining"]["crypto_dual"]][6]==null){
+									coinsList[workerData["mining"]["crypto_dual"]][6] = 0;
+								}
+								coinExchanges[workerData["mining"]["crypto_dual"]] = workerData["revenue"]["cprice_dual"];
+								countCoins++;
+							}
+							
+							// If CPU mining
+							if (typeof workerData["mining"] != 'undefined' && workerData["mining"]["crypto_cpu"]!=0 && workerData["mining"]["crypto_cpu"]!='' && workerData["mining"]["crypto_cpu"]!=null){
+								if (coinsList[workerData["mining"]["crypto_cpu"]]==null){
+									coinsList[workerData["mining"]["crypto_cpu"]] = [0,0,0,'',0,0,0];
+									coinsList[workerData["mining"]["crypto_cpu"]][0] = 1;
+									coinsList[workerData["mining"]["crypto_cpu"]][1] = 0;
+									coinsList[workerData["mining"]["crypto_cpu"]][2] = speedToHash(parseFloat(workerData["mining"]["hashrate"]["hashrate_cpu"]),workerData["mining"]["hashrate"]["hashrate_unit_cpu"]);
+									coinsList[workerData["mining"]["crypto_cpu"]][3] = "H";
+									coinsList[workerData["mining"]["crypto_cpu"]][4] = workerData["revenue"]["coin_cpu"];
+									if (workerData["revenue"]["usd_day_cpu"]!=null){
+										coinsList[workerData["mining"]["crypto_cpu"]][5] = parseFloat(workerData["revenue"]["usd_day_cpu"]);
+									}else{
+										coinsList[workerData["mining"]["crypto_cpu"]][5] = 0;
+									}
+								}else{
+									coinsList[workerData["mining"]["crypto_cpu"]][0] += 0;
+									coinsList[workerData["mining"]["crypto_cpu"]][1] += 0;
+									coinsList[workerData["mining"]["crypto_cpu"]][2] += speedToHash(parseFloat(workerData["mining"]["hashrate"]["hashrate_cpu"]), workerData["mining"]["hashrate"]["hashrate_unit_cpu"]);
+									coinsList[workerData["mining"]["crypto_cpu"]][3]  = "H";
+									coinsList[workerData["mining"]["crypto_cpu"]][4] += workerData["revenue"]["coin_cpu"];
+									if (workerData["revenue"]["usd_day_cpu"]!=null){
+										coinsList[workerData["mining"]["crypto_cpu"]][5] += parseFloat(workerData["revenue"]["usd_day_cpu"]);
+									}else{
+										coinsList[workerData["mining"]["crypto_cpu"]][5] += 0;
+									}
+								}
+								if(coinsList[workerData["mining"]["crypto_cpu"]][6]==null){
+									coinsList[workerData["mining"]["crypto_cpu"]][6] = 0;
+								}
+								coinExchanges[workerData["mining"]["crypto_cpu"]] = workerData["revenue"]["cprice_cpu"];
+								countCoins++;
+							}
+
+							if(typeof workerData["mining"] != 'undefined' && typeof workerData["mining"]["pool"] != 'undefined'){
+
+								if(workerData["mining"]["pool"] == ''){
+									workerData["mining"]["pool"] = 'N/A';	
+								}
+								if(poolsList[workerData["mining"]["pool"]]==null){
+									poolsList[workerData["mining"]["pool"]] = {};
+								}
+								if(poolsList[workerData["mining"]["pool"]]["count"]==null){
+									poolsList[workerData["mining"]["pool"]]["count"] = 0;
+								}
+								poolsList[workerData["mining"]["pool"]]["count"] += 1;
+								
+								if(typeof workerData["revenue"]["usd_day"] != 'undefined'){
+									if(poolsList[workerData["mining"]["pool"]]["earnings"]==null){
+										poolsList[workerData["mining"]["pool"]]["earnings"] = 0;
+									}
+									poolsList[workerData["mining"]["pool"]]["earnings"] += workerData["revenue"]["usd_day"] - workerCosts;
+									if(poolsList[workerData["mining"]["pool"]]["costs"]==null){
+										poolsList[workerData["mining"]["pool"]]["costs"] = 0;
+									}
+									poolsList[workerData["mining"]["pool"]]["costs"] += workerCosts;
+								}
+								if (workerData["mining"]["crypto"]!=0 && workerData["mining"]["crypto"]!='' && workerData["mining"]["crypto"]!=null){
+									if(poolsList[workerData["mining"]["pool"]]["hashrate"]==null){
+										poolsList[workerData["mining"]["pool"]]["hashrate"] = 0;
+									}
+									poolsList[workerData["mining"]["pool"]]["hashrate"] += speedToHash(parseFloat(workerData["mining"]["hashrate"]["hashrate"]),workerData["mining"]["hashrate"]["hashrate_unit"]);
+								}
+								if(poolsList[workerData["mining"]["pool"]]["consumption"]==null){
+									poolsList[workerData["mining"]["pool"]]["consumption"] = 0;
+								}
+								poolsList[workerData["mining"]["pool"]]["consumption"] += thisWattCount;
+								countPools++;
+							}
+							if(typeof workerData["mining"] != 'undefined' && typeof workerData["mining"]["pool"] != 'undefined' && poolsList[workerData["mining"]["pool"]]["workers"]==null){ poolsList[workerData["mining"]["pool"]]["workers"] = []; }
+							if(typeof workerData["mining"] != 'undefined' && typeof workerData["mining"]["pool"] != 'undefined'){
+								poolsList[workerData["mining"]["pool"]]["workers"].push(workerData["info"]["name"]);
+							}
+						}
+					});
+				});
+				
+				var onlineWorkersPercentage = 0;
+				var onlineCSS = '';
+				if(totalWorkers>0){
+					onlineWorkersPercentage = Math.round(100*onlineWorkers/totalWorkers);
+					if(onlineWorkersPercentage<=90){
+						onlineCSS = ' red';
+					}
+				}
+				
+				var tempWorkersPercentage = 0;
+				var temperatureCSS = '';
+				if(onlineWorkers>0){
+					tempWorkersPercentage = Math.round(100*normalTempWorkers/onlineWorkers);
+					if(tempWorkersPercentage<=90){
+						temperatureCSS = ' red';
+					}
+				}
+				
+				var efficiencyPercentage = 0;
+				var efficiencyCSS = '';
+				var avgEfficiency = 0;
+				if(countEfficiency>0){
+					avgEfficiency = sumEfficiency/countEfficiency;
+					efficiencyPercentage = Math.round(100*avgEfficiency);
+					if(efficiencyPercentage<=95){
+						efficiencyCSS = ' red';
+					}
+				}
+				
+				var coinsContent = '';
+
+				$.each(coinsList, function(i, c){
+					var cValue = 0;
+					var cName = i;
+					var cUnit = getUnitFromCrypto(cName);
+					var exchangeRate = '1 ' + cUnit + ' = ' + (coinExchanges[i]*currencyValue).toFixed(2) + ' ' + currency;
+					var coinPriceCMC = 0;
+					
+					if(cName=='NO'){
+						cName = 'Unknown';
+					}
+
+					if(c[1]==0){
+						c[1] = '-';
+					}else{
+						c[1] = convertWatt(c[1], 'W');
+					}
+					
+					var coinsAddOn = '';
+					var coinsAddOnMonthly = '';
+					if(c[6]!=0){
+						coinsAddOn = '<div class="tooltip"><div class="arrow"></div><div>' + _('Income') + ': ' + parseFloat(((c[5] + c[6])*currencyValue)).toFixed(2) + ' ' + currency + '<br>' + _('El. costs') + ': ' + parseFloat(c[6]*currencyValue).toFixed(2) + ' ' + currency +'</div></div>';
+						coinsAddOnMonthly = '<div class="tooltip"><div class="arrow"></div><div>' + _('Income') + ': ' + parseFloat(30.5*((c[5] + c[6])*currencyValue)).toFixed(2) + ' ' + currency + '<br>' + _('El. costs') + ': ' + parseFloat(30.5*c[6]*currencyValue).toFixed(2) + ' ' + currency +'</div></div>';
+					}
+					
+					coinsContent += '<tr><td><img width="32" height="32" onError="this.onerror=null;this.src=\'/32/no.png\';" src="/32/' + getIcon(i) + '.png"><div class="text"><b>' + cName + '</b><small>' + exchangeRate + '</small></div><div class="shw2"><div class="row"><b>' + _('Workers') + ':</b> ' + c[0] + '</div><div class="row"><b>' + _('Consumption:') + '</b> ' + c[1] + '</div><div class="row"><b>' + _('Hashrate') + ':</b> ' + convertHashrate(parseFloat(c[2]).toFixed(2), c[3] + '/s') + '</div></div></td><td class="rmv2">' + c[0] + '</td><td class="rmv2">' + c[1] + '</td><td class="rmv2">' + convertHashrate(parseFloat(c[2]).toFixed(2), c[3] + '/s') + '</td><td class="rmv2">' + parseFloat(c[5]*currencyValue).toFixed(2) + ' ' + currency + coinsAddOn + '</td><td class="rmv2">' + parseFloat(30.5*c[5]*currencyValue).toFixed(2) + ' ' + currency + coinsAddOnMonthly + '</td></tr>';
+				});
+				
+				var poolsContent = '';
+				$.each(poolsList, function(i, p){
+					var poolsAddOn = '';
+					if(p["costs"]>0){
+						poolsAddOn = '<div class="tooltip"><div class="arrow"></div><div>' + _('Income') + ': ' + parseFloat(((p["earnings"]+p["costs"])*currencyValue)).toFixed(2) + ' ' + currency + '<br>' + _('El. costs') + ': ' + parseFloat(p["costs"]*currencyValue).toFixed(2) + ' ' + currency +'</div></div>';
+					}
+					if(typeof p["consumption"] == 'undefined' || p["consumption"]==0){
+						p["consumption"] = '-';
+					}else{
+						p["consumption"] = convertWatt(p["consumption"], 'W');
+					}
+					var poolsWorkers = '<div class="poolsWorkersList"><div class="frame">';
+					for(wi=0;wi<p["workers"].length;wi++){
+						poolsWorkers += '<a href="/worker/' + p["workers"][wi] + '" title="' + p["workers"][wi] + '">' + p["workers"][wi] + '</a>';
+					}
+					poolsWorkers += '</div></div>';
+					if(typeof  p["hashrate"]!=="undefined"){
+						poolsContent += '<tr><td><div data-tooltip="' + _('Workers') + '" class="icon details"></div><b>' + i + '</b><div class="shw2"><div class="row"><b>' + _('Workers') + ':</b> ' + p["count"] + '</div><div class="row"><b>' + _('Estimated daily') + ':</b> ' + (p["earnings"]*currencyValue).toFixed(2) + ' ' + currency + '</div><div class="row"><b>' + _('Consumption:') + '</b> ' + p["consumption"] + '</div><div class="row"><b>' + _('Hashrate') + ':</b> ' + convertHashrate(p["hashrate"].toFixed(2), 'H/s') + '</div></div>' + '' + poolsWorkers + '</td><td class="rmv2">' + p["count"] + '</td><td class="rmv2">' + p["consumption"] + '</td><td class="rmv2">' + convertHashrate(p["hashrate"].toFixed(2), 'H/s') + '</td><td class="rmv2">' + (p["earnings"]*currencyValue).toFixed(2) + ' ' + currency + '' + poolsAddOn + '</td><td class="rmv2">' + (30.5*p["earnings"]*currencyValue).toFixed(2) + ' ' + currency + '' + poolsAddOn + '</td></tr>';
+					}
+				});
+				
+				var totalWattStr = convertWatt(totalWatt,"W");
+				totalWattStr = totalWattStr.split(" ");
+				
+				groupStatisticsBody += '<div class="container">';
+				groupStatisticsBody += '	<div class="col_4_5">';
+				groupStatisticsBody += '		<div class="box_table">';
+				groupStatisticsBody += '			<table class="groupMining">';
+				groupStatisticsBody += '				<tr>';
+				groupStatisticsBody += '					<th>' + _mx('Crypto') + '</th>';
+				groupStatisticsBody += '					<th class="rmv2">' + _mx('Workers') + '</th>';
+				groupStatisticsBody += '					<th class="rmv2">' + _mx('Consumption') + '</th>';
+				groupStatisticsBody += '					<th class="rmv2">' + _mx('Hashrate') + '</th>';
+				groupStatisticsBody += '					<th class="rmv2">' + _mx('Est. daily') + '</th>';
+				groupStatisticsBody += '					<th class="rmv2">' + _mx('Est. monthly') + '</th>';
+				groupStatisticsBody += '				</tr>';
+				groupStatisticsBody += 					coinsContent;
+				groupStatisticsBody += '			</table>';
+				groupStatisticsBody += '		</div>';
+				
+				groupStatisticsBody += '		<h2>' + _mx4('Group profitability') + '</h2>';
+				
+				groupStatisticsBody += '		<div class="box_graph"><div id="group-profitability"></div></div>';
+
+				if(countPools>0){
+					groupStatisticsBody += '		<h2>' + _mx('Pools') + '</h2>';
+					groupStatisticsBody += '		<div class="box_table mb_40 custom_layout">';
+					groupStatisticsBody += '			<table class="poolsContent">';
+					groupStatisticsBody += '				<tr>';
+					groupStatisticsBody += '					<th>Pool</th>';
+					groupStatisticsBody += '					<th class="rmv2">' + _mx('Workers') + '</th>';
+					groupStatisticsBody += '					<th class="rmv2">' + _mx('Consumption') + '</th>';
+					groupStatisticsBody += '					<th class="rmv2">' + _mx('Hashrate') + '</th>';
+					groupStatisticsBody += '					<th class="rmv2">' + _mx('Est. daily') + '</th>';
+					groupStatisticsBody += '					<th class="rmv2">' + _mx('Est. monthly') + '</th>';
+					groupStatisticsBody += '				</tr>';
+					groupStatisticsBody += 					poolsContent;
+					groupStatisticsBody += '			</table>';
+					groupStatisticsBody += '		</div>';
+				}
+				
+				groupStatisticsBody += '	</div>';
+				
+				groupStatisticsBody += '	<div class="col_1_5">';
+				groupStatisticsBody += '		<div class="element">';
+				groupStatisticsBody += '			<h2>' + _('Group activity') + '</h2>';
+				groupStatisticsBody += '			<div class="activity">';
+				groupStatisticsBody += '				<div class="row">';
+				groupStatisticsBody += '					<div class="data">';
+				groupStatisticsBody += '						<div class="value">' + onlineWorkers + '</div>';
+				groupStatisticsBody += '						<div class="name">' + _('out of') + ' ' + totalWorkers + '<br>' + _('active workers') + '</div>';
+				groupStatisticsBody += '					</div>';
+				groupStatisticsBody += '					<div class="graph">';
+				groupStatisticsBody += '						<div class="progress_bar"><div class="progress' + onlineCSS + '" style="width:' + onlineWorkersPercentage + '%;"></div></div>';
+				groupStatisticsBody += '						<div class="value">' + onlineWorkersPercentage + '%</div>';
+				groupStatisticsBody += '					</div>';
+				groupStatisticsBody += '				</div>';
+				groupStatisticsBody += '				<div class="row">';
+				groupStatisticsBody += '					<div class="data">';
+				groupStatisticsBody += '						<div class="value">' + normalTempWorkers + '</div>';
+				groupStatisticsBody += '						<div class="name">' + _('out of') + ' ' + onlineWorkers + '<br>' + _('with normal temparature') + '</div>';
+				groupStatisticsBody += '					</div>';
+				groupStatisticsBody += '					<div class="graph">';
+				groupStatisticsBody += '						<div class="progress_bar"><div class="progress' + temperatureCSS + '" style="width:' + tempWorkersPercentage + '%;"></div></div>';
+				groupStatisticsBody += '						<div class="value">' + tempWorkersPercentage + '%</div>';
+				groupStatisticsBody += '					</div>';
+				groupStatisticsBody += '				</div>';
+				groupStatisticsBody += '				<div class="row">';
+				groupStatisticsBody += '					<div class="data">';
+				groupStatisticsBody += '						<div class="value">' + efficiencyPercentage + '%</div>';
+				groupStatisticsBody += '						<div class="name">' + _('average<br>efficiency') + '</div>';
+				groupStatisticsBody += '					</div>';
+				groupStatisticsBody += '					<div class="graph">';
+				groupStatisticsBody += '						<div class="progress_bar"><div class="progress ' + efficiencyCSS + '" style="width:' + efficiencyPercentage + '%;"></div></div>';
+				groupStatisticsBody += '						<div class="value">' + efficiencyPercentage + '%</div>';
+				groupStatisticsBody += '					</div>';
+				groupStatisticsBody += '				</div>';
+				groupStatisticsBody += '			</div>	';			
+				groupStatisticsBody += '		</div>	';			
+				groupStatisticsBody += '	</div>';
+				groupStatisticsBody += '</div>';
+
+				$('#groupStatisticsBody').html(groupStatisticsBody);
+
+				var chartGroupProfitability = new Highcharts.chart('group-profitability', {
+					chart: {
+						animation: false,
+						alignTicks: false,
+						type: 'areaspline',
+						events: {
+							redraw: function () {
+								var chart = this;
+								var zoomText = chart.rangeSelector.zoomText.element;
+								$(zoomText).attr({
+									y: 17,
+									x: 0
+								})
+								$.each(chart.rangeSelector.buttons, function (i, button) {
+									var textStr = button.element.childNodes[1];
+									$(textStr).attr({
+										y: 17
+									});
+								});
+							}
+						},
+						marginTop: selectorTop,
+						alignTicks: false,
+						backgroundColor: null
+					},
+					title: {
+						text: _mx4('Group profitability'),
+						align: 'left',
+						style: { "color": chartTitle, "fontSize": titleSize, "fontWeight": fontWeightLight },
+						y: 10
+					},
+					legend: {
+						itemMarginTop: 10,
+						itemStyle:{
+							fontSize: smallSize,
+							fontWeight: fontWeightBold,
+							color: legendColor
+						},
+						itemHoverStyle:{
+							fontSize: smallSize,
+							fontWeight: fontWeightBold,
+							color: legendColor
+						},
+						itemHiddenStyle:{
+							fontSize: smallSize,
+							fontWeight: fontWeightBold,
+							color: legendHiddenColor
+						}
+					},
+					xAxis: {
+						type: 'datetime',
+						labels: {
+							overflow: 'justify',
+							style:{
+								color: titleColor,
+								fontSize: smallSize
+							}
+						},
+						lineColor: borderColor,
+						tickColor: borderColor
+					},
+					yAxis: [{
+						title: {
+							text: ''
+						},
+						minorGridLineWidth: 0,
+						gridLineWidth: 1,
+						gridLineColor: borderLightColor,
+						gridColor: borderColor,
+						alternateGridColor: null,
+						labels: {
+							align: 'left',
+							x: 0,
+							y: -5,
+							style:{
+								color: titleColor,
+								fontSize: smallSize
+							},
+							formatter: function () {
+								var label = this.axis.defaultLabelFormatter.call(this);
+								return label;
+							}
+						},
+						tickAmount: 5,
+						allowDecimals: false
+					}],
+					tooltip: {
+						borderRadius: 6,
+						borderWidth: 0,
+						padding: 0,
+						shadow: false,
+						useHTML: true,
+						backgroundColor: tooltipBackgroundColor,
+						formatter: function(){
+							var style = '<div style="border:1px solid ' + tooltipBorderColor + ';background:' + tooltipBackgroundColor + ';box-shadow:' + tooltipBoxShadow + ';border-radius:3px;padding:16px 16px 2px 16px;line-height:1;font-family:\'Mukta Mahee\', sans-serif;width:auto;">';
+							var points = this.points;
+							style += '<div style="margin:0;padding:0 0 10px 0;line-height:1;font-size:' + smallSize + ';color:' + tooltipDateColor + ';font-weight:' + fontWeightLight + ';">' + Highcharts.dateFormat('%e', new Date(this.points[0].x)) + ' ' + _(Highcharts.dateFormat('%b', new Date(this.points[0].x))) + ' ' + Highcharts.dateFormat('%Y %H:%M', new Date(this.points[0].x)) + '</div><div style="width:20px;border-top:1px solid ' + borderColor + ';margin:0 0 10px 0;"></div>';
+							for (var i=0; i < points.length; i++){
+								style += '<div style="margin:0;padding:0;font-weight:' + fontWeightBold + ';color:' + tooltipDarkerColor + ';font-size:' + tooltipHeaderFontSize + ';line-height:1;"><div style="background:' + this.points[i].color + ';width:20px;height:4px;border-radius:5px;display:inline-table;margin:-3px 8px 0 0;"></div>' + ((this.points[i].y).toFixed(2)) + ' ' + this.points[i].series.tooltipOptions.valueSuffix + '</div><div style="margin:0;padding:2px 0 10px 0;line-height:1;font-size:' + smallSize + ';color:' + tooltipDateColor + ';font-weight:' + fontWeightLight + ';">' + this.points[i].series.name +'</div>';
+							}
+							style += '</div>';
+							return style;
+						},
+						shared: true
+					},
+					plotOptions: {
+						areaspline: {
+							lineWidth: 2,
+							states: {
+								hover: {
+									lineWidth: 2
+								}
+							},
+							marker: {
+								enabled: false,
+								symbol: 'circle',
+								lineColor: 'rgba(255,255,255,0)',
+								lineWidth: 0,
+								states: {
+									hover: {
+										lineWidth: 0
+									}
+								}
+							},
+							states: {
+								hover: {
+									enabled: true,
+									lineWidth: 2,
+									marker: {
+										lineWidth: 0,
+										lineColor: 'rgba(255,255,255,0)',
+										symbol: 'circle'
+									}
+								}
+							},
+							fillColor: 'rgba(255,255,255,0)',
+							fillOpacity: 0
+						}
+					},
+					navigator: {
+						enabled: true,
+						outlineColor: navigatorBorder,
+						outlineWidth: 1,
+						height: 40,
+						maskFill: navigatorFill,
+						handles: {
+							backgroundColor: navigatorBackground,
+							borderColor: navigatorHandles
+						},
+						series:{
+							fillOpacity: 0.05
+						},
+						xAxis:{
+							lineColor: navigatorBorder,
+							lineWidth: 1,
+							gridLineColor: navigatorBorder,
+							labels: {
+								style:{
+									color: titleColor
+								}
+							}
+						}
+					},
+					
+					rangeSelector: {
+						enabled: true,
+						inputEnabled: false,
+						x: 0,
+						y: 0,
+						verticalAlign: 'top',
+						buttonPosition: {
+							align: 'right',
+							x: 0,
+							y: -65
+						},
+						buttonTheme: {
+							fill: 'none',
+							stroke: 'none',
+							'stroke-width': 0,
+							r: 3,
+							width: 25,
+							padding: 4,
+							style: {
+								color: buttonColor,
+								fontWeight: 'regular',
+								fontSize: smallSize
+							},
+							states: {
+								hover: {
+									fill: buttonFillHover,
+									style: {
+										color: buttonColorHover,
+										fontWeight: fontWeightBold
+									}
+								},
+								select: {
+									fill: buttonSelectedFill,
+									style: {
+										color: buttonSelectedColor,
+										fontWeight: fontWeightBold
+									}
+								},
+								disabled: {
+									fill: buttonDisabledFill,
+									style: {
+										color: buttonDisabledColor
+									}
+								}
+							}
+						},
+						labelStyle: {
+							color: titleColor,
+							fontWeight: fontWeightBold,
+							fontSize: smallSize
+						}
+					},
+					navigation: {
+						menuItemStyle: {
+							fontSize: '10px'
+						}
+					},
+					responsive: {
+						 rules: [{
+							condition: {
+								maxWidth: 600
+							},
+							chartOptions: {
+								title: {
+									style: { "color": "#ffffff" }
+								}
+								
+							}
+						}]
+					},
+					credits: {
+						enabled: false
+					}
+				});
+				
+				var apiGroup = '/v2/stats-group'+'?name=' + group;
+				if(demoAccount==1){
+					apiGroup = '/v2/demo-group';
+				}
+				$.getJSON(apiGroup, function(globalStatsData){
+					if(typeof globalStatsData != 'undefined' && globalStatsData != null){
+
+						// Correct to averages
+						var dataAverages = {};
+						var avgCount = 0;
+						var currentDate = 0;
+						var previousDate = 0;
+						$.each(globalStatsData, function(index, value){
+							index = (parseInt(index)+workerOffset*60*60)*1000;
+							currentDate = getDayTimestamp(index);
+							if(previousDate == 0){
+								previousDate = currentDate;
+							}
+							// Calculate daily averages
+							if(previousDate != currentDate){
+								dataAverages[previousDate] /= avgCount;
+								avgCount = 0;
+							}
+							
+							if(dataAverages[currentDate]==null) dataAverages[currentDate] = 0;
+							if(value > 0 && (avgCount==0 || (value/(dataAverages[currentDate]/avgCount)<10 || (value/(dataAverages[currentDate]/avgCount)>0 && avgCount < 3)))){ // Ignore outliers and mining of other coin
+								dataAverages[currentDate] += value;
+								avgCount++;
+							}
+							previousDate = currentDate;
+						});
+
+						dataAverages[previousDate] /= avgCount;
+
+						$.each(globalStatsData, function(index, value){
+							var timestamp = (parseInt(index)+workerOffset*60*60)*1000;
+							if(value > 30*dataAverages[getDayTimestamp(timestamp)] && dataAverages[getDayTimestamp(timestamp)] != 0 && value != 0){
+								globalStatsData[index] = dataAverages[getDayTimestamp(timestamp)];
+							}
+						});
+						
+						var dataProfitabilityGroupsArray = [];
+						$.each(globalStatsData,function(index, value){
+							index = (parseInt(index)+workerOffset*60*60)*1000;
+							dataProfitabilityGroupsArray.push([index, value*currencyValue]);
+						});
+						
+						chartGroupProfitability.addSeries({
+							name: groupFullName + ' ' + _('profitability'),
+							data: dataProfitabilityGroupsArray,
+							tooltip: {
+								valueDecimals: 2,
+								valueSuffix: currency + '/' + _('day'),
+								shared: true,
+								split: false
+							},
+							visible: true,
+							showInNavigator: true,
+							navigatorOptions: {
+								fillOpacity: 0,
+								fillColor: 'rgba(255,255,255,0)'
+							},
+							lineWidth: 2,
+							dataGrouping: {
+								approximation: "average",
+								enabled: true,
+								forced: true
+							},
+							marker: {
+								enabled: false,
+								symbol: 'circle',
+								lineColor: 'rgba(255,255,255,0)',
+								lineWidth: 0,
+								states: {
+									hover: {
+										lineWidth: 0
+									}
+								}
+							},
+							states: {
+								hover: {
+									enabled: true,
+									lineWidth: 2,
+									marker: {
+										lineWidth: 0,
+										lineColor: 'rgba(255,255,255,0)',
+										symbol: 'circle'
+									}
+								}
+							},
+							color: groupProfitabilityColor,
+							fillOpacity: 1,
+							fillColor: {
+								linearGradient: [0, 150, 0, 0],
+								stops: [
+									[0, Highcharts.Color(groupProfitabilityColor).setOpacity(0).get('rgba')],
+									[1, Highcharts.Color(groupProfitabilityColor).setOpacity(0.5).get('rgba')]
+								]
+							},
+							zIndex: 1
+						}, false);
+					}
+					chartGroupProfitability.redraw();
+					if (plan==2){
+						chartGroupProfitability.update({
+							rangeSelector: {
+								buttons: [{type:'hour', count:3, text:'3h'}, {type:'hour', count:12, text:'12h'}, {type:'hour', count:24, text:'1d'}, {type:'day', count:3, text:'3d'}, {type:'day', count:7, text:'7d'}, {type:'all', text:_('All')}],
+								selected: 1,
+								verticalAlign: 'top',
+								buttonPosition: {
+									align: 'right',
+									x: 0,
+									y: -65
+								},
+							}
+						});
+					}else if (plan==1){
+						chartGroupProfitability.update({
+							rangeSelector: {
+								buttons: [{type:'hour', count:3, text:'3h'}, {type:'hour', count:12, text:'12h'}, {type:'hour', count:24, text:'1d'}, {type:'day', count:3, text:'3d'}, {type:'all', text:_('All')}],
+								selected: 1,
+								verticalAlign: 'top',
+								buttonPosition: {
+									align: 'right',
+									x: 0,
+									y: -65
+								},
+							}
+						});
+					}else{
+						chartGroupProfitability.update({
+							rangeSelector: {
+								buttons: [{type:'hour', count:3, text:'3h'}, {type:'hour', count:12, text:'12h'}, {type:'hour', count:24, text:'1d'}, {type:'all', text:_('All')}],
+								selected: 1,
+								verticalAlign: 'top',
+								buttonPosition: {
+									align: 'right',
+									x: 0,
+									y: -65
+								},
+							}
+						});
+					}
+
+					setTimeout(function(){ loadGroups(groupFullName.toLowerCase()); }, 31 * 1000);
+					preloaderHide();
+				});
+			}
+		}else{
+			preloaderHide();
+		}
+	});
+}
+
+function getDayTimestamp(aTimestamp){
+	return aTimestamp - aTimestamp%(24*60*60*1000);
+}
+
+
+$(document).on("click", ".details", function() {
+	$(this).parent().children('.poolsWorkersList').toggle();	
+});
+
+loadGroups(group);
+function myGetHref() {
+	let str=decodeURIComponent(window.location.href)
+	return  str.split('#')[1]
+}
