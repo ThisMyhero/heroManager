@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en-US" translate="no">
+<head>
+    <title>Worker config</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preload" href="./css/themes/light/global.css?v=1635430962" as="style"/>
+    <link rel="preload" href="./js/jquery.js" as="script"/>
+    <meta name="robots" content="noindex">
+    <link href="./css/themes/light/global.css" id="css" rel="stylesheet" type="text/css">
+    <link href="./css/themes/dark/global.css" rel="stylesheet" type="text/css">
+    <link href="./css/themes/light/sever-config.css" rel="stylesheet" type="text/css">
+    <link href="./css/themes/dark/sever-config.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<noscript>
+    <iframe src="/www.googletagmanager.com/ns.html?id=GTM-KJ552JD" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe>
+</noscript>
+<header>
+
+</header>
+<div class="page">
+    <div class="menu">
+        <div id="main_menu">
+
+        </div>
+    </div>
+    <div class="content config">
+        <div class="title_row">
+            <div class="title_left">
+                <div class="title_navigation">
+                   <h1 class="tba_cade_item" lang-data-ht="Sever Management"  onclick="linkWin('/sever-config')">服务器管理</h1>
+                   <h1  class="tba_cade_item"  lang-data-ht="Sever Log" style="color: #fff;" onclick="linkWin('/sever-log')"></h1>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <pre style="width: 100%;height: calc(100vh - 250px);background-color: #000;font-family: 'Courier New';">
+
+            </pre>
+        </div>
+    </div>
+    <input type="hidden" value="271ab0270bbf45b35d4e6bbde5e85e8e2193112e4e33501c36b5e998a72ec94f" id="nonce"/>
+    <div class="popupbackground_empty"></div>
+    <div class="popupbackground close_popup"></div>
+    <div class="popup" id="click_away">
+        <div class="close"></div>
+        <div class="title">Confirmation</div>
+        <div class="text">You have unsaved changes. Are you sure you want to leave this page?</div>
+        <div class="action_row">
+            <div class="outlined_button gray close_popup">No, stay on this page</div>
+            <div class="button red">Yes, leave this page</div>
+        </div>
+    </div>
+    <script>
+        var selectedMiningClient = '';
+        var selectedMiningClientCPU = '';
+        var workerSystem = '';
+        var workerType = '';
+        var workerLink = '';
+    </script>
+</div>
+
+<script>
+    var currency = "CNY";
+    var currencyValue = 6.405705;
+    var temperature = "°C";
+    var userPermission = "owner";
+    var userPrimaryPermission = "";
+
+    [
+        "./js/jquery.js", "./js/gettext.js", "./js/perfect-scrollbar.js",'./js/language.js', "./js/templates/global.js","./js/templates/sever-log.js"
+    ].forEach(function (src) {
+        var script = document.createElement("script");
+        script.src = src;
+        script.async = false;
+        document.head.appendChild(script);
+    });
+</script>
+</body>
+</html>
