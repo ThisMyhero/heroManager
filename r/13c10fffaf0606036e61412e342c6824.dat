@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>无忧矿工</title>
+    <meta name="description" content="My minerstat remote mining monitor and management dashboard.">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./css/style-login-light.css?v=6"/>
+    <link rel="stylesheet" href="./css/style-login-dark.css?v=6">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" href="/images/favicon/favicon.ico">
+
+    <script src="./js/jquery.js"></script>
+    <script src="./js/language.js"></script>
+</head>
+<body>
+
+<noscript>
+    <iframe src="/www.googletagmanager.com/ns.html?id=GTM-KJ552JD" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe>
+</noscript>
+
+<div class="popupbackground"></div>
+<div class="popup">
+    <div class="arrow"></div>
+    <div class="icon close"></div>
+    <div class="title">Create new account</div>
+    <div class="mini_divider"></div>
+</div>
+<div id="login">
+<!--    <header>-->
+<!--        <a rel="noopener" href="/minerstat.com" class="button_back">-->
+<!--            <div class="icon back"></div>-->
+<!--            Back to website</a>-->
+<!--        <div class="singup" id="register">-->
+<!--            <span class="text">Don't have an account yet?</span>-->
+<!--            <div class="outlined_button">Create free account</div>-->
+<!--        </div>-->
+<!--    </header>-->
+    <div class="row">
+        <div class="logo"></div>
+        <h1 id="webName"></h1>
+        <ul class="tabs">
+            <li class="selected" lang-data-ht="Set Access key">Set Access key</li>
+<!--            <li>Login with App</li>-->
+        </ul>
+        <div class="form" id="login_key">
+            <label for="key" lang-data-ht="Set Access key">Set Access key</label>
+            <input type="text" id="key" name="key" maxlength="20"/>
+            <label for="twoFa" lang-data-ht="Identify the key">Identify the key</label>
+            <input type="text" id="twoFa" value="" maxlength="20"/>
+            <input type="submit" class="button blue"   id="button_login" value="Sign in">
+            <div class="message" id="message_login"></div>
+        </div>
+    </div>
+    <script src="./js/language.js"></script>
+
+<!--    <footer>-->
+<!--        <div class="title">Switch theme</div>-->
+<!--        <ul class="toggle">-->
+<!--            <li class="themelight selected" onclick="selectTheme('light');">Light</li>-->
+<!--            <li class="themedark " onclick="selectTheme('dark');">Dark</li>-->
+<!--        </ul>-->
+<!--    </footer>-->
+    <script>
+        languageTypeS=navigator.language.substr(0,2)+'-cn'
+        allLanguage()
+        $.ajax({
+            url:'/query?WEBINFO',
+            success:function (res) {
+                let xmname=_mx('AMining')
+                if(res.WEBINFO.webName!=''){
+                    xmname=res.WEBINFO.webName
+                }
+                $('#webName').html(xmname)
+            }
+        })
+        function validate(event) {
+            event.preventDefault();
+            if (document.getElementById("email").value) {
+                hcaptcha.execute();
+            }
+        }
+        function onload() {
+            var element = document.getElementById("button_new");
+            element.onclick = validate;
+        }
+
+        $(function () {
+
+            $('#register').click(function () {
+                $('#login').addClass('blur');
+                $('.popupbackground').fadeIn();
+                $('.popup').show();
+            });
+
+            $('.close, .popupbackground').click(function () {
+                $('#login').removeClass('blur');
+                $('.popupbackground').fadeOut();
+                $('.popup').hide();
+            });
+
+            $('.check').click(function () {
+                $(this).toggleClass('selected');
+            });
+
+            $('#button_login').on('click', function () {
+                if ($('#key').val() == '') {
+                    return false;
+                }
+                if($('#key').val()!==$('#twoFa').val()){
+                    $('#message_login').html('The two keys are inconsistent')
+                    $('#message_login').show()
+                    $('#message_login').css('color','#ff564f')
+                    return
+                }else {
+                    $('#message_login').html('')
+                    $('#message_login').hide()
+                }
+                $.ajax({
+                    url:'/setpwd',
+                    type:'post',
+                    data:{
+                        pwd:$('#key').val(),
+                        pwd2:$('#twoFa').val()
+                    },
+                    success:function (res) {
+                        if(res=='1'){
+                            window.location.replace('/index')
+                        }else if(res=='0'){
+                            $('#message_login').html('Setup failed,Delete the server password file and reset it again')
+                            $('#message_login').show()
+                            $('#message_login').css('color','#ff564f')
+                        }else {
+                            $('#message_login').html(res)
+                            $('#message_login').show()
+                            $('#message_login').css('color','#ff564f')
+                        }
+                    }
+                })
+            });
+
+            $("#key,#twoFa").keyup(function (e) {
+                if (e.which == 13) {
+                    $('#button_login').click();
+                }
+            });
+        });
+
+        // function setCookie(key, value) {
+        //     var expires = new Date();
+        //     expires.setTime(expires.getTime() + (1 * 24 * 60 * 60 * 1000));
+        //     document.cookie = 'ms2=' + value + ';path=/;expires=' + expires.toUTCString();
+        // }
+
+        function selectTheme(theme) {
+            if (theme == 'dark') {
+                if ($("#theme").length == 0) {
+                    $('.themedark').addClass('selected');
+                    $('.themelight').removeClass('selected');
+                    $("head link[rel='stylesheet']").last().after('<link rel="stylesheet" id="theme" href="/css/style-login-dark.css?v=3" type="text/css">');
+                }
+            } else {
+                $('#theme').remove();
+                $('.themelight').addClass('selected');
+                $('.themedark').removeClass('selected');
+            }
+            var expires = new Date();
+            expires.setTime(expires.getTime() + (3600 * 1000 * 24 * 365));
+            document.cookie = 'theme=' + theme + ';path=/;expires=' + expires.toUTCString();
+        }
+    </script>
+</div>
+<script>
+    // window.onload=function(){
+    //     selectTheme('dark')
+    // }
+    // if (typeof window.matchMedia !== 'undefined') {
+    //     var mql = window.matchMedia("(prefers-color-scheme: dark)");
+    //     if (mql.matches) {
+    //         selectTheme('dark');
+    //     } else if (window.matchMedia("(prefers-color-scheme: light)").matches) {
+    //         selectTheme('light');
+    //     }
+    //
+    //     function themeLoad(e) {
+    //         if (e.matches) {
+    //             selectTheme('dark');
+    //         } else if (window.matchMedia("(prefers-color-scheme: light)").matches) {
+    //             selectTheme('light');
+    //         }
+    //     }
+    //
+    //     mql.addListener(themeLoad);
+    // }
+    //
+    // function closeCookie() {
+    //     $('.cookie_message').fadeOut();
+    //     var d = new Date();
+    //     d.setTime(d.getTime() + 3600 * 1000 * 24 * 365);
+    //     var expires = "expires=" + d.toUTCString();
+    //     document.cookie = "cookies=1;" + expires + ";path=/";
+    // }
+</script>
+</body>
+</html>

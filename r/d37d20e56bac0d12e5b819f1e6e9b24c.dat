@@ -1,0 +1,56 @@
+function linkWin(ax) {
+    window.location.replace(ax)
+}
+
+var cachex=undefined
+var isScrollLock=false
+//获取核心日志
+function getLog() {
+    $.ajax({
+        url:`/serverlog?cache=${cachex}`,
+        type:'post',
+        dataType:'json',
+        success:function (res) {
+            if(res.type=="wait"){
+                $('#log_win').html('无日志')
+            }else if(res.type=="new"){
+                let str=res.context.replace(/[<]/g,"&lt;").replace(/\r\n/g,"<br>")
+                $('#log_win').html(str)
+                if($('#log_win').is(':visible')){
+                    $('#log_win')[0].scrollTop= $('#log_win')[0].scrollHeight
+                }
+            }else {
+                let str=res.context.replace(/[<]/g,"&lt;").replace(/\r\n/g,"<br>")
+                if(getScrollState()){
+                    $('#log_win').append(str)
+                    $('#log_win')[0].scrollTop= $('#log_win')[0].scrollHeight
+                }else {
+                    if(!isScrollLock){
+                        isScrollLock=true
+                        lockNumbe= setTimeout(function () {
+                            $('#log_win')[0].scrollTop= $('#log_win')[0].scrollHeight
+                            isScrollLock=false
+                        },1000*60*3)
+                    }
+                }
+
+            }
+            cachex=res.cache
+        }
+    })
+}
+//判断滚动条是否到底
+function getScrollState() {
+    let scrollTop = $('#log_win')[0].scrollTop;
+    let scrollHeight = $('#log_win')[0].scrollHeight;
+    let windowHeight = $('#log_win')[0].clientHeight;
+    if(scrollTop + windowHeight == scrollHeight){
+        return true
+    }else {
+        return false
+    }
+
+}
+setInterval(function () {
+    getLog()
+},1000)
