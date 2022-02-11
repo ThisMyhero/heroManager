@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN" translate="no">
+<head>
+    <title>Config Templates</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="./css/themes/light/global.css" id="css" rel="stylesheet" type="text/css">
+    <link href="./css/themes/dark/global.css" rel="stylesheet" type="text/css">
+    <link href="./css/themes/light/config-templates.css" rel="stylesheet" type="text/css">
+    <link href="./css/themes/dark/config-templates.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KJ552JD" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe>
+</noscript>
+<header>
+
+</header>
+<div class="page">
+    <div class="menu">
+        <div id="main_menu">
+
+        </div>
+    </div>
+    <div class="content config_templates">
+        <div class="title_row" style="justify-content: left">
+            <h1 class="myTabText myTabTextIs" onclick="linkWinHref('/config-templates')" lang-data-ht="WorkerConfig">WorkerConfig</h1>
+            <h1 class="myTabText " onclick="linkWinHref('/site-config-templates')" style="margin-left: 30px" lang-data-ht="Setting">Setting</h1>
+            <h1 class="myTabText " onclick="linkWinHref('/email-templates')" style="margin-left: 30px" lang-data-ht="E-mail">E-mail</h1>
+            <h1 class="myTabText" onclick="linkWinHref('/auto-templates')" style="margin-left: 30px" lang-data-ht="Auto">Auto</h1>
+            <h1 class="myTabText" onclick="linkWinHref('/clocktune')" style="margin-left: 30px" lang-data-ht="Overclocking">Overclocking</h1>
+        </div>
+        <div class="filter_row">
+            <div class="search_el">
+                <input type="text" id="search_configs"/>
+                <div class="icon search"></div>
+            </div>
+            <div class="buttons">
+                <div data-tooltip="export（JSON）" lang-data-ti="Export (JSON)" onclick="exportProfiles('all')" class="button white">
+                    <div class="icon export"></div>
+                </div>
+                <div data-tooltip="import（JSON）" lang-data-ti="Import (JSON)" class="button white">
+                    <div class="icon import"></div>
+                    <input type="file" id="import" name="import"/></div>
+                <a href="./config-templates/new2?s=add" class="button green">
+                    <div class="icon plus"></div>
+                    <span lang-data-ht="Add New Template">Add New Template</span>
+                </a>
+            </div>
+        </div>
+        <div class="box_table">
+            <table id="mytable">
+            </table>
+        </div>
+        <div class="popupbackground close_popup"></div>
+        <div class="popup" id="overclock_delete">
+            <div class="close"></div>
+            <div class="title"></div>
+            <div class="text">
+                <div class="icon warning"></div>
+                <p lang-data-ht="Would you like to delete the template?">Would you like to delete the template?</p></div>
+            <div class="action_row">
+                <div class="circle-loader">
+                    <div class="checkmark draw"></div>
+                </div>
+                <div class="message_suc">Finished</div>
+                <div class="message_err">Error</div>
+                <div class="outlined_button gray close_popup" lang-data-ht="No, keep it">No, keep it</div>
+                <div class="button red" lang-data-ht="Yes, delete it">Yes, delete it</div>
+            </div>
+        </div>
+        <input type="hidden" id="nonce" value=""/>
+        <div class="popup" id="view_log" style="display: none;width: 60%">
+            <div class="close" onclick="closePre()"></div>
+            <div class="title" lang-data-ht2="Log"></div>
+            <div class="text">
+                <pre class="view_log_pre"></pre>
+            </div>
+        </div>
+    </div>
+    <script>
+        var jsonProfiles = '';
+    </script>
+</div>
+
+<script>
+    var currency = "USD";
+    var currencyValue = 1.000000;
+    var temperature = "°C";
+    var userPermission = "owner";
+    var userPrimaryPermission = "";
+
+    [
+        "./js/jquery.js", "./js/gettext.js", "./js/perfect-scrollbar.js",'./js/language.js', "./js/templates/global.js", "./js/templates/config-templates.js", "./js/FileSaver.min.js"
+    ].forEach(function (src) {
+        var script = document.createElement("script");
+        script.src = src;
+        script.async = false;
+        document.head.appendChild(script);
+    });
+</script>
+</body>
+</html>

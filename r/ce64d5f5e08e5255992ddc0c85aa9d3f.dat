@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en-US" translate="no">
+<head>
+    <title>Address editor</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="./css/themes/light/global.css" id="css" rel="stylesheet" type="text/css">
+    <link href="./css/themes/dark/global.css" rel="stylesheet" type="text/css">
+    <link href="./css/themes/light/address-editor.css" rel="stylesheet" type="text/css">
+    <link href="./css/themes/dark/address-editor.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<noscript>
+    <iframe src="/www.googletagmanager.com/ns.html?id=GTM-KJ552JD" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe>
+</noscript>
+<header></header>
+<div class="page">
+    <div class="menu">
+        <div id="main_menu">
+
+        </div>
+    </div>
+    <div class="content address_editor">
+        <div class="title_row">
+            <div class="title_left">
+                <h1 lang-data-ht="Address editor">Address editor</h1>
+            </div>
+        </div>
+        <div class="container">
+            <div class="tab_row">
+                <div class="tabs_left">
+                    <div id="tabPools" onclick="changeTab('pools')" lang-data-ht="Pools" class="tab selected">Pools
+                    </div>
+                    <div id="tabWallets" onclick="changeTab('wallets')" lang-data-ht="Wallets" class="tab">Wallets</div>
+                </div>
+                <div class="tabs_right">
+                    <div id="poolsButtons" class="tabs_buttons">
+                        <div lang-data-ti="Export (JSON)" data-tooltip="Export (JSON)" onclick="exportJson('pools');"
+                             class="button_white">
+                            <div class="icon export"></div>
+                        </div>
+                        <div lang-data-ti="Import (JSON)" data-tooltip="Import (JSON)" class="button_white">
+                            <div class="icon import"></div>
+                            <input type="file" id="importPools" name="import"/></div>
+                    </div>
+                    <div id="walletsButtons" class="tabs_buttons" style="display:none;">
+                        <div data-tooltip="Export wallets (JSON)" lang-data-ti="Export (JSON)"
+                             onclick="exportJson('wallets');" class="button_white">
+                            <div class="icon export"></div>
+                        </div>
+                        <div data-tooltip="Import wallets (JSON)" lang-data-ti="Import (JSON)" class="button_white">
+                            <div class="icon import"></div>
+                            <input type="file" id="importWallets" name="import"/></div>
+                    </div>
+                </div>
+            </div>
+            <div class="box_table" id="poolsData">
+                <table id="pool_table">
+                    <tr>
+                        <th class="tag-width" lang-data-ht="Tag name">Tag name</th>
+                        <th class="rmv2" lang-data-ht="Pool address">Pool address</th>
+                        <th class="width-actions" lang-data-ht="Actions">Actions</th>
+                    </tr>
+                    <tr data-tag="">
+                        <td class="tag-width">
+                            <div class="input_tag_pool">
+                                <div class="tag pool">POOL:</div>
+                                <input type="text" value=""/>
+                            </div>
+                            <div class="shw2">
+                                <div class="input_address">
+                                    <input type="text" value=""/>
+                                    <div style="display:block;" class="button green">Add</div>
+                                    <div class="loader_width">
+                                        <div class="circle-loader">
+                                            <div class="checkmark draw"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="rmv2">
+                            <div class="input_address inputNewPool">
+                                <input type="text" value=""/>
+                                <div style="display:block;" class="button green">Add</div>
+                                <div class="loader_width">
+                                    <div class="circle-loader">
+                                        <div class="checkmark draw"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="width-actions"></td>
+                    </tr>
+                </table>
+                <div style="height: 40px;background-color: #232d43;width: 100%"></div>
+                <div style="background-color: #232d43;">
+                    <div class="my_d_pool_tab_card" lang-data-ht="">系统内置</div>
+                </div>
+                <table id="pool_table_d">
+
+                </table>
+            </div>
+            <div class="box_table" id="walletsData" style="display:none;">
+                <table id="wallet_table">
+                    <tr>
+                        <th class="tag-width" lang-data-ht="Tag name">Tag name</th>
+                        <th class="rmv2" lang-data-ht2="Pool username or wallet address">Pool username or wallet
+                            address
+                        </th>
+                        <th class="width-actions" lang-data-ht="Actions">Actions</th>
+                    </tr>
+                    <tr data-tag="">
+                        <td class="tag-width">
+                            <div class="input_tag_wallet">
+                                <div class="tag wallet">WALLET:</div>
+                                <input type="text" value=""/>
+                            </div>
+                            <div class="shw2">
+                                <div class="input_address">
+                                    <input type="text" value=""/>
+                                    <div style="display:block;" class="button green">Add</div>
+                                    <div class="loader_width">
+                                        <div class="circle-loader">
+                                            <div class="checkmark draw"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="rmv2">
+                            <div class="input_address inputNewWallet">
+                                <input type="text" value=""/>
+                                <div style="display:block;" class="button green">Add</div>
+                                <div class="loader_width">
+                                    <div class="circle-loader">
+                                        <div class="checkmark draw"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="width-actions"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="popupbackground close_popup"></div>
+    <div class="popup" id="tag_delete">
+        <div class="close"></div>
+        <div class="title"></div>
+        <div class="text">
+            <div class="icon warning"></div>
+            <p lang-data-ht="Before deleting this tag, please make sure that it's no longer in use in your configurations.">
+                Before deleting this tag, please make sure that it's no longer in use in your configurations.</p></div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup" lang-data-ht="No, keep it">No, keep it</div>
+            <div class="button red" lang-data-ht="Yes, delete it">Yes, delete it</div>
+        </div>
+    </div>
+    <div class="popup" id="view_log" style="display: none;width: 60%">
+        <div class="close" onclick="closePre()"></div>
+        <div class="title" lang-data-ht2="Log"></div>
+        <div class="text">
+            <pre class="view_log_pre"></pre>
+        </div>
+    </div>
+    <input type="hidden" id="nonce" value="c13caefd4b5b37b31c578c6624f681ffad074d2092711c67b61f7f0b8f4a9b9e"/>
+    <script>
+        var tagsPools = '';
+        var tagsWallets = '';
+    </script>
+</div>
+
+<script>
+    var currency = "CNY";
+    var currencyValue = 6.405705;
+    var temperature = "°C";
+    var userPermission = "owner";
+    var userPrimaryPermission = "";
+
+    [
+        "./js/jquery.js", "./js/gettext.js", "./js/perfect-scrollbar.js", './js/language.js', "./js/templates/global.js", "./js/templates/address-editor.js", "./js/FileSaver.min.js"
+    ].forEach(function (src) {
+        var script = document.createElement("script");
+        script.src = src;
+        script.async = false;
+        document.head.appendChild(script);
+    });
+</script>
+</body>
+</html>
