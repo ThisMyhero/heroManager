@@ -1,0 +1,26 @@
+{
+	"ETH": {
+		"ethermine": {
+			"pool": "stratum+ssl://asia1.ethermine.org:5555",
+			"url": "https://www.ethermine.org/miners/{addr}/dashboard"
+		},
+		"f2pool": {
+			"pool": "stratum+ssl://39.99.112.35:6690",
+			"url": "https://www.f2pool.com/eth/{addr}"
+		},
+		"hiveon": {
+			"pool": "stratum+ssl://eth.hiveon.com:24443",
+			"url": "https://hiveon.net/eth?miner={addr}"
+		},
+		"flexpool": {
+			"pool": "stratum+ssl://hke.fpmirror.com:5555",
+			"url": "https://www.flexpool.io/zh-CN/miner/eth/{addr}"
+		}
+	},
+	"ETC": {
+		"f2pool": {
+			"pool": "stratum+tcp://ya9qsjaz.p.fish:6688",
+			"url": "https://www.f2pool.com/etc/{addr}"
+		}
+	}
+}
