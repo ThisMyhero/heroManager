@@ -1,0 +1,214 @@
+function linkWin(ax) {
+    window.location.replace(ax)
+}
+
+$('.mytoggle').on('click',function () {
+     let mythis=$(this).find('.bullet')[0]
+        if($(mythis).hasClass('selected')){
+            $(mythis).removeClass('selected')
+        }else {
+            $(mythis).addClass('selected')
+        }
+})
+
+//数据循环
+var objList=[]
+var lockMinId=undefined
+eacsx()
+function eacsx() {
+    $.ajax({
+        url:'/QUERY?POOLPROXY',
+        dataType:'json',
+        type:'post',
+        success:function (res) {
+            objList=res.POOLPROXY
+            setForm()
+        }
+    })
+
+}
+
+function setForm(){
+    let str=''
+    $.each(objList,function (i,it) {
+        str+='<div class="ixm_searc" data-filter="'+it.pool.toLowerCase()+','+it.wallet.toLowerCase()+','+it.port+'" style="display:flex;background-color: #343d52">\n' +
+             '    <div class="c3 backx_item" title="'+it.pool+'">'+it.pool.substring(0,12)+'...'+it.pool.substring(it.pool.length-12,it.pool.length)+'</div>' +
+             '    <div class="c3 backx_item" title="'+it.wallet+'" style="border-left:0">'+it.wallet.substring(0,12)+'...'+it.wallet.substring(it.wallet.length-12,it.wallet.length)+'</div>' +
+             '    <div class="c1 backx_item">'+it.port+'</div>' +
+             '    <div class="c1 backx_item">'+(it.ssl?"true":"false")+'</div>' +
+             '    <div class="c1 backx_item">'+it.coin+'</div>' +
+             '    <div class="c1 backx_item">'+(it.hideip?"true":"false")+'</div>' +
+             '    <div class="c1 backx_item">'+it.latency+'</div>' +
+             '    <div class="c1 backx_item">'+it.percentage+' %</div>' +
+             '    <div class="c2 backx_item" style="display: flex;justify-content: center;">' +
+                    '  <div style="width: 24px" data-tooltip="'+_mx4('Enable')+'"><div class="di_hk_mx '+(it.status?'is_hk':'')+'" onclick="isHkState('+it.id+',this)"></div></div>'+
+                    '  <div  style="margin-left: 10px" class="my_config_icon my_proxy_edit" onclick="showWin('+it.id+')"></div>'+
+                    '  <div  style="margin-left: 10px" class="my_config_icon my_proxy_del" onclick="showWinProxy('+it.id+')"></div>'+
+            '    </div>' +
+             '</div>'
+    })
+    $('.wk_list_body').html(str)
+}
+
+//显示弹窗
+function showWin(id) {
+    if(id==undefined){
+        $('#ssl_bx').removeClass('selected'),//是否开启SSL
+        $('#listen_port').val(''),//端口
+        $('#pool_address').val(''),//池子
+        $('#coin_type').val('ethash'),//币种
+        $('#hideip').removeClass('selected')//是否隐藏IP
+        $('#rake_rate').val('')//抽成比例
+        $('#rake_pool').val('')//抽成比例
+        $('#rake_address').val('')//钱包地址
+        $('#add_proxy_win').show()
+        $('.popupbackground').show()
+        lockMinId=undefined
+    }else {
+        lockMinId=id
+        $('#add_proxy_win').show()
+        $('.popupbackground').show()
+        $.each(objList,function (i,it) {
+            if(it.id==lockMinId){
+                it.ssl==1?$('#ssl_bx').addClass('selected'):$('#ssl_bx').removeClass('selected')
+                it.hideip==1?$('#hideip').addClass('selected'):$('#hideip').removeClass('selected')
+                $('#listen_port').val(it.port),//端口
+                $('#pool_address').val(it.pool),//池子
+                $('#coin_type').val(it.coin),//币种
+                $('#rake_rate').val(it.percentage)//抽成比例
+                $('#rake_pool').val(it.rakePool)//抽成比例
+                $('#rake_address').val(it.wallet)//钱包地址
+            }
+        })
+    }
+}
+
+
+$('.close').on('click',function () {
+    closeWin()
+})
+
+//遮罩层
+$('.popupbackground').on('click',function () {
+    closeWin()
+})
+
+//关闭弹窗
+function closeWin() {
+    $('#add_proxy_win').hide()
+    $('.popupbackground').hide()
+    $('#ssl_bx').removeClass('selected'),//是否开启SSL
+    $('#listen_port').val(''),//端口
+    $('#pool_address').val(''),//池子
+    $('#coin_type').val('ethash'),//币种
+    $('#hideip').removeClass('selected')//是否隐藏IP
+    $('#rake_rate').val('')//抽成比例
+    $('#rake_pool').val('')//抽成矿池比例
+    $('#rake_address').val('')//钱包地址
+    $('#del_proxy').attr('click-mx-id','')
+    $('#del_proxy').hide()
+}
+
+//提交参数
+function submitProxy() {
+    let obj={
+        a:lockMinId==undefined?'add':'edit',
+        id:lockMinId==undefined?undefined:lockMinId,
+        ssl:$('#ssl_bx').hasClass('selected')?1:0,//是否开启SSL
+        port:$('#listen_port').val(),//端口
+        pool:$('#pool_address').val(),//池子
+        coin:$('#coin_type').val(),//币种
+        hideip:$('#hideip').hasClass('selected')?1:0,//是否隐藏IP
+        percentage:$('#rake_rate').val(),//抽成比例
+        rakePool:$('#rake_pool').val(),//抽成比例
+        wallet:$('#rake_address').val(),//钱包地址
+    }
+    $.ajax({
+        url:'/POOLPROXY',
+        dataType:'json',
+        type:'post',
+        data:obj,
+        success:function (res) {
+            if(res.code==0){
+                eacsx()
+                closeWin()
+                setMsgTc('suc',_mx('提交成功'),3000)
+            }else {
+                setMsgTc('war',res.msg,5000)
+            }
+        }
+    })
+}
+
+//禁用启用
+function isHkState(id,e) {
+    let obj=undefined
+    if($(e).hasClass('is_hk')){
+        obj={
+            a:'stop',
+            id:id
+        }
+    }else {
+        obj={
+            a:'start',
+            id:id
+        }
+    }
+    $.ajax({
+        url:'/POOLPROXY',
+        type:'post',
+        dataType:'json',
+        data:obj,
+        success:function (res) {
+            if(res.code==0){
+                eacsx()
+                setMsgTc('suc',_mx('提交成功'),3000)
+            }else {
+                setMsgTc('err',res.msg,10000)
+            }
+        }
+    })
+}
+
+//显示代理窗口
+function showWinProxy(id) {
+    $('#del_proxy').attr('click-mx-id',id)
+    $('#del_proxy').show()
+    $('.popupbackground').show()
+}
+//删除代理窗口
+function delProxy() {
+    id=$('#del_proxy').attr('click-mx-id')
+    $.ajax({
+        url:'/POOLPROXY',
+        type:'post',
+        dataType:'json',
+        data:{
+            a:"del",
+            id:id
+        },
+        success:function (res) {
+          if(res.code==0){
+              eacsx()
+              closeWin()
+              setMsgTc('suc',_mx('提交成功'),3000)
+          }else {
+              setMsgTc('err',res.msg,5000)
+          }
+
+        }
+    })
+}
+
+$('#search_input').keyup(function () {
+    let list=$('.ixm_searc')
+    let sx = $(this).val().toLowerCase()
+    $.each(list,function (i,it) {
+        if($(it).attr('data-filter').indexOf(sx)==-1){
+            $(it).hide()
+        }else {
+            $(it).show()
+        }
+    })
+
+})

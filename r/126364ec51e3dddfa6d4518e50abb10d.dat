@@ -1,0 +1,1079 @@
+var LogoFile=undefined
+var infoItx=undefined
+var dataServerObj={}
+var serverUpdataState=false
+var testObj=[]
+var metadata=[]
+var testType=['offline','online','anyhowmining','anyhow_idle','disable','unable','idle']
+var testTypeXX=['类型1','类型2','类型3','类型4','类型5','类型6','类型7']
+var workerNameSearch=''
+var count=0
+var listFilter=[]//过滤条件
+var highFilter=[]//高亮
+var listHighId=[]//高亮ID
+//隐藏的dom
+var hideDom=0
+//显示的dom
+var showDom=20
+//每排个数
+var sizeNum=1
+//显示行数
+var heNum=40
+if(document.body.clientWidth<=600){
+    heNum=Math.ceil(Number($('.wk_list_info').outerHeight())/350)+10
+    showDom=sizeNum*heNum
+}else {
+    heNum=Math.ceil(Number($('.wk_list_info').outerHeight())/40)+1
+    showDom=sizeNum*heNum
+}
+setTestData()
+
+function setTestData(){
+    for (let i=0;i<10000;i++){
+        let type= Math.ceil(Math.random()*6)
+        let typeXX= Math.ceil(Math.random()*6)
+        let obj={
+                id:i,
+                state:testType[type],//状态
+                name:'A00'+i,//矿工名称
+                poolHash:Math.ceil(Math.random()*900000),//矿池算力
+                coreHash:Math.ceil(Math.random()*900000),//核心算力
+                time:Math.ceil(Math.random()*900000),//工作时长
+                upSecond:Math.ceil(Math.random()*300),//上传次数
+                rejectSecond:Math.ceil(Math.random()*10),//拒绝次数
+                wallet:'0x72a3c52c692f2b200be6d78a585bb557f688ed9d',//钱包
+                pool:'stratum+ssl://asia1.ethermine.org:5555',//矿池地址
+                delay:Math.ceil(Math.random()*1000),//延迟
+                lastIp:'181.0.22.22',//最后连接地址
+                proxyType:testTypeXX[typeXX],//代理类型
+                rake:3.2,//抽成
+            }
+        metadata.push(obj)
+    }
+    testObj=JSON.parse(JSON.stringify(metadata))
+    $('.y_height_info').css('height',Math.ceil(testObj.length/sizeNum)*40+'px')
+    $('.phone_list').css('height',Math.ceil(testObj.length/sizeNum)*350+'px')
+    $('.y_scorll div').css('height',Math.ceil(testObj.length/sizeNum)*40+'px')
+    setDataDom(testObj)
+    // setViewH(testObj)
+}
+
+function setDataDom(data){
+    count=0
+    let str=''
+    if(document.body.clientWidth>600){
+        $.each(data,function (i,it) {
+            if(hideDom<=i&&i<hideDom+showDom) {
+                if(listHighId.indexOf(Number(it.id))!=-1){
+                    str +=  '<div style="background-color:#4d5a76 !important;" class="item_cosx" data-mx-id="' + it.id + '" id="ak_' + it.id + '">'
+                }else {
+                    str +=  '<div class="item_cosx" data-mx-id="' + it.id + '" id="ak_' + it.id + '">'
+                }
+
+                str +=  '<div class="backx_item search_item c1" data-filter="state" data-search-type="Status" data-mx="' + it.state + '">' +
+                    '<div class="meack_wk" data-filter="state" data-search-type="Status" data-mx="' + it.state + '">' +
+                    '<div class="meack_info ' + it.state + '" data-filter="state" data-search-type="Status" data-mx="' + it.state + '"></div>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="backx_item search_item c2 link_name" data-filter="name" data-search-type="Worker name" data-mx="' + it.name + '">' + it.name + '</div>'
+                    + '<div class="backx_item search_item c2" data-filter="poolHash" data-search-type="Pool Hashrate" data-mx="' + it.poolHash + '">' + convertHashrate(speedToHash((Math.ceil(it.poolHash)),'H'),'H/s') + '</div>'
+                    + '<div class="backx_item search_item c2" data-filter="coreHash" data-search-type="Core Hashrate" data-mx="' + it.coreHash + '">' + convertHashrate(speedToHash((Math.ceil(it.coreHash)),'H'),'H/s') + '</div>'
+                    + '<div class="backx_item search_item c2" data-filter="time" data-search-type="Worked Hours" data-mx="' + it.time + '">' + getTime(it.time,1) + '</div>'
+                    + '<div class="backx_item search_item c2" data-filter="upSecond" data-search-type="Accept" data-mx="' + it.upSecond + '">' + it.upSecond + '</div>'
+                    + '<div class="backx_item search_item c2" data-filter="rejectSecond" data-search-type="Reject" data-mx="' + it.rejectSecond + '">' + it.rejectSecond + '</div>'
+                    + '<div class="backx_item search_item c2" data-filter="wallet" data-search-type="Wallet" data-mx="' + it.wallet + '" title="' + it.wallet + '">' + it.wallet.substring(0, 5) + '...' + it.wallet.substring(it.wallet.length - 5, it.wallet.length) + '</div>'
+                    + '<div class="backx_item search_item c2" data-filter="pool" data-search-type="Pool Address" data-mx="' + it.pool + '" title="' + it.pool + '">' + it.pool.substring(0, 5) + '...' + it.pool.substring(it.pool.length - 5, it.pool.length) + '</div>'
+                    + '<div class="backx_item search_item c2" data-filter="delay" data-search-type="Latency" data-mx="' + it.delay + '">' + it.delay + '</div>'
+                    + '<div class="backx_item search_item c2" data-filter="lastIp" data-search-type="Last connection IP" data-mx="' + it.lastIp + '">' + it.lastIp + '</div>'
+                    + '<div class="backx_item search_item c2" data-filter="proxyType" data-search-type="Proxy Type" data-mx="' + it.proxyType + '">' + it.proxyType + '</div>'
+                    + '<div class="backx_item search_item c2" data-filter="rake" data-search-type="Rake Rate" data-mx="' + it.rake + '">' + it.rake + '</div>'
+                    + '<div class="backx_item c1"><div class="my_config_icon my_proxy_link icon_x_pos"></div></div>'
+                str += '</div>'
+                count++
+            }
+        })
+        $('.wk_list_info_MS').html(str)
+        bindMenu();
+    }else {
+        $.each(data,function (i,it) {
+        if(hideDom<=i&&i<hideDom+showDom) {
+            str += '<div class="item_p_card">\n' +
+                '<div class="card_head">\n' +
+                '    <div class="tx_1x" style="display: flex;">\n' +
+                '        <div style="font-weight: bold;color: #fff;font-size: 22px">'+it.name+'</div>\n' +
+                '        <div class="my_config_icon my_proxy_link" style="margin-left: 10px"></div>\n' +
+                '    </div>\n' +
+                '    <div style="display: flex;align-items: center">\n' +
+                '        <div class="meack_wk" style="margin-right: 10px">\n' +
+                '            <div class="meack_info ' + it.state + '"></div>\n' +
+                '        </div>\n' +
+                '        <div>'+getTextValue(it.state)+'</div>\n' +
+                '    </div>\n' +
+                '</div>\n' +
+                '<div class="card_info">\n' +
+                '    <div class="item_i_txt_1">\n' +
+                '        <div lang-data-htp="Latency" class="t_n_1">'+_mxP('Latency')+'</div>\n' +
+                '        <div class="t_n_2">'+it.delay+'</div>\n' +
+                '    </div>\n' +
+                '    <div class="item_i_txt_1">\n' +
+                '        <div lang-data-htp="Wallet" class="t_n_1">'+_mxP('Wallet')+'</div>\n' +
+                '        <div class="t_n_2">' + it.wallet.substring(0, 8) + '...' + it.wallet.substring(it.wallet.length - 12, it.wallet.length) + '</div>\n' +
+                '    </div>\n' +
+                '    <div class="item_i_txt_1">\n' +
+                '        <div lang-data-htp="Pool Address" class="t_n_1">'+_mxP('Pool Address')+'</div>\n' +
+                '        <div class="t_n_2">' + it.pool.substring(0, 8) + '...' + it.pool.substring(it.pool.length - 12, it.pool.length) + '</div>\n' +
+                '    </div>\n' +
+                '    <div class="item_i_txt_1">\n' +
+                '        <div lang-data-htp="Pool Hashrate" class="t_n_1">'+_mxP('Pool Hashrate')+'</div>\n' +
+                '        <div class="t_n_2">' + convertHashrate(speedToHash((Math.ceil(it.poolHash)),'H'),'H/s') + '</div>\n' +
+                '    </div>\n' +
+                '    <div class="item_i_txt_1">\n' +
+                '        <div lang-data-htp="Core Hashrate" class="t_n_1">'+_mxP('Core Hashrate')+'</div>\n' +
+                '        <div class="t_n_2">' + convertHashrate(speedToHash((Math.ceil(it.coreHash)),'H'),'H/s') + '</div>\n' +
+                '    </div>\n' +
+                '    <div class="item_i_txt_1">\n' +
+                '        <div lang-data-htp="Worked Hours" class="t_n_1">'+_mxP('Worked Hours')+'</div>\n' +
+                '        <div class="t_n_2">' + getTime(it.time,1) + '</div>\n' +
+                '    </div>\n' +
+                '    <div class="item_i_txt_1">\n' +
+                '        <div lang-data-htp="Accept" class="t_n_1">'+_mxP('Accept')+'</div>\n' +
+                '        <div class="t_n_2">' + it.upSecond + '</div>\n' +
+                '    </div>\n' +
+                '    <div class="item_i_txt_1">\n' +
+                '        <div lang-data-htp="Reject" class="t_n_1">'+_mxP('Reject')+'</div>\n' +
+                '        <div class="t_n_2">' + it.rejectSecond + '</div>\n' +
+                '    </div>\n' +
+                '    <div class="item_i_txt_1">\n' +
+                '        <div lang-data-htp="Proxy Type" class="t_n_1">'+_mxP('Proxy Type')+'</div>\n' +
+                '        <div class="t_n_2">' + it.proxyType + '</div>\n' +
+                '    </div>\n' +
+                '    <div class="item_i_txt_1">\n' +
+                '        <div lang-data-htp="Rake Rate" class="t_n_1">'+_mxP('Rake Rate')+'</div>\n' +
+                '        <div class="t_n_2">' + it.rake + '</div>\n' +
+                '    </div>\n' +
+                '    <div class="item_i_txt_1">\n' +
+                '        <div lang-data-htp="Last connection IP" class="t_n_1">'+_mxP('Last connection IP')+'</div>\n' +
+                '        <div class="t_n_2">' + it.lastIp + '</div>\n' +
+                '    </div>\n' +
+                '</div>\n' +
+                '</div>'
+            }
+        })
+        $('#my_phone_list').html(str)
+    }
+}
+
+//高亮过滤
+function filterHigh() {
+    listHighId=[]
+    if(highFilter.length>0){
+        $.each(testObj,function (i,it) {
+            $.each(highFilter,function (j,h) {
+                if(it[h.icx]==h.value){
+                    listHighId.push(Number(it.id))
+                }
+            })
+        })
+    }
+    setDataDom(testObj)
+}
+var sortType='1'
+var descAndAsc=1
+//过滤数据
+function filterList(data) {
+    let sortList=['2','8','9','11','12']
+       let listObj=[]
+        let visObj=[]
+       if(listFilter.length>0 || workerNameSearch!=''){
+         $.each(data,function (i,it) {
+             if(listFilter.length>0){
+                 $.each(listFilter,function (j,h) {
+                     if((it[h.icx]==h.value||(workerNameSearch!=''?it.name.toLowerCase().indexOf(workerNameSearch)!=-1:false))&&visObj.indexOf(it.id)==-1){
+                         listObj.push(it)
+                         visObj.push(it.id)
+                     }
+                 })
+             }else {
+                 if(workerNameSearch!=''?it.name.toLowerCase().indexOf(workerNameSearch)!=-1:false){
+                     listObj.push(it)
+                 }
+             }
+         })
+       }else {
+           listObj=JSON.parse(JSON.stringify(metadata))
+       }
+        testObj=listObj
+        filterHigh()
+        if(descAndAsc!=2){
+            testObj.sort(function (row1,row2) {
+                switch(sortType){
+                    case "1":
+                        if(descAndAsc){
+                            var a=getTextValue(row1.state,1)
+                            var b=getTextValue(row2.state,1)
+                        }else {
+                            var b=getTextValue(row1.state,1)
+                            var a=getTextValue(row2.state,1)
+                        }
+                        break
+                    case "2":
+                        if(descAndAsc){
+                            var a=row1.name
+                            var b=row2.name
+                        }else {
+                            var b=row1.name
+                            var a=row2.name
+                        }
+                        break
+                    case "3":
+                        if(descAndAsc){
+                            var a=row1.poolHash
+                            var b=row2.poolHash
+                        }else {
+                            var b=row1.poolHash
+                            var a=row2.poolHash
+                        }
+                        break
+                    case "4":
+                        if(descAndAsc){
+                            var a=row1.coreHash
+                            var b=row2.coreHash
+                        }else {
+                            var b=row1.coreHash
+                            var a=row2.coreHash
+                        }
+                        break
+                    case "5":
+                        if(descAndAsc){
+                            var a=row1.time
+                            var b=row2.time
+                        }else {
+                            var b=row1.time
+                            var a=row2.time
+                        }
+                        break
+                    case "6":
+                        if(descAndAsc){
+                            var a=row1.upSecond
+                            var b=row2.upSecond
+                        }else {
+                            var b=row1.upSecond
+                            var a=row2.upSecond
+                        }
+                        break
+                    case "7":
+                        if(descAndAsc){
+                            var a=row1.rejectSecond
+                            var b=row2.rejectSecond
+                        }else {
+                            var b=row1.rejectSecond
+                            var a=row2.rejectSecond
+                        }
+                        break
+                    case "8":
+                        if(descAndAsc){
+                            var a=row1.wallet
+                            var b=row2.wallet
+                        }else {
+                            var b=row1.wallet
+                            var a=row2.wallet
+                        }
+                        break
+                    case "9":
+                        if(descAndAsc){
+                            var a=row1.pool
+                            var b=row2.pool
+                        }else {
+                            var b=row1.pool
+                            var a=row2.pool
+                        }
+                        break
+                    case "10":
+                        if(descAndAsc){
+                            var a=row1.delay
+                            var b=row2.delay
+                        }else {
+                            var b=row1.delay
+                            var a=row2.delay
+                        }
+                        break
+                    case "11":
+                        if(descAndAsc){
+                            var a=row1.lastIp
+                            var b=row2.lastIp
+                        }else {
+                            var b=row1.lastIp
+                            var a=row2.lastIp
+                        }
+                        break
+                    case "12":
+                        if(descAndAsc){
+                            var a=row1.proxyType
+                            var b=row2.proxyType
+                        }else {
+                            var b=row1.proxyType
+                            var a=row2.proxyType
+                        }
+                        break
+                    case "13":
+                        if(descAndAsc){
+                            var a=row1.rake
+                            var b=row2.rake
+                        }else {
+                            var b=row1.rake
+                            var a=row2.rake
+                        }
+                        break
+                }
+                if(sortList.indexOf(sortType)!=-1){
+                    return a.localeCompare(b,'zh-CN')
+                }
+                if (a > b) return 1;
+                else if (a < b) return -1;
+                return 0;
+            })
+        }
+
+
+
+    $('.wk_list_info')[0].scrollTop=0
+    $('.y_height_info').css('height',Math.ceil(testObj.length/sizeNum)*40+'px')
+    $('.phone_list').css('height',Math.ceil(testObj.length/sizeNum)*350+'px')
+    $('.y_scorll div').css('height',Math.ceil(testObj.length/sizeNum)*40+'px')
+    setDataDom(testObj)
+}
+
+var selectDom=undefined
+
+//添加筛选条件
+function addScreen() {
+    let obj={
+        type:$(selectDom).attr('data-search-type'),
+        icx:$(selectDom).attr('data-filter'),
+        value:$(selectDom).attr('data-mx'),
+    }
+    if(JSON.stringify(listFilter).indexOf(JSON.stringify(obj))==-1){
+        listFilter.push(obj)
+        if($(selectDom).attr('data-search-type')=='Status'){
+            $('.high_type_wk').append('<div class="itme_tag" id="sx_'+$(selectDom).attr('data-filter')+'_'+$(selectDom).attr('data-mx')+'" onclick="delFliter(this)" data-type="'+$(selectDom).attr('data-search-type')+'" data-search="'+$(selectDom).attr('data-mx')+'">'+_mxP($(selectDom).attr('data-search-type'))+'：'+getTextValue($(selectDom).attr('data-mx'))+'</div>')
+        }else if($(selectDom).attr('data-search-type')=='Pool Hashrate'||$(selectDom).attr('data-search-type')=='Core Hashrate'){
+            $('.high_type_wk').append('<div class="itme_tag" id="sx_'+$(selectDom).attr('data-filter')+'_'+$(selectDom).attr('data-mx')+'" onclick="delFliter(this)" data-type="'+$(selectDom).attr('data-search-type')+'" data-search="'+$(selectDom).attr('data-mx')+'">'+_mxP($(selectDom).attr('data-search-type'))+'：'+convertHashrate(speedToHash((Math.ceil($(selectDom).attr('data-mx'))),'H'),'H/s')+'</div>')
+        }else if($(selectDom).attr('data-search-type')=='Worked Hours'){
+            $('.high_type_wk').append('<div class="itme_tag" id="sx_'+$(selectDom).attr('data-filter')+'_'+$(selectDom).attr('data-mx')+'" onclick="delFliter(this)" data-type="'+$(selectDom).attr('data-search-type')+'" data-search="'+$(selectDom).attr('data-mx')+'">'+_mxP($(selectDom).attr('data-search-type'))+'：'+getTime($(selectDom).attr('data-mx'))+'</div>')
+        }else {
+            $('.high_type_wk').append('<div class="itme_tag" id="sx_'+$(selectDom).attr('data-filter')+'_'+$(selectDom).attr('data-mx')+'" onclick="delFliter(this)" data-type="'+$(selectDom).attr('data-search-type')+'" data-search="'+$(selectDom).attr('data-mx')+'">'+_mxP($(selectDom).attr('data-search-type'))+'：'+$(selectDom).attr('data-mx')+'</div>')
+        }
+    }
+    filterList(metadata)
+}
+
+function delFliter(e) {
+    let x=[]
+    $.each(listFilter,function (i,it) {
+        if(!(it.value==$(e).attr('data-search')&&it.type==$(e).attr('data-type'))){
+            x.push(it)
+        }
+    })
+    e.remove()
+    listFilter=x
+    filterList(metadata)
+}
+ //删除高亮
+function delHigh(e) {
+    let x=[]
+    $.each(highFilter,function (i,it) {
+        if(!(it.value==$(e).attr('data-search')&&it.type==$(e).attr('data-type'))){
+            x.push(it)
+        }
+    })
+    e.remove()
+    highFilter=x
+    filterHigh()
+}
+//右键删除高亮
+function delHighlight() {
+    let x=[]
+    $.each(highFilter,function (i,it) {
+        if(!(it.value==$(selectDom).attr('data-mx')&&it.type==$(selectDom).attr('data-search-type'))){
+            x.push(it)
+        }
+    })
+    highFilter=x
+    if(document.getElementById('mx_'+$(selectDom).attr('data-filter')+'_'+$(selectDom).attr('data-mx'))==null){
+        return
+    }
+    document.getElementById('mx_'+$(selectDom).attr('data-filter')+'_'+$(selectDom).attr('data-mx')).remove()
+    filterHigh()
+}
+//右键删除筛选
+function delScreen() {
+    let x=[]
+    $.each(listFilter,function (i,it) {
+        if(!(it.value==$(selectDom).attr('data-mx')&&it.type==$(selectDom).attr('data-search-type'))){
+            x.push(it)
+        }
+    })
+    listFilter=x
+    if(document.getElementById('sx_'+$(selectDom).attr('data-filter')+'_'+$(selectDom).attr('data-mx'))==null){
+        return
+    }
+    document.getElementById('sx_'+$(selectDom).attr('data-filter')+'_'+$(selectDom).attr('data-mx')).remove()
+    filterList(metadata)
+}
+//高亮
+function setHighlight() {
+    let obj={
+        type:$(selectDom).attr('data-search-type'),
+        icx:$(selectDom).attr('data-filter'),
+        value:$(selectDom).attr('data-mx'),
+    }
+    if(JSON.stringify(highFilter).indexOf(JSON.stringify(obj))==-1){
+        highFilter.push(obj)
+        if($(selectDom).attr('data-search-type')=='Status'){
+            $('.high_type_wk').append('<div class="itme_tag_mx" id="mx_'+$(selectDom).attr('data-filter')+'_'+$(selectDom).attr('data-mx')+'" onclick="delHigh(this)" data-type="'+$(selectDom).attr('data-search-type')+'" data-search="'+$(selectDom).attr('data-mx')+'">'+_mxP($(selectDom).attr('data-search-type'))+'：'+getTextValue($(selectDom).attr('data-mx'))+'</div>')
+        }else if($(selectDom).attr('data-search-type')=='Pool Hashrate'||$(selectDom).attr('data-search-type')=='Core Hashrate'){
+            $('.high_type_wk').append('<div class="itme_tag_mx" id="mx_'+$(selectDom).attr('data-filter')+'_'+$(selectDom).attr('data-mx')+'" onclick="delHigh(this)" data-type="'+$(selectDom).attr('data-search-type')+'" data-search="'+$(selectDom).attr('data-mx')+'">'+_mxP($(selectDom).attr('data-search-type'))+'：'+convertHashrate(speedToHash((Math.ceil($(selectDom).attr('data-mx'))),'H'),'H/s')+'</div>')
+        }else if($(selectDom).attr('data-search-type')=='Worked Hours'){
+            $('.high_type_wk').append('<div class="itme_tag_mx" id="mx_'+$(selectDom).attr('data-filter')+'_'+$(selectDom).attr('data-mx')+'" onclick="delHigh(this)" data-type="'+$(selectDom).attr('data-search-type')+'" data-search="'+$(selectDom).attr('data-mx')+'">'+_mxP($(selectDom).attr('data-search-type'))+'：'+getTime($(selectDom).attr('data-mx'))+'</div>')
+        }else {
+            $('.high_type_wk').append('<div class="itme_tag_mx" id="mx_'+$(selectDom).attr('data-filter')+'_'+$(selectDom).attr('data-mx')+'" onclick="delHigh(this)" data-type="'+$(selectDom).attr('data-search-type')+'" data-search="'+$(selectDom).attr('data-mx')+'">'+_mxP($(selectDom).attr('data-search-type'))+'：'+$(selectDom).attr('data-mx')+'</div>')
+        }
+        // $('.high_type_wk').append('<div class="itme_tag_mx" id="mx_'+$(selectDom).attr('data-search-type')+'_'+$(selectDom).parent().attr('data-mx')+'" onclick="delHigh(this)" data-type="'+$(selectDom).attr('data-search-type')+'" data-search="'+$(selectDom).attr('data-mx')+'">'+_mxP($(selectDom).attr('data-search-type'))+'：'+getTextValue($(selectDom).attr('data-mx'))+'</div>')
+    }
+    filterHigh()
+}
+
+function linkWin(ax) {
+    window.location.replace(ax)
+}
+
+
+function getLable(name) {
+   switch (name) {
+       case 'hashrate':
+           return 'hashrate'
+       case 'rate_down':
+           return 'Rate Down'
+       case 'rate_up':
+           return 'Rate Up'
+       case 'runTime':
+           return 'Run Time'
+       case 'site_count':
+           return 'Site Count'
+       case 'worker_count':
+           return 'Woker Count'
+   }
+}
+
+//处理字符串
+$('.popupbackground').on('click',function () {
+    closeWin()
+})
+var secTime=[]
+var secTime2=[]
+function setTimeEchartTest(){
+    for (let ix=0;ix<100;ix++){
+        let xios=[getData(1646893265+(ix*86400)),Math.random()*300]
+        secTime.push(xios)
+    }
+    for (let ix=0;ix<100;ix++){
+        let xios=[getData(1646893265+(ix*86400)),Math.random()*300]
+        secTime2.push(xios)
+    }
+}
+
+setTimeEchartTest()
+setEchartsTime('pool_flow','Proxy Flow',0)
+setEchartsTime('proxy_flow','Pool Flow',1)
+setEcharts('','','','pool_chart')
+setEcharts('','','','performance_chart')
+setInTime()
+//设置定时器
+var xindex=100
+function setInTime() {
+
+}
+//获取日期
+function getData(timestamp,type) {
+    var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+    var Y = date.getFullYear() + '-';
+    var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+    var D = date.getDate();
+    var h = date.getHours();
+    var m = date.getMinutes();
+    var s = date.getSeconds();
+    if(type==1){
+        h<10?h='0'+h:h
+        m<10?m='0'+m:m
+        return h+':'+m;
+    }else {
+        h<10?h='0'+h:h
+        m<10?m='0'+m:m
+        return Y+M+D+' '+h+':'+m;
+    }
+}
+
+//设置图表数据
+function setEcharts(x,y,l,id,name) {
+    y=[
+        {
+            name:'测试',
+            data: [820, 932, 901, 934, 1290, 1330, 1320],
+            itemStyle: {
+              normal: {
+                  lineStyle: {
+                      color:'#6473fc'
+                  }
+              }
+            },
+            type: 'line',
+            showSymbol:false,
+            areaStyle:{
+                normal:{
+                    color:new echarts.graphic.LinearGradient(0,0,0,1,[
+                        {
+                            offset: 0,
+                            color:"#6473fc"
+                        },{
+                            offset: 1,
+                            color:"rgba(100,115,252,0)"
+                        }
+                    ])
+                }
+            },
+            smooth: true
+        }
+    ]
+    x=['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById(id));
+    // 指定图表的配置项和数据
+    var option = {
+        // title:{
+        //   text:_mxP(name),
+        //   textStyle:{
+        //       color:'#fff'
+        //   }
+        // },
+        grid:{
+            left:'10px',
+            right:'10px',
+            top:'15px',
+            bottom:'20px'
+        },
+        color:['#fff'],
+        // legend: {
+        //     bottom: 5,
+        //     icon:'circle',
+        //     data: ['测试'],
+        //     formatter: [
+        //         '{a|{name}}'
+        //     ].join('\n'),
+        //     textStyle: {
+        //         color:'#fff',
+        //         fontSize:13,
+        //         height: 8,
+        //         rich: {
+        //             a: {
+        //                 verticalAlign: 'bottom',
+        //             },
+        //         }
+        //     },
+        //     itemStyle:{
+        //         // color:'#343d52',
+        //         // borderColor: 'rgba(0,0,0,0)',
+        //         option:0.5
+        //     }
+        // },
+        // toolbox:{
+        //     show:true,
+        //     showTitle:false,
+        //     feature:{
+        //         magicType:{
+        //             type: ['line', 'bar'],
+        //             iconStyle:{
+        //                 borderColor:'#fff'
+        //             }
+        //         }
+        //     }
+        // },
+
+
+        // dataZoom: [
+        //     {
+        //         type:"inside",
+        //         start:1,
+        //         end:100
+        //     },
+        // ],
+        tooltip : {
+            trigger: 'axis',
+            backgroundColor:'#343d52',
+            borderColor:'#343d52',
+            textStyle: { // 提示框浮层的文本样式。
+                color: '#fff',
+                fontStyle: 'normal',
+                fontWeight: 'normal',
+                fontFamily: 'sans-serif',
+                fontSize: 14,
+            },
+            // formatter: function(arg) {
+            //
+            //     let str=getData(arg[0].name,2)+'<br>'
+            //     if(search_type=='SITEHASHRATE'||search_type=='SITEPOOLSPEED'){
+            //         $.each(arg,function (i,it) {
+            //             str+=it.marker+' '+it.seriesName+': '+convertHashrate(speedToHash(it.value,'H'),'H/s')+'<br>'
+            //         })
+            //     }else if(search_type=='SITETEMP'){
+            //         str+=arg[0].marker+' '+arg[0].seriesName+': '+Number(arg[0].value).toFixed(2)+'°C<br>'
+            //     }else if(search_type=='SITEPOWER'){
+            //         str+=arg[0].marker+' '+arg[0].seriesName+': '+wattOutput(arg[0].value)+'<br>'
+            //     }else if(search_type=='SITELATENCY'){
+            //         str+=arg[0].marker+' '+arg[0].seriesName+': '+Number(arg[0].value).toFixed(2)+'ms<br>'
+            //     }
+            //     return str
+            // }
+        },
+        xAxis: {
+            // axisLabel: {
+            //     formatter: function (a) {
+            //         return getData(a,1);
+            //     }
+            // },
+            type: 'category',
+            boundaryGap: false,
+            data: x
+        },
+        yAxis: {
+            axisLabel: {
+                formatter: function () {
+                    return "";
+                }
+            },
+            dispaly: "none",
+            "axisLine": {       //y轴
+                "show": false
+            },
+            "axisTick": {       //y轴刻度线
+                "show": false
+            },
+            "splitLine": {     //网格线
+                lineStyle:{
+                    'color':['#6e7079']
+                },
+                "show": false
+            },
+            display:'none',
+            type: 'value',
+        },
+        series: y
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option,true);
+}
+
+
+var proxy_echart=undefined
+var pool_echart=undefined
+//设置实时表格
+function setEchartsTime(id,name,obj) {
+    y=[
+        {
+            name:'下行',
+            data: secTime,
+            itemStyle: {
+                normal: {
+                    lineStyle: {
+                        color:'#6473fc'
+                    }
+                }
+            },
+            type: 'line',
+            showSymbol:false,
+            areaStyle:{
+                normal:{
+                    color:new echarts.graphic.LinearGradient(0,0,0,1,[
+                        {
+                            offset: 0,
+                            color:"#6473fc"
+                        },{
+                            offset: 1,
+                            color:"rgba(100,115,252,0)"
+                        }
+                    ])
+                }
+            },
+            smooth: true
+        },{
+            name:'上行',
+            data: secTime2,
+            itemStyle: {
+                normal: {
+                    lineStyle: {
+                        color:'#52cca5'
+                    }
+                }
+            },
+            type: 'line',
+            showSymbol:false,
+            areaStyle:{
+                normal:{
+                    color:new echarts.graphic.LinearGradient(0,0,0,1,[
+                        {
+                            offset: 0,
+                            color:"#52cca5"
+                        },{
+                            offset: 1,
+                            color:"rgba(82,204,165,0)"
+                        }
+                    ])
+                }
+            },
+            smooth: true
+        }
+    ]
+    // 基于准备好的dom，初始化echarts实例
+
+    let myChart = echarts.init(document.getElementById(id));
+
+
+    // 指定图表的配置项和数据
+    var option = {
+        animation: false,
+        title:{
+            text:_mxP(name),
+            textStyle:{
+                color:'#fff'
+            }
+        },
+        grid:{
+            left:'10px',
+            right:'10px',
+            top:'30px',
+            bottom:'10px'
+        },
+        // color:['#fff'],
+        legend: {
+            right:8,
+            top:0,
+            icon:'circle',
+            data: ['上行','下行'],
+            formatter: [
+                '{a|{name}}'
+            ].join('\n'),
+            textStyle: {
+                color:'#fff',
+                fontSize:13,
+                height: 8,
+                rich: {
+                    a: {
+                        verticalAlign: 'bottom',
+                    },
+                }
+            },
+            itemStyle:{
+                option:0.5
+            }
+        },
+        tooltip : {
+            trigger: 'axis',
+            backgroundColor:'#343d52',
+            borderColor:'#343d52',
+            textStyle: {
+                color: '#fff',
+                fontStyle: 'normal',
+                fontWeight: 'normal',
+                fontFamily: 'sans-serif',
+                fontSize: 14,
+            },
+        },
+        xAxis: {
+            type:'time',
+            axisLabel: {
+                formatter: function (a) {
+                    return '';
+                }
+            },
+            show:false,
+            boundaryGap: false
+        },
+        yAxis: {
+            axisLabel: {
+                formatter: function () {
+                    return "";
+                }
+            },
+            dispaly: "none",
+            "axisLine": {       //y轴
+                "show": false
+            },
+            "axisTick": {       //y轴刻度线
+                "show": false
+            },
+            "splitLine": {     //网格线
+                lineStyle:{
+                    'color':['#6e7079']
+                },
+                "show": false
+            },
+            display:'none',
+            type: 'value',
+        },
+        series: y
+    };
+    // 使用刚指定的配置项和数据显示图表。
+
+    myChart.setOption(option,true);
+    xindex=100
+    setInterval(function () {
+        secTime.shift()
+        secTime2.shift()
+        secTime.push([getData(1646893265+(xindex*86400)),Math.random()*300])
+        secTime2.push([getData(1646893265+(xindex*86400)),Math.random()*300])
+        xindex++
+        myChart.setOption({
+            series:[
+                {data:secTime},
+                {data:secTime2},
+            ]
+        })
+    },1500)
+}
+
+
+$('.search_input input').keyup(function (e) {
+    if(e.keyCode==13||$(this).val().toLowerCase()==''){
+        workerNameSearch=$(this).val().toLowerCase()
+        filterList(metadata)
+    }
+})
+//返回状态文字
+function getTextValue(type,h) {
+    switch(type){
+        case 'offline':
+            if(h==1){
+                return 9
+            }else {
+                return _mx('Offline')
+            }
+        case 'online':
+            if(h==1){
+                return 1
+            }else {
+                return _mx('Normal')
+            }
+        case 'anyhowmining':
+            if(h==1){
+                return 3
+            }else {
+                return _mx('Part work')
+            }
+        case 'anyhow_idle':
+            if(h==1){
+                return 2
+            }else {
+                return _mx('Occupied')
+            }
+        case 'disable':
+            if(h==1){
+                return 4
+            }else {
+                return _mx('MNF')
+            }
+        case 'unable':
+            if(h==1){
+                return 6
+            }else {
+                return _mx('UAM')
+            }
+        case 'idle':
+            if(h==1){
+                return 5
+            }else {
+                return _mx('Idle')
+            }
+        case 'starting':
+            if(h==1){
+                return 7
+            }else {
+                return _mx('starting')
+            }
+        case 'abnormal':
+            if(h==1){
+                return 8
+            }else {
+                return _mx('Abnormal')
+            }
+        default :
+          return type
+    }
+}
+//鼠标右键事件
+function bindMenu(){
+
+    var menu_list = document.getElementById("r_menu");
+
+    var $BIPanel = $(".search_item").contextmenu(function(ev) {
+        $('.search_item').removeClass('is_bagx')
+        var oEvent = ev || event;
+        selectDom=oEvent.target
+        $(selectDom).addClass('is_bagx')
+        menu_list.style.display = "block";
+        menu_list.style.left = oEvent.clientX + "px";
+        menu_list.style.top = oEvent.clientY + "px";
+        return false;
+    });
+
+    document.onclick = function() {
+        selectDom=undefined
+        $('.search_item').removeClass('is_bagx')
+        menu_list.style.display = "none";
+    }
+}
+function workerScorll(e) {
+    let scrollTop = $('.wk_list_info')[0].scrollTop // 滚动高度
+    $('.y_scorll')[0].scrollTop=scrollTop
+    let DscrollTop = document.documentElement.scrollTop;
+    let DscrollHeight = document.documentElement.scrollHeight;
+    let DwindowHeight =document.documentElement.clientHeight;
+    if(DscrollTop + DwindowHeight !== DscrollHeight){
+        document.documentElement.scrollTop+=scrollTop
+    }
+    let fixedScrollTop = scrollTop - scrollTop % 40; // 内容区域Y轴偏移，确保
+    let startIndex = Number.parseInt(scrollTop / 40)*sizeNum;
+    if(hideDom!=startIndex){
+        hideDom=startIndex
+        $('.wk_list_info_MS').css('transform','translateY('+fixedScrollTop+'px)')
+        setDataDom(testObj)
+    }
+}
+function workerScorllY(e) {
+    let scrollTop = $('.y_scorll')[0].scrollTop // 滚动高度
+    $('.wk_list_info')[0].scrollTop=scrollTop
+}
+function workerScorllPhone() {
+    let scrollTop = $('.phone_list_wkx')[0].scrollTop // 滚动高度
+    let allheight=metadata.length
+    let fixedScrollTop = scrollTop - scrollTop % 350; // 内容区域Y轴偏移，确保
+    let startIndex = Number.parseInt(scrollTop / 350)*sizeNum;
+    if(hideDom!=startIndex){
+        hideDom=startIndex
+        $('#my_phone_list').css('transform','translateY('+fixedScrollTop+'px)')
+        setDataDom(testObj)
+    }
+}
+
+$('#chart_list_tab .proxy_card_tab').on('click',function () {
+    if($(this).hasClass('proxy_is_show')){
+        return
+    }
+    $('#chart_list_tab .proxy_card_tab').removeClass('proxy_is_show')
+    $(this).addClass('proxy_is_show')
+    if($(this).attr('lang-data-htp')=='Chart Data'){
+        $('#w_list').hide()
+        $('#p_charts').show()
+    }else {
+        $('#w_list').show()
+        $('#p_charts').hide()
+    }
+})
+function getTime(num){
+    let d=num/86400
+    let h=num/60/60
+    let m=parseInt(num/60)%60
+    if(d>1){
+        return d.toFixed(1)+_mx('d')
+    }else if(h>1){
+        return h.toFixed(1)+_mx('h')
+    }else{
+        return m.toFixed(1)+_mx('m')
+    }
+}
+
+$('[data-sort-type]').on('click',function () {
+    sortType=$(this).attr('data-sort-type')
+    $('.up_icon').hide()
+    $('.down_icon').hide()
+    if($(this).attr('data-asx')=='2'){
+        descAndAsc=1
+        $('[data-asx]').attr('data-asx','2')
+        $(this).find('.up_icon').show()
+        $(this).find('.down_icon').hide()
+        $(this).attr('data-asx','1')
+    }else if($(this).attr('data-asx')=='1'){
+        $('[data-asx]').attr('data-asx','2')
+        descAndAsc=0
+        $(this).attr('data-asx','0')
+        $(this).find('.up_icon').hide()
+        $(this).find('.down_icon').show()
+    }else {
+        $('[data-asx]').attr('data-asx','2')
+        descAndAsc=2
+        $(this).find('.up_icon').hide()
+        $(this).find('.down_icon').hide()
+        $(this).attr('data-asx','2')
+    }
+    filterList(metadata)
+})
+setBtnEvnt()
+
+//维度切换
+function setBtnEvnt() {
+    $('#pool_chart_id .head_item_pool .btx').on('click',function () {
+        if($(this).hasClass('is_mxa')){
+            return
+        }
+        $('#pool_chart_id .head_item_pool .btx').removeClass('is_mxa')
+        $(this).addClass('is_mxa')
+        setPollChart()
+    })
+    $('#pool_chart_id .time_dimension .txt_color').on('click',function () {
+        if($(this).hasClass('is_cksx')){
+            return
+        }
+        $('#pool_chart_id .time_dimension .txt_color').removeClass('is_cksx')
+        $(this).addClass('is_cksx')
+        setPollChart()
+    })
+
+    $('#performance_chart_id .head_item_pool .btx').on('click',function () {
+        if($(this).hasClass('is_mxa')){
+            return
+        }
+        $('#performance_chart_id .head_item_pool .btx').removeClass('is_mxa')
+        $(this).addClass('is_mxa')
+        setPerformance()
+    })
+
+    $('#performance_chart_id .time_dimension .txt_color').on('click',function () {
+        if($(this).hasClass('is_cksx')){
+            return
+        }
+        $('#performance_chart_id .time_dimension .txt_color').removeClass('is_cksx')
+        $(this).addClass('is_cksx')
+        setPerformance()
+    })
+
+}
+
+//性能图表
+function setPerformance() {
+    let type=$('#performance_chart_id .is_mxa [lang-data-htp]').attr('lang-data-htp')
+    let time=$('#performance_chart_id .time_dimension .is_cksx').attr('data-tx')
+    console.log('type',type)
+    console.log('time',time)
+}
+
+//矿池图表数据获取
+function setPollChart() {
+    let type=$('#pool_chart_id .is_mxa [lang-data-htp]').attr('lang-data-htp')
+    let time=$('#pool_chart_id .time_dimension .is_cksx').attr('data-tx')
+    console.log('type',type)
+    console.log('time',time)
+}
+
+//显示钱包列表
+function showWinWat() {
+
+}
