@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="en-US" translate="no">
+<head>
+    <title>Workers</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta charset="UTF-8">
+    <link rel="preload" href="./css/themes/light/global.css" as="style"/>
+    <link rel="preload" href="./js/jquery.js" as="script"/>
+
+    <meta name="robots" content="noindex">
+    <link href="./css/themes/light/global.css?v=1635430962" id="css" rel="stylesheet" type="text/css">
+    <link href="./css/themes/dark/global.css?v=1632755234" rel="stylesheet" type="text/css">
+    <link href="./css/themes/light/Observerkey.css?v=1635072098" rel="stylesheet" type="text/css">
+    <link href="./css/themes/dark/Observerkey.css?v=1634986419" rel="stylesheet" type="text/css">
+    <link rel="canonical" href="../workers">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+<body>
+<noscript>
+    <iframe src="/www.googletagmanager.com/ns.html?id=GTM-KJ552JD" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe>
+</noscript>
+<header>
+
+</header>
+<div class="page">
+    <div class="menu">
+        <div id="main_menu">
+
+        </div>
+    </div>
+    <div class="preloader" style="display: none">
+        <div class="center">
+            <div class="logo"></div>
+            <div class="loader_line">
+                <div class="bar animate"></div>
+            </div>
+        </div>
+    </div>
+    <div class="content workers">
+        <h1 lang-data-ht="Observer Link"></h1>
+        <div id="isAdminShow" style="display: none">
+            <div class="filter_row" style="margin-top: 10px">
+                <div class="search_el">
+                    <input type="text" id="search"/>
+                    <div class="icon search"></div>
+                </div>
+
+                <div class="search_result"></div>
+                <div class="buttons">
+                    <div class="button_group">
+                        <div id="addNewSite" onclick="addKeyShow()" class="button green">
+                            <div class="icon plus"></div>
+                            <span lang-data-ht="Add New Link"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box_table">
+                <div class="loader_frame">
+                    <div class="loader"></div>
+                </div>
+                <div id="checked_rows">
+                    <div id="actions_button" class="button green">Action for <span id="count">0</span> workers
+                        <div class="icon arrow_down"></div>
+                    </div>
+                    <div id="actions_menu">
+                        <div class="row" onclick="massAction('edit');">
+                            <div class="icon config"></div>
+                            Configure
+                        </div>
+                        <div class="actions_submenu" id="actions_submenu_switch">
+                            <div class="search_el">
+                                <input type="text" id="search_templates">
+                                <div class="icon search"></div>
+                            </div>
+                            <div class="frame">
+                                <div class="row" data-template="91488">1<small>ETHMINER</small></div>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="row">
+                                <label>CPU mining</label>
+                                <select id="submenu_cpu">
+                                    <option value="">Don't change</option>
+                                    <option value="1">Enable</option>
+                                    <option value="0">Disable</option>
+                                </select>
+                            </div>
+                            <div class="row">
+                                <label>Profit switch</label>
+                                <select id="submenu_profitswitch">
+                                    <option value="">Don't change</option>
+                                    <option value="1">Enable</option>
+                                    <option value="0">Disable</option>
+                                </select>
+                            </div>
+                            <div class="button green" onclick="massAction('switch');">Apply changes</div>
+                        </div>
+                        <div class="row" onclick="massAction('update');">
+                            <div class="icon update"></div>
+                            Update
+                        </div>
+                        <div class="row" onclick="massAction('reboot');">
+                            <div class="icon reboot"></div>
+                            Reboot machine
+                        </div>
+                        <div class="row" onclick="massAction('restart');">
+                            <div class="icon restart"></div>
+                            Restart software
+                        </div>
+                        <div class="row" onclick="massAction('stop');">
+                            <div class="icon stop"></div>
+                            Stop mining
+                        </div>
+                        <div class="row" onclick="massAction('start');">
+                            <div class="icon start"></div>
+                            Start mining
+                        </div>
+                        <div class="row" onclick="massAction('shutdown');">
+                            <div class="icon shut_down"></div>
+                            Shut down
+                        </div>
+                        <div class="row" onclick="massAction('powercycle');">
+                            <div class="icon power_cycle"></div>
+                            Power cycle
+                        </div>
+                    </div>
+                    <input type="hidden" id="nonce"
+                           value="c13caefd4b5b37b31c578c6624f681ffad074d2092711c67b61f7f0b8f4a9b9e"/>
+                </div>
+                <table id="workersList">
+                    <tr>
+<!--                        <th class="flexWorker orderTh " lang-data-ht="User">User</th>-->
+                        <th class="flexPower orderTh " lang-data-ht="Key">Key</th>
+                        <th class="flexPower  orderTh  " lang-data-ht2="Relation Site">Relation Site</th>
+                        <th class="flexPower  orderTh  " lang-data-ht2="Remarks">Remarks</th>
+                        <th class="flexActions align_right actions_width" lang-data-ht="Actions">Actions</th>
+                    </tr>
+                </table>
+            </div>
+            <div class="pages"></div>
+        </div>
+        <div class="popup" id="keyAdd">
+            <div class="close" onclick="keyWinClose()"></div>
+            <div class="title"><br>
+            </div>
+            <div class="text">
+                <name lang-data-ht="Effective Time(Unit:day)"></name>
+                <input type="text" id="keyName"
+                       value="30"
+                      style="margin-top: 10px"/>
+                <div lang-data-ht2="Relation Site"></div>
+                <div style="position:relative;width: 100%;margin-bottom: 10px">
+                    <div id="my_select_target" style="margin-top: 10px">
+                        <div id="tagsList">
+
+                        </div>
+
+                    </div>
+                    <div id="my_select_target_menu">
+                        <div class="frame">
+                            <div class="row first">
+                                <div lang-data-ht="Site">Site</div>
+                                <div class="action" onclick="mySelectAll()" lang-data-ht="Select all">Select all</div>
+                            </div>
+                            <div class="search_el" style="margin-top: 10px">
+                                <input type="text" style="width: 95%" id="tagListSearch"/>
+                            </div>
+                            <div id="target_site">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div lang-data-ht2="Remarks">Remarks</div>
+                <textarea id="keyRemarks" class="value" style="margin-top: 10px;width: 100%"></textarea>
+            </div>
+            <div class="action_row">
+                <div class="circle-loader" id="myLoading">
+                    <div class="checkmark draw"></div>
+                </div>
+                <div class="message_suc" id="mySuc">Succeed</div>
+                <div class="message_err" id="myError">Error</div>
+                <div class="outlined_button gray close_popup" onclick="keyWinClose()" lang-data-ht="Close">Close</div>
+                <div class="button green" onclick="saveKey()" lang-data-ht="Save">Save</div>
+            </div>
+        </div>
+        <div class="popup" id="keyEditPwd">
+            <div class="close" onclick="keyWinClose()"></div>
+            <div class="title" lang-data-ht="Change Key"><br>
+            </div>
+            <div class="text">
+                <name lang-data-ht="Password"></name>
+                <input type="text" maxlength="20" id="pwd_one" style="margin-top: 10px"/>
+                <name lang-data-ht="Verify password"></name>
+                <input type="text" maxlength="20" id="pwd_tow" style="margin-top: 10px"/>
+                <name style="color: #ff564f;display: none" lang-data-ht="The two inputs are inconsistent" id="pwd_msg"></name>
+            </div>
+            <div class="action_row">
+                <div class="circle-loader" id="myLoading_pwd">
+                    <div class="checkmark draw"></div>
+                </div>
+                <div class="message_suc" id="mySuc_pwd">Succeed</div>
+                <div class="message_err" id="myError_pwd">Error</div>
+                <div class="outlined_button gray close_popup" onclick="closeKeyPwdWin()" lang-data-ht="Close">Close</div>
+                <div class="button green" onclick="showResetKey()" lang-data-ht="Save">Save</div>
+            </div>
+        </div>
+        <div class="popup" id="update_site">
+            <div class="close"></div>
+            <div class="title" lang-data-ht="Update Key">Update Key</div>
+            <div class="text">
+                <div class="icon warning"></div>
+                <p lang-data-ht="After updating the key, the original key will not be able to log in for management">
+                    After updating the key, the original key will not be able to log in for management</p><br>
+                <p style="margin-top: 30px" lang-data-ht="User">User</p>
+                <input type="text" id="dUserName" disabled/>
+                <p lang-data-ht="User key">User key</p>
+                <input type="text" id="dUserKey" disabled/>
+            </div>
+
+            <div class="action_row">
+
+                <div class="circle-loader">
+                    <div class="checkmark draw"></div>
+                </div>
+                <div class="message_suc">Finished</div>
+                <div class="message_err">Error</div>
+                <div class="outlined_button gray close_popup" lang-data-ht2="Cancel">Cancel</div>
+                <div class="button green" onclick="updateKeySite()" lang-data-ht3="Update">Update</div>
+            </div>
+        </div>
+    </div>
+    <div class="popupbackground close_popup"></div>
+    <div class="popup" id="worker_shutdown">
+        <div class="close"></div>
+        <div class="title"></div>
+        <div class="text">
+            <div class="icon warning"></div>
+            <p>Please note that this action will shutdown your mining machines and you will need to be at the location
+                to turn them back on.</p></div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup">No, keep it</div>
+            <div class="button red">Yes, shut it down</div>
+        </div>
+    </div>
+    <div class="popup" id="worker_power_cycle">
+        <div class="close"></div>
+        <div class="title"></div>
+        <div class="text">
+            <div class="icon warning"></div>
+            <p>Please note that this action will power down your machines and boot them up after 30 seconds. If action
+                is not supported by your motherboard then machines will reboot.</p></div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup">No, keep it</div>
+            <div class="button red">Yes, power cycle</div>
+        </div>
+    </div>
+    <div class="popup" id="worker_delete">
+        <div class="close"></div>
+        <div class="title"></div>
+        <div class="text">
+            <div class="icon warning"></div>
+            <p lang-data-ht="Delete link?"></p></div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup">No, keep it</div>
+            <div class="button red">Yes, delete it</div>
+        </div>
+    </div>
+
+    <div class="popup" id="reset_my_key">
+        <div class="close"></div>
+        <div class="title" lang-data-ht="Change Key">Update Key
+        </div>
+        <div class="text">
+            <div class="icon warning"></div>
+            <p lang-data-ht="Are you sure you want to change the key?">Are you sure you want to change the key</p>
+        </div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup" lang-data-ht2="Cancel">Cancel</div>
+            <div class="button green" onclick="resetMyKey()" lang-data-ht="Save"></div>
+        </div>
+    </div>
+    <div class="popup" id="hardware_reboot">
+        <div class="close"></div>
+        <div class="title"></div>
+        <div class="text">
+            <div class="icon reboot"></div>
+            <p>Please note that this action will reboot your mining machine.</p></div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup">No, keep it</div>
+            <div class="button blue">Yes, reboot it</div>
+        </div>
+    </div>
+    <div class="popup" id="software_stop">
+        <div class="close"></div>
+        <div class="title"></div>
+        <div class="text">
+            <div class="icon stop"></div>
+            <p>Please note that this action will stop the mining process.</p></div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup">No, keep it</div>
+            <div class="button blue">Yes, stop it</div>
+        </div>
+    </div>
+    <div class="popup" id="software_update">
+        <div class="close"></div>
+        <div class="title"></div>
+        <div class="text">
+            <div class="icon update"></div>
+            <p>This action will update your software.</p></div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup">No, keep it</div>
+            <div class="button blue">Yes, update it</div>
+        </div>
+    </div>
+    <div class="popup" id="software_start">
+        <div class="close"></div>
+        <div class="title"></div>
+        <div class="text">
+            <div class="icon start"></div>
+            <p>Please note that this action will start the mining process.</p></div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup">No, keep it</div>
+            <div class="button blue">Yes, start it</div>
+        </div>
+    </div>
+    <div class="popup" id="software_restart">
+        <div class="close"></div>
+        <div class="title"></div>
+        <div class="text">
+            <div class="icon restart"></div>
+            <p>Please note that this action will restart your mining software only.</p></div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup">No, keep it</div>
+            <div class="button blue">Yes, restart it</div>
+        </div>
+    </div>
+    <div class="popup dynamic_height absolute_popup" id="edit_note">
+        <div class="close"></div>
+        <div class="title">Worker's note</div>
+        <div class="text">
+            <textarea></textarea>
+            <div class="reset_row">
+                <div class="reset_button" onclick="">Clear content</div>
+            </div>
+        </div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup">Discard changes</div>
+            <div class="button green">Save note</div>
+        </div>
+    </div>
+    <div class="popup dynamic_height absolute_popup" id="rename_worker">
+        <div class="close"></div>
+        <div class="title">Edit</div>
+        <div class="text">
+            <div class="icon warning"></div>
+            <p>Please note that renaming the worker might cause the differences in statistics. If you are using Windows
+                software, make sure to logout and login with new worker's name.</p></div>
+        <div class="text">
+            <div class="row">
+                <label>New name</label>
+                <label class="chars_left"></label>
+                <input type="text" class="wn" value=""/>
+            </div>
+            <div class="row">
+                <label>Type
+                    <div class="info_box">
+                        <div class="info_icon"></div>
+                        <div class="tooltip tooltip_left">
+                            <b>Type</b>
+                            <p>Mixed AMD and Nvidia rigs are not supported.</p>
+                        </div>
+                    </div>
+                </label>
+                <select id="popup_type">
+                    <option value="amd">AMD</option>
+                    <option value="nvidia">Nvidia</option>
+                    <option value="asic">ASIC</option>
+                </select>
+            </div>
+            <div class="row">
+                <label>System
+                    <div class="info_box">
+                        <div class="info_icon"></div>
+                        <div class="tooltip tooltip_left">
+                            <b>System</b>
+                            <p>Mining with Mac, Android, iOS, and other devices is not supported.</p>
+                        </div>
+                    </div>
+                </label>
+                <select id="popup_system_asic">
+                    <option value="antminer">Antminer</option>
+                    <option value="whatsminer">Whatsminer</option>
+                    <option value="strongu">Strongu</option>
+                    <option value="ebang">Ebang</option>
+                    <option value="avalon">Avalon</option>
+                    <option value="innosilicon">Innosilicon</option>
+                    <option value="goldshell">Goldshell (Monitoring only)</option>
+                    <option value="dayun">Dayun</option>
+                    <option value="baikal">Baikal</option>
+                    <option value="blackminer">Blackminer</option>
+                    <option value="obelisk">Obelisk</option>
+                    <option value="spondoolies">Spondoolies</option>
+                    <option value="aisen">Aisen</option>
+                    <option value="hyperbit">Hyperbit</option>
+                    <option value="fusionsilicon">Fusionsilicon</option>
+                    <option value="toddminer">Toddminer</option>
+                    <option value="cheetah">Cheetah</option>
+                </select>
+                <select id="popup_system_gpu">
+                    <option value="msos">msOS</option>
+                    <option value="windows">Windows</option>
+                </select>
+            </div>
+            <div class="row">
+                <label>Groups / Locations (optional)</label>
+                <div id="groups">
+                    <div class="fixed_tag tag_type">amd</div>
+                    <div class="fixed_tag tag_system">msos</div>
+                    <input type="text" id="popup_tag" placeholder="Add a group ..."/>
+                </div>
+            </div>
+        </div>
+        <div class="text asic">
+            <div class="row">
+                <label>ASIC local IP</label>
+                <input type="text" class="asicip" value=""/>
+            </div>
+            <div class="row mt20">
+                <label>ASIC credentials</label>
+                <div class="credentials_text">If you are using ASIC Hub, you need to enter your web username and
+                    password.
+                </div>
+            </div>
+            <div class="row">
+                <label>Username</label>
+                <input type="text" class="asicuser" value=""/>
+            </div>
+            <div class="row">
+                <label>Password</label>
+                <input type="text" class="asicpassword" value=""/>
+            </div>
+        </div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup">Discard changes</div>
+            <div class="button green">Save changes</div>
+        </div>
+    </div>
+    <script>
+        var access = "owner";
+    </script>
+    <script>
+        var workers = '[{"workersProfitSwitchActive":"0","workersClientDefault":"NBMINER-AMD","workersCpuClientDefault":"XMRIG","workersId":"644266","workersName":"home","workersType":"amd","workersSystem":"windows","workersGroups":";TestGroup;"},{"workersProfitSwitchActive":"0","workersClientDefault":"PHOENIX-ETH","workersCpuClientDefault":"disabled","workersId":"617989","workersName":"WORKER001","workersType":"nvidia","workersSystem":"windows","workersGroups":";TestGroup;"}]';
+        var workersStability = '[617989]';
+        var workersReboots = 'null';
+        var workersConsole = 'null';
+        var workerToken = 'zgtnisjwk59a';
+        var btcExchange = 60434.940738348;
+    </script>
+    <script>
+        var viewMode = 0;
+        var demoAccount = 0;
+        var workersCount = 2;
+    </script>
+</div>
+
+<script>
+    var currency = "CNY";
+    var currencyValue = 6.405705;
+    var temperature = "°C";
+    var userPermission = "owner";
+    var userPrimaryPermission = "";
+
+    [
+        "./js/jquery.js", "./js/gettext.js", "./js/perfect-scrollbar.js", "./js/language.js", "./js/templates/global.js", "./js/FileSaver.min.js", "./js/templates/Observerkey.js", "./js/jquery.qrcode.min.js"
+    ].forEach(function (src) {
+        var script = document.createElement("script");
+        script.src = src;
+        script.async = false;
+        document.head.appendChild(script);
+    });
+
+</script>
+</body>
+</html>
