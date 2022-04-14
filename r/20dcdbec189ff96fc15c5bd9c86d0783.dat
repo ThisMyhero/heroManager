@@ -1,0 +1,654 @@
+<!doctype html>
+<html lang="en-US" translate="no">
+<head>
+    <title>Worker config</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preload" href="./css/themes/light/global.css?v=1635430962" as="style"/>
+    <link rel="preload" href="./js/jquery.js" as="script"/>
+    <meta name="robots" content="noindex">
+    <link href="./css/themes/light/global.css" id="css" rel="stylesheet" type="text/css">
+    <link href="./css/themes/dark/global.css" rel="stylesheet" type="text/css">
+    <link href="./css/themes/light/site-config-tow.css" rel="stylesheet" type="text/css">
+    <link href="./css/themes/dark/site-config-tow.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<noscript>
+    <iframe src="/www.googletagmanager.com/ns.html?id=GTM-KJ552JD" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe>
+</noscript>
+<header>
+
+</header>
+<div class="page">
+    <div class="menu">
+        <div id="main_menu">
+
+        </div>
+    </div>
+    <script>
+        var options = ["(WORKER)", "(MODE:SINGLE)", "(MODE:DUAL)", "(EMAIL)", "(POOL:98989)", "(POOL:ETC)", "(POOL:ETH)", "(POOL:GGB)", "(POOL:RVN)", "(WALLET:ETH)"];
+        var optionsValues = '{"(POOL:98989)":"psaoaso.545:6565","(POOL:ETC)":"eu1-etc.ethermine.org:14444","(POOL:ETH)":"eu1.ethermine.org:14444","(POOL:GGB)":"eu1-etc.ethermine.org:14444","(POOL:RVN)":"stratum-ravencoin.flypool.org:13333","(WALLET:ETH)":"0x72a3c52c692f2b200be6d78a585bb557f688ed9d"}';
+    </script>
+    <div class="content config">
+        <div class="title_row">
+            <div class="title_left">
+                <div class="title_navigation">
+                    <a href="/site-config-templates" lang-data-ht="Setting">Setting</a>
+                        >
+                    <h1 lang-data-ht="Site Setting">Site Setting</h1>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="col_3_4">
+                <div class="box">
+                    <div class="row">
+                        <div class="client">
+                            <label lang-data-ht="Template name">Template name</label>
+                            <p class="sub"></p>
+                        </div>
+                        <div class="edit_box">
+                            <input id="fileName" type="text" placeholder=""/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col_1_4 myTilePx">
+                <h2 lang-data-ht="notice"></h2>
+                <p lang-data-ht="Used to define template names"></p>
+            </div>
+        </div>
+        <div id="configContent">
+            <div class="container">
+                <div class="col_3_4">
+                    <div class="box">
+                        <div class="row selectable" id="poolAccelerate">
+                            <div class="client">
+                                <label lang-data-ht="Pool to accelerate"></label>
+                                                                <p class="sub" lang-data-ht="Optimize the link between the miner and the pool to speed up mining through site server transfer"></p>
+                            </div>
+                            <div class="edit_box mylineHeigh">
+                                <div class="mytoggle">
+                                    <div class="bullet paying" data-via="poolAccelerate"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row selectable" id="HideIP">
+                            <div class="client">
+                                <label lang-data-ht="Hide IP + Pool to accelerate">Hide IP</label>
+                                                            <p class="sub" lang-data-ht="Enabling acceleration and hiding the IP connected to the pool can effectively prevent packet capture and feature extraction, but you need to pay attention to the pool delay."></p>
+                            </div>
+                            <div class="edit_box mylineHeigh">
+                                <div class="mytoggle">
+                                    <div class="bullet paying" data-via="HideIP"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row selectable" id="autoOc">
+                            <div class="client">
+                                <label lang-data-ht="Auto OC"></label>
+                                <p class="sub" lang-data-ht="If the overclocking template is not set, after this function is turned on, the system will automatically adapt the overclocking parameters to reach the maximum computing power"></p>
+                            </div>
+                            <div class="edit_box mylineHeigh">
+                                <div class="mytoggle">
+                                    <div class="bullet paying" data-via="autoOc"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row selectable" id="DWMoptimize">
+                            <div class="client">
+                                <label lang-data-ht="DWM Optimize"></label>
+                                <p class="sub" lang-data-ht="Optimize the windowsGPU occupancy, can directly increase the computing power by 1%."></p>
+                            </div>
+                            <div class="edit_box mylineHeigh">
+                                <div class="mytoggle">
+                                    <div class="bullet paying" data-via="DWMoptimize"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row selectable" id="DisableShutdown">
+                            <div class="client">
+                                <label lang-data-ht="Disable Shutdown"></label>
+                                <p class="sub" lang-data-ht="After opening, the Worker will not shut down"></p>
+                            </div>
+                            <div class="edit_box mylineHeigh">
+                                <div class="mytoggle">
+                                    <div class="bullet paying" data-via="DisableShutdown"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row selectable" id="AnyhowMining">
+                            <div class="client">
+                                <label lang-data-ht2="win10 AnyhowMining"></label>
+                                <p class="sub" lang-data-ht2="Even if the miners are occupied, they still dig, but ensure that the normal use of the game or computer is not affected"></p>
+                            </div>
+                            <div class="edit_box mylineHeigh">
+                                <div class="mytoggle">
+                                    <div class="bullet paying" data-via="AnyhowMining"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row selectable" id="hide_wk">
+                            <div class="client">
+                                <label lang-data-ht="Hide the software interface">Hide the software interface</label>
+                                <p class="sub" lang-data-ht="When disable this switch, the interface will displayed at the front of billing sofeware">When disable this switch, the interface will displayed at the front of billing sofeware</p>
+                            </div>
+                            <div class="edit_box mylineHeigh">
+                                <div class="mytoggle">
+                                    <div class="bullet paying" data-via="hide_wk"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row selectable" id="no_shutdown">
+                            <div class="client">
+                                <label lang-data-ht="Do not block shutdown function">Do not block shutdown function</label>
+                                <p class="sub" lang-data-ht="When enabled this switch, the system will not Block System shutdown function. Please be sure to set the billing system to shutdown without shutdown if timeout, and restart the system after Checking out.">When enabled this switch, the system will not Block System shutdown function. Please be sure to set the billing system to shutdown without shutdown if timeout, and restart the system after Checking out.</p>
+                            </div>
+                            <div class="edit_box mylineHeigh">
+                                <div class="mytoggle">
+                                    <div class="bullet paying" data-via="no_shutdown"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row selectable disabled"  id="hide_Win7">
+                            <div class="client">
+                                <label lang-data-ht="System restart（Win7）">System restart（Win7）</label>
+                                <p class="sub"></p>
+                            </div>
+                            <div class="edit_box mylineHeigh">
+                                <div class="mytoggle">
+                                    <div class="bullet paying " data-dis="0" data-via="hide_Win7"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row selectable disabled" id="hide_Win10">
+                            <div class="client">
+                                <label lang-data-ht="System restart（Win10）">System restart（Win10）</label>
+                                <p class="sub"></p>
+                            </div>
+                            <div class="edit_box mylineHeigh">
+                                <div class="mytoggle">
+                                    <div class="bullet paying" data-dis="0" data-via="hide_Win10"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row selectable" id="OffTime">
+                            <div class="client">
+                                <label lang-data-ht="System will shutdown after idle for more than">System will shutdown after idle for more than</label>
+                                <p class="sub" lang-data-ht="Start mining after a few idle seconds, and when not mining idle computer shutdown">Start mining after a few idle seconds, and when not mining idle computer shutdown</p>
+                            </div>
+                            <div class="edit_box">
+                                <div class="input_units">
+                                    <input type="text" class="minerdelay" value="0" placeholder=""/>
+                                    <label class="unit" lang-data-ht="Sec.">Sec.</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row selectable" id="restartTime">
+                            <div class="client">
+                                <label lang-data-ht="Restart the computer every">Restart the computer every</label>
+                                <p class="sub" lang-data-ht="This function will disabled if it's 0.">This function will disabled if it's 0.</p>
+                            </div>
+                            <div class="edit_box">
+                                <div class="input_units">
+                                    <input type="text" class="minerdelay" value="0" placeholder=""/>
+                                    <label class="unit" lang-data-ht="Hours">Hours</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row selectable" id="resetVideo">
+                            <div class="client">
+                                <label lang-data-ht="Restart the video card when login">Restart the video card when login</label>
+                                <p class="sub" lang-data-ht="When enabled this switch, the video card will restard when the customer login. (It may cause the screen to be black for over 2 seconds)">When enabled this switch, the video card will restard when the customer login. (It may cause the screen to be black for over 2 seconds)</p>
+                            </div>
+                            <div class="edit_box mylineHeigh">
+                                <div class="mytoggle">
+                                    <div class="bullet paying " data-via="resetVideo"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row selectable" id="offChassisLight">
+                            <div class="client">
+                                <label lang-data-ht="Turn off the chassis light">Turn off the chassis light</label>
+                                <p class="sub" lang-data-ht="When enabled this switch,the chassis light will turn off when minning.">When enabled this switch,the chassis light will turn off when minning.</p>
+                            </div>
+                            <div class="edit_box mylineHeigh">
+                                <div class="mytoggle">
+                                    <div class="bullet paying " data-via="offChassisLight"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row selectable" id="offKeyLight">
+                            <div class="client">
+                                <label lang-data-ht="Turn off the keyboard light">Turn off the keyboard light</label>
+                                <p class="sub" lang-data-ht="When enabled this switch,the keyboard light will turn off when minning.(Keyboard support required)">When enabled this switch,the keyboard light will turn off when minning.(Keyboard support required)</p>
+                            </div>
+                            <div class="edit_box mylineHeigh">
+                                <div class="mytoggle">
+                                    <div class="bullet paying " data-via="offKeyLight"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row selectable" id="offMonitor">
+                            <div class="client">
+                                <label lang-data-ht="Turn off the monitor">Turn off the monitor</label>
+                                <p class="sub" lang-data-ht="When enabled this switch,the monitor light will turn off when minning.">When enabled this switch,the monitor light will turn off when minning.</p>
+                            </div>
+                            <div class="edit_box mylineHeigh">
+                                <div class="mytoggle">
+                                    <div class="bullet paying " data-via="offMonitor"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row selectable" id="disable_awake">
+                            <div class="client">
+                                <label lang-data-ht="Disable keyboard and mouse wakeup"></label>
+                                <p class="sub" lang-data-ht="When this function is turned on, the computer must press the power button to restart after standby. It is recommended to use Internet cafes"></p>
+                            </div>
+                            <div class="edit_box mylineHeigh">
+                                <div class="mytoggle">
+                                    <div class="bullet paying " data-via="disable_awake"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row selectable" id="trayIcon">
+                            <div class="client">
+                                <label lang-data-ht="Tray icon">Tray icon</label>
+                                <p class="sub" lang-data-ht="When enabled, a tray icon will be displayed at the time position in the lower right corner of the windows desktop"></p>
+                            </div>
+                            <div class="edit_box mylineHeigh">
+                                <div class="mytoggle">
+                                    <div class="bullet paying " data-via="TrayIcon"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row selectable" id="wakeUp">
+                            <div class="client">
+                                <label lang-data-ht="Wake up">Weak up</label>
+                                <p class="sub"></p>
+                            </div>
+                            <div class="edit_box mylineHeigh">
+                                <div class="mytoggle">
+                                    <div class="bullet paying " data-via="wakeUp"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col_1_4 myTilePx">
+                    <h2 lang-data-ht="notice"></h2>
+                    <p lang-data-ht="You can set the system shutdown / restart configuration here. Reasonable shutdown and restart configuration can reduce power consumption"></p>
+                    <h2 lang-data-ht="Pool to accelerate"></h2>
+                    <div style="display: flex;justify-content: space-between;margin-top: 30px">
+                        <div class="my_msg_t" style="width: 48%">
+                            <img style="width: 80%;" src="/image/kcjsq.png"/>
+                            <h2 style="margin-top: 20px" lang-data-ht3="Before speedup">加速前</h2>
+                            <div lang-data-ht3="The worker accesses the pool server separately."></div>
+                            <div lang-data-ht3="Network links tend to time out."></div>
+                            <div lang-data-ht3="Network is prone to hijacking."></div>
+                            <div lang-data-ht3="Slow packet reception"></div>
+                            <div lang-data-ht3="Data is easily exposed"></div>
+                        </div>
+                        <div class="my_msg_t" style="width: 48%">
+                            <img style="width: 80%;" src="/image/kcjs.png"/>
+                            <h2 style="margin-top: 20px" lang-data-ht3="After speedup">加速后</h2>
+                            <div lang-data-ht3="The server accesses the pool server separately and exchanges data with each workers."></div>
+                            <div lang-data-ht3="More stable network connection."></div>
+                            <div lang-data-ht3="More Safety data transportation."></div>
+                            <div lang-data-ht3="Fast packet reception."></div>
+                            <div lang-data-ht3="Higher data privacy."></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+<!--            <div class="container">-->
+<!--                <div class="col_3_4">-->
+<!--                    <div class="box">-->
+<!--                        <div class="row selectable" id="OffTime">-->
+<!--                            <div class="client">-->
+<!--                                <label lang-data-ht="System will shutdown after idle for more than">System will shutdown after idle for more than</label>-->
+<!--                                <p class="sub" lang-data-ht="Start mining after a few idle seconds, and when not mining idle computer shutdown">Start mining after a few idle seconds, and when not mining idle computer shutdown</p>-->
+<!--                            </div>-->
+<!--                            <div class="edit_box">-->
+<!--                                <div class="input_units">-->
+<!--                                    <input type="text" class="minerdelay" value="0" placeholder=""/>-->
+<!--                                    <label class="unit" lang-data-ht="Sec.">Sec.</label>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="row selectable" id="restartTime">-->
+<!--                            <div class="client">-->
+<!--                                <label lang-data-ht="Restart the computer every">Restart the computer every</label>-->
+<!--                                <p class="sub" lang-data-ht="This function will disabled if it's 0.">This function will disabled if it's 0.</p>-->
+<!--                            </div>-->
+<!--                            <div class="edit_box">-->
+<!--                                <div class="input_units">-->
+<!--                                    <input type="text" class="minerdelay" value="0" placeholder=""/>-->
+<!--                                    <label class="unit" lang-data-ht="Hours">Hours</label>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="col_1_4">-->
+<!--                    <h2>Clients' configuration</h2>-->
+<!--                    <p>Select default mining client and set your worker's configuration. Tags will be automatically-->
+<!--                        replaced with the value you have set in your address editor. You can add and edit tags values on-->
+<!--                        the go.</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="container">-->
+<!--                <div class="col_3_4">-->
+<!--                    <div class="box">-->
+<!--                        <div class="row selectable" id="resetVideo">-->
+<!--                            <div class="client">-->
+<!--                                <label lang-data-ht="Restart the video card when login">Restart the video card when login</label>-->
+<!--                                <p class="sub" lang-data-ht="When enabled this switch, the video card will restard when the customer login. (It may cause the screen to be black for over 2 seconds)">When enabled this switch, the video card will restard when the customer login. (It may cause the screen to be black for over 2 seconds)</p>-->
+<!--                            </div>-->
+<!--                            <div class="edit_box mylineHeigh">-->
+<!--                                <div class="mytoggle">-->
+<!--                                    <div class="bullet paying " data-via="resetVideo"></div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="row selectable" id="offChassisLight">-->
+<!--                            <div class="client">-->
+<!--                                <label lang-data-ht="Turn off the chassis light">Turn off the chassis light</label>-->
+<!--                                <p class="sub" lang-data-ht="When enabled this switch,the chassis light will turn off when minning.">When enabled this switch,the chassis light will turn off when minning.</p>-->
+<!--                            </div>-->
+<!--                            <div class="edit_box mylineHeigh">-->
+<!--                                <div class="mytoggle">-->
+<!--                                    <div class="bullet paying " data-via="offChassisLight"></div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="row selectable" id="offKeyLight">-->
+<!--                            <div class="client">-->
+<!--                                <label lang-data-ht="Turn off the keyboard light">Turn off the keyboard light</label>-->
+<!--                                <p class="sub" lang-data-ht="When enabled this switch,the keyboard light will turn off when minning.(Keyboard support required)">When enabled this switch,the keyboard light will turn off when minning.(Keyboard support required)</p>-->
+<!--                            </div>-->
+<!--                            <div class="edit_box mylineHeigh">-->
+<!--                                <div class="mytoggle">-->
+<!--                                    <div class="bullet paying " data-via="offKeyLight"></div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="row selectable" id="offMonitor">-->
+<!--                            <div class="client">-->
+<!--                                <label lang-data-ht="Turn off the monitor">Turn off the monitor</label>-->
+<!--                                <p class="sub" lang-data-ht="When enabled this switch,the monitor light will turn off when minning.">When enabled this switch,the monitor light will turn off when minning.</p>-->
+<!--                            </div>-->
+<!--                            <div class="edit_box mylineHeigh">-->
+<!--                                <div class="mytoggle">-->
+<!--                                    <div class="bullet paying " data-via="offMonitor"></div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="row selectable" id="weakUp">-->
+<!--                            <div class="client">-->
+<!--                                <label lang-data-ht="Weak up">Weak up</label>-->
+<!--                                <p class="sub"></p>-->
+<!--                            </div>-->
+<!--                            <div class="edit_box mylineHeigh">-->
+<!--                                <div class="mytoggle">-->
+<!--                                    <div class="bullet paying " data-via="weakUp"></div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="col_1_4">-->
+<!--                    <h2>Clients' configuration</h2>-->
+<!--                    <p>Select default mining client and set your worker's configuration. Tags will be automatically-->
+<!--                        replaced with the value you have set in your address editor. You can add and edit tags values on-->
+<!--                        the go.</p>-->
+<!--                </div>-->
+<!--            </div>-->
+            <div class="container">
+                <div class="col_3_4">
+                    <div class="box">
+                        <div class="row selectable" id="electricity_costs">
+                            <div class="client">
+                                <label lang-data-ht="Electricity costs">Electricity costs</label>
+                                <p class="sub" lang-data-ht="What are your electricity costs?">What are your electricity costs?</p>
+                            </div>
+                            <div class="edit_box">
+                                <div class="input_units">
+                                    <input type="text" class="elcosts" value="0" placeholder=""/>
+                                    <label class="unit">CNY for kW/h</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row selectable" id="electricity_costsx">
+                            <div class="client">
+                                <label lang-data-ht="Mining time">Electricity costs</label>
+                                <p class="sub" lang-data-ht="The end time is shorter than the start time. It indicates the time range of the next day"></p>
+                            </div>
+                            <div class="edit_box">
+                                <div class="input_units" id="time_list_label">
+                                    <div class="my_in_time" style="display: flex;margin-top: 20px">
+                                        <div style="display: flex;align-items: center;margin-left: 10px">
+                                            <div style="margin-left: 10px" lang-data-ht2="Start：">开始:</div>
+                                            <div class="input_time_wk">
+                                                <div class="myTimeInput"><div class="xs_t">--</div> : <div class="fz_t">--</div></div>
+                                                <div class="timeLabel" style="display:none">
+                                                    <ul class="my_h_ul">
+                                                    </ul>
+                                                    <ul class="my_m_ul">
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="display: flex;align-items: center;margin-left: 10px">
+                                            <div style="margin-left: 10px" lang-data-ht="End：">结束:</div>
+                                            <div class="input_time_wk">
+                                                <div class="myTimeInput"><div class="xs_t">--</div> : <div class="fz_t">--</div></div>
+                                                <div class="timeLabel" style="display:none">
+                                                    <ul class="my_h_ul">
+                                                    </ul>
+                                                    <ul class="my_m_ul">
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="icon jia" onclick="addTimeLabel()"></div>
+                                    </div>
+<!--                                    <div class="my_in_time" style="display: flex;margin-top: 20px">-->
+<!--                                        <div style="display: flex;align-items: center;margin-left: 10px">-->
+<!--                                            <div style="margin-left: 10px">开始:</div>-->
+<!--                                            <div class="input_time_wk">-->
+<!--                                                <div class="myTimeInput"><div class="xs_t">&#45;&#45;</div> : <div class="fz_t">&#45;&#45;</div></div>-->
+<!--                                                <div class="timeLabel" style="display:none">-->
+<!--                                                    <ul class="my_h_ul">-->
+<!--                                                    </ul>-->
+<!--                                                    <ul class="my_m_ul">-->
+<!--                                                    </ul>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                        <div style="display: flex;align-items: center;margin-left: 10px">-->
+<!--                                            <div style="margin-left: 10px">结束:</div>-->
+<!--                                            <div class="input_time_wk">-->
+<!--                                                <div class="myTimeInput"><div class="xs_t">&#45;&#45;</div> : <div class="fz_t">&#45;&#45;</div></div>-->
+<!--                                                <div class="timeLabel" style="display:none">-->
+<!--                                                    <ul class="my_h_ul">-->
+<!--                                                    </ul>-->
+<!--                                                    <ul class="my_m_ul">-->
+<!--                                                    </ul>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                        <div class="icon jia" onclick="addTimeLabel()"></div>-->
+<!--                                        <div class="icon chax" onclick="delTimeLable(this)"></div>-->
+<!--                                    </div>-->
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row selectable" id="power_consumption">
+                            <div class="client">
+                                <label lang-data-ht2="Power consumption">Power consumption</label>
+                                <p class="sub" lang-data-ht="What is the worker's power consumption?">What is the worker's power consumption?</p>
+                            </div>
+                            <div class="edit_box">
+                                <div class="input_units">
+                                    <input type="text" class="powcons" value="0" placeholder=""/>
+                                    <label class="unit">W</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row selectable" id="deduction_fee">
+                            <div class="client">
+                                <label lang-data-ht="Earnings deduction percent">Earnings deduction percent</label>
+                                <p class="sub" lang-data-ht="Adjust estimated earnings by provided percent.">Adjust estimated earnings by provided percent.</p>
+                            </div>
+                            <div class="edit_box">
+                                <div class="input_units">
+                                    <input type="text" class="deductionFee" value="0" placeholder=""/>
+                                    <label class="unit">%</label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col_1_4 myTilePx">
+                    <h2 lang-data-ht="notice"></h2>
+                    <p lang-data-ht="This configuration allows the system to estimate the power and electricity consumption of the workers."></p>
+                </div>
+            </div>
+            <div class="container">
+                <div class="col_3_4">
+                    <div class="box">
+                        <div class="row selectable" id="hot_value">
+                            <div class="client">
+                                <label lang-data-ht2="Hot">Hot</label>
+                                <p class="sub" lang-data-ht="Set a high temperature warning line">Enter the value for temperature that will be marked as 'hot' on your
+                                    dashboard.</p>
+                            </div>
+                            <div class="edit_box">
+                                <div class="input_units">
+                                    <input type="text" class="tempHot" value="0" placeholder=""/>
+                                    <label class="unit">°C</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row selectable" id="very_hot_value">
+                            <div class="client">
+                                <label lang-data-ht2="Very hot">Very hot</label>
+                                <p class="sub" lang-data-ht="Set up overheating warning lines">Enter the value for temperature that will be marked as 'very hot' on your
+                                    dashboard.</p>
+                            </div>
+                            <div class="edit_box">
+                                <div class="input_units">
+                                    <input type="text" class="tempVeryHot" value="0" placeholder=""/>
+                                    <label class="unit">°C</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row selectable" id="stopAlerts">
+                            <div class="client">
+                                <label lang-data-ht2="Paused alerts">Pause alerts</label>
+                                <p class="sub" lang-data-ht="For how long do you want to pause alerts?">For how long do you want to pause alerts?</p>
+                            </div>
+                            <div class="edit_box">
+                                <select id="pauseAlerts">
+                                    <option value="0" selected="selected" lang-data-ht="Don't pause">Don't pause</option>
+                                    <option value="15" lang-data-ht2="For 15 minutes">For 15 minutes</option>
+                                    <option value="30" lang-data-ht2="For 30 minutes">For 30 minutes</option>
+                                    <option value="60" lang-data-ht="For 1 hour">For 1 hour</option>
+                                    <option value="360" lang-data-ht="For 6 hours">For 6 hours</option>
+                                    <option value="720" lang-data-ht="For 12 hours">For 12 hours</option>
+                                    <option value="1440" lang-data-ht="For 24 hour">For 24 hour</option>
+                                    <option value="1" lang-data-ht="Permanently">Permanently</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row selectable" id="stopTriggers">
+                            <div class="client">
+                                <label lang-data-ht2="Paused triggers"></label>
+                                <p class="sub" lang-data-ht="For how long do you want to pause triggers?">For how long do you want to pause triggers?</p>
+                            </div>
+                            <div class="edit_box">
+                                <select id="pauseTriggers">
+                                    <option value="0" selected="selected" lang-data-ht="Don't pause">Don't pause</option>
+                                    <option value="15" lang-data-ht2="For 15 minutes">For 15 minutes</option>
+                                    <option value="30" lang-data-ht2="For 30 minutes">For 30 minutes</option>
+                                    <option value="60" lang-data-ht="For 1 hour">For 1 hour</option>
+                                    <option value="360" lang-data-ht="For 6 hours">For 6 hours</option>
+                                    <option value="720" lang-data-ht="For 12 hours">For 12 hours</option>
+                                    <option value="1440" lang-data-ht="For 24 hour">For 24 hour</option>
+                                    <option value="1" lang-data-ht="Permanently">Permanently</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col_1_4 myTilePx">
+                    <h2 lang-data-ht="notice"></h2>
+                    <p lang-data-ht="Set the temperature trigger conditions for high temperature and overheating so that the system can alarm for this condition"></p>
+                </div>
+            </div>
+            <div id="saveContainer" class="container floating">
+                <div class="floating_shadow"></div>
+                <div class="col_3_4">
+                    <div class="action_row buttons">
+                        <div class="circle-loader">
+                            <div class="checkmark draw"></div>
+                        </div>
+                        <div class="message_suc">Finished</div>
+                        <div class="message_err">Error</div>
+                        <div onclick="ResetWin()" class="button_empty" lang-data-ht="Reset">Reset</div>
+                        <div class="button green" onclick="getHtmlData(this)" lang-data-ht="Save">Save</div>
+                    </div>
+                </div>
+                <div class="col_1_4"></div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <input type="hidden" value="271ab0270bbf45b35d4e6bbde5e85e8e2193112e4e33501c36b5e998a72ec94f" id="nonce"/>
+    <div class="popupbackground_empty"></div>
+    <div class="popupbackground close_popup"></div>
+    <div class="popup" id="click_away">
+        <div class="close"></div>
+        <div class="title">Confirmation</div>
+        <div class="text">You have unsaved changes. Are you sure you want to leave this page?</div>
+        <div class="action_row">
+            <div class="outlined_button gray close_popup">No, stay on this page</div>
+            <div class="button red">Yes, leave this page</div>
+        </div>
+    </div>
+    <script>
+        var selectedMiningClient = '';
+        var selectedMiningClientCPU = '';
+        var workerSystem = '';
+        var workerType = '';
+        var workerLink = '';
+    </script>
+</div>
+
+<script>
+    var currency = "CNY";
+    var currencyValue = 6.405705;
+    var temperature = "°C";
+    var userPermission = "owner";
+    var userPrimaryPermission = "";
+
+    [
+        "./js/jquery.js", "./js/gettext.js", "./js/perfect-scrollbar.js",'./js/language.js', "./js/templates/global.js", "./js/templates/site-config-tow.js"
+    ].forEach(function (src) {
+        var script = document.createElement("script");
+        script.src = src;
+        script.async = false;
+        document.head.appendChild(script);
+    });
+</script>
+</body>
+</html>
