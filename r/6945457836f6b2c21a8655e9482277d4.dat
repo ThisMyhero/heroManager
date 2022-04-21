@@ -1,0 +1,1366 @@
+function closeCookie() {
+    $('.cookie_message').fadeOut();
+    var d = new Date();
+    d.setTime(d.getTime() + 24 * 60 * 60 * 1000 * 365);
+    var expires = "expires=" + d.toLocaleTimeString();
+    document.cookie = "cookies=1;" + expires + ";path=/";
+}
+//设置语言
+function setLanguage(vax) {
+    $.ajax({
+        url:'/Manager',
+        type:'post',
+        data:{
+            language:vax
+        },
+        success:function (res) {
+            window.location.reload()
+        }
+    })
+}
+
+function open_submenu(item) {
+    if ($('#' + item).is(":visible")) {
+        $('#' + item + '_button').removeClass("selected");
+        $('#' + item).slideUp();
+    } else {
+        $('.link').removeClass("selected");
+        $('.nav').slideUp();
+        $('#' + item + '_button').addClass("selected");
+        $('#' + item).slideDown();
+    }
+}
+
+function open_submenu_tow(item) {
+    if ($('#' + item).is(":visible")) {
+        $('#' + item + '_button').removeClass("selected");
+        $('#' + item).slideUp();
+    } else {
+        $('.link').removeClass("selected");
+        $('.nav').slideUp();
+        $('#' + item + '_button').addClass("selected");
+        $('#' + item).slideDown();
+    }
+}
+
+$(function () {
+    $(document).on('click', '.error_value', function () {
+        $(this).removeClass('error_value');
+    });
+    $('#hamburger').click(function () {
+        $('.page').toggleClass('menu_opened');
+        $('#main_menu').toggle();
+    });
+    $('#close_main').click(function () {
+        $('.page').removeClass('menu_opened');
+        $('#main_menu').hide();
+    });
+    var currentPage = location.pathname;
+    $('.menu a').each(function () {
+        var currentHref = $(this).attr('href');
+        if (currentPage.indexOf("/worker-statistics") >= 0) {
+            currentPage = "/worker-statistics";
+        }
+        if (currentPage.indexOf("/group-statistics") >= 0) {
+            currentPage = "/group-statistics/all";
+        }
+        if (currentPage.indexOf("/worker/") >= 0) {
+            currentPage = "/workers";
+        }
+        if (currentPage.indexOf("/config/") >= 0) {
+            currentPage = "/config";
+        }
+        if (currentPage.indexOf("/scheduler/") >= 0) {
+            currentPage = "/scheduler";
+        }
+        if (currentPage.indexOf("/config-templates/")>= 0
+            ||currentPage.indexOf("/site-config-templates/") >= 0
+            ||currentPage.indexOf("/email-templates/") >= 0
+            ||currentPage.indexOf("/auto-templates/") >= 0
+            ||currentPage.indexOf("/site-config-tow/") >= 0
+            ||currentPage.indexOf("/triggers/") >= 0
+            ||currentPage.indexOf("/clocktune/") >= 0) {
+            currentPage = "/config-templates";
+        }
+        if (currentPage.indexOf("/memory-tweak/") >= 0) {
+            currentPage = "/memory-tweak";
+        }
+        if (currentPage.indexOf("/profit-switch/") >= 0) {
+            currentPage = "/profit-switch";
+        }
+        if (currentPage.indexOf("/benchmark/") >= 0) {
+            currentPage = "/benchmark";
+        }
+        if (currentPage.indexOf("/control-room/") >= 0) {
+            currentPage = "/control-room";
+        }
+        if (currentPage.indexOf("/clients/") >= 0) {
+            currentPage = "/clients";
+        }
+        if (currentPage.indexOf("/pools") >= 0 || currentPage.indexOf("/wallets") >= 0) {
+            currentPage = "/pools";
+        }
+        if(currentPage=='/config-templates'
+            ||currentPage=='/site-config-templates'
+            ||currentPage=='/email-templates'
+            ||currentPage=='/auto-templates'
+            ||currentPage=='/clocktune'
+            ||currentPage=='/site-config-tow'
+            ||currentPage=='/triggers'
+        ){
+            if(currentHref=='/config-templates'){
+                $(this).addClass("selected");
+            }
+        }
+        if (currentHref == currentPage) {
+            $(this).addClass("selected");
+            if ($(this).hasClass("submenu_link")) {
+                $(this).parent().addClass("selected");
+                $(this).parent().prev().addClass("selected");
+            }
+        }else {
+
+        }
+    })
+    $('a').click(function (event) {
+        if ((location.hostname === this.hostname || !this.hostname.length) && this.href.search('/console/') == -1 && this.href.search('/clocktune/') == -1 && event.which != 3 && !event.ctrlKey && !event.metaKey && !$(this).is('.icon_box')) {
+            preloaderShow();
+        }
+    });
+    $('#main_menu .link').click(function () {
+        $('#main_menu .link').removeClass('selected');
+        $(this).addClass("selected");
+        // if($(this).attr)
+    });
+    $('.users_list a').click(function () {
+        sessionStorage.clear();
+    });
+    $('.copy_clipboard').click(function () {
+        var copyText = $(this).parent().children('.copy_element');
+        copyText.select();
+        document.execCommand("copy");
+        $(this).attr('data-tooltip', _('Copied'));
+    });
+    $('.copy_clipboard').mouseout(function () {
+        $(this).attr('data-tooltip', _('Copy to clipboard'));
+    });
+});
+var giftShown = 0;
+$('.giftbox').click(function () {
+    if (giftShown == 0) {
+        var code = $('.blackfriday').attr('data-code');
+        var discount = $('.blackfriday').attr('data-discount');
+        $(this).children('.text').html('You have received a coupon code for ' + discount + '-36% discount:<div class="code">' + code + '</div><small>Valid until 1st December 2019</small>');
+        var d = new Date();
+        d.setTime(d.getTime() + 24 * 60 * 60 * 1000 * 20);
+        var expires = "expires=" + d.toLocaleTimeString();
+        document.cookie = "gift=1;" + expires + ";path=/";
+    }
+    giftShown = 1;
+});
+
+function closeDiscord() {
+    $('.discord_invitation').remove();
+    var CookieDate = new Date;
+    CookieDate.setFullYear(CookieDate.getFullYear() + 1);
+    document.cookie = 'discord=1; expires=' + CookieDate.toUTCString() + ';';
+}
+
+function preloaderHide() {
+    $('.preloader').fadeOut();
+    setTimeout(function () {
+        $('.preloader .bar').removeClass('animate');
+    }, 500);
+}
+
+function preloaderShow() {
+    $('.preloader').show();
+}
+
+function convertHashrate(value, suffix,type) {
+    var result = '';
+    while (value / 1000 >= 1 && suffix != 'EH/s') {
+        value = value / 1000;
+        if(type!=undefined){
+            suffix = suffixUpTow(suffix);
+        }else {
+            suffix = suffixUp(suffix);
+        }
+
+    }
+    value = (Math.round(value * 1000)) / 1000;
+    if(type!=undefined){
+        result = value  + suffix;
+    }else {
+        result = value +' '+ suffix;
+    }
+    return result;
+}
+
+
+function suffixUp(suffix) {
+    switch (suffix) {
+        case 'H/s':
+            return 'KH/s';
+            break;
+        case 'KH/s':
+            return 'MH/s';
+            break;
+        case 'MH/s':
+            return 'GH/s';
+            break;
+        case 'GH/s':
+            return 'TH/s';
+            break;
+        case 'TH/s':
+            return 'PH/s';
+            break;
+        case 'PH/s':
+            return 'EH/s';
+            break;
+        default:
+            return suffix;
+    }
+}
+function suffixUpTow(suffix) {
+    switch (suffix) {
+        case 'H':
+            return 'K';
+            break;
+        case 'K':
+            return 'M';
+            break;
+        case 'M':
+            return 'G';
+            break;
+        case 'G':
+            return 'T';
+            break;
+        case 'T':
+            return 'P';
+            break;
+        case 'P':
+            return 'E';
+            break;
+        default:
+            return suffix;
+    }
+}
+
+function suffixDown(suffix) {
+    switch (suffix) {
+        case 'KH/s':
+            return 'H/s';
+            break;
+        case 'MH/s':
+            return 'KH/s';
+            break;
+        case 'GH/s':
+            return 'MH/s';
+            break;
+        case 'TH/s':
+            return 'GH/s';
+            break;
+        case 'PH/s':
+            return 'TH/s';
+            break;
+        default:
+            return suffix;
+    }
+}
+
+function speedToHash(speed, unit) {
+    var tempSpeed = speed;
+    var tempUnit = unit;
+    if (tempUnit == "EH") {
+        tempSpeed = tempSpeed * 1000;
+        tempUnit = "PH";
+    }
+    if (tempUnit == "PH") {
+        tempSpeed = tempSpeed * 1000;
+        tempUnit = "TH";
+    }
+    if (tempUnit == "TH") {
+        tempSpeed = tempSpeed * 1000;
+        tempUnit = "GH";
+    }
+    if (tempUnit == "GH") {
+        tempSpeed = tempSpeed * 1000;
+        tempUnit = "MH";
+    }
+    if (tempUnit == "MH") {
+        tempSpeed = tempSpeed * 1000;
+        tempUnit = "KH";
+    }
+    if (tempUnit == "KH") {
+        tempSpeed = tempSpeed * 1000;
+        tempUnit = "H";
+    }
+    return tempSpeed;
+}
+
+function convertWatt(value, suffix) {
+    var result = '';
+    while (value / 1000 >= 1 && suffix != 'MW') {
+        value = value / 1000;
+        suffix = suffixWattUp(suffix);
+    }
+    value = (Math.round(value * 1000)) / 1000;
+    result = value + " " + suffix;
+    return result;
+}
+
+function suffixWattUp(suffix) {
+    switch (suffix) {
+        case 'W':
+            return 'kW';
+            break;
+        case 'kW':
+            return 'MW';
+            break;
+        default:
+            return suffix;
+    }
+}
+
+var cacheExpired = true;
+
+function cacheExpireCheck() {
+    if (typeof (Storage) !== "undefined") {
+        var lastUpdate = sessionStorage.getItem("lastUpdate");
+        if (lastUpdate == null) {
+            lastUpdate = 0;
+        }
+        var startDate = lastUpdate;
+        var endDate = new Date();
+        var seconds = (endDate.getTime() - parseInt(startDate)) / 1000;
+        if (seconds >= 20) {
+            for (var i = 0; i < sessionStorage.length; i++) {
+                var a = sessionStorage.key(i);
+                if (a != 'TawkWindowName' && a != 'marketCap') {
+                    sessionStorage.removeItem(a);
+                }
+            }
+            sessionStorage.setItem("lastUpdate", endDate.getTime());
+            cacheExpired = true;
+            return true;
+        } else {
+            cacheExpired = false;
+            return false;
+        }
+    } else {
+        cacheExpired = true;
+        return true;
+    }
+}
+
+setInterval(cacheExpireCheck, 35001);
+cacheExpired = cacheExpireCheck();
+
+function convertTemperature(value) {
+    if (temperature == "°C") {
+        return Math.round(value);
+    } else {
+        if (value == 0) {
+            return 0;
+        } else {
+            return Math.round(value * 9 / 5 + 32);
+        }
+    }
+}
+
+var gt = new Gettext({'domain': 'messages'});
+
+function _(msgid) {
+    return gt.gettext(msgid);
+}
+
+function getIcon(crypto) {
+    var cryptoStart = crypto.split(" (");
+    return cryptoStart[0].toLowerCase();
+}
+
+function getIconLong(crypto) {
+    var cryptoIcon = crypto.toLowerCase();
+    if (crypto.indexOf(" ") > 0) {
+        if (crypto.indexOf('Mining Pool Hub') > 0) {
+            cryptoIcon = 'mph';
+        } else if (crypto.indexOf('NiceHash') > 0) {
+            cryptoIcon = 'nh';
+        } else if (crypto.indexOf('zpool') > 0) {
+            cryptoIcon = 'zpool';
+        } else if (crypto.indexOf('Zergpool') > 0) {
+            cryptoIcon = 'zp';
+        } else if (crypto.indexOf('Mining Dutch') > 0) {
+            cryptoIcon = 'md';
+        } else if (crypto.indexOf('Monero Ocean') > 0) {
+            cryptoIcon = 'mo';
+        } else if (crypto.indexOf('HashCryptos') > 0) {
+            cryptoIcon = 'hashc';
+        } else if (crypto.indexOf('blazepool') > 0) {
+            cryptoIcon = 'bp';
+        } else if (crypto.indexOf('NLPOOL') > 0) {
+            cryptoIcon = 'nlp';
+        } else if (crypto.indexOf('A Hash Pool') > 0) {
+            cryptoIcon = 'ahp';
+        } else if (crypto.indexOf('Block Masters') > 0) {
+            cryptoIcon = 'bm';
+        } else if (crypto.indexOf('MRR') > 0) {
+            cryptoIcon = 'mrr';
+        } else if (crypto.indexOf('Prohashing') > 0) {
+            cryptoIcon = 'prohashing';
+        } else if (crypto.indexOf('PROH') > 0) {
+            cryptoIcon = 'proh';
+        } else if (crypto.toLowerCase().indexOf('hiveon') > 0) {
+            cryptoIcon = 'hiveon';
+        } else if (crypto.toLowerCase().indexOf('luxor') > 0) {
+            cryptoIcon = 'luxor';
+        } else if (crypto.toLowerCase().indexOf('f2pool') > 0) {
+            cryptoIcon = 'f2pool';
+        } else if (crypto.toLowerCase().indexOf('kryptex') > 0) {
+            cryptoIcon = 'kryptex';
+        } else if (crypto.toLowerCase().indexOf('spark') > 0) {
+            cryptoIcon = 'spark';
+        } else if (crypto.toLowerCase().indexOf('viabtc') > 0) {
+            cryptoIcon = 'viabtc';
+        } else if (crypto.toLowerCase().indexOf('poolin') > 0) {
+            cryptoIcon = 'poolin';
+        } else if (crypto.toLowerCase().indexOf('ezil') > 0) {
+            cryptoIcon = 'ezil';
+        } else if (crypto.toLowerCase().indexOf('binance') > 0) {
+            cryptoIcon = 'binance';
+        } else if (crypto.toLowerCase().indexOf('unm') > 0) {
+            cryptoIcon = 'unm';
+        } else if (crypto.toLowerCase().indexOf('flexpool') > 0) {
+            cryptoIcon = 'flexpool';
+        } else if (crypto.toLowerCase().indexOf('nanopool') > 0) {
+            cryptoIcon = 'nanopool';
+        } else if (crypto.toLowerCase().indexOf('spider') > 0) {
+            cryptoIcon = 'spider';
+        } else if (crypto.toLowerCase().indexOf('antpool') > 0) {
+            cryptoIcon = 'antpool';
+        } else if (crypto.toLowerCase().indexOf('beepool') > 0) {
+            cryptoIcon = 'beepool';
+        } else if (crypto.toLowerCase().indexOf('crazypool') > 0) {
+            cryptoIcon = 'crazypool';
+        } else if (crypto.toLowerCase().indexOf('2miners') > 0) {
+            cryptoIcon = '2miners';
+        }
+    }
+    return cryptoIcon;
+}
+
+window.onresize = function (event) {
+    if ((window.fullScreen) || (window.innerWidth == screen.width && window.innerHeight == screen.height)) {
+        $('.page .menu').addClass('transform_top');
+    } else {
+        $('.page .menu').removeClass('transform_top');
+    }
+}
+var ie = (typeof document.selection != "undefined" && document.selection.type != "Control") && true;
+var w3 = (typeof window.getSelection != "undefined") && true;
+
+
+function hashrateUnitUp(unit) {
+    if (unit == 'H') {
+        return 'KH';
+    } else if (unit == 'KH') {
+        return 'MH';
+    } else if (unit == 'MH') {
+        return 'GH';
+    } else if (unit == 'GH') {
+        return 'TH';
+    } else if (unit == 'TH') {
+        return 'PH';
+    }
+    return unit;
+}
+
+function hashrateUnitDown(unit) {
+    if (unit == 'PH') {
+        return 'TH';
+    } else if (unit == 'TH') {
+        return 'GH';
+    } else if (unit == 'GH') {
+        return 'MH';
+    } else if (unit == 'MH') {
+        return 'KH';
+    } else if (unit == 'KH') {
+        return 'H';
+    }
+    return unit;
+}
+
+//观察者
+function obLink() {
+   let src=location.pathname
+    if((src.indexOf("/worker")==-1||src.indexOf("/workers")>=0)&&src.indexOf("/site-control")==-1){
+          window.location.replace('/')
+    }
+}
+
+function isCryptoPool(crypto) {
+    if (crypto.indexOf('HIVEON') != -1) {
+        return true;
+    } else if (crypto.indexOf('VIABTC') != -1) {
+        return true;
+    } else if (crypto.indexOf('POOLIN') != -1) {
+        return true;
+    } else if (crypto.indexOf('F2POOL') != -1) {
+        return true;
+    } else if (crypto.indexOf('SPARK') != -1) {
+        return true;
+    } else if (crypto.indexOf('BINANCE') != -1) {
+        return true;
+    } else if (crypto.indexOf('EZIL') != -1) {
+        return true;
+    } else if (crypto.indexOf('FLEXPOOL') != -1) {
+        return true;
+    } else if (crypto.indexOf('NANOPOOL') != -1) {
+        return true;
+    } else if (crypto.indexOf('2MINERS') != -1) {
+        return true;
+    } else if (crypto.indexOf('BEEPOOL') != -1) {
+        return true;
+    } else if (crypto.indexOf('ANTPOOL') != -1) {
+        return true;
+    } else if (crypto.indexOf('SPIDER') != -1) {
+        return true;
+    } else if (crypto.indexOf('CRAZYPOOL') != -1) {
+        return true;
+    }
+    return false;
+}
+let my_wy_user_name='admin'
+let my_wy_key=0 //大于等于99
+let my_key_str=''
+let my_user_id=undefined
+let fileLeve=''
+let mex_name=_mx('AMining')
+$.ajax({
+    url:'/query?USERINFO,WEBINFO',
+    dataType:'json',
+    type:'post',
+    async:false,
+    success:function (res) {
+        if(res.WEBINFO.webName!=''){
+            mex_name=res.WEBINFO.webName
+        }else {
+            mex_name=_mx('AMining')
+        }
+        document.title = mex_name;
+        change_icon(res.WEBINFO.webLogo)
+        my_wy_user_name= res.USERINFO.name
+        my_wy_key=Number(res.USERINFO.level)
+        // my_wy_key=0
+        my_user_id= res.USERINFO.id
+        my_key_str= res.USERINFO.key
+        fileLeve=res.USERINFO.filever
+        if( res.USERINFO.language==''){
+            localStorage.setItem('my_wu_language',navigator.language.substr(0,2)+'-cn')
+        }else {
+            localStorage.setItem('my_wu_language', res.USERINFO.language)
+        }
+        if(my_wy_key==0){
+            obLink()
+        }
+    }
+})
+function change_icon(src) {
+    const changeFavicon = link => {
+        $favicon = document.createElement("link");
+        $favicon.rel = "icon";
+        $favicon.href = link;
+        document.head.appendChild($favicon);
+    };
+    // 动态修改网站图标
+    changeFavicon(src);
+}
+languageTypeS=localStorage.getItem('my_wu_language')
+var _gaXstr='<div href="/" style="display: flex;align-items: center">' +
+    '        <div class="logo"></div><div style="font-size:20px;margin-left:15px;color:#fff;font-weight: 300;">'+mex_name+'</div>' +
+    '    </div>' +
+    '    <div class="user">' +
+    '        <div class="user_photo_box">' +
+    '            <img class="user_photo"' +
+    '                 src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAEYAAABGAQMAAABL4HDHAAAABlBMVEX///+HyC5uTY7yAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAALklEQVQokWP4DwV/GGjKoj1xgIH5PwMDP01Z9AirAwwgwE9bFj/QrgO0ZdE+rADaNN/U2QpfSAAAAABJRU5ErkJggg=="/>' +
+    '        </div>' +
+    '        <div class="arrow"></div>' +
+    '        <div class="identity">' +
+    '            <div class="id">'+_mx('User')+': <span id="myHeadId" my-user-id="'+my_user_id+'">'+my_wy_user_name+'</span></div>' +
+    '            <div class="email"></div>' +
+    '        </div>' +
+    '</div>'
+    if(my_wy_key==0){
+        _gaXstr+='<div class="msg_obserx" style="">'+_mx('You are currently using observer mode. Please log in if you need to manage the background')+'</div>'
+    }
+
+    _gaXstr+='    <div class="user_menu">'
+    /*'<a class="link" href="/settings" title="Settings">' +
+    '        <div class="icon settings"></div>' +
+    '        Settings</a>' +
+    '        <a class="link" href="/2fa" title="2FA">' +
+    '            <div class="icon twofa"></div>' +
+    '            2FA</a><a class="link" href="/billing" title="Billing">' +
+    '            <div class="icon billing"></div>' +
+    '            Billing</a><a class="link" href="/users" title="Manage users">' +
+    '            <div class="icon users"></div>' +
+    '            Manage users</a><a class="link" href="/white-label" title="White label">' +
+    '            <div class="icon white_label"></div>' +
+    '            White label</a><a class="link" href="/api" title="API">' +
+    '            <div class="icon api"></div>' +
+    '            API</a><a class="link" href="/minerstat.com/help" target="_blank" title="Help">' +
+    '            <div class="icon help"></div>' +
+    '            Help</a>'+ */
+    if(my_wy_key>0) {
+        _gaXstr += '<a class="link" href="/keyUser" title="' + _mx('Key Management') + '"><div class="icon users"></div>' + _mx('Key Management') + '</a>'
+
+        _gaXstr += '<a class="link" href="/ObserverUser" title="' + _mx('Observer Link') + '"><div style="background-position: 0 -87px" class="icon users"></div>' + _mx('Observer Link') + '</a>'
+    }
+        _gaXstr+='<a class="link" href="/logout" title="'+_mx('Log out')+'" onclick="setClear()"><div class="icon logout"></div>'+_mx('Log out')+'</a>'+
+            '<div class="link" onclick="open_submenu_tow(\'my_lang\');">' +
+            '    <div class="icon statistics"></div>' +
+            '    '+_mx('Language')+'' +
+            '    <div class="arrow"></div>' +
+            '</div>' +
+            '<div class="my_lang_nav" id="my_lang" style="display: none">'
+            if(languageTypeS=='zh-cn'){
+                _gaXstr+=  '    <div class="my_lang_nav_item selected" title="中文简体" onclick="setLanguage(\'zh-cn\')">'+'中文简体'+'</div>'
+                    +'    <div class="my_lang_nav_item"  title="English" onclick="setLanguage(\'en-us\')">'+'English'+'</div>'
+            }else {
+                _gaXstr+=  '    <div class="my_lang_nav_item" title="中文简体" onclick="setLanguage(\'zh-cn\')">'+'中文简体'+'</div>'
+                    +'    <div class="my_lang_nav_item selected"  title="English" onclick="setLanguage(\'en-us\')">'+'English'+'</div>'
+            }
+            _gaXstr+=     '</div>'
+
+
+
+    // '        <div class="support_code">' +
+    // '            <div class="icon support"></div>' +
+    // '            <div class="text"><b>Wkpkd2VJMG94cU9wQ0l6ZFJlaEZvdz09</b><small>Your support ID</small></div>' +
+    // '        </div>' +
+    _gaXstr+='    </div>'
+$('header').html(_gaXstr)
+
+var _gaXmenu='<div class="main_menu_frame">' +
+    '                <div id="close_main"></div>'+
+    '                <h2>'+_mx('Management')+'</h2>' +
+    '                <a title="'+_mx('Console')+'" href="/site-control" class="link"><div class="icon Console"></div>'+_mx('Console')+'</a>' +
+    // '                <a title="'+_mx('Workers')+'" href="/workers" class="link"><div class="icon workers"></div>'+_mx('Workers')+'</a>' +
+    // '                <a title="Control room" href="/control-room" class="link"><div class="icon control_room"></div>Group management</a>' +
+    '                <a title="'+_mx('Address editor')+'" href="/address-editor" class="link"><div class="icon address-editor"></div>'+_mx('Address editor')+'</a>' +
+    // '                <a title="'+_mx('Overclock')+'" href="/clocktune" class="link"><div class="icon clocktune"></div>'+_mx('Overclock')+'</a>' +
+    '                <a title="'+_mx('Config templates')+'" href="/config-templates" class="link"><div class="icon templates"></div>'+_mx('Config templates')+'</a>' +
+    '                <a title="'+_mx('Worker Config')+'" href="/config" class="link"><div class="icon workers-config"></div>'+_mx('Worker Config')+'</a>' +
+    '                <a title="'+_mx('Site Management')+'" href="/site-echarts" class="link"><div class="icon control_room"></div>'+_mx('Site Management')+'</a>'
+    if(my_wy_key>=99){
+        _gaXmenu+='                <a title="'+_mx('Sever Management')+'" href="/server-config" class="link"><div class="icon control_room" style="background-position: -22px -1210px"></div>'+_mx('Sever Management')+'</a>'
+        _gaXmenu+='                <a title="'+_mxP('Proxy Management')+'" href="/proxy-config" class="link"><div class="icon proxy_room"></div>'+_mxP('Proxy Management')+'</a>'
+    }
+
+
+_gaXmenu+= '                <h2>'+_mx('Analytics')+'</h2>' +
+    '                <a title="'+_mx('24h Logs')+'" href="/logs" class="link"><div class="icon logs"></div>'+_mx('24h Logs')+'</a>' +
+    // '                <a title="'+_mx('Triggers')+'" href="/triggers" class="link"><div class="icon triggers"></div>'+_mx('Triggers')+'</a>' +
+    // '                <a title="24h logs" href="/alerts" class="link"><div class="icon alerts"></div>Alerts</a>' +
+    // '                <div class="link" id="statistics_button" onclick="open_submenu(\'statistics\');">' +
+    // '                    <div class="icon statistics"></div>' +
+    // '                    '+_mx('Statistics')+'' +
+    // '                    <div class="arrow"></div>' +
+    // '                </div>' +
+    '                <div class="nav" id="statistics">' +
+    '                    <a class="submenu_link" href="/global-statistics" title="'+_mx('Global statistics')+'">'+_mx('Global statistics')+'</a>' +
+    '                    <a class="submenu_link" href="/group-statistics/all#all" title="'+_mx('Group statistics')+'">'+_mx('Group statistics')+'</a>' +
+    // '                    <a class="submenu_link" href="/worker-statistics" title="'+_mx('Worker statistics')+'">'+_mx('Worker statistics')+'</a>' +
+    '                </div>'
+
+
+var headImxStr='<div id="hamburger"></div>'
+$('#main_menu').before(headImxStr)
+if(my_wy_key>0){
+    $('#main_menu').html(_gaXmenu)
+}
+
+
+
+var _gaXfootStr='<footer>' +
+    '<script>\n' +
+    '         (function(d, s, id, w, n) {\n' +
+    '              w.__ssc = w.__ssc || {};\n' +
+    '              w.__ssc.license = \'d14k0d6\';\n' +
+    '              if (w.ssq) return false;\n' +
+    '              n = w.ssq = function() {n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};\n' +
+    '              n.push=n;n.loaded=!0;n.queue=[];\n' +
+    '              var js, sjs = d.getElementsByTagName(s)[0];\n' +
+    '              if (d.getElementById(id)) return;\n' +
+    '              js = d.createElement(s); js.id = id;\n' +
+    '              js.src = \'https://assets.salesmartly.com/chat/widget/code/install.js\';\n' +
+    '              sjs.parentNode.insertBefore(js, sjs);\n' +
+    '            }(document, \'script\', \'ss-chat\', window));\n' +
+    '       </script>'+
+    '    <div class="left">' +
+    '        <span>Copyright &copy; 2021 AMining.'+'&nbsp&nbsp&nbsp&nbsp'+fileLeve+'</span>' +
+    // '<a target="_blank" href="/minerstat.com/terms" title="Terms">Terms</a> <a target="_blank" href="/minerstat.com/privacy" title="Privacy">Privacy</a>' +
+    '    </div>' +
+    '</footer>'
+    // '<div onclick="toggleWidget();" class="ms_beacon">' +
+    // '    <div class="ms_label_beacon">Help</div>' +
+    // '</div>' +
+    // '<div class="ms_beacon_popup">' +
+    // '    <div class="ms_beacon_menu">' +
+    // '        <div class="ms_beacon_navigation">' +
+    // '            <div class="title">minerstat</div>' +
+    // '            <div onclick="closeWidget();" data-tooltip="Close" class="icon close"></div>' +
+    // '        </div>' +
+    // '        <div class="ms_beacon_help_quick_results ms_beacon_help_quick_results_smaller">' +
+    // '            <div class="frame">' +
+    // '                <div class="ms_beacon_questions">' +
+    // '                    <div class="title">Useful help content</div>' +
+    // '                    <a href="/minerstat.com/help/address-editor?ref=beacon_page" target="_blank">Address editor' +
+    // '                        walk-through</a><a' +
+    // '                        href="/minerstat.com/help/where-can-i-get-a-wallet-for-mining-with-minerstat?ref=beacon_page"' +
+    // '                        target="_blank">Where can I get wallet?</a><a' +
+    // '                        href="/minerstat.com/help/where-can-i-find-pool-address?ref=beacon_page" target="_blank">Where' +
+    // '                    can I find pool address?</a></div>' +
+    // '            </div>' +
+    // '        </div>' +
+    // '        <div class="ms_beacon_head">' +
+    // '            <div onclick="widgetLoadHelp();" class="row">' +
+    // '                <div class="icon help"></div>' +
+    // '                <div class="title">Help center</div>' +
+    // '            </div>' +
+    // '            <a href="/www.youtube.com/c/minerstat/videos" target="_blank" class="row">' +
+    // '                <div class="icon video"></div>' +
+    // '                <div class="title">Video guides</div>' +
+    // '            </a>' +
+    // '            <div onclick="widgetLoadSupportChatCrisp(\'ID-422006\', \'ytjr@qq.com\',this);" class="row">' +
+    // '                <div class="icon chat"></div>' +
+    // '                <div class="title">Live support</div>' +
+    // '            </div>' +
+    // '            <a href="/minerstat.com/discord?ref=beacon_menu" target="_blank" class="row">' +
+    // '                <div class="icon discord"></div>' +
+    // '                <div class="title">Discord community</div>' +
+    // '            </a>' +
+    // '        </div>' +
+    // '        <div class="ms_beacon_body">' +
+    // '            <a href="/minerstat.com/software?ref=beacon_menu" target="_blank" class="row">' +
+    // '                <div class="title">Download software</div>' +
+    // '            </a>' +
+    // '            <a href="/minerstat.com/changelog?ref=beacon_menu" target="_blank" class="row">' +
+    // '                <div class="title">Changelog</div>' +
+    // '            </a>' +
+    // '            <a href="/status.minerstat.com?ref=beacon_menu" target="_blank" class="row">' +
+    // '                <div class="title">Server status</div>' +
+    // '            </a>' +
+    // '        </div>' +
+    // '        <div class="ms_beacon_support_id">' +
+    // '            <div class="support_code">' +
+    // '                <div class="icon support"></div>' +
+    // '                <div class="text"><b>Wkpkd2VJMG94cU9wQ0l6ZFJlaEZvdz09</b><small>Your support ID</small></div>' +
+    // '            </div>' +
+    // '        </div>' +
+    // '    </div>' +
+    // '    <div class="ms_beacon_support_offline">' +
+    // '        <div class="ms_beacon_navigation">' +
+    // '            <div onclick="widgetLoadMenu();" data-tooltip="Go back" class="icon back"></div>' +
+    // '            <div class="title">Live support</div>' +
+    // '            <div onclick="closeWidget();" data-tooltip="Close" class="icon close"></div>' +
+    // '        </div>' +
+    // '        <div class="ms_beacon_support_form">' +
+    // '            <div class="title">Offline</div>' +
+    // '            <p>We are currently unavailable for live chat, but you can send us a message and we will reply as soon as' +
+    // '                possible. You can also seek help from our community on our <a href="/minerstat.com/discord"' +
+    // '                                                                              target="_blank">Discord</a>.</p>' +
+    // '            <label>Message</label>' +
+    // '            <textarea class="textarea" id="beaconMessage"></textarea>' +
+    // '            <div class="button blue" onclick="widgetLoadSupportChatCrispSendMessage(this);">Send message</div>' +
+    // '            <div class="message" id="beaconMessageFeedback"></div>' +
+    // '        </div>' +
+    // '    </div>' +
+    // '    <div class="ms_beacon_help">' +
+    // '        <div class="ms_beacon_navigation">' +
+    // '            <div onclick="widgetLoadMenu();" data-tooltip="Go back" class="icon back"></div>' +
+    // '            <div class="title">Help center</div>' +
+    // '            <div onclick="closeWidget();" data-tooltip="Close" class="icon close"></div>' +
+    // '        </div>' +
+    // '        <div class="ms_beacon_help_quick_results">' +
+    // '            <div class="frame">' +
+    // '                <div class="row" onclick="widgetLoadHelpArticles(\'msos\');">' +
+    // '                    <div class="icon msos"></div>' +
+    // '                    <div class="title">msOS mining</div>' +
+    // '                    <div class="text">msOS - minerstat\'s Linux based mining OS - installation, configuration, and' +
+    // '                        optimization.' +
+    // '                    </div>' +
+    // '                </div>' +
+    // '                <div class="row" onclick="widgetLoadHelpArticles(\'windows\');">' +
+    // '                    <div class="icon windows"></div>' +
+    // '                    <div class="title">Windows mining</div>' +
+    // '                    <div class="text">Windows Node installation, configuration, and preparation.</div>' +
+    // '                </div>' +
+    // '                <div class="row" onclick="widgetLoadHelpArticles(\'asic\');">' +
+    // '                    <div class="icon asic"></div>' +
+    // '                    <div class="title">ASIC mining</div>' +
+    // '                    <div class="text">ASIC Hub installation and support.</div>' +
+    // '                </div>' +
+    // '                <div class="row" onclick="widgetLoadHelpArticles(\'mining\');">' +
+    // '                    <div class="icon mining"></div>' +
+    // '                    <div class="title">Mining in general</div>' +
+    // '                    <div class="text">Questions about mining and getting started with mining.</div>' +
+    // '                </div>' +
+    // '                <div class="row" onclick="widgetLoadHelpArticles(\'account\');">' +
+    // '                    <div class="icon account"></div>' +
+    // '                    <div class="title">Account settings</div>' +
+    // '                    <div class="text">Different account settings, configuration and dashboard customization.</div>' +
+    // '                </div>' +
+    // '                <div class="row" onclick="widgetLoadHelpArticles(\'billing\');">' +
+    // '                    <div class="icon billing"></div>' +
+    // '                    <div class="title">Billing & payments</div>' +
+    // '                    <div class="text">Everything you need to know about minerstat billing, payments, and payouts.</div>' +
+    // '                </div>' +
+    // '            </div>' +
+    // '        </div>' +
+    // '        <div class="ms_beacon_help_search_height"></div>' +
+    // '        <div class="ms_beacon_help_search">' +
+    // '            <label>Search for articles</label>' +
+    // '            <p>Try direct search for faster results.</p>' +
+    // '            <div class="input">' +
+    // '                <input id="searchStrGen" type="text">' +
+    // '                <div onclick="widgetSearch();" class="button blue">Search' +
+    // '                    <div class="icon search"></div>' +
+    // '                </div>' +
+    // '            </div>' +
+    // '        </div>' +
+    // '    </div>' +
+    // '    <div class="ms_beacon_help_articles">' +
+    // '        <div class="ms_beacon_help_quick_results_section ms_beacon_help_quick_results_section_msos">' +
+    // '            <div class="ms_beacon_navigation">' +
+    // '                <div onclick="widgetLoadHelp();" data-tooltip="Go back" class="icon back"></div>' +
+    // '                <div class="title">msOS mining</div>' +
+    // '                <div onclick="closeWidget();" data-tooltip="Close" class="icon close"></div>' +
+    // '            </div>' +
+    // '            <div class="ms_beacon_help_quick_results ms_beacon_help_quick_results_without_background">' +
+    // '                <div class="frame">' +
+    // '                    <div class="ms_beacon_questions">' +
+    // '                        <a href="/minerstat.com/help/how-to-prepare-your-linux-rig-for-mining?ref=beacon_questions"' +
+    // '                           target="_blank">Prepare Linux rig for mining</a>' +
+    // '                        <a href="/minerstat.com/help/how-can-i-set-up-msos?ref=beacon_questions" target="_blank">Setup' +
+    // '                            instructions</a>' +
+    // '                        <a href="/minerstat.com/help/where-can-i-download-config-js?ref=beacon_questions"' +
+    // '                           target="_blank">Where to download config.js?</a>' +
+    // '                        <a href="/minerstat.com/help/how-can-i-access-msos-remotely?ref=beacon_questions"' +
+    // '                           target="_blank">Remote access</a>' +
+    // '                        <a href="/minerstat.com/help/which-wifi-devices-are-supported-by-msos?ref=beacon_questions"' +
+    // '                           target="_blank">WiFi settings</a>' +
+    // '                        <a href="/minerstat.com/help/can-i-flash-bios-from-msos?ref=beacon_questions" target="_blank">BIOS' +
+    // '                            flashing</a>' +
+    // '                        <a href="/minerstat.com/help/how-to-update-drivers-on-msos?ref=beacon_questions"' +
+    // '                           target="_blank">Drivers updates</a>' +
+    // '                        <a href="/minerstat.com/help/common-msos-and-linux-commands?ref=beacon_questions"' +
+    // '                           target="_blank">Common console commands</a>' +
+    // '                        <a href="/minerstat.com/help/msos?ref=beacon_questions" target="_blank" class="bold">Browse' +
+    // '                            category →</a>' +
+    // '                    </div>' +
+    // '                </div>' +
+    // '            </div>' +
+    // '        </div>' +
+    // '        <div class="ms_beacon_help_quick_results_section ms_beacon_help_quick_results_section_windows">' +
+    // '            <div class="ms_beacon_navigation">' +
+    // '                <div onclick="widgetLoadHelp();" data-tooltip="Go back" class="icon back"></div>' +
+    // '                <div class="title">Windows mining</div>' +
+    // '                <div onclick="closeWidget();" data-tooltip="Close" class="icon close"></div>' +
+    // '            </div>' +
+    // '            <div class="ms_beacon_help_quick_results ms_beacon_help_quick_results_without_background">' +
+    // '                <div class="frame">' +
+    // '                    <div class="ms_beacon_questions">' +
+    // '                        <a href="/minerstat.com/help/how-to-prepare-your-windows-rig-for-mining?ref=beacon_questions"' +
+    // '                           target="_blank">Prepare Windows rig for mining</a>' +
+    // '                        <a href="/minerstat.com/help/how-can-i-set-up-windows-mining-software?ref=beacon_questions"' +
+    // '                           target="_blank">Setup instructions</a>' +
+    // '                        <a href="/minerstat.com/help/how-to-continue-after-windows-node-installation?ref=beacon_questions"' +
+    // '                           target="_blank">Config instructions</a>' +
+    // '                        <a href="/minerstat.com/help/miner-api-is-unreachable?ref=beacon_questions" target="_blank">Miner' +
+    // '                            API unreachable</a>' +
+    // '                        <a href="/minerstat.com/help/why-are-antivirus-detecting-mining-applications-as-harmful?ref=beacon_questions"' +
+    // '                           target="_blank">Antivirus report</a>' +
+    // '                        <a href="/minerstat.com/help/does-your-ethlargement-pill-not-work-as-expected?ref=beacon_questions"' +
+    // '                           target="_blank">ETHpill</a>' +
+    // '                        <a href="/minerstat.com/help/windows?ref=beacon_questions" target="_blank" class="bold">Browse' +
+    // '                            category →</a>' +
+    // '                    </div>' +
+    // '                </div>' +
+    // '            </div>' +
+    // '        </div>' +
+    // '        <div class="ms_beacon_help_quick_results_section ms_beacon_help_quick_results_section_asic">' +
+    // '            <div class="ms_beacon_navigation">' +
+    // '                <div onclick="widgetLoadHelp();" data-tooltip="Go back" class="icon back"></div>' +
+    // '                <div class="title">ASIC mining</div>' +
+    // '                <div onclick="closeWidget();" data-tooltip="Close" class="icon close"></div>' +
+    // '            </div>' +
+    // '            <div class="ms_beacon_help_quick_results ms_beacon_help_quick_results_without_background">' +
+    // '                <div class="frame">' +
+    // '                    <div class="ms_beacon_questions">' +
+    // '                        <a href="/minerstat.com/help/how-can-i-set-up-asic-monitoring-software?ref=beacon_questions"' +
+    // '                           target="_blank">Setup instructions</a>' +
+    // '                        <a href="/medium.com/minerstat/minerstat-mining-tutorial-17-locator-and-bulk-imports-f57b18dbd30b?ref=beacon_questions"' +
+    // '                           target="_blank">Locator</a>' +
+    // '                        <a href="/medium.com/minerstat/5-tips-for-better-asics-management-508362334f4e?ref=beacon_questions"' +
+    // '                           target="_blank">Better ASICs management</a>' +
+    // '                        <a href="/medium.com/minerstat/how-to-manage-your-mining-farm-part-1-asics-84c6fb3588b9?ref=beacon_questions"' +
+    // '                           target="_blank">How to manage ASICs mining farm</a>' +
+    // '                        <a href="/medium.com/minerstat/5-useful-bulk-management-actions-on-minerstat-dashboard-a1ef2889052d?ref=beacon_questions"' +
+    // '                           target="_blank">Useful bulk management actions</a>' +
+    // '                        <a href="/minerstat.com/help/asic?ref=beacon_questions" target="_blank" class="bold">Browse' +
+    // '                            category →</a>' +
+    // '                    </div>' +
+    // '                </div>' +
+    // '            </div>' +
+    // '        </div>' +
+    // '        <div class="ms_beacon_help_quick_results_section ms_beacon_help_quick_results_section_mining">' +
+    // '            <div class="ms_beacon_navigation">' +
+    // '                <div onclick="widgetLoadHelp();" data-tooltip="Go back" class="icon back"></div>' +
+    // '                <div class="title">Mining in general</div>' +
+    // '                <div onclick="closeWidget();" data-tooltip="Close" class="icon close"></div>' +
+    // '            </div>' +
+    // '            <div class="ms_beacon_help_quick_results ms_beacon_help_quick_results_without_background">' +
+    // '                <div class="frame">' +
+    // '                    <div class="ms_beacon_questions">' +
+    // '                        <a href="/minerstat.com/help/how-does-minerstat-calculate-estimated-rewards?ref=beacon_questions"' +
+    // '                           target="_blank">How are estimated earnings calculated?</a>' +
+    // '                        <a href="/minerstat.com/help/why-is-hashrate-on-the-pool-different-than-what-mining-client-reports?ref=beacon_questions"' +
+    // '                           target="_blank">Why is hashrate on pool different?</a>' +
+    // '                        <a href="/minerstat.com/help/cpu-mining?ref=beacon_questions" target="_blank">CPU mining</a>' +
+    // '                        <a href="/minerstat.com/help/what-is-mining-efficiency?ref=beacon_questions" target="_blank">Mining' +
+    // '                            efficiency</a>' +
+    // '                        <a href="/minerstat.com/help/what-is-power-efficiency?ref=beacon_questions" target="_blank">Power' +
+    // '                            efficiency</a>' +
+    // '                        <a href="/minerstat.com/help/how-to-secure-your-mining-environment?ref=beacon_questions"' +
+    // '                           target="_blank">Security</a>' +
+    // '                        <a href="/minerstat.com/help/differences-in-overclocking-on-linux-and-windows?ref=beacon_questions"' +
+    // '                           target="_blank">Linux vs. Windows overclocking</a>' +
+    // '                        <a href="/minerstat.com/help/mining?ref=beacon_questions" target="_blank" class="bold">Browse' +
+    // '                            category →</a>' +
+    // '                    </div>' +
+    // '                </div>' +
+    // '            </div>' +
+    // '        </div>' +
+    // '        <div class="ms_beacon_help_quick_results_section ms_beacon_help_quick_results_section_account">' +
+    // '            <div class="ms_beacon_navigation">' +
+    // '                <div onclick="widgetLoadHelp();" data-tooltip="Go back" class="icon back"></div>' +
+    // '                <div class="title">Account settings</div>' +
+    // '                <div onclick="closeWidget();" data-tooltip="Close" class="icon close"></div>' +
+    // '            </div>' +
+    // '            <div class="ms_beacon_help_quick_results ms_beacon_help_quick_results_without_background">' +
+    // '                <div class="frame">' +
+    // '                    <div class="ms_beacon_questions">' +
+    // '                        <a href="/minerstat.com/help/where-can-i-get-access-key?ref=beacon_questions" target="_blank">Access' +
+    // '                            key</a>' +
+    // '                        <a href="/minerstat.com/help/what-is-support-id-and-where-can-i-find-it?ref=beacon_questions"' +
+    // '                           target="_blank">Support ID</a>' +
+    // '                        <a href="/minerstat.com/help/how-can-i-activate-2fa?ref=beacon_questions" target="_blank">Password' +
+    // '                            / 2FA</a>' +
+    // '                        <a href="/minerstat.com/help/can-i-add-multiple-users-that-can-access-my-workers?ref=beacon_questions"' +
+    // '                           target="_blank">Add users to account</a>' +
+    // '                        <a href="/minerstat.com/help/white-label?ref=beacon_questions" target="_blank">White label</a>' +
+    // '                        <a href="/minerstat.com/help/getting-started?ref=beacon_questions" target="_blank" class="bold">Browse' +
+    // '                            category →</a>' +
+    // '                    </div>' +
+    // '                </div>' +
+    // '            </div>' +
+    // '        </div>' +
+    // '        <div class="ms_beacon_help_quick_results_section ms_beacon_help_quick_results_section_billing">' +
+    // '            <div class="ms_beacon_navigation">' +
+    // '                <div onclick="widgetLoadHelp();" data-tooltip="Go back" class="icon back"></div>' +
+    // '                <div class="title">Billing & payments</div>' +
+    // '                <div onclick="closeWidget();" data-tooltip="Close" class="icon close"></div>' +
+    // '            </div>' +
+    // '            <div class="ms_beacon_help_quick_results ms_beacon_help_quick_results_without_background">' +
+    // '                <div class="frame">' +
+    // '                    <div class="ms_beacon_questions">' +
+    // '                        <a href="/minerstat.com/help/when-do-i-get-paid?ref=beacon_questions" target="_blank">When do I' +
+    // '                            get paid?</a>' +
+    // '                        <a href="/minerstat.com/help/how-does-minerstat-calculate-estimated-rewards?ref=beacon_questions"' +
+    // '                           target="_blank">How are estimated earnings calculated?</a>' +
+    // '                        <a href="/minerstat.com/help/when-will-my-order-be-processed?ref=beacon_questions"' +
+    // '                           target="_blank">When will my order be processed?</a>' +
+    // '                        <a href="/minerstat.com/help/does-minerstat-charge-any-fees?ref=beacon_questions"' +
+    // '                           target="_blank">Does minerstat charge any fees?</a>' +
+    // '                        <a href="/minerstat.com/help/how-long-can-i-use-the-free-account?ref=beacon_questions"' +
+    // '                           target="_blank">How long can I use free account?</a>' +
+    // '                        <a href="/minerstat.com/help/are-there-any-discounts-available?ref=beacon_questions"' +
+    // '                           target="_blank">Are there any discounts available?</a>' +
+    // '                        <a href="/minerstat.com/help/what-is-minerstat-add-on?ref=beacon_questions" target="_blank">What' +
+    // '                            is minerstat+ add-on?</a>' +
+    // '                        <a href="/minerstat.com/help/do-you-offer-refunds?ref=beacon_questions"' +
+    // '                           target="_blank">Refunds</a>' +
+    // '                        <a href="/minerstat.com/help/account-management-billing?ref=beacon_questions" target="_blank"' +
+    // '                           class="bold">Browse category →</a>' +
+    // '                    </div>' +
+    // '                </div>' +
+    // '            </div>' +
+    // '        </div>' +
+    // '        <div class="ms_beacon_help_search_height"></div>' +
+    // '        <div class="ms_beacon_help_search">' +
+    // '            <label>Search for articles</label>' +
+    // '            <p>Try direct search for faster results.</p>' +
+    // '            <div class="input">' +
+    // '                <input id="searchStrCat" type="text">' +
+    // '                <div onclick="widgetSearch();" class="button blue">Search' +
+    // '                    <div class="icon search"></div>' +
+    // '                </div>' +
+    // '            </div>' +
+    // '        </div>' +
+    // '    </div>' +
+    // '    <div class="ms_beacon_footer_height"></div>' +
+    // '    <div class="ms_beacon_footer">' +
+    // '        <a target="_blank" href="/minerstat.com/discord?ref=beacon_menu" class="ms_beacon_link">Discord</a> &middot; <a' +
+    // '            target="_blank" href="/twitter.com/minerstatcom" class="ms_beacon_link">Twitter</a> &middot; <a' +
+    // '            href="/www.facebook.com/minerstat/" target="_blank" class="ms_beacon_link">Facebook</a>' +
+    // '    </div>' +
+    // '</div>'
+$('body').append(_gaXfootStr)
+
+$('.user').click(function () {
+    $('.user_menu').toggle();
+});
+$(document).mousedown(function (e) {
+    var container = $(".user_menu");
+    var containerParent = $(".user");
+    if (!container.is(e.target) && container.has(e.target).length === 0 && !containerParent.is(e.target) && containerParent.has(e.target).length === 0) {
+        container.hide();
+    }
+});
+
+if ($('.identity .id').html().indexOf('4cc355k3y') >= 0) {
+    $('a[title]').each(function (idx, anchor) {
+        var $anchor = $(anchor);
+        $anchor.attr('data-title', $anchor.attr('title')).removeAttr('title');
+    });
+}
+
+
+
+function getUnitFromCrypto(cryptoName) {
+    if (cryptoName.indexOf(' (') !== -1) {
+        var inBrackets = cryptoName.split(' (');
+        if (inBrackets[1].length < 6 && inBrackets[1] != 'mtp)') {
+            return inBrackets[1].replace(')', '').toUpperCase();
+        }
+        if (cryptoName.indexOf('MO') !== -1) {
+            return 'XMR';
+        }
+        return 'BTC';
+    }
+    return cryptoName;
+}
+
+var ps_beacon_help = [];
+var ps_beacon_help_count = 0;
+$('.ms_beacon_help_quick_results .frame').each(function () {
+    ps_beacon_help[ps_beacon_help_count] = new PerfectScrollbar($(this)[0], {
+        wheelSpeed: 0.4,
+        wheelPropagation: false,
+        suppressScrollX: true
+    });
+    ps_beacon_help_count++;
+});
+var widgetStatus = 0;
+
+function setClear() {
+    localStorage.setItem('site_card_item','')
+}
+function toggleWidget() {
+    if (widgetStatus == 0) {
+        $('.ms_beacon_popup').removeClass('hide');
+        $('.ms_beacon_popup').addClass('show');
+        widgetStatus = 1;
+    } else {
+        $('.ms_beacon_popup').addClass('hide');
+        $('.ms_beacon_popup').removeClass('show');
+        widgetStatus = 0;
+    }
+}
+
+function widgetLoadMenu() {
+    var oldHeight = $('.ms_beacon_popup').height();
+    $('.ms_beacon_popup').removeClass('highlight');
+    $('.ms_beacon_help').hide();
+    $('.ms_beacon_help_articles').hide();
+    $('.ms_beacon_support_offline').hide();
+    $('#beaconMessageFeedback').removeClass('green').removeClass('red').html('').hide();
+    $('#beaconMessageFeedback').parent().children('.button').removeClass('disabled');
+    $('.ms_beacon_menu').show();
+    var newHeight = $('.ms_beacon_popup').height();
+    $('.ms_beacon_popup').height(oldHeight);
+    $('.ms_beacon_popup').animate({height: newHeight}, 'fast', function () {
+        $('.ms_beacon_popup').height('auto');
+    });
+}
+
+function widgetLoadHelp() {
+    var oldHeight = $('.ms_beacon_popup').height();
+    $('.ms_beacon_popup').addClass('highlight');
+    $('.ms_beacon_menu').hide();
+    $('.ms_beacon_help_articles').hide();
+    $('.ms_beacon_support_offline').hide();
+    $('.ms_beacon_help').show();
+    if (ps_beacon_help_count != 0) {
+        for (var beacon_i = 0; beacon_i < ps_beacon_help_count; beacon_i++) {
+            ps_beacon_help[beacon_i].update();
+        }
+    }
+    var newHeight = $('.ms_beacon_popup').height();
+    $('.ms_beacon_popup').height(oldHeight);
+    $('.ms_beacon_popup').animate({height: newHeight}, 'fast', function () {
+        $('.ms_beacon_popup').height('auto');
+    });
+    if (newHeight < 700) {
+        $('.ms_beacon_help_quick_results .frame').css("max-height", (newHeight - 200) + "px");
+        if (ps_beacon_help_count != 0) {
+            for (var beacon_i = 0; beacon_i < ps_beacon_help_count; beacon_i++) {
+                ps_beacon_help[beacon_i].update();
+            }
+        }
+    }
+}
+
+function widgetLoadHelpArticles(type) {
+    var oldHeight = $('.ms_beacon_popup').height();
+    $('.ms_beacon_popup').addClass('highlight');
+    $('.ms_beacon_menu').hide();
+    $('.ms_beacon_help').hide();
+    $('.ms_beacon_support_offline').hide();
+    $('.ms_beacon_help_articles').show();
+    $('.ms_beacon_help_quick_results_section').hide();
+    $('.ms_beacon_help_quick_results_section_' + type).show();
+    var newHeight = $('.ms_beacon_popup').height();
+    $('.ms_beacon_popup').height(oldHeight);
+    $('.ms_beacon_popup').animate({height: newHeight}, 'fast', function () {
+        $('.ms_beacon_popup').height('auto');
+    });
+}
+
+var crispLoaded = 0;
+var offlineMessageSent = 0;
+window.$crisp = [];
+window.CRISP_WEBSITE_ID = "01d71bd2-d717-4cd3-a840-c594df39edbd";
+
+function widgetLoadSupportChatCrisp(userId, userEmail, thisEl) {
+    if (!$(thisEl).hasClass('disabled')) {
+        $(thisEl).addClass('disabled');
+        $(thisEl).children('.title').append('<div class="loader"></div>');
+        if (crispLoaded == 0) {
+            (function () {
+                d = document;
+                s = d.createElement("script");
+                s.src = "/client.crisp.chat/l.js";
+                s.async = 1;
+                d.getElementsByTagName("head")[0].appendChild(s);
+            })();
+            window.CRISP_READY_TRIGGER = function () {
+                $crisp.push(["set", "user:nickname", userId]);
+                $crisp.push(["set", "user:email", userEmail]);
+                $crisp.push(["on", "chat:closed", widgetLoadSupportChatCrispClose]);
+                $crisp.push(["on", "chat:hidden", widgetLoadSupportChatCrispClose]);
+                $crisp.push(["on", "message:sent", widgetLoadSupportChatCrispMessageSent])
+                if ($crisp.is("website:available")) {
+                    $('.ms_beacon_popup').addClass('hide');
+                    $('.ms_beacon_popup').removeClass('show');
+                    $crisp.push(["do", "chat:open"]);
+                    $crisp.push(["do", "chat:show"]);
+                    $(thisEl).children('.title').children('.loader').remove();
+                    $(thisEl).removeClass('disabled');
+                    $('.ms_beacon').hide();
+                    widgetStatus = 0;
+                } else {
+                    $(thisEl).children('.title').children('.loader').remove();
+                    $(thisEl).removeClass('disabled');
+                    $crisp.push(["do", "chat:close"]);
+                    $crisp.push(["do", "chat:hide"]);
+                    widgetLoadSupportOffline();
+                }
+                crispLoaded = 1;
+            };
+        } else {
+            if ($crisp.is("website:available")) {
+                $crisp.push(["do", "chat:open"]);
+                $crisp.push(["do", "chat:show"]);
+                $(thisEl).children('.title').children('.loader').remove();
+                $(thisEl).removeClass('disabled');
+                $('.ms_beacon').hide();
+            } else {
+                $(thisEl).children('.title').children('.loader').remove();
+                $(thisEl).removeClass('disabled');
+                $crisp.push(["do", "chat:close"]);
+                $crisp.push(["do", "chat:hide"]);
+                widgetLoadSupportOffline();
+            }
+        }
+    }
+}
+
+function widgetLoadSupportChatCrispClose() {
+    if (typeof $crisp != 'undefined') {
+        $crisp.push(["do", "chat:close"]);
+        $crisp.push(["do", "chat:hide"]);
+        $('.ms_beacon').show();
+    }
+}
+
+function widgetLoadSupportChatCrispMessageSent() {
+    if (typeof $crisp != 'undefined' && offlineMessageSent == 1) {
+        $crisp.push(["do", "chat:close"]);
+        $crisp.push(["do", "chat:hide"]);
+        $('.ms_beacon').show();
+    }
+}
+
+function widgetLoadSupportOffline() {
+    var oldHeight = $('.ms_beacon_popup').height();
+    $('.ms_beacon_popup').addClass('highlight');
+    $('.ms_beacon_menu').hide();
+    $('.ms_beacon_help').hide();
+    $('.ms_beacon_help_articles').hide();
+    $('.ms_beacon_support_offline').show();
+    var newHeight = $('.ms_beacon_popup').height();
+    $('.ms_beacon_popup').height(oldHeight);
+    $('.ms_beacon_popup').animate({height: newHeight}, 'fast', function () {
+        $('.ms_beacon_popup').height('auto');
+    });
+}
+
+function widgetLoadSupportChatCrispSendMessage(thisEl) {
+    $('#beaconMessageFeedback').removeClass('green').removeClass('red').html('').hide();
+    if (!$(thisEl).hasClass('disabled')) {
+        var messageContent = $('textarea#beaconMessage').val();
+        if (messageContent != '') {
+            if (typeof $crisp != 'undefined') {
+                offlineMessageSent = 1;
+                $crisp.push(["do", "message:send", ['text', messageContent]]);
+                $('#beaconMessageFeedback').addClass('green').html('Thank you, your message was sent.').show();
+                $(thisEl).addClass('disabled');
+            } else {
+                $('#beaconMessageFeedback').addClass('red').html('Something went wrong.').show();
+            }
+        } else {
+            $('#beaconMessageFeedback').addClass('red').html('Message too short.').show();
+        }
+    }
+}
+
+function closeWidget() {
+    $('.ms_beacon_popup').addClass('hide');
+    $('.ms_beacon_popup').removeClass('show');
+    widgetStatus = 0;
+}
+
+function widgetSearch() {
+    var searchStrGen = $('#searchStrGen').val();
+    if (searchStrGen != '') {
+        searchStrGen = searchStrGen.replaceAll(' ', '+');
+        window.open('/minerstat.com/help/search?q=' + searchStrGen + '&ref=beacon_search', '_blank');
+    }
+    var searchStrCat = $('#searchStrCat').val();
+    if (searchStrCat != '') {
+        searchStrCat = searchStrCat.replaceAll(' ', '+');
+        window.open('/minerstat.com/help/search?q=' + searchStrCat + '&ref=beacon_search', '_blank');
+    }
+}
+
+$('#searchStrGen').on('keypress', function (e) {
+    if (e.which === 13) {
+        widgetSearch();
+    }
+});
+$('#searchStrCat').on('keypress', function (e) {
+    if (e.which === 13) {
+        widgetSearch();
+    }
+});
+
+allLanguage()
+
+function linkWinHref(a){
+    window.location.replace(a)
+}
+
+
+//转换上下行数据
+function reDataFlow(num,unit,type) {
+    if(type==undefined){
+        if(num<1024){
+            return num+' '+unit
+        }else {
+            let s=(num/1024).toFixed(2)
+            let xm=upFlowUnit(unit)
+            if(s>1024){
+                return reDataFlow(s,xm)
+            }else {
+                return s+' '+xm
+            }
+        }
+    }else{
+        if(num<1024){
+            return num+' '+unit
+        }else {
+            let s=(num/1024).toFixed(2)
+            let xm=upMemUnit(unit)
+            if(s>1024){
+                return reDataFlow(s,xm,1)
+            }else {
+                return s+' '+xm
+            }
+        }
+    }
+
+}
+//提升流量单位
+function upFlowUnit(unit) {
+    switch (unit) {
+        case 'B/s':
+            return 'KB/s'
+        case 'KB/s':
+            return 'MB/s'
+        case 'MB/s':
+            return 'GB/s'
+    }
+}
+//内存
+function upMemUnit(unit) {
+    switch (unit) {
+        case 'B':
+            return 'K'
+        case 'K':
+            return 'M'
+        case 'M':
+            return 'G'
+        case 'G':
+            return 'T'
+    }
+}
+//设置弹出层
+function setMsgTc(type,msg,time) {
+    let id='msg_'+new Date().getTime()
+    let str=''
+    switch (type) {
+        case 'err':
+            str='<div class="msg_info_tiltle err" id="'+id+'">'+msg+'</div>'
+            break
+        case 'suc':
+            str='<div class="msg_info_tiltle suc" id="'+id+'">'+msg+'</div>'
+            break
+        case 'war':
+            str='<div class="msg_info_tiltle war" id="'+id+'">'+msg+'</div>'
+            break
+    }
+    if(document.getElementsByClassName('msg_info_box_tiex').length==0){
+        $('body').append('<div class="msg_info_box_tiex">'+str+'</div>')
+    }else {
+        $('.msg_info_box_tiex').append(str)
+    }
+    setTimeout(function () {
+        $("#"+id).fadeOut(1000);
+        setTimeout(function () {
+            document.getElementById(id).remove()
+        },1100)
+    },time-1000)
+}
