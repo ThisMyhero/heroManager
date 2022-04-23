@@ -1,0 +1,44 @@
+# 格式:访问等级 文件路径
+#   或:文件路径
+# 访问等级: -1.所有人 0.观察者及以上 1.普通用户及以上 99.超级管理员
+# 文件路径: 相对于WEB目录的路径,如果没有后缀则默认为.html
+#
+1 /worker-statistics
+999 /workers
+0 /worker
+1 /logs
+1 /global-statistics
+1 /export
+1 /diagnostic
+1 /control-room
+999 /config-templates
+1 /config
+1 /clocktune
+1 /address-editor
+1 /clocktune/new
+1 /config-templates/new
+1 /config-templates/new2
+1 /config/config
+1 /group-statistics/all
+1 /group-statistics/group
+1 /site
+1 /msg
+1 /keyUser
+1 /triggers
+1 /site-setting
+999 /site-config-tow
+1 /site-config-templates
+1 /email-templates
+1 /auto-templates
+1 /workerOffLine
+1 /alerts
+1 /site-config-offline
+1 /site-echarts
+1 /global-statistics-info
+0 /site-control
+99 /server-config
+99 /proxy-config
+99 /proxy-tunnel
+99 /server-log
+1 /ObserverUser
+1 /site-config-tow-cl

@@ -1,0 +1,282 @@
+function removeConf(name, wid) {
+    $('#overclock_delete .title').html(_mx('Delete') + ' ' + name + '?');
+    $('.popupbackground').fadeToggle();
+    $('#overclock_delete').fadeToggle('fast');
+    $('#overclock_delete .red').attr('data-profile', wid);
+}
+
+$('#overclock_delete .red').on('click', function () {
+    if ($(this).attr('data-profile') == '' || $(this).hasClass('disabled')) {
+        return false;
+    }
+    $('#overclock_delete .outlined_button, #overclock_delete .red').addClass('disabled');
+    $('.checkmark').hide();
+    $('.circle-loader').removeClass('load-complete');
+    $('.circle-loader, .message_err, .message_suc').hide();
+    $('.circle-loader').show();
+    var nonce = $('#nonce').val();
+    var id = $(this).attr('data-profile');
+    delConfigTemp({'id':id})
+    // $.post(window.location.href, {remove: id, nonce: nonce}, function (response) {
+    //     data = response;
+    //     if (response == '1') {
+    //         if ($('table tr:visible').length == 2) {
+    //             window.location.replace("/config-templates");
+    //             return false;
+    //         }
+    //         $('.circle-loader').addClass('load-complete');
+    //         $('.notification_row').addClass('finished');
+    //         $('.checkmark').show();
+    //         $('.message_suc').show();
+    //         setTimeout(function () {
+    //             $('#overclock_delete').fadeOut('fast');
+    //             $('.popupbackground').fadeOut('fast');
+    //             setTimeout(function () {
+    //                 $('#overclock_delete .outlined_button, #overclock_delete .red').removeClass('disabled');
+    //                 $('.checkmark').hide();
+    //                 $('.circle-loader').removeClass('load-complete');
+    //                 $('.circle-loader, .message_err, .message_suc').hide();
+    //             }, 500);
+    //         }, 800);
+    //         $('#profile' + id).fadeOut('fast');
+    //     } else {
+    //         $('.circle-loader').hide();
+    //         $('.notification_row').addClass('finished');
+    //         $('#overclock_delete .outlined_button, #overclock_delete .red').removeClass('disabled');
+    //         $('.message_err').show();
+    //     }
+    //     setTimeout(function () {
+    //         $('#overclock_delete .outlined_button, #overclock_delete .red').removeClass('disabled');
+    //     }, 1100);
+    // });
+});
+$('.close,.close_popup').click(function () {
+    $('.popupbackground').fadeOut('fast');
+    $('.popup').fadeOut('fast');
+});
+
+function exportProfiles(type) {
+    if (type == "all") {
+        var blob = new Blob([JSON.stringify(jsonProfiles)], {type: "text/json;charset=utf-8"});
+        saveAs(blob, "setting-templates.json");
+    } else {
+        $.each(jsonProfiles,function (i,item) {
+            if(item.id===Number(type)){
+                var blob = new Blob(['['+JSON.stringify(item)+']'], {type: "text/json;charset=utf-8"});
+                saveAs(blob, "setting-templates-"+item.name+".json");
+            }
+        })
+        // jsonProfilesObj = jQuery.parseJSON(jsonProfiles);
+        // var c = 1;
+        // $.each(jsonProfilesObj, function (key, val) {
+        //     if (type == c) {
+        //         type = val['name'].replace(' ', '-');
+        //         var blob = new Blob([JSON.stringify(val)], {type: "text/json;charset=utf-8"});
+        //         saveAs(blob, "minerstat-config-templates-" + type + ".json");
+        //     }
+        //     c++;
+        // });
+    }
+}
+
+(function () {
+    // function onChange(event) {
+    //     var reader = new FileReader();
+    //     reader.onload = onReaderLoad;
+    //     reader.readAsText(event.target.files[0]);
+    // }
+    //
+    // function onReaderLoad(event) {
+    //     $.post(window.location.href, {import: event.target.result}, function (response) {
+    //         location.reload();
+    //     });
+    // }
+    //
+    // document.getElementById('import').addEventListener('change', onChange);
+}());
+$('#search_configs').keyup(function () {
+    var searchQuery = $(this).val();
+    if (searchQuery == '') {
+        $('.box_table tr').show();
+    } else {
+        searchQuery = searchQuery.toLowerCase();
+        $('.box_table tr').each(function () {
+            if (typeof $(this).attr('data-keywords') != 'undefined') {
+                var profileStr = $(this).attr('data-keywords');
+                if (profileStr != '') {
+                    profileStr = profileStr.toLowerCase();
+                    if (profileStr.indexOf(searchQuery) != -1) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                }
+            }
+        });
+    }
+});
+
+window.onload=function () {
+    getConfigTemp()
+    $('#import').on('change',function(){
+        let files = $(this)[0].files[0];
+        let reader = new FileReader();
+        reader.readAsText(files);
+        reader.onload=function(e)
+        {
+            $.ajax({
+                url: '/WorkerConfig?a=import',
+                type: 'POST',
+                data: {context:reader.result},
+                dataType: 'json',
+                success:function (res) {
+                    $('#import').val('')
+                    alert('成功导入'+res.count+'条');
+                    getConfigTemp()
+                }
+                ,error:function (res) {
+                    $('#import').val('')
+                    alert('错误');
+                    getConfigTemp()
+                }
+            });
+        }
+    })
+}
+
+
+//查询模板列表
+function getConfigTemp() {
+    $.ajax({
+        url:'/Query?WORKERCONFIG',
+        dataType:'json',
+        type:'post',
+        success:function (res) {
+            jsonProfiles=res.WORKERCONFIG
+            setConfigTempDom(res.WORKERCONFIG)
+
+        },
+        error:function (res) {
+
+        }
+    })
+}
+
+//删除模板
+function delConfigTemp(data) {
+    $.ajax({
+        url:'/WorkerConfig?a=DELETE',
+        dataType:'json',
+        data:data,
+        type:'post',
+        success:function (res) {
+            if(res.code==0){
+                getConfigTemp()
+                $('#overclock_delete .outlined_button, #overclock_delete .red').removeClass('disabled');
+                $('.checkmark').hide();
+                $('.circle-loader').removeClass('load-complete');
+                $('.circle-loader, .message_err, .message_suc').hide();
+                $('#overclock_delete').hide()
+                $('.popupbackground').hide()
+            }
+        },
+        error:function (res) {
+
+        }
+    })
+}
+
+//设置列表dom节点
+function setConfigTempDom(data) {
+    let str='<tr>\n' +
+        '<th>'+_mx('TEMPLATE NAME')+'</th>' +
+            // '<th class="rmv2">MINING CLIENT</th>' +
+            // '<th class="rmv2">Overclocking Templates</th>' +
+            '<th class="rmv2">'+_mx('Actions')+'</th>' +
+        '</tr>'
+    $.each(data,function (index,item) {
+        str+='<tr id="mb'+item.id+'" data-my-id="'+item.id+'" data-keywords="'+item.name+',">' +
+                '<td>'+item.name+'' +
+                '<div class="shw2" style="border: 0;padding-bottom: 0;margin-top: 0;margin-bottom: 0;padding-top: 0">' +
+                // '<div class="row"><b>MINING CLIENT:</b> '+item.poolName+'</div>' +
+                // '<div class="row"><b>Overclocking Templates:</b> '+item.overClockingName+'</div>' +
+                '<div class="actions">' +
+                '<div onclick="removeConf(\''+item.name+'\','+item.id+');" data-tooltip="'+_mx('Delete')+'" class="icon bin"></div>' +
+                '<div onclick="setViewLog('+item.id+');" data-tooltip="'+_mx('View log')+'" class="my_view_log_icon"></div>' +
+                '<a href="./site-config-tow-cl?id='+item.id+'&s=copy" data-tooltip="'+_mx('Copy')+'"' +
+                'class="icon duplicate"></a><a href="./site-config-tow-cl?id='+item.id+'&s=edit" data-tooltip="'+_mx('Edit')+'"' +
+                'class="icon edit"></a>' +
+                '<div onclick="exportProfiles('+item.id+');" data-tooltip="'+_mx('Export')+'" class="icon export"></div></div>' +
+                '</div>' +
+                '</td>' +
+                // '<td class="rmv2">'+item.poolName+'</td>' +
+                // '<td class="rmv2">'+item.overClockingName+'</td>' +
+                '<td class="rmv2">' +
+                '<div onclick="removeConf(\''+item.name+'\','+item.id+');" data-tooltip="'+_mx('Delete')+'" class="icon bin"></div>' +
+                '<div onclick="setViewLog('+item.id+');" data-tooltip="'+_mx('View log')+'" class="my_view_log_icon"></div>' +
+                '<a href="./site-config-tow-cl?id='+item.id+'&s=copy" data-tooltip="'+_mx('Copy')+'" class="icon duplicate"></a>' +
+                '<a href="./site-config-tow-cl?id='+item.id+'&s=edit" data-tooltip="'+_mx('Edit')+'" class="icon edit"></a>' +
+            '<div onclick="exportProfiles('+item.id+');" data-tooltip="'+_mx('Export')+'" class="icon export"></div>' +
+                '</td>' +
+                '</tr>'
+    })
+    $('#mytable').html(str)
+}
+
+function closePre() {
+    $('#view_log').hide()
+    $('.view_log_pre').html('')
+    $('.popupbackground').hide()
+}
+//日志窗口
+function setViewLog(id) {
+    $('#view_log').show()
+    $('.popupbackground').show()
+    $.ajax({
+        url:`/walletLog`,
+        type:'post',
+        data:{
+            type:3,
+            tid:id
+        },
+        dataType:'json',
+        success:function (res) {
+            if(res.data.length==0){
+                $('.view_log_pre').html('无日志')
+            }else {
+
+                let str=''
+                $.each(res.data,function (i,it) {
+                    let oldX=JSON.parse(it.oldValue).client.updateClient.txtValue
+                    let newX=JSON.parse(it.newValue).client.updateClient.txtValue
+                    if(oldX!=newX){
+                        str+='['+getData(it.time,2)+'] IP:'+it.ip+' User:'+it.user+' <br>Old:<span class="view_log_2">'+oldX+'</span><br>New:<span class="view_log_1">'+newX+'</span> \n'
+                    }
+                 })
+                if(str==''){
+                    str='无日志'
+                }
+                $('.view_log_pre').html(str)
+                $('.view_log_pre')[0].scrollTop= $('.view_log_pre')[0].scrollHeight
+            }
+        }
+    })
+}
+function getData(timestamp,type) {
+    var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+    var Y = date.getFullYear() + '-';
+    var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+    var D = date.getDate();
+    var h = date.getHours();
+    var m = date.getMinutes();
+    var s = date.getSeconds();
+    if(type==1){
+        h<10?h='0'+h:h
+        m<10?m='0'+m:m
+        return h+':'+m;
+    }else {
+        h<10?h='0'+h:h
+        m<10?m='0'+m:m
+        return Y+M+D+' '+h+':'+m;
+    }
+}

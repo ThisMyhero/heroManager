@@ -1,0 +1,42 @@
+.content.config_templates .filter_row .button.white {
+    background: rgba(255, 255, 255, .1);
+    box-shadow: none
+}
+.my_view_log_icon{
+
+    width: 18px;
+    height: 18px;
+    background: url(/images/sprite_icons_button_dark.svg) no-repeat;
+    background-size: 54px 900px;
+    margin: 5px 6px 5px 0;
+    float: right;
+    cursor: pointer;
+    background-position: 0px -90px;
+}
+
+.my_view_log_icon:hover{
+    background-position: -18px -90px;
+}
+.view_log_pre{
+    width: 100%;
+    height: 600px;
+    background-color: #000;
+    font-family: 'Courier New' !important;
+    overflow: auto;color: #fff;
+    padding: 5px;line-height: 16px;
+    font-size: 14px
+}
+.view_log_1{
+    color: #ffbd4d;
+}
+.view_log_2{
+    color: #0ec9ff;
+}
+.view_log_3{
+    color: #e82929;
+}
+@media (max-width: 1040px) {
+    .content.config_templates .box_table table tr .shw2 {
+        border-color: rgba(255, 255, 255, .1)
+    }
+}
