@@ -1,0 +1,643 @@
+var LogoFile=undefined
+var infoItx=undefined
+var dataServerObj={}
+var serverUpdataState=false
+fileInputEvnt()
+function fileInputEvnt(){
+    $('#file_input').on('change',function (e) {
+        if(e.target.files[0].size>(200*1024)){
+            alert(_mx('The file size should not exceed 200kb'))
+            let obj = document.getElementById('file_input');
+            obj.outerHTML=obj.outerHTML;
+            obj.value=''
+            // $('#ermsg').css('color','#ff4334')
+            fileInputEvnt()
+        }else {
+            let img = window.URL.createObjectURL(e.target.files[0])
+            LogoFile=e.target.files[0]
+            $('#log_img').attr('src',img)
+            // $('#ermsg').css('color','rgba(255,255,255,0.6)')
+        }
+        // debugger
+    })
+}
+getFormInfo(1)
+//获取信息
+function getFormInfo(type) {
+    $.ajax({
+        url:'/QUERY?SERVERSTATUS,WEBINFO',
+        type:'get',
+        dataType:'json',
+        success:function (res) {
+            dataServerObj=res.SERVERSTATUS
+            serverUpdataState=res.SERVERSTATUS.status.updating
+            if(serverUpdataState){
+                $('#sever_ver_save .updata_xk').html(_mx('Updating..'))
+            }else {
+                $('#sever_ver_save .updata_xk').html(_mx('Update server'))
+            }
+            if(res.SERVERSTATUS.info.need_restart!=0){
+                $('#msg_info').html(_mx('The server configuration has been modified and needs to restart the server to take effect'))
+            }else {
+                $('#msg_info').html('')
+            }
+            setFormData(res.SERVERSTATUS)
+            $('#sex_ver_old').val(res.SERVERSTATUS.info.fileVer)
+            setWinLabel(res.SERVERSTATUS.network)
+            if(type==1){
+                let webname=_mx('AMining')
+                if(res.WEBINFO.webName.length>0){
+                    webname=res.WEBINFO.webName
+                }
+                $('#zzj_key').val(res.SERVERSTATUS.info.serverkey)
+                if(res.SERVERSTATUS.info.use_middleware==1){
+                    $('#zzj_state').addClass('selected')
+                }else {
+                    $('#zzj_state').removeClass('selected')
+                }
+                $('#web_name').val(webname)
+                $('#udp_p').val(res.SERVERSTATUS.info.port_udp)
+                $('#https_p').val(res.SERVERSTATUS.info.port_https)
+                $('#pool_p').val(res.SERVERSTATUS.info.port_pa_ssl)
+                $('#pool_p_nossl').val(res.SERVERSTATUS.info.port_pa)
+                infoItx=setInterval('getFormInfo()',1000)
+            }
+        }
+    })
+}
+
+$('#zzj_state').parent().on('click',function () {
+    if($('#zzj_state').hasClass('selected')){
+        $('#zzj_state').removeClass('selected')
+    }else {
+        $('#zzj_state').addClass('selected')
+    }
+})
+
+//设置中间件
+function setKyeValue() {
+    $.ajax({
+        url:'/server',
+        dataType:'json',
+        type:'post',
+        data:{
+            a:'set',
+            use_middleware:$('#zzj_state').hasClass('selected')?1:0
+        },
+        success:function (res) {
+            if(res.code===0){
+                setMsgTc('suc',res.msg,2000)
+            }
+            // window.location.reload()
+        }
+    })
+}
+
+var flow_sort_type='up'
+var sort_state='1' //1 当前降序 2当前升序 3当前不排序
+//流量排序
+function sortFlow (data) {
+    if(sort_state!='3'){
+        data.sort(function(row1,row2){
+            switch (flow_sort_type) {
+                case "url":
+                    if(sort_state=='2'){
+                        var a=row1.url
+                        var b=row2.url
+                    }else if(sort_state=='1'){
+                        var b=row1.url
+                        var a=row2.url
+                    }
+                    break
+                case "up":
+                    if(sort_state=='2'){
+                        var a=row1.up
+                        var b=row2.up
+                    }else if(sort_state=='1'){
+                        var b=row1.up
+                        var a=row2.up
+                    }
+
+                    break
+                case "down":
+                    if(sort_state=='2'){
+                        var a=row1.down
+                        var b=row2.down
+                    }else if(sort_state=='1'){
+                        var b=row1.down
+                        var a=row2.down
+                    }
+
+                    break
+                case "count":
+                    if(sort_state=='2'){
+                        var a=row1.count
+                        var b=row2.count
+                    }else if(sort_state=='1'){
+                        var b=row1.count
+                        var a=row2.count
+                    }
+                    break
+            }
+            if (a > b) return 1;
+            else if (a < b) return -1;
+            return 0;
+        })
+    }
+    let str='<tr>'
+    if(flow_sort_type=='url'&&sort_state=='1'){
+        str+='<th onclick="flowSort(\'url2\')"><div class="order_icon desc" id="sort_url" data-type="url"></div>Url</th>'
+    }else if(flow_sort_type=='url'&&sort_state=='2'){
+        str+='<th onclick="flowSort(\'url3\')"><div class="order_icon asc" id="sort_url" data-type="url"></div>Url</th>'
+    }else {
+        str+='<th onclick="flowSort(\'url1\')"><div class="order_icon" id="sort_url" data-type="url"></div>Url</th>'
+    }
+
+    if(flow_sort_type=='up'&&sort_state=='1'){
+        str+='<th onclick="flowSort(\'up2\')"><div class="order_icon desc"  id="sort_up" data-type="up"></div>up</th>'
+    }else if(flow_sort_type=='up'&&sort_state=='2'){
+        str+='<th onclick="flowSort(\'up3\')" ><div class="order_icon asc" id="sort_up" data-type="up"></div>up</th>'
+    }else {
+        str+='<th onclick="flowSort(\'up1\')"><div class="order_icon" id="sort_up" data-type="up"></div>up</th>'
+    }
+
+    if(flow_sort_type=='down'&&sort_state=='1'){
+        str+='<th onclick="flowSort(\'down2\')" ><div class="order_icon desc" id="sort_down" data-type="up"></div>down</th>'
+    }else if(flow_sort_type=='down'&&sort_state=='2'){
+        str+='<th onclick="flowSort(\'down3\')" ><div class="order_icon asc" id="sort_down" data-type="up"></div>down</th>'
+    }else {
+        str+='<th onclick="flowSort(\'down1\')" ><div class="order_icon" id="sort_down" data-type="up"></div>down</th>'
+    }
+
+    if(flow_sort_type=='count'&&sort_state=='1'){
+        str+='<th onclick="flowSort(\'count2\')"><div class="order_icon desc"  id="sort_count" data-type="count"></div>count</th>'
+    }else if(flow_sort_type=='count'&&sort_state=='2'){
+        str+='<th onclick="flowSort(\'count3\')"><div class="order_icon asc" id="sort_count" data-type="count"></div>count</th>'
+    }else {
+        str+='<th onclick="flowSort(\'count1\')"><div class="order_icon"  id="sort_count" data-type="count"></div>count</th>'
+    }
+    str+='</tr>\n'
+    $.each(data,function (i,it) {
+        let upx=reDataFlow(it.up,'B',1)
+        let downx=reDataFlow(it.down,'B',1)
+        upx.split(' ')[1]!='B'?upx=upx+'b':''
+        downx.split(' ')[1]!='B'?downx=downx+'b':''
+        str+='<tr>' +
+            '<td title="'+it.url+'">'+(it.url.length>30?it.url.substring(0,10)+'...'+it.url.substring(it.url.length-10,it.url.length):it.url)+'</td>' +
+            '<td>'+upx+'</td>' +
+            '<td>'+downx+'</td>' +
+            '<td>'+it.count+'</td>' +
+            '</tr>'
+    })
+    $('#up_table').html(str)
+}
+//设置筛选条件
+function flowSort(type) {
+    $('#sort_url').removeClass('desc asc')
+    $('#sort_up').removeClass('desc asc')
+    $('#sort_down').removeClass('desc asc')
+    $('#sort_count').removeClass('desc asc')
+   switch (type) {
+       case 'url1':
+           flow_sort_type='url'
+           sort_state='1'
+           $('#sort_url').parent().attr('onclik','flowSort(\'url2\')')
+           $('#sort_url').addClass('desc')
+           break
+       case 'url2':
+           flow_sort_type='url'
+           sort_state='2'
+           $('#sort_url').parent().attr('onclik','flowSort(\'url3\')')
+           $('#sort_url').addClass('asc')
+           break
+       case 'url3':
+           flow_sort_type='url'
+           sort_state='3'
+           $('#sort_url').parent().attr('onclik','flowSort(\'url1\')')
+           break
+       case 'up1':
+           flow_sort_type='up'
+           sort_state='1'
+           $('#sort_up').parent().attr('onclik','flowSort(\'up2\')')
+           $('#sort_up').addClass('desc')
+           break
+       case 'up2':
+           flow_sort_type='up'
+           sort_state='2'
+           $('#sort_up').parent().attr('onclik','flowSort(\'up3\')')
+           $('#sort_up').addClass('asc')
+           break
+       case 'up3':
+           flow_sort_type='up'
+           sort_state='3'
+           $('#sort_up').parent().attr('onclik','flowSort(\'up1\')')
+           break
+       case 'down1':
+           flow_sort_type='down'
+           sort_state='1'
+           $('#sort_down').parent().attr('onclik','flowSort(\'down2\')')
+           $('#sort_down').addClass('desc')
+           break
+       case 'down2':
+           flow_sort_type='down'
+           sort_state='2'
+           $('#sort_down').parent().attr('onclik','flowSort(\'down3\')')
+           $('#sort_down').addClass('asc')
+           break
+       case 'down3':
+           flow_sort_type='down'
+           sort_state='3'
+           $('#sort_down').parent().attr('onclik','flowSort(\'down1\')')
+           break
+       case 'count1':
+           flow_sort_type='count'
+           sort_state='1'
+           $('#sort_count').parent().attr('onclik','flowSort(\'count2\')')
+           $('#sort_count').addClass('desc')
+           break
+       case 'count2':
+           flow_sort_type='count'
+           sort_state='2'
+           $('#sort_count').parent().attr('onclik','flowSort(\'count3\')')
+           $('#sort_count').addClass('asc')
+           break
+       case 'count3':
+           flow_sort_type='count'
+           sort_state='3'
+           $('#sort_count').parent().attr('onclik','flowSort(\'count1\')')
+           break
+
+   }
+}
+//设置弹窗数据卡
+function setWinLabel(data) {
+    //http
+    $('#http_link .data_t').html(data.http.links)
+    $('#http_a_link .data_t').html(data.http.rate_links)
+    $('#http_r_d .data_t').html(data.http.rate_down+' '+data.http.rate_down_unit)
+    $('#http_r_p .data_t').html(data.http.rate_up+' '+data.http.rate_up_unit)
+    $('#http_f_p .data_t').html(data.http.up+' '+data.http.up_unit)
+    $('#http_f_d .data_t').html(data.http.down+' '+data.http.down_unit)
+    //pa 矿池加速
+    $('#pa_link .data_t').html(data.pa.links)
+    $('#pa_a_link .data_t').html(data.pa.rate_links)
+    $('#pa_r_d .data_t').html(data.pa.rate_down+' '+data.pa.rate_down_unit)
+    $('#pa_r_p .data_t').html(data.pa.rate_up+' '+data.pa.rate_up_unit)
+    $('#pa_f_p .data_t').html(data.pa.up+' '+data.pa.up_unit)
+    $('#pa_f_d .data_t').html(data.pa.down+' '+data.pa.down_unit)
+    //pp 服务器代理
+    $('#pp_link .data_t').html(data.pp.links)
+    $('#pp_a_link .data_t').html(data.pp.rate_links)
+    $('#pp_r_d .data_t').html(data.pp.rate_down+' '+data.pp.rate_down_unit)
+    $('#pp_r_p .data_t').html(data.pp.rate_up+' '+data.pp.rate_up_unit)
+    $('#pp_f_p .data_t').html(data.pp.up+' '+data.pp.up_unit)
+    $('#pp_f_d .data_t').html(data.pp.down+' '+data.pp.down_unit)
+    //udp
+    $('#udp_r_d .data_t').html(data.udp.rate_down+' '+data.udp.rate_down_unit)
+    $('#udp_r_p .data_t').html(data.udp.rate_up+' '+data.udp.rate_up_unit)
+    $('#udp_f_p .data_t').html(data.udp.up+' '+data.udp.up_unit)
+    $('#udp_f_d .data_t').html(data.udp.down+' '+data.udp.down_unit)
+    sortFlow(data.http.rank)
+
+}
+
+function linkWin(ax) {
+    window.location.replace(ax)
+}
+//设置数据
+function setFormData(data) {
+    let str=''
+    str+='<div class="card">\n' +
+        '    <div class="jdt"  style="opacity: 0">\n' +
+        '        <div class="jdx" style="width: 10%"></div>\n' +
+        '    </div>\n' +
+        '    <div class="info_tx">\n' +
+        '        <div class="txt_number_1">'+data.info.serverVer+'</div>\n' +
+        // '        <div class="smallx">'++'</div>\n' +
+        '    </div>\n' +
+        '    <div class="info_type">'+_mx4('ServerVer')+'</div>\n' +
+        '</div>'
+    $.each(data.status,function (i,it) {
+       if(i.indexOf('unit')==-1&&data.status[i+'_unit']!=undefined){
+           str+='<div class="card">\n' +
+               '    <div class="jdt"  style="opacity: 0">\n' +
+               '        <div class="jdx" style="width: 10%"></div>\n' +
+               '    </div>\n' +
+               '    <div class="info_tx">\n' +
+               '        <div class="txt_number_1">'+it+'</div>\n' +
+               '        <div class="smallx">'+data.status[i+'_unit']+'</div>\n' +
+               '    </div>\n' +
+               '    <div class="info_type">'+_mx4(getLable(i))+'</div>\n' +
+               '</div>'
+       }
+       if(i=='runTime'||i=='site_count'||i=='worker_count'){
+           str+='<div class="card">\n' +
+               '    <div class="jdt"  style="opacity: 0">\n' +
+               '        <div class="jdx" style="width: 10%"></div>\n' +
+               '    </div>\n' +
+               '    <div class="info_tx">\n' +
+               '        <div class="txt_number_1">'+it+'</div>\n' +
+               // '        <div class="smallx">'+data.status[i+'_unit']+'</div>\n' +
+               '    </div>\n' +
+               '    <div class="info_type">'+_mx4(getLable(i))+'</div>\n' +
+               '</div>'
+       }
+    })
+
+    str+='<div class="my_config_icon_xixm" onclick="openWinFlowInfo()" data-tooltip="查看更多"></div>'
+
+    $('.lable_card_wk').html(str)
+
+}
+
+function getLable(name) {
+   switch (name) {
+       case 'hashrate':
+           return 'hashrate'
+       case 'rate_down':
+           return 'Rate Down'
+       case 'rate_up':
+           return 'Rate Up'
+       case 'runTime':
+           return 'Run Time'
+       case 'site_count':
+           return 'Site Count'
+       case 'worker_count':
+           return 'Woker Count'
+   }
+}
+
+//保存网站信息
+function saveLogoName() {
+    if($('#webInfox .green').hasClass('lockx')){
+        return
+    }
+    $('#webInfox .green').addClass('lockx')
+    $('#webInfox .circle-loader').show()
+    let datax=new FormData()
+    if(LogoFile!==undefined){
+        datax.append('file',LogoFile)
+    }
+    datax.append('webName',$('#web_name').val())
+
+    $.ajax({
+        url:'/SetWebInfo',
+        type:'post',
+        dataType:'json',
+        data:datax,
+        cache: false,        // 不缓存数据
+        processData: false,  // 不处理数据
+        contentType: false,   // 不设置内容类型
+        success:function (res) {
+            $('#webInfox .message_suc').show()
+            $('#webInfox .circle-loader').addClass('load-complete')
+            $('#webInfox .circle-loader .checkmark').show()
+            $('#webInfox .green').removeClass('lockx')
+            setTimeout(function () {
+                $('#webInfox .circle-loader').hide()
+                $('#webInfox .message_suc').hide()
+                $('#webInfox .circle-loader').removeClass('load-complete')
+                $('#webInfox .circle-loader .checkmark').hide()
+                window.location.reload()
+            },2000)
+        },error:function () {
+            $('#webInfox .circle-loader').hide()
+            $('#webInfox .message_suc').hide()
+            $('#webInfox .circle-loader').removeClass('load-complete')
+            $('#webInfox .circle-loader .checkmark').hide()
+            $('#webInfox .message_err').show()
+            $('#webInfox .green').removeClass('lockx')
+        }
+    })
+
+}
+//显示保存弹窗
+function savePortFile() {
+    $('#r_server_save').show()
+    $('.popupbackground').show()
+}
+
+//修改端口
+function updatePort() {
+    if($('#r_server_save .green,.blue').hasClass('lockx')){
+        return
+    }
+    $('#r_server_save .green,.blue').addClass('lockx')
+    $('#r_server_save .circle-loader').show()
+    $.ajax({
+        url:'/server',
+        type:'post',
+        data:{
+            a:'setports',
+            port_udp:$('#udp_p').val(),
+            port_https:$('#https_p').val(),
+            port_pa_ssl: $('#pool_p').val(),
+            port_pa: $('#pool_p_nossl').val()
+        },
+        dataType:'json',
+        success:function (res) {
+            $('#r_server_save .message_suc').show()
+            $('#r_server_save .circle-loader').addClass('load-complete')
+            $('#r_server_save .circle-loader .checkmark').show()
+            if(res.need_restart==1){
+                $('#msg_info').html(_mx('The server configuration has been modified and needs to restart the server to take effect'))
+            }else {
+                $('#msg_info').html('')
+            }
+            closeWin()
+            if(res.need_restart==1){
+                showRestart()
+            }
+            $('#saveContainer .green,.blue').removeClass('lockx')
+            setTimeout(function () {
+                $('#r_server_save .circle-loader').hide()
+                $('#r_server_save .message_suc').hide()
+                $('#r_server_save .circle-loader').removeClass('load-complete')
+                $('#r_server_save .circle-loader .checkmark').hide()
+            },2000)
+        },
+        error:function () {
+            closeWin()
+            $('#r_server_save .circle-loader').hide()
+            $('#r_server_save .message_suc').hide()
+            $('#r_server_save .circle-loader').removeClass('load-complete')
+            $('#r_server_save .circle-loader .checkmark').hide()
+            $('#r_server_save .message_err').show()
+            $('#r_server_save .green').removeClass('lockx')
+        }
+    })
+}
+
+function showRestart(){
+    $('.popupbackground').show()
+    $('#r_server').show()
+}
+$('.popupbackground').on('click',function () {
+    closeWin()
+    $('#flow_info_win').hide()
+})
+
+//关闭重启弹窗
+function closeWin() {
+    $('#r_server').hide()
+    $('#r_server_checkt').hide()
+    $('#r_server_save').hide()
+    $('.popupbackground').hide()
+}
+
+var LockWeb=true
+//重启服务器端
+function ResetServer() {
+    if(!LockWeb){
+        return
+    }
+    LockWeb=false
+    $('#r_server .circle-loader').show()
+    $('#r_server .x_id').show()
+    $.ajax({
+        url:'/server',
+        type:'post',
+        data:{
+            a:'restart',
+        },
+        dataType:'json',
+        success:function (res) {
+            LockWeb=true
+            clearInterval(infoItx)
+            let url = window.location.protocol+'//'+window.location.hostname+':'+$('#https_p').val()
+            let xm=setInterval(function () {
+                   let xmll=new XMLHttpRequest()
+                    xmll.open('get',url+'/QUERY?SERVERSTATUS')
+
+                    xmll.onload=function () {
+                        $('#r_server .circle-loader').addClass('load-complete')
+                        $('#r_server .circle-loader .checkmark').show()
+                        $('#r_server .m_id').show()
+                        $('#r_server .x_id').hide()
+                        clearInterval(xm)
+                        setTimeout(function () {
+                            window.location.replace(url+'/server-config')
+                        },2000)
+                    }
+                    xmll.onerror=function () {
+
+                    }
+                    xmll.send()
+            },1000)
+        }
+    })
+}
+
+//检测更新
+function checkUpdateServer() {
+    $('#sever_ver_save .circle-loader').show()
+    $.ajax({
+        url:'/server',
+        type:'post',
+        data:{
+            a:'checkupdate'
+        },
+        success:function (res) {
+            $('#sever_ver_save .circle-loader').hide()
+            let xm=JSON.parse(res)
+            $('#sex_ver_new').val(xm.fileVer_new)
+            if(xm.fileVer_new==''){
+               $('#sever_ver_save .message_err').html(_mx('Detection failed, please re detect'))
+                return
+            }
+            if(((xm.fileVer+'')!=xm.fileVer_new)&&!serverUpdataState){
+                $('#r_server_checkt .text').html('<div style="display: flex">\n' +
+                    '                <div style="display: flex;margin-right: 20px">\n' +
+                    '                    <div>'+_mx('Current version')+'：</div>\n' +
+                    '                    <div>'+xm.fileVer+'</div>\n' +
+                    '                </div>\n' +
+                    '                <div style="display: flex">\n' +
+                    '                    <div>'+_mx('Latest version')+'：</div>\n' +
+                    '                    <div>'+xm.fileVer_new+'</div>\n' +
+                    '                </div>\n' +
+                    '            </div>\n' +
+                    '            <div style="margin-top: 20px;color: #ff564f">'+_mx('Do you want to update the server version?')+'</div>')
+                $('#r_server_checkt').show()
+                $('.popupbackground').show()
+                $('#sever_ver_save .updata_xk').removeClass('gray')
+                $('#sever_ver_save .updata_xk').addClass('blue')
+            }
+        }
+    })
+}
+
+//更新服务器
+function UpdateServer() {
+    if($('#sever_ver_save .updata_xk').hasClass('gray')||serverUpdataState){
+        return
+    }
+    if($('#r_server_checkt').is(':visible')){
+        $('#r_server_checkt .circle-loader').show()
+    }else {
+        $('#sever_ver_save .circle-loader').show()
+    }
+    $.ajax({
+        url:'/server',
+        type:'post',
+        data:{
+            a:'update'
+        },
+        success:function (res) {
+            if($('#r_server_checkt').is(':visible')){
+                $('#r_server_checkt .message_suc').show()
+                $('#r_server_checkt .circle-loader').addClass('load-complete')
+                $('#r_server_checkt .circle-loader .checkmark').show()
+                setTimeout(function () {
+                    $('#r_server_checkt .circle-loader').hide()
+                    $('#r_server_checkt .message_suc').hide()
+                    $('#r_server_checkt .circle-loader').removeClass('load-complete')
+                    $('#r_server_checkt .circle-loader .checkmark').hide()
+                    window.location.reload()
+                },2000)
+            }else {
+                $('#sever_ver_save .message_suc').show()
+                $('#sever_ver_save .circle-loader').addClass('load-complete')
+                $('#sever_ver_save .circle-loader .checkmark').show()
+                setTimeout(function () {
+                    $('#sever_ver_save .circle-loader').hide()
+                    $('#sever_ver_save .message_suc').hide()
+                    $('#sever_ver_save .circle-loader').removeClass('load-complete')
+                    $('#sever_ver_save .circle-loader .checkmark').hide()
+                    window.location.reload()
+                },2000)
+            }
+        }
+    })
+}
+
+//弹窗切换
+$('.info_wkx .item').on('click',function () {
+    if($(this).hasClass('is_item')){
+        return
+    }
+    $('.info_wkx .item').removeClass('is_item')
+    $(this).addClass('is_item')
+    switch ($(this).attr('data-type')) {
+        case '1':
+            $('#net_win').show()
+            $('#api_win').hide()
+            break
+        case '2':
+            $('#net_win').hide()
+            $('#api_win').show()
+            break
+    }
+})
+
+//开启详情弹窗
+function openWinFlowInfo() {
+    $('#flow_info_win').show()
+    $('.popupbackground').show()
+}
+function clickCloseWin() {
+    $('#flow_info_win').hide()
+    $('.popupbackground').hide()
+}
+function downZZJ() {
+    window.open('https://github.com/ThisMyhero/MidServer/')
+}

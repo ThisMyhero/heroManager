@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="en-US" translate="no">
+<head>
+    <title>Worker config</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preload" href="./css/themes/light/global.css?v=1635430962" as="style"/>
+    <link rel="preload" href="./js/jquery.js" as="script"/>
+    <meta name="robots" content="noindex">
+    <link href="./css/themes/light/global.css" id="css" rel="stylesheet" type="text/css">
+    <link href="./css/themes/dark/global.css" rel="stylesheet" type="text/css">
+    <link href="./css/themes/light/sever-config.css" rel="stylesheet" type="text/css">
+    <link href="./css/themes/dark/sever-config.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<noscript>
+    <iframe src="/www.googletagmanager.com/ns.html?id=GTM-KJ552JD" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe>
+</noscript>
+<header>
+
+</header>
+<div class="page">
+    <div class="menu">
+        <div id="main_menu">
+
+        </div>
+    </div>
+    <div class="content config">
+        <div class="title_row">
+            <div class="title_left">
+                <div class="title_navigation">
+                    <h1 class="tba_cade_item" lang-data-ht="Sever Management" style="color: #fff !important;" onclick="linkWin('/server-config')">服务器管理</h1>
+                     <h1   class="tba_cade_item"  lang-data-ht="Sever Log"  onclick="linkWin('/server-log')"></h1>
+                </div>
+            </div>
+        </div>
+        <div class="lable_card_wk" >
+<!--            <div class="card" id="workers_card_info">-->
+<!--                <div class="jdt"  style="opacity: 0">-->
+<!--                    <div class="jdx" style="width: 10%"></div>-->
+<!--                </div>-->
+<!--                <div class="info_tx">-->
+<!--                    <div class="txt_number_1">17</div>-->
+<!--                    <small></small>-->
+<!--                    <div class="error_text"></div>-->
+<!--                </div>-->
+<!--                <div class="info_type" lang-data-ht2="Workers"></div>-->
+<!--            </div>-->
+        </div>
+        <div class="container">
+            <div class="col_3_4">
+                <div class="box">
+                    <div class="row selectable" >
+                        <div class="client">
+                            <label lang-data-ht="Website Name"></label>
+                        </div>
+                        <div class="edit_box" style="width: 100%">
+                            <input id="web_name" value="" type="text">
+                        </div>
+                    </div>
+                    <div class="row selectable" >
+                        <div class="client">
+                            <label lang-data-ht="">LOGO</label>
+                        </div>
+                        <div class="edit_box" style="width: 100%;justify-content: left">
+                            <div class="mx_img" style="position: relative;width: 100px;">
+                                <input id="file_input" accept="image/png, image/jpeg" style="opacity: 0;position: absolute;width: 100px;height: 100px;cursor: pointer"  type="file">
+                                <img id="log_img" class="img_wk_infox" src="/image/logo_ban.png"></img>
+                                <div class="img_zzc" lang-data-ht="Click upload logo">
+
+                                </div>
+                            </div>
+                            <div style="margin-top: 5px;font-size: 16px;" id="ermsg" lang-data-ht="The file size should not exceed 200kb">文件大小不得超过200k</div>
+                        </div>
+                    </div>
+                    <div class="row selectable" >
+                        <div class="edit_box" style="width: 100%">
+                            <div class="container" id="webInfox">
+                                <div class="floating_shadow"></div>
+                                <div style="width: 100%;">
+                                    <div class="action_row buttons">
+                                        <div class="circle-loader">
+                                            <div class="checkmark draw"></div>
+                                        </div>
+                                        <div class="message_suc">Finished</div>
+                                        <div class="message_err">Error</div>
+                                        <a class="button_empty"></a>
+                                        <div class="button green" lang-data-ht="Save changes" onclick="saveLogoName()">Save changes</div>
+                                    </div>
+                                </div>
+                                <div class="col_1_4"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col_1_4">
+                <h2 lang-data-ht="notice">notice</h2>
+                <p lang-data-ht="You can set the website name and logo here"></p>
+            </div>
+        </div>
+
+        <div id="configContent" class="container">
+            <div class="container">
+                <div class="col_3_4">
+                    <div id="msg_info" style="height: 20px;color: #ff564f"></div>
+                    <div class="box">
+                        <div class="row selectable" >
+                            <div class="client">
+                                <label lang-data-ht="UDP Port"></label>
+                                <p lang-data-ht="If you want to provide a port to connect to machines outside the LAN, you need an external IP, and you need to map this port on the router"></p>
+                           </div>
+                            <div class="edit_box" style="width: 100%">
+                                <input value="" id="udp_p" type="text">
+                            </div>
+                        </div>
+                        <div class="row selectable" >
+                            <div class="client">
+                                <label lang-data-ht="HTTPS Port"></label>
+                                <p lang-data-ht="This port setting is also used as the background management page. If you want to provide a port to connect to machines outside the LAN, you need an external network IP and map this port on the router"></p>
+                            </div>
+                            <div class="edit_box" style="width: 100%">
+                                <input value="" id="https_p" type="text">
+                            </div>
+                        </div>
+                        <div class="row selectable" >
+                            <div class="client">
+                                <label lang-data-ht="Pool to accelerate Port(SSL)"></label>
+                                <p lang-data-ht="Your miners will connect to this port for mining. If you have connected VPN, opening this function may have an impact"></p>
+                           </div>
+                            <div class="edit_box" style="width: 100%">
+                                <input value="" id="pool_p" type="text">
+                            </div>
+                        </div>
+                        <div class="row selectable" >
+                            <div class="client">
+                                <label lang-data-ht="Pool to accelerate Port"></label>
+                                <p lang-data-ht="Your miners will connect to this port for mining. If you have connected VPN, opening this function may have an impact"></p>
+                           </div>
+                            <div class="edit_box" style="width: 100%">
+                                <input value="" id="pool_p_nossl" type="text">
+                            </div>
+                        </div>
+                        <div class="row selectable" >
+                            <div class="edit_box" style="width: 100%">
+                                <div id="saveContainer" class="container">
+                                    <div class="floating_shadow"></div>
+                                    <div style="width: 100%;">
+                                        <div class="action_row buttons">
+                                            <div class="circle-loader">
+                                                <div class="checkmark draw"></div>
+                                            </div>
+                                            <div class="message_suc">Finished</div>
+                                            <div class="message_err">Error</div>
+                                            <a class="button_empty"></a>
+                                            <div class="button green" lang-data-ht="Save changes" onclick="savePortFile()">Save changes</div>
+                                        </div>
+                                    </div>
+                                    <div class="col_1_4"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col_1_4">
+                    <h2 lang-data-ht="notice"></h2>
+                    <p lang-data-ht="Here you can set the corresponding function port of the server"></p>
+                </div>
+            </div>
+            <div class="container">
+                <div class="col_3_4">
+                    <div id="msg_info_zzj" style="height: 20px;color: #ff564f"></div>
+                    <div class="box">
+                        <div class="row selectable" >
+                            <div class="client" style="width: 100%">
+                                <label lang-data-ht="Middleware key"></label>
+                                <p lang-data-ht="If you don't want to expose your IP or want more secure communication, you can let the site [<span class='ist_zzj' onclick='downZZJ()'>download middleware</span>] on the intranet, based on China CDN IP and always change the connected IP, which is more secure and efficient."></p>
+                                <div style="display: flex;align-items: center">Key: <input id="zzj_key" type="text" style="margin:0;margin-left: 10px" disabled/></div>
+                            </div>
+                        </div>
+                        <div class="row selectable" id="poolAccelerate">
+                            <div class="client">
+                                <label lang-data-ht="Middleware display IP">中间件显示IP</label>
+                                <p class="sub" lang-data-ht="Optimize the link between the miner and the pool to speed up mining through site server transfer"></p>
+                            </div>
+                            <div class="edit_box mylineHeigh" style="width: 100%">
+                                <div class="mytoggle ">
+                                    <div class="bullet" id="zzj_state" data-via="poolAccelerate"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row selectable" >
+                            <div class="edit_box" style="width: 100%">
+                                <div id="saveContainerZjj" class="container">
+                                    <div class="floating_shadow"></div>
+                                    <div style="width: 100%;">
+                                        <div class="action_row buttons">
+                                            <div class="circle-loader">
+                                                <div class="checkmark draw"></div>
+                                            </div>
+                                            <div class="message_suc">Finished</div>
+                                            <div class="message_err">Error</div>
+                                            <a class="button_empty"></a>
+                                            <div class="button green" lang-data-ht="Save changes" onclick="setKyeValue()">Save changes</div>
+                                        </div>
+                                    </div>
+                                    <div class="col_1_4"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col_1_4">
+                    <h2 lang-data-ht="notice"></h2>
+                    <p lang-data-ht="Here you can set the corresponding function port of the server"></p>
+                </div>
+            </div>
+        </div>
+
+        <div id="server_ver">
+            <div class="container">
+                <div class="col_3_4">
+                    <div id="msg_info" style="height: 20px;color: #ff564f"></div>
+                    <div class="box">
+                        <div class="row selectable" >
+                            <div class="client">
+                                <label lang-data-ht="Current version"></label>
+                                <p lang-data-ht="Current software version of server"></p>
+                           </div>
+                            <div class="edit_box" style="width: 100%">
+                                <div class="item_inpu_wk">
+                                    <div class="ix_txt_one" lang-data-ht="Current version" ></div>
+                                    <input value="" id="sex_ver_old"  disabled type="text">
+                                </div>
+                                <div class="item_inpu_wk">
+                                    <div class="ix_txt_one" lang-data-ht="Latest version" ></div>
+                                    <input value="" id="sex_ver_new" disabled type="text">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row selectable" >
+                            <div class="edit_box" style="width: 100%">
+                                <div id="sever_ver_save" class="container">
+                                    <div class="floating_shadow"></div>
+                                    <div style="width: 100%">
+                                        <div class="action_row buttons">
+                                            <div class="circle-loader">
+                                                <div class="checkmark draw"></div>
+                                            </div>
+                                            <div class="message_suc">Finished</div>
+                                            <div class="message_err">Error</div>
+                                            <a class="button_empty"></a>
+                                            <div class="button blue" lang-data-ht="Detect updates" onclick="checkUpdateServer()">Save changes</div>
+                                            <div class="button red" lang-data-ht="Restart Server" onclick="showRestart()">Save changes</div>
+                                            <div class="button gray updata_xk"  onclick="UpdateServer()">Save changes</div></div>
+                                    </div>
+                                    <div class="col_1_4"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col_1_4">
+                    <h2 lang-data-ht="notice"></h2>
+                    <p lang-data-ht="Detect and update the current software version of the server"></p>
+                </div>
+            </div>
+
+            <div class="popup" id="flow_info_win" style="display:none;width: 50%;user-select: none;background-color: #343d52;">
+                <div class="close" onclick="clickCloseWin()" style="top:12px;right: 12px"></div>
+                <div class="title GPU_tlile" id="inf_xxx" lang-data-htp="Flow details"></div>
+                <div class="text" style="padding: 0px;width: 100%;position: relative">
+                    <div class="clocktune_popup" style="position: absolute;display: none">
+                        <div class="row" style="display: flex !important;justify-content: right">
+                            <select id="v_list_sl" onchange="setOcItem()" style="width: 100px;height: 30px">
+
+                            </select>
+                            <div class="button gray" style="margin: 0px 0px 0px auto; font-size: 14px;padding: 0px 10px;" onclick="openDropdown('clocktune_nvidia_windows');" lang-data-ht="Fill from database">Fill from database</div>
+                            <div class="clocktune_values myClockSpeed" id="clocktune_nvidia_windows" style="display: none">
+                                <label lang-data-ht="Select GPU model">Select GPU model</label>
+                                <select style="width: 100%;height: 30px">
+                                    <option value="RTX 3090Ti">RTX 3090Ti</option>
+                                    <option value="RTX 3090">RTX 3090</option>
+                                    <option value="RTX 3080Ti">RTX 3080Ti</option>
+                                    <option value="RTX 3080 LHR">RTX 3080 LHR</option>
+                                    <option value="RTX 3080">RTX 3080</option>
+                                    <option value="RTX 3070Ti">RTX 3070Ti</option>
+                                    <option value="RTX 3070 LHR">RTX 3070 LHR</option>
+                                    <option value="RTX 3070">RTX 3070</option>
+                                    <option value="RTX 3060Ti LHR">RTX 3060Ti LHR</option>
+                                    <option value="RTX 3060Ti">RTX 3060Ti</option>
+                                    <option value="RTX 3060 LHR V2">RTX 3060 LHR V2</option>
+                                    <option value="RTX 3060">RTX 3060</option>
+                                    <option value="RTX 2080Ti">RTX 2080Ti</option>
+                                    <option value="RTX 2080 Super">RTX 2080 Super</option>
+                                    <option value="RTX 2080">RTX 2080</option>
+                                    <option value="RTX 2070">RTX 2070</option>
+                                    <option value="RTX 2070 Super">RTX 2070 Super</option>
+                                    <option value="RTX 2060 Super">RTX 2060 Super</option>
+                                    <option value="RTX 2060">RTX 2060</option>
+                                    <option value="GTX 1660Ti">GTX 1660Ti</option>
+                                    <option value="GTX 1660 Super">GTX 1660 Super</option>
+                                    <option value="GTX 1660">GTX 1660</option>
+                                    <option value="GTX 1650 Super">GTX 1650 Super</option>
+                                    <option value="GTX 1650">GTX 1650</option>
+                                    <option value="P106-90">P106-90</option>
+                                    <option value="P104-100">P104-100</option>
+                                    <option value="P102-100">P102-100</option>
+                                    <option value="GTX 1080Ti">GTX 1080Ti</option>
+                                    <option value="GTX 1080">GTX 1080</option>
+                                    <option value="GTX 1070Ti">GTX 1070Ti</option>
+                                    <option value="GTX 1070">GTX 1070</option>
+                                    <option value="GTX 1060">GTX 1060</option>
+                                    <option value="GTX 1050Ti">GTX 1050Ti</option>
+                                    <option value="GTX 1050">GTX 1050</option>
+                                    <option value="CMP 40HX">CMP 40HX</option>
+                                    <option value="RX 6900 XT">RX 6900 XT</option>
+                                    <option value="RX 6800 XT">RX 6800 XT</option>
+                                    <option value="RX 6800">RX 6800</option>
+                                    <option value="RX 6700 XT">RX 6700 XT</option>
+                                    <option value="RX 6600 XT">RX 6600 XT</option>
+                                    <option value="RX 5700 XT">RX 5700 XT</option>
+                                    <option value="RX 5700">RX 5700</option>
+                                    <option value="RX 5600 XT">RX 5600 XT</option>
+                                    <option value="RX 5600">RX 5600</option>
+                                    <option value="RX 5500 XT">RX 5500 XT</option>
+                                    <option value="RX 5500">RX 5500</option>
+                                    <option value="Radeon VII">Radeon VII</option>
+                                    <option value="Vega Frontier Edition">Vega Frontier Edition</option>
+                                    <option value="RX Vega 64">RX Vega 64</option>
+                                    <option value="RX Vega 56">RX Vega 56</option>
+                                    <option value="RX 590 GME">RX 590 GME</option>
+                                    <option value="RX 590">RX 590</option>
+                                    <option value="RX 580">RX 580</option>
+                                    <option value="RX 560">RX 560</option>
+                                    <option value="RX 550">RX 550</option>
+                                    <option value="RX 480">RX 480</option>
+                                    <option value="RX 470">RX 470</option>
+                                    <option value="RX 460">RX 460</option>
+                                </select>
+                                <div class="divider" style="margin-bottom: 5px"></div>
+                                <div id="clocktune_nvidia_windows_values" class="clocktune_values_box">
+                                    <div class="row">
+                                        <label class="parameter" lang-data-ht="Power limit">Power limit</label>
+                                        <label class="value">335 W</label>
+                                    </div>
+                                    <div class="row">
+                                        <label class="parameter" lang-data-ht="Core clock">Core clock</label>
+                                        <label class="value">-300 MHz</label>
+                                    </div>
+                                    <div class="row">
+                                        <label class="parameter" lang-data-ht="Locked core clock">Locked core clock</label>
+                                        <label class="value">1165 MHz</label>
+                                    </div>
+                                    <div class="row">
+                                        <label class="parameter" lang-data-ht="Memory clock">Memory clock</label>
+                                        <label class="value">+800 MHz</label>
+                                    </div>
+                                    <div class="row">
+                                        <label class="parameter" lang-data-ht2="Fan speed">Fan speed</label>
+                                        <label class="value">100%</label>
+                                    </div>
+                                </div>
+                                <div class="divider"></div>
+                                <div class="button blue" style="width: 100%;justify-content: center;margin-top: 10px" onclick="loadValues('clocktune_nvidia_windows',this);">
+                                    Append values
+                                </div>
+                            </div>
+                        </div>
+                        <div class="frame fixed_frame">
+                            <div class="row">
+                                <label><x lang-data-ht="Power limit">Power limit</x> (%) <span class="gpu_count"></span>
+                                    <div class="info_box">
+                                        <div class="info_icon"></div>
+                                        <div class="tooltip tooltip_left">
+                                            <b lang-data-ht="Power limit">Power limit</b>
+                                            <p lang-data-ht="Power limit is the amount of power consumption that your GPU should use for operating in percentage.Different GPU models can accept different values, with typical values being <code>70</code>,<code>80</code>, <code>90</code>, etc.The maximum value of <code>100</code> means that GPU will use 100% of the power."></p>
+                                        </div>
+                                    </div>
+                                </label>
+                                <div class="input_units multi">
+                                    <input type="text" class="value powerlimit" data-oc="" value=""/>
+                                    <div class="unit">%</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label><x lang-data-ht="Temperature"></x> (°C) <span class="gpu_count"></span>
+                                </label>
+                                <div class="input_units multi">
+                                    <input type="text" class="value Mtemperature" data-oc="" value=""/>
+                                    <div class="unit">%</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label><x lang-data-ht="Core clock">Core Clock</x> (-/+ MHz) <span class="gpu_count"></span>
+                                    <div class="info_box">
+                                        <div class="info_icon"></div>
+                                        <div class="tooltip tooltip_left">
+                                            <b lang-data-ht="Core clock">Core clock</b>
+                                            <p lang-data-ht="Core Clock is the speed at which the graphics processor on a video card operates.Different GPU models can accept different offset core clock values in MHz, with typical values being <code>-100</code>,<code>+100</code>,<code>+200</code>,etc."></p>
+                                            <p lang-data-ht="If you don't know the default value, check the hardware table on the worker's profile - Core Clock is reported under the core column."></p>
+                                        </div>
+                                    </div>
+                                </label>
+                                <div class="input_units multi">
+                                    <input type="text" class="value coreclock" data-oc="" value=""/>
+                                    <div class="unit">MHz</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label><x lang-data-ht="Memory clock">Memory Clock</x> (-/+ MHz) <span class="gpu_count"></span>
+                                    <div class="info_box">
+                                        <div class="info_icon"></div>
+                                        <div class="tooltip tooltip_left">
+                                            <b lang-data-ht="Memory clock">Memory clock</b>
+                                            <p lang-data-ht="Memory clock is the speed of the VRAM on the graphics card.   Different GPU models can accept different offset memory clock values in MHz,with typical values being <code>-100</code>,<code>+100</code>,<code>+200</code>,etc."></p>
+                                            <p lang-data-ht="If you don't know the default value, check the hardware table on the worker's profile - Memory Clock is reported under the memory column"></p>
+                                        </div>
+                                    </div>
+                                </label>
+                                <div class="input_units multi">
+                                    <input type="text" class="value memoryclock" data-oc="" value=""/>
+                                    <div class="unit">MHz</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label><x lang-data-ht="Memory voltage"></x> (-/+ mV) <span class="gpu_count"></span>
+                                </label>
+                                <div class="input_units multi">
+                                    <input type="text" class="value Mvoltage" data-oc="" value=""/>
+                                    <div class="unit">mV</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label><x lang-data-ht="Core voltage"></x> (-/+ mV) <span class="gpu_count"></span>
+                                </label>
+                                <div class="input_units multi">
+                                    <input type="text" class="value Cvoltage" data-oc="" value=""/>
+                                    <div class="unit">mV</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label><x lang-data-ht2="Fan speed">Memory Clock</x> (%) <span class="gpu_count"></span>
+                                </label>
+                                <div class="input_units multi">
+                                    <input type="text" class="value fan" data-oc="" value="">
+                                    <div class="unit">%</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="action_row buttons" style="padding: 0;display: flex;flex-wrap: wrap">
+                            <div class="circle-loader" style="margin:0">
+                                <div class="checkmark draw"></div>
+                            </div>
+                            <div class="button green saveChanges" style="margin-left:0px;margin-right: 10px;margin-top: 5px" lang-data-ht="Apply">Apply</div>
+                            <!--                        <div class="button green saveRestart" style="margin-left:0px;margin-right: 10px;margin-top: 5px" lang-data-ht="Apply with restart">Apply with restart</div>-->
+                            <div class="button green" style="margin-left:0px;margin-top: 5px" lang-data-ht="Clear">Clear</div>
+                        </div>
+                    </div>
+                    <div class="info_wkx">
+                        <div class="item is_item" data-type="1" lang-data-htp="Network status"></div>
+                        <div class="item" data-type="2" lang-data-htp="API traffic ranking"></div>
+                    </div>
+                    <div class="win_flow_list" id="net_win">
+                        <div class="it_tiles" lang-data-htp="HTTP flow"></div>
+                        <div class="item_wk">
+                            <div class="item_info" id="http_link">
+                                <div class="data_t"></div>
+                                <div class="label_x" lang-data-htp="Links">连接数</div>
+                            </div>
+                            <div class="item_info" id="http_a_link">
+                                <div class="data_t"></div>
+                                <div class="label_x" lang-data-htp="Add Links">新增连接数</div>
+                            </div>
+                            <div class="item_info" id="http_r_d">
+                                <div class="data_t"></div>
+                                <div class="label_x" lang-data-htp="Downstream rate">下行速率</div>
+                            </div>
+                            <div class="item_info" id="http_r_p">
+                                <div class="data_t"></div>
+                                <div class="label_x" lang-data-htp="Upstream rate">上行速率</div>
+                            </div>
+                            <div class="item_info" id="http_f_p">
+                                <div class="data_t"></div>
+                                <div class="label_x" lang-data-htp="Uplink flow">上行流量</div>
+                            </div>
+                            <div class="item_info" id="http_f_d">
+                                <div class="data_t"></div>
+                                <div class="label_x" lang-data-htp="Downlink flow">下行流量</div>
+                            </div>
+                        </div>
+                        <div class="it_tiles" lang-data-htp="UDP flow"></div>
+                        <div class="item_wk">
+                            <div class="item_info" id="udp_r_d">
+                                <div class="data_t"></div>
+                                <div class="label_x" lang-data-htp="Downstream rate">下行速率</div>
+                            </div>
+                            <div class="item_info" id="udp_r_p">
+                                <div class="data_t"></div>
+                                <div class="label_x" lang-data-htp="Upstream rate">上行速率</div>
+                            </div>
+                            <div class="item_info" id="udp_f_p">
+                                <div class="data_t"></div>
+                                <div class="label_x" lang-data-htp="Uplink flow">上行流量</div>
+                            </div>
+                            <div class="item_info" id="udp_f_d">
+                                <div class="data_t"></div>
+                                <div class="label_x" lang-data-htp="Downlink flow">下行流量</div>
+                            </div>
+                            <div class="item_info" style="opacity: 0">
+                                <div class="data_t"></div>
+                                <div class="label_x" lang-data-htp="Downlink flow">下行流量</div>
+                            </div>
+                            <div class="item_info" style="opacity: 0">
+                                <div class="data_t"></div>
+                                <div class="label_x" lang-data-htp="Downlink flow">下行流量</div>
+                            </div>
+                        </div>
+                        <div class="it_tiles" lang-data-ht="Pool to accelerate"></div>
+                        <div class="item_wk">
+                            <div class="item_info" id="pa_link">
+                                <div class="data_t"></div>
+                                <div class="label_x" lang-data-htp="Links">连接数</div>
+                            </div>
+                            <div class="item_info" id="pa_a_link">
+                                <div class="data_t"></div>
+                                <div class="label_x" lang-data-htp="Add Links">新增连接数</div>
+                            </div>
+                            <div class="item_info" id="pa_r_d">
+                                <div class="data_t"></div>
+                                <div class="label_x" lang-data-htp="Downstream rate">下行速率</div>
+                            </div>
+                            <div class="item_info" id="pa_r_p">
+                                <div class="data_t"></div>
+                                <div class="label_x" lang-data-htp="Upstream rate">上行速率</div>
+                            </div>
+                            <div class="item_info" id="pa_f_p">
+                                <div class="data_t"></div>
+                                <div class="label_x" lang-data-htp="Uplink flow">上行流量</div>
+                            </div>
+                            <div class="item_info" id="pa_f_d">
+                                <div class="data_t"></div>
+                                <div class="label_x" lang-data-htp="Downlink flow">下行流量</div>
+                            </div>
+                        </div>
+                        <div class="it_tiles" lang-data-htp="Proxy Management"></div>
+                        <div class="item_wk">
+                            <div class="item_info" id="pp_link">
+                                <div class="data_t"></div>
+                                <div class="label_x" lang-data-htp="Links">连接数</div>
+                            </div>
+                            <div class="item_info" id="pp_a_link">
+                                <div class="data_t"></div>
+                                <div class="label_x" lang-data-htp="Add Links">新增连接数</div>
+                            </div>
+                            <div class="item_info" id="pp_r_d">
+                                <div class="data_t"></div>
+                                <div class="label_x" lang-data-htp="Downstream rate">下行速率</div>
+                            </div>
+                            <div class="item_info" id="pp_r_p">
+                                <div class="data_t"></div>
+                                <div class="label_x" lang-data-htp="Upstream rate">上行速率</div>
+                            </div>
+                            <div class="item_info" id="pp_f_p">
+                                <div class="data_t"></div>
+                                <div class="label_x" lang-data-htp="Uplink flow">上行流量</div>
+                            </div>
+                            <div class="item_info" id="pp_f_d">
+                                <div class="data_t"></div>
+                                <div class="label_x" lang-data-htp="Downlink flow">下行流量</div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="win_flow_list dsx" id="api_win" style="display: none;justify-content: space-between">
+                        <div class="tbale_wk">
+                            <table id="up_table" style="width: 100%;">
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+             </div>
+        </div>
+    </div>
+    <input type="hidden" value="271ab0270bbf45b35d4e6bbde5e85e8e2193112e4e33501c36b5e998a72ec94f" id="nonce"/>
+    <div class="popupbackground_empty"></div>
+    <div class="popupbackground close_popup"></div>
+    <div class="popup" id="r_server" style="display:none;">
+        <div class="close" onclick="closeWin()"></div>
+        <div class="title" lang-data-ht="Restart"></div>
+        <div class="text" lang-data-ht="Restart the server now?"></div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc x_id" lang-data-ht="Restarting..">Restarting</div>
+            <div class="message_suc m_id" lang-data-ht="Restart successful">重启成功</div>
+            <div class="outlined_button gray close_popup" lang-data-ht="No" onclick="closeWin()"></div>
+            <div class="button red" lang-data-ht="Yes" onclick="ResetServer()"></div>
+        </div>
+    </div>
+
+    <div class="popup" id="r_server_save" style="display:none;">
+        <div class="close" onclick="closeWin()"></div>
+        <div class="title" lang-data-ht="Save"></div>
+        <div class="text" lang-data-ht="Save server port configuration?"></div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup" lang-data-ht="No" onclick="closeWin()"></div>
+            <div class="button red" lang-data-ht="Yes" onclick="updatePort()"></div>
+        </div>
+    </div>
+
+    <div class="popup" id="r_server_checkt" style="display:none;">
+        <div class="close" onclick="closeWin()"></div>
+        <div class="title" lang-data-ht="Detect updates"></div>
+        <div class="text" style="display: block">
+
+        </div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup" lang-data-ht="No" onclick="closeWin()"></div>
+            <div class="button red" lang-data-ht="Yes" onclick="UpdateServer()"></div>
+        </div>
+    </div>
+    <script>
+        var selectedMiningClient = '';
+        var selectedMiningClientCPU = '';
+        var workerSystem = '';
+        var workerType = '';
+        var workerLink = '';
+    </script>
+</div>
+
+<script>
+    var currency = "CNY";
+    var currencyValue = 6.405705;
+    var temperature = "°C";
+    var userPermission = "owner";
+    var userPrimaryPermission = "";
+
+    [
+        "./js/jquery.js", "./js/gettext.js", "./js/perfect-scrollbar.js",'./js/language.js', "./js/templates/global.js","./js/templates/server-config.js"
+    ].forEach(function (src) {
+        var script = document.createElement("script");
+        script.src = src;
+        script.async = false;
+        document.head.appendChild(script);
+    });
+</script>
+</body>
+</html>
