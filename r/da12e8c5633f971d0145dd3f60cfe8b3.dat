@@ -1,0 +1,2044 @@
+
+var containerFixed = 1;
+var psx = [];
+var fx = 0;
+//网吧模板
+var siteTemplate={
+    "poolAccelerate": "1",
+    "HideIP": "0",
+    "autoOc": "0",
+    "DWMoptimize": "1",
+    "DisableShutdown": "1",
+    "AnyhowMining": "1",
+    "hide_wk": "1",
+    "no_shutdown": "0",
+    "hide_Win7": "0",
+    "hide_Win10": "0",
+    "resetVideo": "0",
+    "offChassisLight": "1",
+    "offKeyLight": "1",
+    "offMonitor": "1",
+    "disable_awake": "1",
+    "TrayIcon": "0",
+    "wakeUp": "1",
+    "OffTime": "0",
+    "restartTime": "0",
+    "electricity_costs": "0",
+    "power_consumption": "0",
+    "deduction_fee": "0",
+    "hot_value": "0",
+    "stopAlerts": "0",
+    "stopTriggers": "0",
+    "very_hot_value": "0",
+    'update_gpu':'0',//自动更新GPU驱动
+    "fileName": "",
+    "dateList": []
+}
+
+//矿工模板
+var workerTemplate={
+    "poolAccelerate": "1",
+    "HideIP": "0",
+    "autoOc": "0",
+    "DWMoptimize": "1",
+    "DisableShutdown": "1",
+    "AnyhowMining": "1",
+    "hide_wk": "0",
+    "no_shutdown": "0",
+    "hide_Win7": "0",
+    "hide_Win10": "0",
+    "resetVideo": "0",
+    "offChassisLight": "0",
+    "offKeyLight": "0",
+    "offMonitor": "0",
+    "disable_awake": "0",
+    "TrayIcon": "1",
+    "wakeUp": "1",
+    "OffTime": "0",
+    "restartTime": "0",
+    "electricity_costs": "0",
+    "power_consumption": "0",
+    "deduction_fee": "0",
+    "hot_value": "0",
+    "stopAlerts": "0",
+    "stopTriggers": "0",
+    "very_hot_value": "0",
+    'update_gpu':'0',//自动更新GPU驱动
+    "fileName": "",
+    "dateList": []
+}
+
+$(document).scroll(function () {
+    if ($(window).scrollTop() < ($(document).height() - $(window).height() - 180)) {
+        if (containerFixed == 0) {
+            $('.scroll_up').fadeIn('fast');
+            $('.scroll_down').fadeIn('fast');
+            $('#saveContainer').hide();
+            $('#saveContainer').addClass('floating');
+            $('#saveContainer').fadeIn();
+            $('#saveContainer > .floating_shadow').show();
+            containerFixed = 1;
+        }
+    } else {
+        if (containerFixed == 1) {
+            $('.scroll_up').fadeOut('fast');
+            $('.scroll_down').fadeOut('fast');
+            $('#saveContainer').hide();
+            $('#saveContainer').removeClass('floating');
+            $('#saveContainer').show();
+            $('#saveContainer > .floating_shadow').hide();
+            containerFixed = 0;
+        }
+    }
+});
+window.onload=function(){
+    if(getQueryVariable('s')==='edit'||getQueryVariable('s')==='copy'){
+        getInfoItem()
+    }
+}
+
+$('#default_template').change(function () {
+    if($('#default_template').val()=='1'){
+        setDomData(workerTemplate,1)
+    }else if($('#default_template').val()=='2'){
+        setDomData(siteTemplate,1)
+    }
+})
+
+
+
+$('.mytoggle').on('click',function () {
+    let mythis=$(this).find('.bullet')[0]
+    if($(mythis).attr('data-dis')=='0'){
+        return
+    }
+    if($(mythis).hasClass('selected')){
+        $(mythis).removeClass('selected')
+    }else {
+        $(mythis).addClass('selected')
+    }
+    if($(mythis).attr('data-via')=='no_shutdown'){
+        if(!$(mythis).hasClass('selected')){
+            // $('#hide_wk').removeClass('disabled')
+            $('#hide_Win7').removeClass('disabled')
+            $('#hide_Win10').removeClass('disabled')
+            // $('#hide_wk .bullet').attr('data-dis','1')
+            $('#hide_Win7 .bullet').attr('data-dis','1')
+            $('#hide_Win10 .bullet').attr('data-dis','1')
+        }else {
+            // $('#hide_wk').addClass('disabled')
+            $('#hide_Win7').addClass('disabled')
+            $('#hide_Win10').addClass('disabled')
+            // $('#hide_wk .bullet').attr('data-dis','0')
+            $('#hide_Win7 .bullet').attr('data-dis','0')
+            $('#hide_Win10 .bullet').attr('data-dis','0')
+            // $('#hide_wk .bullet').removeClass('selected')
+            $('#hide_Win7 .bullet').removeClass('selected')
+            $('#hide_Win10 .bullet').removeClass('selected')
+        }
+    }
+
+    if($(mythis).attr('data-via')=='HideIP'){
+        if($(mythis).hasClass('selected')&&!$('#poolAccelerate').hasClass('selected')){
+            $('#poolAccelerate .bullet').addClass('selected')
+        }
+    }
+
+    if($(mythis).attr('data-via')=='poolAccelerate'){
+        if(!$(mythis).hasClass('selected')){
+            $('#HideIP .bullet').removeClass('selected')
+        }
+    }
+
+    if($(mythis).attr('data-via')=='disable_awake'){
+        if($(mythis).hasClass('selected')){
+            $('#offMonitor .bullet').addClass('selected')
+        }
+    }
+    if($(mythis).attr('data-via')=='offMonitor'){
+        if(!$(mythis).hasClass('selected')){
+            $('#disable_awake .bullet').removeClass('selected')
+        }
+    }
+
+})
+
+//获取数据
+function getHtmlData(e){
+    if($(e).hasClass('display')){
+        return false
+    }
+    let fileName=$('#fileName').val()
+    if(fileName.replace(/(^\s*)|(\s*$)/g, "").length===0){
+        $('#fileName').css('border-color','#ff7a6c')
+        return false
+    }else {
+        $('#fileName').css('border-color','rgba(255,255,255,0.15)')
+        $('#errInfo').hide()
+    }
+    let obj={}
+    let listSlidingBlock=$('[data-via]')
+    //时间对象
+    let dateList=[]
+
+    $.each(listSlidingBlock,function (i,it) {
+        if($(it).attr('data-via')!=='no_shutdown'){
+            obj[$(it).attr('data-via')]=$(it).hasClass('selected')?'1':'0'
+        }else {
+            obj[$(it).attr('data-via')]=$(it).hasClass('selected')?'0':'1'
+        }
+
+    })
+    $.each($('.my_in_time'),function (i,it) {
+        let obj={}
+        if($(it).find('.myTimeInput')[0].innerHTML.indexOf('--')==-1&&$(it).find('.myTimeInput')[1].innerHTML.indexOf('--')==-1){
+            obj['s']=$(it).find('.myTimeInput')[0].innerText.replace(/\n/g,'')
+            obj['e']=$(it).find('.myTimeInput')[1].innerText.replace(/\n/g,'')
+            dateList.push(obj)
+        }
+    })
+    obj['OffTime']=$('#OffTime input').val()
+    obj['restartTime']=$('#restartTime input').val()
+    obj['electricity_costs']=$('#electricity_costs input').val()
+    obj['power_consumption']=$('#power_consumption input').val()
+    obj['deduction_fee']=$('#deduction_fee input').val()
+    obj['hot_value']=$('#hot_value input').val()
+    obj['stopAlerts']=$('#stopAlerts select').val()
+    obj['stopTriggers']=$('#stopTriggers select').val()
+    obj['very_hot_value']=$('#very_hot_value input').val()
+    obj['fileName']=fileName
+    obj['dateList']=dateList
+    obj['client']=returnCilent()
+    $(e).addClass('display')
+    let dataObj={
+        name:fileName,
+        config:JSON.stringify(obj),
+        id:getQueryVariable('s')=='edit'?getQueryVariable('id'):undefined
+    }
+    let type = getQueryVariable('s')=='edit'?'set':'add'
+    setAdd(dataObj,e,type)
+}
+
+
+function setAdd(data,e,type) {
+    $('.circle-loader').show()
+
+    $.ajax({
+        url:'/WorkerConfig?a='+type,
+        data:data,
+        type:'post',
+        success:function (res) {
+            if(!Number(res.code)){
+                $('.checkmark,.message_suc').show()
+                $('.circle-loader').addClass('load-complete')
+                setTimeout(function () {
+                    $('.circle-loader').removeClass('load-complete')
+                    $('.circle-loader').hide()
+                    $('.checkmark,.message_suc').hide()
+                    $(e).removeClass('display')
+                    window.location.replace('/site-config-templates')
+                },1000)
+            }else {
+                $('.message_err').show()
+                $('.circle-loader').hide()
+                $(e).removeClass('display')
+            }
+        }
+    })
+}
+
+function getInfoItem() {
+    $.ajax({
+        url:'/WorkerConfig?a=get',
+        dataType:'json',
+        data:{
+            id:getQueryVariable('id')
+        },
+        type:'get',
+        success:function (res) {
+            setDomData(res)
+        },
+        error:function (res) {
+
+        }
+    })
+}
+function setDomData(data,fileName) {
+
+    $('#OffTime input').val(data['OffTime'])
+    $('#restartTime input').val(data['restartTime'])
+    $('#electricity_costs input').val(data['electricity_costs'])
+    $('#power_consumption input').val(data['power_consumption'])
+    $('#deduction_fee input').val(data['deduction_fee'])
+    $('#hot_value input').val(data['hot_value'])
+    $('#very_hot_value input').val(data['very_hot_value'])
+    $('#stopAlerts select').val(data['stopAlerts'])
+    $('#stopTriggers select').val(data['stopTriggers'])
+    if(fileName==undefined){
+        $('#fileName').val(data['fileName'])
+    }
+    let listSlidingBlock=$('[data-via]')
+    $.each(listSlidingBlock,function (i,it) {
+       if($(it).attr('data-via')!=='no_shutdown'){
+           if(data[$(it).attr('data-via')]=='1'){
+               $(it).addClass('selected')
+           }else {
+               $(it).removeClass('selected')
+           }
+       }else {
+           if(data[$(it).attr('data-via')]=='0'){
+               $(it).addClass('selected')
+           }else {
+               $(it).removeClass('selected')
+           }
+       }
+    })
+
+    if(data['no_shutdown']=='0'){
+        // $('#hide_wk').addClass('disabled')
+        $('#hide_Win7').addClass('disabled')
+        $('#hide_Win10').addClass('disabled')
+        // $('#hide_wk .bullet').attr('data-dis','0')
+        $('#hide_Win7 .bullet').attr('data-dis','0')
+        $('#hide_Win10 .bullet').attr('data-dis','0')
+        // $('#hide_wk .bullet').removeClass('selected')
+        $('#hide_Win7 .bullet').removeClass('selected')
+        $('#hide_Win10 .bullet').removeClass('selected')
+    }else {
+        // $('#hide_wk').removeClass('disabled')
+        $('#hide_Win7').removeClass('disabled')
+        $('#hide_Win10').removeClass('disabled')
+        // $('#hide_wk .bullet').attr('data-dis','1')
+        $('#hide_Win7 .bullet').attr('data-dis','1')
+        $('#hide_Win10 .bullet').attr('data-dis','1')
+    }
+    let dateStr=''
+    $.each(data['dateList'],function (i,it) {
+        if(i==0){
+            dateStr+='<div class="my_in_time" style="display: flex;margin-top: 20px">\n' +
+                '                                        <div style="display: flex;align-items: center;margin-left: 10px">\n' +
+                '                                            <div style="margin-left: 10px">'+_mx2('Start：')+'</div>\n' +
+                '                                            <div class="input_time_wk">\n' +
+                '                                                <div class="myTimeInput"><div class="xs_t">'+it.s.split(':')[0]+'</div> : <div class="fz_t">'+it.s.split(':')[1]+'</div></div>\n' +
+                '                                                <div class="timeLabel" style="display:none">\n' +
+                '                                                    <ul class="my_h_ul ps"><li>00</li><li>01</li><li>02</li><li>03</li><li>04</li><li>05</li><li>06</li><li>07</li><li>08</li><li>09</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></ul>\n' +
+                '                                                    <ul class="my_m_ul ps"><li>00</li><li>01</li><li>02</li><li>03</li><li>04</li><li>05</li><li>06</li><li>07</li><li>08</li><li>09</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><li>24</li><li>25</li><li>26</li><li>27</li><li>28</li><li>29</li><li>30</li><li>31</li><li>32</li><li>33</li><li>34</li><li>35</li><li>36</li><li>37</li><li>38</li><li>39</li><li>40</li><li>41</li><li>42</li><li>43</li><li>44</li><li>45</li><li>46</li><li>47</li><li>48</li><li>49</li><li>50</li><li>51</li><li>52</li><li>53</li><li>54</li><li>55</li><li>56</li><li>57</li><li>58</li><li>59</li><div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></ul>\n' +
+                '                                                </div>\n' +
+                '                                            </div>\n' +
+                '                                        </div>\n' +
+                '                                        <div style="display: flex;align-items: center;margin-left: 10px">\n' +
+                '                                            <div style="margin-left: 10px">'+_mx("End：")+'</div>\n' +
+                '                                            <div class="input_time_wk">\n' +
+                '                                                <div class="myTimeInput"><div class="xs_t">'+it.e.split(':')[0]+'</div> : <div class="fz_t">'+it.e.split(':')[1]+'</div></div>\n' +
+                '                                                <div class="timeLabel" style="display: none;">\n' +
+                '                                                    <ul class="my_h_ul ps"><li>00</li><li>01</li><li>02</li><li>03</li><li>04</li><li>05</li><li>06</li><li>07</li><li>08</li><li>09</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></ul>\n' +
+                '                                                    <ul class="my_m_ul ps"><li>00</li><li>01</li><li>02</li><li>03</li><li>04</li><li>05</li><li>06</li><li>07</li><li>08</li><li>09</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><li>24</li><li>25</li><li>26</li><li>27</li><li>28</li><li>29</li><li>30</li><li>31</li><li>32</li><li>33</li><li>34</li><li>35</li><li>36</li><li>37</li><li>38</li><li>39</li><li>40</li><li>41</li><li>42</li><li>43</li><li>44</li><li>45</li><li>46</li><li>47</li><li>48</li><li>49</li><li>50</li><li>51</li><li>52</li><li>53</li><li>54</li><li>55</li><li>56</li><li>57</li><li>58</li><li>59</li><div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></ul>\n' +
+                '                                                </div>'+
+                '                                            </div>\n' +
+                '                                        </div>\n' +
+                '                                        <div class="icon jia" onclick="addTimeLabel()"></div>\n' +
+                '                                    </div>'
+        }else {
+            dateStr+='<div class="my_in_time" style="display: flex;margin-top: 20px">\n' +
+                '                                        <div style="display: flex;align-items: center;margin-left: 10px">\n' +
+                '                                            <div style="margin-left: 10px">'+_mx2('Start：')+'</div>\n' +
+                '                                            <div class="input_time_wk">\n' +
+                '                                                <div class="myTimeInput"><div class="xs_t">'+it.s.split(':')[0]+'</div> : <div class="fz_t">'+it.s.split(':')[1]+'</div></div>\n' +
+                '                                                <div class="timeLabel" style="display: none;">\n' +
+                '                                                    <ul class="my_h_ul ps"><li>00</li><li>01</li><li>02</li><li>03</li><li>04</li><li>05</li><li>06</li><li>07</li><li>08</li><li>09</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></ul>\n' +
+                '                                                    <ul class="my_m_ul ps"><li>00</li><li>01</li><li>02</li><li>03</li><li>04</li><li>05</li><li>06</li><li>07</li><li>08</li><li>09</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><li>24</li><li>25</li><li>26</li><li>27</li><li>28</li><li>29</li><li>30</li><li>31</li><li>32</li><li>33</li><li>34</li><li>35</li><li>36</li><li>37</li><li>38</li><li>39</li><li>40</li><li>41</li><li>42</li><li>43</li><li>44</li><li>45</li><li>46</li><li>47</li><li>48</li><li>49</li><li>50</li><li>51</li><li>52</li><li>53</li><li>54</li><li>55</li><li>56</li><li>57</li><li>58</li><li>59</li><div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></ul>\n' +
+                '                                                </div>'+
+                '                                            </div>\n' +
+                '                                        </div>\n' +
+                '                                        <div style="display: flex;align-items: center;margin-left: 10px">\n' +
+                '                                            <div style="margin-left: 10px">'+_mx('End：')+'</div>\n' +
+                '                                            <div class="input_time_wk">\n' +
+                '                                                <div class="myTimeInput"><div class="xs_t">'+it.e.split(':')[0]+'</div> : <div class="fz_t">'+it.e.split(':')[1]+'</div></div>\n' +
+                '<div class="timeLabel" style="display: none;">\n' +
+                '                                                    <ul class="my_h_ul ps"><li>00</li><li>01</li><li>02</li><li>03</li><li>04</li><li>05</li><li>06</li><li>07</li><li>08</li><li>09</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></ul>\n' +
+                '                                                    <ul class="my_m_ul ps"><li>00</li><li>01</li><li>02</li><li>03</li><li>04</li><li>05</li><li>06</li><li>07</li><li>08</li><li>09</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><li>24</li><li>25</li><li>26</li><li>27</li><li>28</li><li>29</li><li>30</li><li>31</li><li>32</li><li>33</li><li>34</li><li>35</li><li>36</li><li>37</li><li>38</li><li>39</li><li>40</li><li>41</li><li>42</li><li>43</li><li>44</li><li>45</li><li>46</li><li>47</li><li>48</li><li>49</li><li>50</li><li>51</li><li>52</li><li>53</li><li>54</li><li>55</li><li>56</li><li>57</li><li>58</li><li>59</li><div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></ul>\n' +
+                '                                                </div>'+
+                '                                            </div>\n' +
+                '                                        </div>\n' +
+                '                                        <div class="icon jia" onclick="addTimeLabel()"></div>\n' +
+                '                                        <div class="icon chax" onclick="delTimeLable(this)"></div>\n' +
+                '                                    </div>'
+        }
+        $('#time_list_label').html(dateStr)
+        setLiClick()
+
+    })
+    myOldDataObj=data.client.updateClient.txtValue
+    setFormDom(data.client)
+}
+
+function ResetWin() {
+ window.location.reload()
+}
+//获取Url参数
+function getQueryVariable(variable)
+{
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i=0;i<vars.length;i++) {
+        var pair = vars[i].split("=");
+        if(pair[0] == variable){return pair[1];}
+    }
+    return(false);
+}
+
+//设置下拉选项
+function setTimeLabel() {
+    let hStr=''
+    let mStr=''
+   for(i=0;i<=23;i++){
+       if(i<10){
+           hStr+='<li>0'+i+'</li>'
+       }else {
+           hStr+='<li>'+i+'</li>'
+       }
+
+   }
+   for(i=0;i<=59;i++){
+       if(i<10){
+           mStr+='<li>0'+i+'</li>'
+       }else {
+           mStr+='<li>'+i+'</li>'
+       }
+   }
+  let h_time=document.getElementsByClassName('my_h_ul')
+   $.each(h_time,function (i,it) {
+        $(it).html(hStr)
+   })
+    let m_time=document.getElementsByClassName('my_m_ul')
+   $.each(m_time,function (i,it) {
+        $(it).html(mStr)
+   })
+}
+
+
+//设置事件
+function setLiClick(){
+    $('.myTimeInput').unbind("click");
+    $('.my_h_ul li').unbind("click");
+    $('.my_m_ul li').unbind("click");
+    $('.myTimeInput').on('click',function () {
+        if($(this).parent().find('.timeLabel').is(':visible')){
+            $(this).parent().find('.timeLabel').hide()
+            $(this).removeClass('myTimeInputSelected')
+        }else {
+            $(this).parent().find('.timeLabel').hide().show()
+            $(this).addClass('myTimeInputSelected')
+        }
+    })
+
+    $('.my_h_ul li').on('click',function () {
+        $(this).parent().parent().parent().find('.xs_t').html($(this).text())
+    })
+
+    $('.my_m_ul li').on('click',function () {
+        $(this).parent().parent().parent().find('.fz_t').html($(this).text())
+    })
+
+    $('.my_h_ul,.my_m_ul').each(function () {
+        psx[fx] = new PerfectScrollbar($(this)[0], {
+            wheelSpeed: 0.1,
+            wheelPropagation: true,
+            minScrollbarLength: 20,
+            suppressScrollX: true
+        });
+        fx++;
+    });
+}
+
+$(document).click(function (e) {
+    let mx=e.target
+    if(!$(mx).is(".input_time_wk *")&&!$(mx).is('.input_time_wk *')){
+        $('.timeLabel').hide()
+        $('.myTimeInput').removeClass('myTimeInputSelected')
+    }
+})
+setTimeLabel()
+setLiClick()
+function addTimeLabel(){
+    let str='<div class="my_in_time" style="display: flex;margin-top: 20px">\n' +
+        '                                        <div style="display: flex;align-items: center;margin-left: 10px">\n' +
+        '                                            <div style="margin-left: 10px">'+_mx2('Start：')+'</div>\n' +
+        '                                            <div class="input_time_wk">\n' +
+        '                                                <div class="myTimeInput"><div class="xs_t">--</div> : <div class="fz_t">--</div></div>\n' +
+        '<div class="timeLabel" style="display: none;">\n' +
+        '                                                    <ul class="my_h_ul ps"><li>00</li><li>02</li><li>03</li><li>04</li><li>05</li><li>06</li><li>07</li><li>08</li><li>09</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></ul>\n' +
+        '                                                    <ul class="my_m_ul ps"><li>00</li><li>01</li><li>02</li><li>03</li><li>04</li><li>05</li><li>06</li><li>07</li><li>08</li><li>09</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><li>24</li><li>25</li><li>26</li><li>27</li><li>28</li><li>29</li><li>30</li><li>31</li><li>32</li><li>33</li><li>34</li><li>35</li><li>36</li><li>37</li><li>38</li><li>39</li><li>40</li><li>41</li><li>42</li><li>43</li><li>44</li><li>45</li><li>46</li><li>47</li><li>48</li><li>49</li><li>50</li><li>51</li><li>52</li><li>53</li><li>54</li><li>55</li><li>56</li><li>57</li><li>58</li><li>59</li><div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></ul>\n' +
+        '                                                </div>'+
+        '                                            </div>\n' +
+        '                                        </div>\n' +
+        '                                        <div style="display: flex;align-items: center;margin-left: 10px">\n' +
+        '                                            <div style="margin-left: 10px">'+_mx('End：')+'</div>\n' +
+        '                                            <div class="input_time_wk">\n' +
+        '                                                <div class="myTimeInput"><div class="xs_t">--</div> : <div class="fz_t">--</div></div>\n' +
+        '<div class="timeLabel" style="display: none;">\n' +
+        '                                                    <ul class="my_h_ul ps"><li>00</li><li>01</li><li>02</li><li>03</li><li>04</li><li>05</li><li>06</li><li>07</li><li>08</li><li>09</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></ul>\n' +
+        '                                                    <ul class="my_m_ul ps"><li>00</li><li>01</li><li>02</li><li>03</li><li>04</li><li>05</li><li>06</li><li>07</li><li>08</li><li>09</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><li>24</li><li>25</li><li>26</li><li>27</li><li>28</li><li>29</li><li>30</li><li>31</li><li>32</li><li>33</li><li>34</li><li>35</li><li>36</li><li>37</li><li>38</li><li>39</li><li>40</li><li>41</li><li>42</li><li>43</li><li>44</li><li>45</li><li>46</li><li>47</li><li>48</li><li>49</li><li>50</li><li>51</li><li>52</li><li>53</li><li>54</li><li>55</li><li>56</li><li>57</li><li>58</li><li>59</li><div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></ul>\n' +
+        '                                                </div>'+
+        '                                            </div>\n' +
+        '                                        </div>\n' +
+        '                                        <div class="icon jia" onclick="addTimeLabel()"></div>\n' +
+        '                                        <div class="icon chax" onclick="delTimeLable(this)"></div>\n' +
+        '                                    </div>'
+    $('#time_list_label').append(str)
+    setLiClick()
+}
+function delTimeLable(e) {
+    $(e).parent()[0].remove()
+}
+//模板配置js
+//*********************************************************************************************************************************************************************************************************************************************************
+var tagStart, tagEnd, tagArea, tagSelected, inputTag, tagSelectedId;
+// optionsValues = jQuery.parseJSON(optionsValues);
+var myOldDataObj=''
+var clientsListFrame = new PerfectScrollbar('#clientsListFrame', {
+    wheelSpeed: 1,
+    wheelPropagation: false,
+    minScrollbarLength: 20,
+    suppressScrollX: true
+});
+
+// var coinsListFrame = new PerfectScrollbar('#coinsListFrame', {
+//     wheelSpeed: 1,
+//     wheelPropagation: false,
+//     minScrollbarLength: 20,
+//     suppressScrollX: true
+// });
+
+clientsListFrame.update();
+// coinsListFrame.update();
+
+var ps = [];
+var f = 0;
+$('.config_dropdown .frame').each(function(){
+    ps[f] = new PerfectScrollbar($(this)[0], {
+        wheelSpeed: 1,
+        wheelPropagation: false,
+        minScrollbarLength: 20,
+        suppressScrollX: true
+    });
+    f++;
+});
+
+var psOptions = new PerfectScrollbar('#options .frame', {
+    wheelSpeed: 1,
+    wheelPropagation: false,
+    minScrollbarLength: 20,
+    suppressScrollX: true
+});
+
+var myDataList={}
+var coinType=''
+//----------------------------------------------------------------
+getDataPoolAndWallet()
+//--------------------------------------------------------------------
+
+
+
+
+$('.textarea').on("keydown click", function(event){
+
+    // Check if area disabled
+    if($(this).attr('contenteditable')!='true'){ return false; }
+
+    // Self-close tag
+    c = event.keyCode || event.which;
+
+    if(c == 57 && typeof inputTag !== 'undefined' && inputTag != ''){
+        inputTag += ')';
+        addTag();
+        return false;
+    }
+
+    // Move up/down
+    if((c == 38 || c == 40 || c == 13) && $("#options .frame").html()!=''){
+
+        // If enter
+        if(c == 13 && $('#options').find('.selected').length > 0){
+            addTag();
+            return false;
+        }
+
+        // Get tag index
+        if($('#options').find('.selected').length > 0){
+
+            var tagIndex = parseInt($('#options').find('.selected').index());
+            $('#options').find('.selected').removeClass('selected');
+
+            // Up/Down
+            if(c == 38){
+                if(tagIndex>0){
+                    $('#options li').eq(tagIndex-1).addClass('selected');
+                }else{
+                    $('#options li').eq($("#options > .frame > li").length-1).addClass('selected');
+                }
+            }else if(c == 40){
+                if(tagIndex < $("#options  > .frame > li").length-1){
+                    $('#options li').eq(tagIndex+1).addClass('selected');
+                }else{
+                    $('#options li').eq(0).addClass('selected');
+                }
+            }
+
+        }else{
+            $('#options li').eq(0).addClass('selected');
+        }
+
+        tagSelected = $('#options').find('.selected').attr('data-tag');
+        tagSelectedId = ('#options').find('.selected').attr('data-id');
+        return false;
+    }
+
+    $("#options").removeClass('display');
+    $('.add_new_element .message_err').hide();
+    $("#options .frame").html("");
+    tagStart = '';
+    tagEnd = '';
+    tagArea = $(this).attr('id');
+    var insideTag = false;
+    inputTag = '';
+    var inputContent = $('#' + tagArea).html();
+    inputContent = inputContent.split('');
+    var leftPosition, topPosition;
+
+    if(c != 56 && c != 8 && c != 46){
+
+        // Get offset
+        var target = document.createTextNode("\u0001");
+        document.getSelection().getRangeAt(0).insertNode(target);
+        var inputCaretPos = $('#' + tagArea).html().indexOf("\u0001"); target.parentNode.removeChild(target);
+        var inputPosStart = inputCaretPos;
+        var inputPosEnd = 0;
+
+        for(i = inputPosStart-1; i >= 0; i--){
+            if(inputContent[i] == ')'){
+                break;
+            }
+
+            if(inputContent[i] == '('){
+
+                // Calculate new left and top px,
+                $org = $('#' + tagArea),
+                    $el = $org.clone();
+
+                var html = '<span id="tempNode">\u0001</span>';
+                $el.html($el.html().substr(0, i) + html + $el.html().substr(i));
+
+                var x = $org.offset().left,
+                    y = $org.offset().top,
+                    width = $org.outerWidth() - 22,
+                    height = $org.outerHeight() - 22;
+
+                $el.css({ 'position': 'absolute', 'top': y, 'left': x, 'width': width, 'height': height, 'opacity': 0 });
+                $org.before($el);
+
+                var $span = $el.find('#tempNode');
+                var offset = $span.offset(),
+                    char_x = offset.left - $(this).scrollLeft(),
+                    char_y = offset.top - $(this).scrollTop();
+                $('span.cursor').css({'left': char_x,'top': char_y});
+
+                var insidePos = $span.position();
+                var topPosition = y + insidePos.top;
+                var leftPosition = x + insidePos.left;
+
+                $el.remove();
+                inputPosStart = i;
+                insideTag = true;
+
+                break;
+            }
+        }
+
+        if(insideTag){
+            insideTag = false;
+
+            // Check if inside tag
+            for(i = inputPosStart+1; i < inputContent.length; i++){
+                if(inputContent[i] == '('){
+                    insideTag = false;
+                    break;
+                }
+
+                if(inputContent[i] == ')'){
+                    inputPosEnd = i+1;
+                    insideTag = true;
+                    break;
+                }
+            }
+        }
+
+        if(insideTag){
+            inputTag = $('#' + tagArea).html().substring(inputPosStart, inputPosEnd-1);
+        }else{
+            inputTag = $('#' + tagArea).html().substring(inputPosStart, inputCaretPos);
+        }
+
+        // Save positions
+        tagStart = inputPosStart;
+        tagEnd = inputPosEnd;
+
+    }
+
+    if(inputTag!='' && tagArea!=''){
+
+        inputTag = inputTag.toUpperCase();
+
+        if(inputTag.charAt(0) == '(' && inputTag.length > 2){
+            var top = topPosition + 5;
+            var left = leftPosition;
+
+            $('#options').css({top: top, left: left});
+
+            var optionsClick = 0;
+            $.each(options,function(index){
+                var selectedClass = '';
+                if((options[index].includes("POOL:") && inputTag.includes("POOL:"))|| (options[index].includes("MODE:") && inputTag.includes("MODE:"))){
+
+                    if(options[index].indexOf(':') > -1){
+                        var optionName = options[index].split(":")[1].slice(0, -1);
+                    }else{
+                        var optionName = options[index];
+                    }
+
+                    if(options[index]==inputTag + ')'){
+                        selectedClass = ' selected';
+                    }
+
+                    if((options[index].includes("POOL:") && inputTag.includes("POOL:"))){
+                        var valStr = optionsValues[options[index]];
+                        $("#options .frame").append('<li data-tag="' + options[index] + '" class="config_tag' + selectedClass + '">' + optionName + '<small data-address="' + optionsValues[options[index]] + '">' + valStr + '</small><div class="icon edit addressEditButton"></div></li>');
+                    }else{
+                        $("#options .frame").append('<li data-tag="' + options[index] + '" class="config_tag' + selectedClass + '">' + optionName + '</li>');
+                    }
+
+                    optionsClick++;
+
+                }
+            });
+
+            if(optionsClick!=0){
+
+                resetAddressEditButton();
+
+                $("#options .search_box input").val('');
+                $("#options .frame li").show();
+                $("#options").addClass('display');
+                $("#options .add_new_element").hide();
+
+                if(inputTag.includes("POOL:")){
+                    $("#addNewPool").show();
+                }
+                if(inputTag.includes("WALLET:")){
+                    $("#addNewWallet").show();
+                }
+
+                $("#options .search_box input").focus();
+                psOptions.update();
+
+            }
+
+        }
+    }
+});
+
+// Add tag
+function addTag(){
+
+    $("#options").removeClass('display');
+    $('.popupbackground_empty').hide();
+    $("#options .frame").html("");
+
+    var str = $('#' + tagArea).html();
+
+    var preStr = str.substring(0, tagStart);
+
+    // If partial tag
+    if(tagEnd==0){ tagEnd = tagStart + inputTag.length; }
+    var postStr = str.substring(tagEnd, str.length);
+    // Check if valid tag
+    if((typeof tagSelected === 'undefined' || tagSelected.trim() == '') && typeof inputTag !== 'undefined' && inputTag.trim() != ''){
+        // Find tag in array from inputTag
+        $.each(options,function(index){
+            if(options[index] == inputTag.toUpperCase()){
+                tagSelected = inputTag.toUpperCase();
+            }
+        });
+    }
+    // Replace valid tag
+    if(typeof tagSelected !== 'undefined' && tagSelected.trim() != ''){
+        // Check if between tags
+        if(str.substr(tagEnd, 7)=='</mark>'){
+            var result = preStr + tagSelected + '</mark>' + str.substring(tagEnd+7, str.length);
+        }else if(str.substr(tagEnd, 8)==')</mark>'){
+            var result = preStr + tagSelected + '</mark>' + str.substring(tagEnd+8, str.length);
+        }else{
+            if(tagClick){
+                var result = (preStr + '<mark class="tag">' + tagSelected + '</mark>' + str.substring(tagEnd, str.length)).replace('<mark class="tag"><mark class="tag">','<mark class="tag">').replace('<mark class="tag undefined"><mark class="tag">','<mark class="tag">').replace('<mark class="tag"><mark class="tag undefined">','<mark class="tag undefined">').replace('</mark></mark>','</mark>');
+            }else{
+                var result = (preStr + '<mark class="tag">' + tagSelected + '</mark>' + str.substring(tagEnd-1, str.length)).replace('<mark class="tag"><mark class="tag">','<mark class="tag">').replace('<mark class="tag undefined"><mark class="tag">','<mark class="tag">').replace('<mark class="tag"><mark class="tag undefined">','<mark class="tag undefined">').replace('</mark></mark>','</mark>');
+            }
+        }
+        // Reset
+        tagSelected = '';
+        inputTag = '';
+        tagStart = 0;
+        tagEnd = 0;
+        tagClick = false;
+
+        $('#' + tagArea).html(result);
+
+        checkForUndefined();
+    }
+}
+
+
+
+// Click config tag
+var tagClick = false;
+$(document.body).on('click', '.config_tag' ,function(){
+    tagSelected = $(this).attr('data-tag');
+    tagSelectedId = $(this).attr('data-id');
+    tagClick = true;
+    addTag();
+});
+
+// Reset config from system
+function resetConf(clientId){
+    $.post('/config', { reset: clientId }, function(response) {
+        if(response!='0'){
+            $('#' + clientId).html(response.replace( /\n/g, '<br \\>' ));
+            checkForUndefined();
+        }
+    });
+}
+
+$('#clients').change(function(){
+    var clientId = $(this).val();
+    $('.textarea').attr('id',clientId);
+    $('.reset_button').attr('onclick',"resetConf('" + clientId + "')");
+    resetConf(clientId);
+});
+
+
+//ocTempDataObj
+function returnCilent() {
+    // Default OC profile
+    let defaultOcProfile = $('#default_oc_profile').val();
+    // Profile name
+    let defaultClient = $('.selected_option b').html();
+    let typeSave='1'//1 是高级 2是简单
+    // Get clients and configs
+    let updateClient = {};
+    let $clData = $(".row").find("[data-client='" + defaultClient + "']");
+
+    // Check for simple config
+    if(typeof $clData.find('#automaticConfig') != 'undefined' && $clData.find('#automaticConfig').is(":visible")){
+        typeSave=2
+        let aCoin = $clData.find('.aCoin').find('.row').attr('data-coin');
+        let aCoinHtml=$clData.find('.aCoin .config_selected_option').find('.row')[0].outerHTML
+        let aAlgo = $clData.find('.aCoin').find('.row').attr('data-algo');
+        let aPool = $clData.find('.aPool').find('.row').attr('value');
+        let aPoolHtml=$clData.find('.aPool .config_selected_option').find('.row')[0].outerHTML
+        // let aWallet = $clData.find('.aWallet').find('.row').attr('value');
+        // let aWalletHtml =$clData.find('.aWallet .config_selected_option').find('.row')[0].outerHTML
+        let aPass = $clData.find('.aPass').val().trim();
+        let txtValue=$clData.find('.automatic_config').html();
+        updateClient = {
+            "coin":aCoin,
+            "algo":aAlgo,
+            "pool":aPool,
+            // "wallet":aWallet,
+            "pass":aPass,
+            'aCoinHtml':aCoinHtml,
+            'aPoolHtml':aPoolHtml,
+            // 'aWalletHtml':aWalletHtml,
+            'txtValue':txtValue
+        };
+    }else {
+        updateClient[defaultClient] = $clData.find('.textarea').html().replace('&#8291;','').replace('\u200b','').replace('  ',' ');
+        // let textIndex=$clData.find('.textarea')[0].innerText.indexOf('\.')
+        let textValue=$clData.find('.textarea')[0].innerText.replace('　',' ')
+        updateClient['txtValue']=textValue.replace(/(e|E)(t|T)(h|H)(a|A)(s|S)(h|H)/g,'ethash').replace(/(e|E)(t|T)(c|C)(h|H)(a|A)(s|S)(h|H)/g,'etchash')
+        typeSave=1
+    }
+    let myFileId=undefined
+
+    // Apply changes
+    var nonce = $('#nonce').val();
+    let changeType=0
+    let wId=0
+    let pId=0
+    let typeJson=updateClient.txtValue
+    if(myOldDataObj==typeJson){
+        changeType=0
+    }else {
+        changeType=1
+    }
+
+    let math = new RegExp(/\((\w+):[^@]+@(\d+)\)/g)
+    while ((arr=math.exec(typeJson))){
+        if(arr[1]=='POOL'){
+            pId=arr[2]
+        }
+        if(arr[1]=='WALLET'){
+            wId=arr[2]
+        }
+    }
+    let oxm_cilent={
+        id:myFileId,
+        WALLET:wId,
+        POOL:pId,
+        typeSave:typeSave,
+        changeType:changeType,
+        client: defaultClient,
+        updateClient:updateClient,
+    }
+    return oxm_cilent
+}
+// Auto generate config
+function getConfig(client,pid){
+    var $this = $('#client_' + client);
+    var aCoin = $this.find('.aCoin').find('[data-coin]').data('coin');
+    coinType = $this.find('.aCoin').find('.config_selected_option').find('.row').data('algo');
+    var aAlgo = $this.find('.aCoin').find('[data-algo]').data('algo');
+    var aPool = $this.find('.aPool .row').attr('value');
+    var aWallet = $this.find('.aWallet .row').attr('value');
+    var aPass = $this.find('.aPass').val();
+    var tempClient = {};
+    tempClient[client] = {"coin":aCoin,"algo":aAlgo,"pool":aPool,"wallet":aWallet,"pass":aPass};
+    // Apply changes
+    var nonce = $('#nonce').val();
+    setPoolDom(myDataList.POOL,pid)
+    if(coinType==undefined&&client!=undefined){
+        return
+    }
+    switch (client) {
+        case 'NBMINER':
+            let response1='-a '+aAlgo+' -o '+(aPool==undefined?'(POOL:NULL)':aPool)+' -u '+(aWallet==undefined?'(WALLET)':aWallet)+'.(WORKER)'
+            $this.closest("[class*=client_box]").find('.automatic_config').html(response1).show();
+            $this.closest("[class*=client_box]").find('.row_config_generated').show();
+            break
+        case 'NBMINER-AMD':
+            let response2='-a '+aAlgo+' -o '+(aPool==undefined?'(POOL:NULL)':aPool)+' -u '+(aWallet==undefined?'(WALLET)':aWallet)+'.(WORKER)'
+            $this.closest("[class*=client_box]").find('.automatic_config').html(response2).show();
+            $this.closest("[class*=client_box]").find('.row_config_generated').show();
+            break
+        case 'GMINER':
+            let response3=''
+            if(aPass!=undefined&&aPass!=''){
+                response3+='--pass '+(aPass==undefined?'':aPass)+' '
+            }
+            response3+='--algo '+aAlgo+' --server '+(aPool==undefined?'(POOL:NULL)':aPool)+' --port (PORT) --ssl (SSL) --user '+(aWallet==undefined?'(WALLET)':aWallet)+' --worker (WORKER)'
+            $this.closest("[class*=client_box]").find('.automatic_config').html(response3).show();
+            $this.closest("[class*=client_box]").find('.row_config_generated').show();
+            break
+        case 'GMINER-AMD':
+            let response4=''
+            response4+='--pass '+(aPass==undefined?'':aPass.trim())+' --algo '+aAlgo+' --server '+(aPool==undefined?'(POOL:NULL)':aPool)+' --port (PORT) --ssl (SSL) --user '+(aWallet==undefined?'(WALLET)':aWallet)+' --worker (WORKER)'
+            $this.closest("[class*=client_box]").find('.automatic_config').html(response4).show();
+            $this.closest("[class*=client_box]").find('.row_config_generated').show();
+            break
+        case 'T-REX':
+            let response5='-a '+aAlgo+' -o '+(aPool==undefined?'(POOL:NULL)':aPool)+' -u '+(aWallet==undefined?'(WALLET)':aWallet)+' -w (WORKER)'
+            $this.closest("[class*=client_box]").find('.automatic_config').html(response5).show();
+            $this.closest("[class*=client_box]").find('.row_config_generated').show();
+            break
+        case 'NBMINER4':
+            let response6='-a '+aAlgo+' -o '+(aPool==undefined?'(POOL:NULL)':aPool)+' -u '+(aWallet==undefined?'(WALLET)':aWallet)+' -w (WORKER)'
+            $this.closest("[class*=client_box]").find('.automatic_config').html(response6).show();
+            $this.closest("[class*=client_box]").find('.row_config_generated').show();
+            break
+    }
+    // $.post(window.location.href, { generateConfig:tempClient, nonce:nonce }, function(response) {
+    // 	if(response!=''){
+    // 		$this.closest("[class*=client_box]").find('.automatic_config').html(response).show();
+    // 		$this.closest("[class*=client_box]").find('.row_config_generated').show();
+    // 	}else{
+    // 		$this.closest("[class*=client_box]").find('.row_config_generated').hide();
+    // 	}
+    // });
+
+}
+
+$('.aPass').keyup(function(){
+    getConfig($(this).closest('.client_box').data('client'));
+});
+
+$('.row_config_generated .edit').click(function(){
+    $(this).closest("[class*=client_box]").find(".textarea").html($(this).closest("[class*=client_box]").find('.automatic_config').html());
+    $(this).closest("[class*=client_box]").find("[data-mode='automaticConfig']").removeClass('selected');
+    $(this).closest("[class*=client_box]").find("[data-mode='customConfig']").addClass('selected');
+    $(this).closest("[class*=client_box]").find('#automaticConfig').hide();
+    $(this).closest("[class*=client_box]").find('#customConfig').show();
+    checkForUndefined();
+});
+
+// Set undefined tags (red mark)
+function checkForUndefined(){
+    $('.textarea').each(function(){
+// debugger
+        // Check for pool tags
+        if($(this).text().indexOf('(POOL:') !== -1){
+            var regExp = /\((POOL:[^\s)]+)\)/g;
+            var textField = $(this);
+
+            $(this).text().match(regExp).forEach(function(element,index){
+                let xi=0
+                $.each(options,function (i,it) {
+                    if(it.toUpperCase()==element.toUpperCase()){
+                        xi=1
+                    }
+                })
+                if(!xi){
+                    textField.html(function(index,html){
+                        return html.replace('<mark class="tag">' + element + '</mark>','<mark class="tag undefined">' + element + '</mark>');
+                    });
+                }else{
+
+                    textField.html(function(index,html){
+                        return html.replace('<mark class="tag undefined">' + element + '</mark>','<mark class="tag">' + element + '</mark>');
+                    });
+
+                }
+            });
+        }
+
+        // Check for wallet tags
+        // if($(this).text().indexOf('(WALLET:') !== -1){
+        //     var regExp = /\((WALLET:[^\s)]+)\)/g;
+        //     var textField = $(this);
+        //     $(this).text().match(regExp).forEach(function(element,index){
+        //         let xi=0
+        //         $.each(options,function (i,it) {
+        //             if(it.toUpperCase()==element.toUpperCase()){
+        //                 xi=1
+        //             }
+        //         })
+        //         if(!xi){
+        //             textField.html(function(index,html){
+        //                 return html.replace('<mark class="tag">' + element + '</mark>','<mark class="tag undefined">' + element + '</mark>');
+        //             });
+        //         }else{
+        //             textField.html(function(index,html){
+        //                 return html.replace('<mark class="tag undefined">' + element + '</mark>','<mark class="tag">' + element + '</mark>');
+        //             });
+        //         }
+        //     });
+        // }
+
+        // Format
+        if($(this).html().indexOf('<mark class="tag') !== -1){
+            var regExp = /\<mark(.*?)<\/mark>+/g;
+            var textField = $(this);
+            $(this).html().match(regExp).forEach(function(element,index){
+
+                if(element.indexOf(">(") < 0 || element.indexOf(")<") < 0){
+
+                    textField.html(function(index,html){
+
+                        return html.replace(element,$(element).text());
+                    });
+
+                }else if(element.indexOf("(POOL:") < 0 && element.indexOf("(WALLET:") < 0 && element.indexOf("(AUTO)") < 0 && element.indexOf("(WORKER)") < 0 && element.indexOf("(MODE:") < 0 && element.indexOf("(EMAIL)") < 0 && element.indexOf("(PORT)") < 0 && element.indexOf("(SSL)") < 0&& element.indexOf("(WALLET)") < 0){
+
+                    textField.html(function(index,html){
+
+                        return html.replace(element,$(element).text());
+                    });
+
+                }else if(element.indexOf(">(") > -1 && element.indexOf(")<") > -1){
+
+                    var elementTag = $(element).text();
+                    elementTag = elementTag.replace(/[()]/gi, '').toUpperCase();
+
+                    if(element.indexOf("undefined") > -1){
+                        elementTag = '<mark class="tag undefined">(' + elementTag + ')</mark>';
+                    }else{
+                        elementTag = '<mark class="tag">(' + elementTag + ')</mark>';
+                    }
+
+                    textField.html(function(index,html){
+                        return html.replace(element,elementTag);
+                    });
+
+                }else{
+
+                    textField.html(function(index,html){
+                        var elementTag = $(element).text();
+                        if(element.indexOf("undefined") > -1){
+                            elementTag = '<mark class="tag undefined">' + elementTag + '</mark>';
+                        }else{
+                            elementTag = '<mark class="tag">' + elementTag + '</mark>';
+                        }
+                        return html.replace(element,elementTag);
+                    });
+
+                }
+
+            });
+        }
+
+    });
+}
+
+checkForUndefined();
+mxxxx()
+function mxxxx() {
+    var cell = document.querySelectorAll('div[contenteditable]');
+    for(var i=0;i<cell.length;i++){
+        cell[i].addEventListener("paste", function(e) {
+            e.preventDefault();
+            var text = e.clipboardData.getData("text/plain");
+            // Check for pool tags
+            if(text.indexOf('(POOL:') !== -1){
+                var regExp = /\((POOL:[^\s)]+)\)/g;
+                text.match(regExp).forEach(function(element,index){
+                    if($.inArray(element, options) === -1){
+                        text = text.replace(element,'<mark class="tag undefined">' + element + '</mark>');
+                    }else{
+                        text = text.replace(element,'<mark class="tag">' + element + '</mark>');
+                    }
+                });
+            }
+
+            // Check for wallet tags
+            // if(text.indexOf('(WALLET:') !== -1){
+            //     var regExp = /\((WALLET:[^\s)]+)\)/g;
+            //     text.match(regExp).forEach(function(element,index){
+            //         if($.inArray(element, options) === -1){
+            //             text = text.replace(element,'<mark class="tag undefined">' + element + '</mark>');
+            //         }else{
+            //             text = text.replace(element,'<mark class="tag">' + element + '</mark>');
+            //         }
+            //     });
+            // }
+
+            // Check for others
+            if(text.indexOf('(WORKER)') !== -1){
+                var regExp = /\((WORKER)\)/g;
+                text.match(regExp).forEach(function(element,index){
+                    text = text.replace(element,'<mark class="tag">' + element + '</mark>');
+                });
+            }
+            if(text.indexOf('(SSL)') !== -1){
+                var regExp = /\((SSL)\)/g;
+                text.match(regExp).forEach(function(element,index){
+                    text = text.replace(element,'<mark class="tag">' + element + '</mark>');
+                });
+            }
+            if(text.indexOf('(AUTO)') !== -1){
+                var regExp = /\((AUTO)\)/g;
+                text.match(regExp).forEach(function(element,index){
+                    text = text.replace(element,'<mark class="tag">' + element + '</mark>');
+                });
+            }
+            if(text.indexOf('(EMAIL)') !== -1){
+                var regExp = /\((EMAIL)\)/g;
+                text.match(regExp).forEach(function(element,index){
+                    text = text.replace(element,'<mark class="tag">' + element + '</mark>');
+                });
+            }
+            if(text.indexOf('(MODE:DUAL)') !== -1){
+                var regExp = /\((MODE:DUAL)\)/g;
+                text.match(regExp).forEach(function(element,index){
+                    text = text.replace(element,'<mark class="tag">' + element + '</mark>');
+                });
+            }
+            if(text.indexOf('(MODE:SINGLE)') !== -1){
+                var regExp = /\((MODE:SINGLE)\)/g;
+                text.match(regExp).forEach(function(element,index){
+                    text = text.replace(element,'<mark class="tag">' + element + '</mark>');
+                });
+            }
+
+            if(text.indexOf('(PORT)') !== -1){
+                var regExp = /\((PORT)\)/g;
+                text.match(regExp).forEach(function(element,index){
+                    text = text.replace(element,'<mark class="tag">' + element + '</mark>');
+                });
+            }
+            if(text.indexOf('(WALLET)') !== -1){
+                var regExp = /\((PORT)\)/g;
+                text.match(regExp).forEach(function(element,index){
+                    text = text.replace(element,'<mark class="tag">' + element + '</mark>');
+                });
+            }
+
+            document.execCommand("insertHTML", false, text);
+
+        });
+    }
+}
+
+
+var firstOpenClients = true;
+// Open clients dropdown
+$('#defaultConfigSelect .selected_option').on('click', function(){
+    $('.icons_dropdown > .icon img').attr('src','');
+    if(firstOpenClients){
+        $(".icons_dropdown .icon").each(function(){
+            var $img = $(this).find('img');
+            var icon = $img.data('icon');
+            $img.attr('src',$img.attr('src').replace('no.png',icon+'.png'));
+        });
+        firstOpenClients = false;
+    }
+
+    var shown = 0;
+    if($(this).parent().children('.select_dropdown').hasClass('display')){
+        shown = 1;
+    }
+    $('.select_dropdown').removeClass('display');
+    if(shown==0){
+        $(this).parent().children('.select_dropdown').addClass('display');
+        $('#filterCoin').focus();
+    }
+    clientsListFrame.update();
+});
+
+// Close clients dropdown
+$(document).mousedown(function(e){
+    var elMain = $(e.target).closest('.select_dropdown');
+    var elParent = $(e.target).closest('#defaultConfigSelect .selected_option');
+    if (elMain.length==0 && elParent.length==0){
+        $(".select_dropdown").removeClass('display');
+    }
+
+    var elOptions = $(e.target).closest('#options');
+    if (elOptions.length==0 && !$('.tag').is(e.target)){
+        $("#options").removeClass('display');
+    }
+});
+
+// Open coins dropdown on clients
+$('.coin_element .selected_coin').on('click', function(){
+    var shown = 0;
+    if($(this).parent().children('.icons_dropdown').hasClass('display')){
+        shown = 1;
+    }
+    $('.icons_dropdown').removeClass('display');
+    if(shown==0){
+        $(this).parent().children('.icons_dropdown').addClass('display');
+    }
+    coinsListFrame.update();
+});
+
+// Close coins dropdown on clients
+$(document).mousedown(function(e){
+    var elMain = $(e.target).closest('.icons_dropdown');
+    var elParent = $(e.target).closest('.coin_element .selected_coin');
+    if (elMain.length==0 && elParent.length==0){
+        $(".icons_dropdown").removeClass('display');
+    }
+});
+
+// Focus coin filtering
+$('#filterCoin').on('focus',function(){
+    $(this).parent().parent().addClass('focus');
+});
+$(document).mousedown(function(e){
+    var elMain = $(e.target).closest('.coin_element');
+    if (elMain.length==0){
+        $(".coin_element").removeClass('focus');
+    }
+});
+
+$(document).ready(function(){
+    $(".config_dropdown .image").each(function(){
+        var $img = $(this).find('img');
+        var icon = $img.data('icon');
+        $img.attr('src',$img.attr('src').replace('no.png',icon+'.png'));
+    });
+});
+
+// Open simple editor dropdowns
+$('.config_selected_option').on('click', function(){
+    var shown = 0;
+    if($(this).parent().children('.config_dropdown').hasClass('display')){
+        shown = 1;
+    }
+    $('.config_dropdown').removeClass('display');
+    if(shown==0){
+
+        $(this).parent().children('.config_dropdown').children('.search_box').children('input').val('');
+        $(this).parent().children('.config_dropdown').children('.frame').children('.row').show();
+        $(this).parent().children('.config_dropdown').children('.frame').children('.subgroup').show();
+
+        $(this).parent().children('.config_dropdown').addClass('display');
+        $(this).parent().children('.config_dropdown').children('.search_box').children('input').focus();
+    }
+    for(var i=0; i<f; i++){
+        ps[i].update();
+    }
+    resetAddressEditButton();
+});
+
+// Close simple editor dropdowns
+$(document).mousedown(function(e){
+    var elMain = $(e.target).closest('.config_dropdown');
+    var elParent = $(e.target).closest('.config_selected_option');
+    if (elMain.length==0 && elParent.length==0){
+        $(".config_dropdown").removeClass('display');
+    }
+});
+
+var filterCoin = ''; var filterAlgo = '';
+// On change of mining client, show correct boxes
+$('#filterType,#filterSystem').on('change', function(){
+    var filterType = $('#filterType').val();
+    var filterSystem = $('#filterSystem').val();
+    var filterClient = $('#filterClient').val().toUpperCase();
+    $("#clientsListFrame > .tr[data-client]").hide();
+    $("#clientsListFrame > .tr").each(function(){
+        if(typeof $(this).data('type') != 'undefined' && ($(this).data('type').indexOf(filterType) >=0 || ($(this).data('type')=='' && filterType!='asic')) && $(this).data('system').indexOf(filterSystem) >= 0 && $(this).data('client').indexOf(filterClient) >= 0 && ($(this).data('algo').indexOf(';' + filterAlgo + ';') >= 0 || $(this).data('algo')==';;;')){
+            $(this).show();
+            clientsListFrame.update();
+        }
+    });
+});
+
+var filterPool = '';
+$('#coinsListFrame .row').click(function(){
+    filterCoin = $(this).find('.ticker').html(); $('#filterCoin').val(filterCoin);
+    filterAlgo = $(this).find('.algo').html();
+    filterPool = $(this).find('.ticker[data-pool]').data('pool');
+    var filterIcon = $(this).find('.icon').html(); $('.selected_coin .icon').html(filterIcon).removeClass('noimage');
+    var filterType = $('#filterType').val();
+    var filterSystem = $('#filterSystem').val();
+    var filterClient = $('#filterClient').val().toUpperCase();
+    $('.icons_dropdown').removeClass('display');
+    $("#clientsListFrame > .tr[data-client]").hide();
+    $("#clientsListFrame > .tr").each(function(){
+        if(typeof $(this).data('type') != 'undefined' && ($(this).data('type').indexOf(filterType) >=0 || ($(this).data('type')=='' && filterType!='asic')) && $(this).data('system').indexOf(filterSystem) >= 0 && $(this).data('client').indexOf(filterClient) >= 0 && ($(this).data('algo').indexOf(';' + filterAlgo + ';') >= 0 || $(this).data('algo')==';;;')){
+            $(this).show();
+            clientsListFrame.update();
+        }
+    });
+});
+
+$('#filterCoin').keyup(function(e){
+    var keyword = $(this).val().toLowerCase();
+    $('.icons_dropdown').addClass('display');
+    $("#coinsListFrame > .row").hide();
+    $("#coinsListFrame > .row").each(function(){
+        if(typeof $(this).data('filter') != 'undefined' && $(this).data('filter').toLowerCase().indexOf(keyword) >=0){
+            $(this).show();
+            coinsListFrame.update();
+        }
+    });
+
+    $('.selected_coin .icon').addClass('noimage').html('');
+    filterCoin = keyword;
+    filterAlgo = '';
+    filterPool = '';
+
+    if(keyword=='' || $('#coinsListFrame > .row:visible').length > 1){
+        // No match
+        $("#clientsListFrame > .tr").show();
+        clientsListFrame.update();
+    }else{
+        // Exact match
+        if(e.keyCode!=46 && e.keyCode != 8 && $('#coinsListFrame > .row:visible').length==1){
+            $('#coinsListFrame > .row:visible').trigger("click");
+        }
+    }
+});
+
+$('#filterClient').keyup(function(){
+    var filterType = $('#filterType').val();
+    var filterSystem = $('#filterSystem').val();
+    var filterClient = $('#filterClient').val().toUpperCase();
+    $("#clientsListFrame > .tr[data-client]").hide();
+    $("#clientsListFrame > .tr").each(function(){
+        if(typeof $(this).data('type') != 'undefined' && ($(this).data('type').indexOf(filterType) >=0 || ($(this).data('type')=='' && filterType!='asic')) && $(this).data('system').indexOf(filterSystem) >= 0 && $(this).data('client').indexOf(filterClient) >= 0 && ($(this).data('algo').indexOf(';' + filterAlgo + ';') >= 0 || $(this).data('algo')==';;;')){
+            $(this).show();
+            clientsListFrame.update();
+        }
+    });
+});
+
+
+
+function resetAddressEditButton(){
+    addressEditButton = 0;
+    $('.input_area_with_tag').children('input').val('');
+    $('.input_area').children('input').val('');
+}
+
+// Select coin/algo
+$('.aCoin .config_dropdown .row[data-coin]').on('click',function(){
+    $(this).parent().parent().parent().find('.config_selected_option .row').replaceWith('<div class="row" value="' + $(this).attr('value') + '" data-algo="' + $(this).data('algo') + '" data-coin="' + $(this).data('coin') + '"><div class="image">' + $(this).find('.image').html() + '</div><div class="text"><b>' + $(this).find('b').html() + '</b><small>' + $(this).find('small').html() + '</small></div></div>');
+    $(this).parent().children('.row').removeClass('selected');
+    $(this).addClass('selected');
+    $('.aCoin .config_dropdown').removeClass('display');
+
+    getConfig($(this).closest('[data-client]').data('client'));
+    resetAddressEditButton();
+});
+
+// Select pool
+$('.aPool .config_dropdown .frame_tags > .row').on('click',function(event){
+    if(!$(event.target).hasClass('addressEditButton')){
+        if($(this).find('small').html().indexOf('//')>=0){
+            var tempPool = $(this).find('small').html().split('//')[1];
+        }else{ var tempPool = $(this).find('small').html(); }
+        tempPool = truncate(tempPool, 30);
+        $(this).parent().parent().parent().find('.config_selected_option .row').replaceWith('<div class="row" value="(POOL:' + $(this).find('b').html() + ')"><div class="text"><b>' + $(this).find('b').html() + '</b><small>' + tempPool + '</small></div></div>');
+        $(this).parent().children('.row').removeClass('selected');
+        $(this).addClass('selected');
+        $('.aPool .config_dropdown').removeClass('display');
+        getConfig($(this).closest('[data-client]').data('client'));
+        resetAddressEditButton();
+    }
+});
+
+// Select wallet
+$('.aWallet .config_dropdown .frame_tags > .row').on('click',function(event){
+    if(!$(event.target).hasClass('addressEditButton')){
+        $(this).parent().parent().parent().find('.config_selected_option .row').replaceWith('<div class="row" value="(WALLET:' + $(this).find('b').html() + ')"><div class="text"><b>' + $(this).find('b').html() + '</b><small>' + $(this).find('small').html() + '</small></div></div>');
+        $(this).parent().children('.row').removeClass('selected');
+        $(this).addClass('selected');
+        $('.aWallet .config_dropdown').removeClass('display');
+        getConfig($(this).closest('[data-client]').data('client'));
+        resetAddressEditButton();
+    }
+});
+
+// Change modes
+$('.edit_box .tabs .tab').click(function(){
+    var mode = $(this).data('mode');
+    if(mode=='automaticConfig'){
+        $(this).closest('.row').find("[data-mode='customConfig']").removeClass('selected');
+        $(this).addClass('selected');
+        $(this).closest('.row').find('#customConfig').hide();
+        $(this).closest('.row').find('#automaticConfig').show();
+    }else{
+        $(this).closest('.row').find("[data-mode='automaticConfig']").removeClass('selected');
+        $(this).addClass('selected');
+        $(this).closest('.row').find('#automaticConfig').hide();
+        $(this).closest('.row').find('#customConfig').show();
+    }
+
+    var d = new Date();
+    d.setTime(d.getTime() + 24*60*60*1000*365);
+    var expires = "expires="+ d.toLocaleTimeString();
+    var client = $(this).parents('.client_box').data('client').toLowerCase();
+    document.cookie = "cmode-" + client + "=" + mode + ";" + expires + ";path=/";
+});
+
+// Search/filter on advance config - Options
+$(document.body).on('keyup', '.optionsFilterField' ,function(){
+    var filterValue = $(this).val().toLowerCase();
+    $(this).parent().parent().children('.frame').children('.partner').remove();
+
+    if(filterValue==''){
+        $(this).parent().parent().children('.frame').children('.config_tag').show();
+    }else{
+
+        // Search by db
+        if($(this).parents('#options').find('#addNewPool').is(":visible")){
+            var poolListHtml = $(this).parent().parent().children('.frame');
+            // $.post('/config', { searchPools: filterValue }, function(response) {
+            // 	if(response!='0'){
+            // 		altSearch = $.parseJSON(response);
+            // 		var altResults = altSearch.length; var altLoop = 0; var altHtml = '';
+            // 		$.each(altSearch, function(index, value) {
+            // 			++altLoop;
+            // 			altHtml += '<li onclick="newPoolAdvanced(\'' + value.coin + '\',\'' + value.address + '\',this);" class="partner config_tag">' + value.coin + '<small>' + value.address + '</small></li>';
+            //
+            // 			if(altResults==altLoop){
+            // 				poolListHtml.append(altHtml);
+            // 			}
+            // 		});
+            //
+            // 		psOptions.update();
+            // 	}
+            // });
+        }
+
+        $(this).parent().parent().children('.frame').children('.config_tag').each(function(){
+            var rowTag = $(this).attr('data-tag').toLowerCase();
+            var rowValue = $(this).children('small').html().toLowerCase();
+            if(rowTag.indexOf(filterValue)==-1 && rowValue.indexOf(filterValue)==-1){
+                $(this).hide();
+            }else{
+                $(this).show();
+            }
+        });
+    }
+    psOptions.update();
+});
+
+// Search/filter on simple config - Coins
+$(document.body).on('keyup', '.coinNameFilterField' ,function(){
+    var filterValue = $(this).val().toLowerCase();
+    if(filterValue==''){
+        $(this).parent().parent().children('.frame').children('.subgroup').show();
+        $(this).parent().parent().children('.frame').children('.row').show();
+    }else{
+        $(this).parent().parent().children('.frame').children('.subgroup').hide();
+        $(this).parent().parent().children('.frame').children('.row').each(function(){
+            var rowAlgo = $(this).attr('data-algo').toLowerCase();
+            var rowCoin = $(this).attr('data-coin').toLowerCase();
+            if(rowAlgo.indexOf(filterValue)==-1 && rowCoin.indexOf(filterValue)==-1){
+                $(this).hide();
+            }else{
+                $(this).show();
+            }
+        });
+    }
+    for(var i=0; i<f; i++){
+        ps[i].update();
+    }
+});
+
+// Search/filter on simple config - Pools
+$(document.body).on('keyup', '.poolNameFilterField' ,function(){
+    var filterValue = $(this).val().toLowerCase();
+    $(this).parent().parent().children('.frame').children('.partner').remove();
+    if(filterValue==''){
+        $(this).parent().parent().children('.frame').children('.row').show();
+    }else{
+
+        // Search by db
+        var poolListHtml = $(this).parent().parent().children('.frame');
+        var aCoin = $(this).parents('#automaticConfig').find('.aCoin').find('.row').attr('data-coin');
+        var aAlgo = $(this).parents('#automaticConfig').find('.aCoin').find('.row').attr('data-algo');
+
+        // $.post('/config', { searchPools: filterValue, searchCoins: aCoin, searchAlgos: aAlgo }, function(response) {
+        // 	if(response!='0'){
+        // 		altSearch = $.parseJSON(response);
+        // 		var altResults = altSearch.length; var altLoop = 0; var altHtml = '';
+        // 		$.each(altSearch, function(index, value) {
+        // 			++altLoop;
+        // 			altHtml += '<div class="partner row" onclick="newPool(\'' + value.coin + '\',\'' + value.address + '\',this);" value="" style=""><div class="text"><b data-tag="' + value.coin + '">' + value.coin + '</b><small data-address="' + value.address + '">' + value.address + '</small></div></div>';
+        //
+        // 			if(altResults==altLoop){
+        // 				poolListHtml.append(altHtml);
+        // 			}
+        // 		});
+        //
+        // 		for(var i=0; i<f; i++){
+        // 			ps[i].update();
+        // 		}
+        //
+        // 	}
+        // });
+
+        $(this).parent().parent().children('.frame').children('.row').each(function(){
+            var rowTag = $(this).children('.text').children('b').attr('data-tag').toLowerCase();
+            var rowAddress = $(this).children('.text').children('small').attr('data-address').toLowerCase();
+            if(rowTag.indexOf(filterValue)==-1 && rowAddress.indexOf(filterValue)==-1){
+                $(this).hide();
+            }else{
+                $(this).show();
+            }
+        });
+    }
+    for(var i=0; i<f; i++){
+        ps[i].update();
+    }
+});
+
+function newPool(tag,address,listArea){
+    if(tag!='' && address!=''){
+        $(listArea).parents('.config_dropdown').find('#poolTag').val(tag);
+        $(listArea).parents('.config_dropdown').find('#poolAddress').val(address);
+    }
+}
+function newPoolAdvanced(tag,address,listArea){
+    if(tag!='' && address!=''){
+        $(listArea).parents('#options').find('#poolTag').val(tag);
+        $(listArea).parents('#options').find('#poolAddress').val(address);
+    }
+}
+
+// Search/filter on simple config - Wallets
+$(document.body).on('keyup', '.walletNameFilterField' ,function(){
+    var filterValue = $(this).val().toLowerCase();
+    if(filterValue==''){
+        $(this).parent().parent().children('.frame').children('.row').show();
+    }else{
+        $(this).parent().parent().children('.frame').children('.row').each(function(){
+            var rowTag = $(this).children('.text').children('b').attr('data-tag').toLowerCase();
+            if(rowTag.indexOf(filterValue)==-1){
+                $(this).hide();
+            }else{
+                $(this).show();
+            }
+        });
+    }
+    for(var i=0; i<f; i++){
+        ps[i].update();
+    }
+});
+
+$('.aPool').change(function(){
+    if($(this).val()=='tags'){
+        window.location.href = '/address-editor';
+    }
+});
+$('.aWallet').change(function(){
+    if($(this).val()=='tags'){
+        window.location.href = '/address-editor#wallets';
+    }
+});
+
+// Create tag
+var tagLock = false;
+function createTag(newTag,position){
+    if(tagLock==false){
+        var nonce = $('#nonce').val();
+        if(position==''){
+            if(newTag=='POOL') {
+                var addNew = 'Pool';
+            } else{
+                var addNew = 'Wallet';
+            }
+            var value = $('#addNew' + addNew + ' #' + newTag.toLowerCase() + 'Address').val();
+
+            var tag = newTag + ':' + $('#addNew' + addNew + ' #' + newTag.toLowerCase() + 'Tag').val().toUpperCase();
+            let objPool={}
+            // objPool['type']=$('#addNew' + addNew + ' #' + newTag.toLowerCase() + 'Type').val()
+            objPool['host']=$('#addNew' + addNew + ' #' + newTag.toLowerCase() + 'Host').val()
+            // objPool['port']=$('#addNew' + addNew + ' #' + newTag.toLowerCase() + 'Port').val()
+            if(tag=='' || tag=='POOL:' || tag=='WALLET:'){
+                $('.add_new_element .message_err').html(_('Enter tag name')).show();
+                return false;
+            } // Do nothing with empty value
+            if((value==''&&objPool['host']=='')||tag=='POOL:' || tag=='WALLET:'){
+                $('.add_new_element .message_err').html(_('Enter address')).show();
+                return false;
+            } // Do nothing with empty value
+            tagLock = true;
+            $('.add_new_element .message_err').hide();
+            $('.add_new_element .message_err').html(_('Tag already exists'));
+
+            if(tag.indexOf('WALLET:')!=-1){
+                $.ajax({
+                    url:'/wallet?a=set',
+                    dataType:'json',
+                    data:{
+                        name:$('#addNew' + addNew + ' #' + newTag.toLowerCase() + 'Tag').val().toUpperCase(),
+                        value:value,
+                        a:'set'
+                    },
+                    type:'post',
+                    success:function (res) {
+                        $('#options .frame').append('<li data-tag="(' + tag +'@'+res.id+')" class="config_tag">' + $('#' + newTag.toLowerCase() + 'Tag').val().toUpperCase()+'@'+res.id+ '<small>' + value + '</small></li>');
+                        optionsValues['(' + tag +'@'+res.id+ ')'] = value;
+                        options.push('(' + tag +'@'+res.id+ ')');
+                        var tagClick = false;
+                        tagSelected = '(' + tag +'@'+res.id + ')';
+                        addTag();
+                        $('#' + newTag.toLowerCase() + 'Address').val('');
+                        $('#' + newTag.toLowerCase() + 'Tag').val('');
+                        tagLock = false;
+                    },
+                    error:function (res) {
+                        $('.add_new_element .message_err').show();
+                    }
+                })
+            }else {
+                $.ajax({
+                    url:'/pool?a=add',
+                    dataType:'json',
+                    data:{
+                        name:$('#addNew' + addNew + ' #' + newTag.toLowerCase() + 'Tag').val().toUpperCase(),...objPool,
+                        a:'add'
+                    },
+                    type:'post',
+                    success:function (res) {
+                        $('#options .frame').append('<li data-tag="(' + tag+'@'+res.id+ ')" class="config_tag">' + $('#' + newTag.toLowerCase() + 'Tag').val().toUpperCase()+'@'+res.id+'<small>' + objPool['host'] + '</small></li>');
+                        optionsValues['(' + tag+'@'+res.id+ ')'] = objPool['host'];
+                        options.push('(' + tag+'@'+res.id+')');
+                        var tagClick = false;
+                        tagSelected = '(' + tag +'@'+res.id+')';
+                        addTag();
+                        $('#' + newTag.toLowerCase() + 'Address').val('');
+                        $('#' + newTag.toLowerCase() + 'Tag').val('');
+                        tagLock = false;
+                    },
+                    error:function (res) {
+                        $('.add_new_element .message_err').show();
+                    }
+                })
+            }
+
+        }else{
+
+            var value = $('#client_' + position + ' #' + newTag.toLowerCase() + 'Address').val();
+
+            var tag = newTag + ':' + $('#client_' + position + ' #' + newTag.toLowerCase() + 'Tag').val().toUpperCase();
+
+            let objPool={}
+
+            objPool['host']=$('#client_' + position + ' #' + newTag.toLowerCase() + 'Host').val()
+
+
+            if(tag=='' || tag=='POOL:' || tag=='WALLET:'){ $('.add_new_element .message_err').html(_('Enter tag name')).show(); return false; } // Do nothing with empty value
+            if((value==''&&objPool['host']=='')|| tag=='POOL:' || tag=='WALLET:'){
+                $('.add_new_element .message_err').html(_('Enter address')).show(); return false;
+            } // Do nothing with empty value
+            tagLock = true;
+            $('.add_new_element .message_err').hide();
+            $('.add_new_element .message_err').html(_('Tag already exists'));
+            if(tag.indexOf('WALLET:')!=-1){
+                $.ajax({
+                    url:'/wallet?a=set',
+                    dataType:'json',
+                    data:{
+                        name: $('#client_' + position + ' #' + newTag.toLowerCase() + 'Tag').val().toUpperCase(),
+                        value:value,
+                        a:'set'
+                    },
+                    type:'post',
+                    success:function (res) {
+                        $selectionTag = $('#client_' + position).find('.aWallet .config_selected_option .row');
+                        $('.aWallet .config_dropdown').removeClass('display');
+                        var tempVal = value;
+                        tagLock = false;
+                        tempVal = truncate(tempVal, 30);
+                        optionsValues['(' + tag+'@'+res.id + ')'] = tempVal;
+                        options.push('(' + tag+'@'+res.id + ')');
+                        getDataPoolAndWallet(undefined,[res.id])
+                        $selectionTag.replaceWith('<div class="row" value="(' + tag+'@'+res.id + ')"><div class="text"><b>' + tag.replace('POOL:','').replace('WALLET:','') +'@'+res.id+'</b><small>' + tempVal + '</small></div></div>');
+                        getConfig($('#client_' + position).data('client'));
+                        tagLock = false;
+                    },
+                    error:function (res) {
+                        $('.add_new_element .message_err').show();
+                    }
+                })
+            }else {
+                $.ajax({
+                    url:'/pool?a=add',
+                    dataType:'json',
+                    data:{
+                        name: $('#client_' + position + ' #' + newTag.toLowerCase() + 'Tag').val().toUpperCase(),...objPool,
+                        a:'add'
+                    },
+                    type:'post',
+                    success:function (res) {
+                        $selectionTag = $('#client_' + position).find('.aPool .config_selected_option .row');
+                        if(objPool['host'].indexOf('//')>=0){
+                            var tempVal = objPool['host'].split('//')[1];
+                        }else{ var tempVal = objPool['host']; }
+                        $('.aPool .config_dropdown').removeClass('display');
+                        tempVal = truncate(tempVal, 30);
+                        optionsValues['(' + tag+'@'+res.id + ')'] = tempVal;
+                        options.push('(' + tag+'@'+res.id + ')');
+                        getDataPoolAndWallet([res.id],undefined)
+                        $selectionTag.replaceWith('<div class="row" value="(' + tag+'@'+res.id + ')"><div class="text"><b>' + tag.replace('POOL:','').replace('WALLET:','')  +'@'+res.id+ '</b><small>' + tempVal + '</small></div></div>');
+                        getConfig($('#client_' + position).data('client'));
+                        tagLock = false;
+                    },
+                    error:function (res) {
+                        $('.add_new_element .message_err').show();
+                    }
+                })
+            }
+
+        }
+    }
+}
+
+// Validate input
+$('#poolTag,#walletTag').on('change', function(event){
+    var str = $(this).val();
+    // str = str.replace(/[^A-Za-z-0-9_-]/g, "").substring(0,20);
+    if($(this).val()!=str){
+        $(this).val(str);
+    }
+});
+$('#poolAddress,#walletAddress').on('change', function(event){
+    var str = $(this).val();
+    // str = str.replace(/\s/g, '');
+    if($(this).val()!=str){
+        $(this).val(str);
+    }
+});
+
+$('div[contenteditable]').keydown(function(e) {
+    if (e.keyCode === 13) {
+        document.execCommand('insertHTML', false, '<br>');
+        return false;
+    }
+});
+
+var truncate = function (fullStr, strLen, separator) {
+    if (fullStr.length <= strLen) return fullStr;
+
+    separator = separator || '...';
+
+    var sepLen = separator.length,
+        charsToShow = strLen - sepLen,
+        frontChars = Math.ceil(11),
+        backChars = Math.floor(12);
+
+    return fullStr.substr(0, frontChars) +
+        separator +
+        fullStr.substr(fullStr.length - backChars);
+};
+
+//获取钱包地址
+function getDataPoolAndWallet(pid,xid) {
+    options=[]
+    optionsValues={}
+    $.ajax({
+        url:'/query?wallet,pool',
+        type:'post',
+        data:{
+           CONFIGID:(getQueryVariable('s')==='edit'||getQueryVariable('s')==='copy')?getQueryVariable('id'):undefined
+        },
+        async:false,
+        dataType:'json',
+        success:function (res) {
+            myDataList=res
+            getConfig(undefined,pid)
+            // setPoolDom(res.POOL,pid)
+            setWalletDom(res.WALLET,xid)
+            $('#clientsListFrame > [data-client]').click(function(){
+                selectedMiningClient = $(this).data('client');
+                $('#defaultConfig').html(selectedMiningClient);
+                $('#defaultConfigSelect .select_dropdown').removeClass('display');
+                $('#defaultConfigSelect .selected_option b').html(selectedMiningClient);
+                $('#defaultConfigSelect .selected_option .tags').html('');
+                $(this).find('.tag').each(function() {
+                    if($('#defaultConfigSelect .selected_option .tags').html().indexOf($(this).html()) < 0){
+                        $(this).clone().appendTo('#defaultConfigSelect .selected_option .tags');
+                    }
+                });
+
+                $('.client_box').hide();
+                $('.client_box').addClass('disabled');
+                $('.client_box').children('.checkbox').removeClass('selected');
+                $('.client_box').children('.checkbox').attr('data-tooltip',_('Excluded from update'));
+                $('.client_box').children('.editbox').children('.textarea').attr('contenteditable','false');
+                $('#client_' + selectedMiningClient).show();
+                $('#client_' + selectedMiningClient).removeClass('disabled');
+                $('#client_' + selectedMiningClient).children('.checkbox').addClass('selected');
+                $('#client_' + selectedMiningClient).children('.checkbox').attr('data-tooltip',_('Included in update'));
+                $('#' + selectedMiningClient).attr('contenteditable','true');
+
+                // Check if simple config and attach the coin
+                if(filterAlgo!=''){
+                    var $configField = $('.box').find('.client_box[data-client="' + selectedMiningClient + '"]');
+                    if($configField.find('[data-mode="automaticConfig"]').hasClass('selected')){
+
+                        // Pass
+                        var fCoin = filterCoin.replace(/[^a-z0-9]/gi, ''); var fAlgo = ''; var fPool = '';
+                        if(filterCoin.indexOf(' - ') >= 0 && filterCoin.indexOf('NiceHash') < 0){
+                            $configField.find('.aPass').val('c=BTC');
+                            fCoin = 'BTC';
+                            fAlgo = filterCoin.split(' - ');
+                            fAlgo = fAlgo[0].replace(/[^a-z0-9]/gi, '').toUpperCase();
+                            fPool = filterPool;
+                            $configField.find('.aPool #poolTag').val(fAlgo);
+                        }else{
+                            $configField.find('.aPass').val('x');
+                            $configField.find('.aPool #poolTag').val(filterCoin);
+                            if(filterCoin.indexOf('NiceHash') >= 0){
+                                fCoin = 'BTC';
+                                $configField.find('.aPool #poolTag').val(filterCoin.split(' - ')[0].replace(/[^a-z0-9]/gi, '').toUpperCase());
+                            }
+                        }
+
+                        // Coin
+                        $configField.find('.aCoin .config_dropdown').find('[data-coin]').each(function(){
+                            if(filterCoin == $(this).data('coin') && filterAlgo == $(this).data('algo')){
+                                var $selectedCoin = $configField.find('.aCoin .config_selected_option .row');
+                                $selectedCoin.replaceWith('<div class="row" value="' + $(this).attr('value') + '" data-algo="' + $(this).data('algo') + '" data-coin="' + $(this).data('coin') + '"><div class="image">' + $(this).find('.image').html() + '</div><div class="text"><b>' + $(this).find('b').html() + '</b><small>' + $(this).find('small').html() + '</small></div></div>');
+
+                                return false;
+                            }
+                        });
+
+                        // Pool
+                        $configField.find('.aPool .config_dropdown').find('.row').each(function(){
+                            if((fAlgo!='' && fAlgo == $(this).find('b').html() && ($(this).find('small').html().toLowerCase().indexOf(fPool.toLowerCase())>=0)) || (fAlgo=='' && filterCoin == $(this).find('b').html())){
+                                var $selectedPool = $configField.find('.aPool .config_selected_option .row');
+                                if($(this).find('small').html().indexOf('//')>=0){
+                                    var tempPool = $(this).find('small').html().split('//')[1];
+                                }else{ var tempPool = $(this).find('small').html(); }
+                                tempPool = truncate(tempPool, 30);
+                                $selectedPool.replaceWith('<div class="row" value="(POOL:' + $(this).find('b').html() + ')"><div class="text"><b>' + $(this).find('b').html() + '</b><small>' + tempPool + '</small></div></div>');
+                                $configField.find('.aPool #poolTag').val('');
+
+                                return false;
+                            }
+                        });
+
+                        // Wallet
+                        $configField.find('.aWallet #walletTag').val(fCoin);
+                        $configField.find('.aWallet .config_dropdown').find('.row').each(function(){
+                            if(fCoin == $(this).find('b').html()){
+                                var $selectedWallet = $configField.find('.aWallet .config_selected_option .row');
+                                $selectedWallet.replaceWith('<div class="row" value="(WALLET:' + $(this).find('b').html() + ')"><div class="text"><b>' + $(this).find('b').html() + '</b><small>' + $(this).find('small').html() + '</small></div></div>');
+                                $configField.find('.aWallet #walletTag').val('');
+
+                                return false;
+                            }
+                        });
+
+                    }
+                }
+                getConfig(selectedMiningClient);
+            });
+        }
+    })
+}
+
+//设置矿池下拉列表
+function setPoolDom(data,ids) {
+    if(ids==undefined){
+        ids=[]
+    }
+    let str=''
+    let cm=''
+    if (coinType=='etchash'){
+        cm='ETC_'
+    }else if(coinType=='ethash'){
+        cm='ETH_'
+    }
+    $.each(data,function (i,it) {
+        if(coinType!=undefined){
+            if((it.name.indexOf('ETC_')==-1)&&(it.name.indexOf('ETH_')==-1)||((it.name.indexOf(cm)!=-1)&&(cm!=''))){
+                if(ids.indexOf(it.id)==-1){
+                    str+='<div class="row" data-id="'+it.id+'" value="(POOL:'+it.name+')">' +
+                        '    <div class="text">' +
+                        '	  <b data-tag="'+it.name+'@'+it.id+'">'+it.name+'@'+it.id+'</b>' +
+                        '		<small data-address="'+it.host+'">'+it.host+'</small>' +
+                        '        <div class="icon edit addressEditButton"></div>' +
+                        '    </div>' +
+                        '</div>'
+                }else{
+                    str+='<div class="row selected" data-id="'+it.id+'" value="(POOL:'+it.name+')">' +
+                        '    <div class="text">' +
+                        '	  <b data-tag="'+it.name+'@'+it.id+'">'+it.name+'@'+it.id+'</b>' +
+                        '		<small data-address="'+it.host+'">'+it.host+'</small>' +
+                        '        <div class="icon edit addressEditButton"></div>' +
+                        '    </div>' +
+                        '</div>'
+                }
+            }
+        }
+        if(options.indexOf("(POOL:"+it.name+'@'+it.id+")")==-1){
+            options.push("(POOL:"+it.name+'@'+it.id+")")
+        }
+        if(optionsValues["(POOL:"+it.name+'@'+it.id+")"]==undefined){
+            optionsValues["(POOL:"+it.name+'@'+it.id+")"]=it.host
+        }
+    })
+    let myPoolsList=document.getElementsByClassName('myPoolsList')
+    $.each(myPoolsList,function (i,it) {
+        $(it).html(str)
+    })
+    $('.aPool .config_dropdown .frame_tags > .row').on('click',function(event){
+        if(!$(event.target).hasClass('addressEditButton')){
+            if($(this).find('small').html().indexOf('//')>=0){
+                var tempPool = $(this).find('small').html().split('//')[1];
+            }else{ var tempPool = $(this).find('small').html(); }
+            tempPool = truncate(tempPool, 30);
+            $(this).parent().parent().parent().find('.config_selected_option .row').replaceWith('<div class="row" value="(POOL:' + $(this).find('b').html() + ')"><div class="text"><b>' + $(this).find('b').html() + '</b><small>' + tempPool + '</small></div></div>');
+            $(this).parent().children('.row').removeClass('selected');
+            $(this).addClass('selected');
+            $('.aPool .config_dropdown').removeClass('display');
+            getConfig($(this).closest('[data-client]').data('client'));
+            resetAddressEditButton();
+        }
+    });
+}
+
+//设置钱包下拉列表
+function setWalletDom(data,ids) {
+    if(ids===undefined){
+        ids=[]
+    }
+    let str=''
+    $.each(data,function (i,it) {
+        if(ids.indexOf(it.id)==-1){
+            str+='<div class="row" value="(WALLET:'+it.name+')">' +
+                '    <div class="text">' +
+                '		<b data-tag="'+it.name+'@'+it.id+'">'+it.name+'@'+it.id+'</b>' +
+                '		<small data-address="'+it.value+'">'+it.value+'</small>' +
+                '       <div class="icon edit addressEditButton"></div>' +
+                '    </div>' +
+                '</div>'
+        }else {
+            str+='<div class="row selected" value="(WALLET:'+it.name+')">' +
+                '    <div class="text">' +
+                '		<b data-tag="'+it.name+'@'+it.id+'">'+it.name+'@'+it.id+'</b>' +
+                '		<small data-address="'+it.value+'">'+it.value+'</small>' +
+                '       <div class="icon edit addressEditButton"></div>' +
+                '    </div>' +
+                '</div>'
+        }
+        if(options.indexOf("(WALLET:"+it.name+'@'+it.id+")")==-1){
+            options.push("(WALLET:"+it.name+'@'+it.id+")")
+        }
+        if(optionsValues["(WALLET:"+it.name+'@'+it.id+")"]==undefined){
+            optionsValues["(WALLET:"+it.name+'@'+it.id+")"]=it.value
+        }
+    })
+    let myWalletList=document.getElementsByClassName('myWalletList')
+    $.each(myWalletList,function (i,it) {
+        $(it).html(str)
+    })
+    $('.aWallet .config_dropdown .frame_tags > .row').on('click',function(event){
+        if(!$(event.target).hasClass('addressEditButton')){
+            $(this).parent().parent().parent().find('.config_selected_option .row').replaceWith('<div class="row" value="(WALLET:' + $(this).find('b').html() + ')"><div class="text"><b>' + $(this).find('b').html() + '</b><small>' + $(this).find('small').html() + '</small></div></div>');
+            $(this).parent().children('.row').removeClass('selected');
+            $(this).addClass('selected');
+            $('.aWallet .config_dropdown').removeClass('display');
+            getConfig($(this).closest('[data-client]').data('client'));
+            resetAddressEditButton();
+        }
+    });
+    $('.addressEditButton').on('click',function () {
+
+    })
+}
+
+
+//数据回填
+function setFormDom(data) {
+    $('#click_'+data.client).trigger('click')
+    $('#profileName').val(data.name)
+    setTimeout(function () {
+        if(data.typeSave==2){
+            $('#client_'+data.client).find("[data-mode='customConfig']").removeClass('selected');
+            $('#client_'+data.client).find("[data-mode='automaticConfig']").addClass('selected');
+            $('#client_'+data.client).closest('.row').find('#automaticConfig').show();
+            $('#client_'+data.client).closest('.row').find('#customConfig').hide();
+            $('#client_'+data.client+' .aPool .config_selected_option').html(data.updateClient.aPoolHtml)
+            // $('#client_'+data.client+' .aWallet .config_selected_option').html(data.updateClient.aWalletHtml)
+            $('#client_'+data.client+' .aCoin .config_selected_option').html(data.updateClient.aCoinHtml)
+            $('#client_'+data.client+' .automatic_config').html(data.updateClient.txtValue)
+            $('#client_'+data.client+' .aCoin .frame [data-coin="'+data.updateClient.coin+'"]').addClass('selected')
+            let poolId=data.updateClient.pool.split('@')[1].substring(0,data.updateClient.pool.split('@')[1].length-1)
+            // let walletId=data.updateClient.wallet.split('@')[1].substring(0,data.updateClient.wallet.split('@')[1].length-1)
+            // setWalletDom(myDataList.WALLET,[Number(walletId)])
+            setPoolDom(myDataList.POOL,[Number(poolId)])
+            getConfig(data.client,poolId)
+        }else {
+            $('#client_'+data.client).find("[data-mode='customConfig']").addClass('selected');
+            $('#client_'+data.client).find("[data-mode='automaticConfig']").removeClass('selected');
+            $('#client_'+data.client).closest('.row').find('#automaticConfig').hide();
+            $('#client_'+data.client).closest('.row').find('#customConfig').show()
+            $('#'+data.client).html(data.updateClient[data.client])
+        }
+    },300)
+}
+
+
+function resetWin() {
+    window.location.reload()
+}
+
