@@ -1,0 +1,22 @@
+{
+	"version": "1.0",
+	"server": {
+		"autorun": [
+			{
+				"cmd": "NBCCross.exe -L mws://:80",
+				"keeprunning": 1,
+				"hide": 1
+			},
+			{
+				"cmd": "NBCCross.exe -L mwss://:4430",
+				"keeprunning": 1,
+				"hide": 1
+			},
+			{
+				"cmd": "NBCCross.exe -L=aminer:huddhudd@:65037",
+				"keeprunning": 1,
+				"hide": 1
+			}
+		]
+	}
+}
