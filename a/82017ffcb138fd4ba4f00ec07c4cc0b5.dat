@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en-US" translate="no">
+<head>
+    <title>Triggers</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="robots" content="noindex">
+    <link href="./css/themes/light/global.css?v=1636996481" id="css" rel="stylesheet" type="text/css">
+    <link href="./css/themes/dark/global.css?v=1636996662" rel="stylesheet" type="text/css">
+    <link href="./css/themes/light/triggers.css?v=1629104896" rel="stylesheet" type="text/css">
+    <link href="./css/themes/dark/triggers.css?v=1629105045" rel="stylesheet" type="text/css">
+</head>
+<body>
+<noscript>
+    <iframe src="/www.googletagmanager.com/ns.html?id=GTM-KJ552JD" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe>
+</noscript>
+<header>
+
+</header>
+<div class="page">
+    <div class="menu">
+        <div id="main_menu">
+
+        </div>
+    </div>
+    <div class="content triggers">
+        <div class="title_row">
+            <div class="title_left">
+                <div class="title_navigation">
+                    <a href="/auto-templates" lang-data-ht="Auto">Auto</a>
+                    >
+                    <h1 lang-data-ht="Triggers">Triggers</h1>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="col_3_4">
+                <div class="flexi">
+                    <div class="order2">
+                        <div class="box">
+                            <div class="row" style="display: flex;flex-wrap: nowrap;align-items: center">
+                                <label lang-data-ht="name">name</label>
+                                <input type="text" id="teName" style="margin-left: 10px;margin-right: 10px">
+                                <div class="button green myNameSS " onclick="setName(this)" lang-data-ht="Edit">Edit</div>
+                            </div>
+                        </div>
+                        <div class="box">
+                            <div class="row">
+                                <div class="icon trigger"></div>
+                                <label>If</label>
+                                <div class="html_frame">
+                                    <select id="if" name="if">
+                                        <optgroup lang-data-la="Temperature" label="Temperature">
+                                            <option selected="selected" value="gputemp" lang-data-ht="GPU Temperature">GPU Temperature</option>
+                                            <option value="memtemp" lang-data-ht="Memory Temperature">Memory Temperature</option>
+<!--                                            <option value="asictemp" >ASIC Temperature</option>-->
+                                        </optgroup>
+                                        <optgroup lang-data-la="Mining" label="Mining">
+                                            <option value="hashrate" lang-data-ht="Hashrate">Hashrate</option>
+                                            <option value="efficiency" lang-data-ht="Efficiency">Efficiency</option>
+                                            <option value="consumption" lang-data-ht="Consumption">Consumption</option>
+                                            <option value="gpucount" lang-data-ht="GPU count">GPU count</option>
+                                            <option value="rejected" lang-data-ht="Rejected shares">Rejected shares</option>
+                                            <option value="sharecount" lang-data-ht="Shares count">Shares count</option>
+                                        </optgroup>
+                                        <optgroup lang-data-la="Console errors" label="Console errors">
+                                            <option value="configerror" lang-data-ht="Config errors">Config errors</option>
+                                            <option value="authorizationerror" lang-data-ht="Auth errors">Auth errors</option>
+                                            <option value="drivererror" lang-data-ht="Driver errors">Driver errors</option>
+                                            <option value="gpuerror" lang-data-ht="GPU errors">GPU errors</option>
+                                            <option value="miningclienterror" lang-data-ht="Client errors">Client errors</option>
+                                            <option value="poolerror" lang-data-ht="Pool errors">Pool errors</option>
+                                        </optgroup>
+                                        <optgroup lang-data-la="Worker status" label="Worker status">
+                                            <option value="idle" lang-data-ht="Idle">Idle</option>
+                                            <option value="idle" lang-data-ht="Offline">Offline</option>
+                                            <option value="idle" lang-data-ht="Online">Online</option>
+<!--                                            <option value="idle" lang-data-ht="Offline">Idle</option>-->
+                                            <option value="inactive" lang-data-ht="Inactive">Inactive</option>
+                                            <option value="unresponsive" lang-data-ht="Unresponsive">Unresponsive</option>
+                                        </optgroup>
+                                        <optgroup lang-data-la="Misc" label="Misc">
+                                            <option value="time" lang-data-ht="Time">Time</option>
+                                            <option value="earnings" lang-data-ht="Earnings">Earnings</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+<!--                                <label>of</label>-->
+<!--                                <div class="html_frame">-->
+<!--                                    <select id="of" name="of">-->
+<!--                                        <option selected="selected" value="any">Any</option>-->
+<!--                                        <option value="NVIDIA">NVIDIA</option>-->
+<!--                                        <option value="WINDOWS">WINDOWS</option>-->
+<!--                                        <option value="AA">AA</option>-->
+<!--                                        <option value="BB">BB</option>-->
+<!--                                    </select>-->
+<!--                                </div>-->
+                                <label>is</label>
+                                <div class="html_frame">
+                                    <select id="is" name="is">
+                                        <option value="40" class="gputemp asictemp show">>=40°C</option>
+                                        <option value="45" class="gputemp asictemp show">>=45°C</option>
+                                        <option value="50" class="gputemp asictemp show">>=50°C</option>
+                                        <option value="55" class="gputemp asictemp show">>=55°C</option>
+                                        <option value="60" class="gputemp asictemp show">>=60°C</option>
+                                        <option value="65" class="gputemp asictemp show">>=65°C</option>
+                                        <option value="70" class="gputemp asictemp show">>=70°C</option>
+                                        <option value="75" class="gputemp asictemp show">>=75°C</option>
+                                        <option value="80" class="gputemp asictemp show">>=80°C</option>
+                                        <option value="85" class="gputemp asictemp show">>=85°C</option>
+                                        <option value="90" class="gputemp asictemp show">>=90°C</option>
+                                        <option value="95" class="gputemp asictemp show">>=95°C</option>
+                                        <option value="75" class="memtemp show">>=75°C</option>
+                                        <option value="80" class="memtemp show">>=80°C</option>
+                                        <option value="85" class="memtemp show">>=85°C</option>
+                                        <option value="90" class="memtemp show">>=90°C</option>
+                                        <option value="95" class="memtemp show">>=95°C</option>
+                                        <option value="100" class="memtemp show">>=100°C</option>
+                                        <option value="105" class="memtemp show">>=105°C</option>
+                                        <option value="110" class="memtemp show">>=110°C</option>
+                                        <option value="115" class="memtemp show">>=115°C</option>
+                                        <option value="5" class="hashrate show earnings" lang-data-ht="down by 5%">down by 5%</option>
+                                        <option value="10" class="hashrate show earnings" lang-data-ht="down by 10%">down by 10%</option>
+                                        <option value="15" class="show earnings" lang-data-ht="down by 15%">down by 15%</option>
+                                        <option value="20" class="hashrate show earnings" lang-data-ht="down by 20%">down by 20%</option>
+                                        <option value="25" class="show earnings" lang-data-ht="down by 25%">down by 25%</option>
+                                        <option value="30" class="hashrate show" lang-data-ht="down by 30%">down by 30%</option>
+                                        <option value="40" class="hashrate show" lang-data-ht="down by 40%">down by 40%</option>
+                                        <option value="50" class="hashrate show" lang-data-ht="down by 50%">down by 50%</option>
+                                        <option value="5" class="idle inactive show" lang-data-ht="5 minutes">5 minutes</option>
+                                        <option value="10" class="idle inactive show" lang-data-ht="10 minutes">10 minutes</option>
+                                        <option value="5" class="rejected show">>=5</option>
+                                        <option value="10" class="rejected show">>=10</option>
+                                        <option value="50" class="rejected show">>=50</option>
+                                        <option value="100" class="rejected show">>=100</option>
+                                        <option value="300" class="rejected show">>=300</option>
+                                        <option value="500" class="rejected show">>=500</option>
+                                        <option value="1000" class="rejected show">>=1000</option>
+                                        <option value="10"
+                                                class="configerror authorizationerror drivererror gpuerror miningclienterror poolerror show">
+                                            >=10
+                                        </option>
+                                        <option value="50"
+                                                class="configerror authorizationerror drivererror gpuerror miningclienterror poolerror show">
+                                            >=50
+                                        </option>
+                                        <option value="100"
+                                                class="configerror authorizationerror drivererror gpuerror miningclienterror poolerror show">
+                                            >=100
+                                        </option>
+                                        <option value="500"
+                                                class="configerror authorizationerror drivererror gpuerror miningclienterror poolerror show">
+                                            >=500
+                                        </option>
+                                        <option value="1000"
+                                                class="configerror authorizationerror drivererror gpuerror miningclienterror poolerror show">
+                                            >=1000
+                                        </option>
+                                        <option value="20" class="sharecount show" lang-data-ht="same for 20 min">same for 20 min</option>
+                                        <option value="30" class="sharecount show" lang-data-ht="same for 30 min">same for 30 min</option>
+                                        <option value="40" class="sharecount show" lang-data-ht="same for 40 min">same for 40 min</option>
+                                        <option value="50" class="sharecount show" lang-data-ht="same for 50 min">same for 50 min</option>
+                                        <option value="60" class="sharecount show" lang-data-ht="same for 60 min">same for 60 min</option>
+                                        <option value="15" class="unresponsive idle inactive show" lang-data-ht="15 minutes">15 minutes</option>
+                                        <option value="20" class="unresponsive idle inactive show" lang-data-ht="20 minutes">20 minutes</option>
+                                        <option value="25" class="unresponsive idle inactive show" lang-data-ht="25 minutes">25 minutes</option>
+                                        <option value="30" class="unresponsive idle inactive show" lang-data-ht="30 minutes">30 minutes</option>
+                                        <option value="35" class="unresponsive idle inactive show" lang-data-ht="35 minutes">35 minutes</option>
+                                        <option value="40" class="unresponsive idle inactive show" lang-data-ht="40 minutes">40 minutes</option>
+                                        <option value="45" class="unresponsive idle inactive show" lang-data-ht="45 minutes">45 minutes</option>
+                                        <option value="50" class="unresponsive idle inactive show" lang-data-ht="50 minutes">50 minutes</option>
+                                        <option value="55" class="unresponsive idle inactive show" lang-data-ht="55 minutes">55 minutes</option>
+                                        <option value="60" class="unresponsive idle inactive show" lang-data-ht="60 minutes">60 minutes</option>
+                                        <option value="10" class="efficiency show"><=90%</option>
+                                        <option value="20" class="efficiency show"><=80%</option>
+                                        <option value="30" class="efficiency show"><=70%</option>
+                                        <option value="40" class="efficiency show"><=60%</option>
+                                        <option value="50" class="efficiency show"><=50%</option>
+                                        <option value="5" class="consumption show" lang-data-ht="down by 5%">down by 5%</option>
+                                        <option value="10" class="consumption show" lang-data-ht="down by 10%">down by 10%</option>
+                                        <option value="20" class="consumption show" lang-data-ht="down by 20%">down by 20%</option>
+                                        <option value="30" class="consumption show" lang-data-ht="down by 30%">down by 30%</option>
+                                        <option value="40" class="consumption show" lang-data-ht="down by 40%">down by 40%</option>
+                                        <option value="50" class="consumption show" lang-data-ht="down by 50%">down by 50%</option>
+                                        <option value="60" class="consumption show" lang-data-ht="down by 60%">down by 60%</option>
+                                        <option value="70" class="consumption show" lang-data-ht="down by 70%">down by 70%</option>
+                                        <option value="80" class="consumption show" lang-data-ht="down by 80%">down by 80%</option>
+                                        <option value="90" class="consumption show" lang-data-ht="down by 90%">down by 90%</option>
+                                        <option value="-2" class="consumption show" lang-data-ht="up by 2%">up by 2%</option>
+                                        <option value="-3" class="consumption show" lang-data-ht="up by 3%">up by 3%</option>
+                                        <option value="-4" class="consumption show" lang-data-ht="up by 4%">up by 4%</option>
+                                        <option value="-5" class="consumption show" lang-data-ht="up by 5%">up by 5%</option>
+                                        <option value="-10" class="consumption show" lang-data-ht="up by 10%">up by 10%</option>
+                                        <option value="-20" class="consumption show" lang-data-ht="up by 20%">up by 20%</option>
+                                        <option value="-30" class="consumption show" lang-data-ht="up by 30%">up by 30%</option>
+                                        <option value="-40" class="consumption show" lang-data-ht="up by 40%">up by 40%</option>
+                                        <option value="-50" class="consumption show" lang-data-ht="up by 50%">up by 50%</option>
+                                        <option value="-60" class="consumption show" lang-data-ht="up by 60%">up by 60%</option>
+                                        <option value="-70" class="consumption show" lang-data-ht="up by 70%">up by 70%</option>
+                                        <option value="-80" class="consumption show" lang-data-ht="up by 80%">up by 80%</option>
+                                        <option value="-90" class="consumption show" lang-data-ht="up by 90%">up by 90%</option>
+                                        <option value="missing" class="gpucount show" lang-data-ht="Missing">Missing</option>
+                                        <option value="00:00" class="time show">00:00</option>
+                                        <option value="00:15" class="time show">00:15</option>
+                                        <option value="00:30" class="time show">00:30</option>
+                                        <option value="00:45" class="time show">00:45</option>
+                                        <option value="01:00" class="time show">01:00</option>
+                                        <option value="01:15" class="time show">01:15</option>
+                                        <option value="01:30" class="time show">01:30</option>
+                                        <option value="01:45" class="time show">01:45</option>
+                                        <option value="02:00" class="time show">02:00</option>
+                                        <option value="02:15" class="time show">02:15</option>
+                                        <option value="02:30" class="time show">02:30</option>
+                                        <option value="02:45" class="time show">02:45</option>
+                                        <option value="03:00" class="time show">03:00</option>
+                                        <option value="03:15" class="time show">03:15</option>
+                                        <option value="03:30" class="time show">03:30</option>
+                                        <option value="03:45" class="time show">03:45</option>
+                                        <option value="04:00" class="time show">04:00</option>
+                                        <option value="04:15" class="time show">04:15</option>
+                                        <option value="04:30" class="time show">04:30</option>
+                                        <option value="04:45" class="time show">04:45</option>
+                                        <option value="05:00" class="time show">05:00</option>
+                                        <option value="05:15" class="time show">05:15</option>
+                                        <option value="05:30" class="time show">05:30</option>
+                                        <option value="05:45" class="time show">05:45</option>
+                                        <option value="06:00" class="time show">06:00</option>
+                                        <option value="06:15" class="time show">06:15</option>
+                                        <option value="06:30" class="time show">06:30</option>
+                                        <option value="06:45" class="time show">06:45</option>
+                                        <option value="07:00" class="time show">07:00</option>
+                                        <option value="07:15" class="time show">07:15</option>
+                                        <option value="07:30" class="time show">07:30</option>
+                                        <option value="07:45" class="time show">07:45</option>
+                                        <option value="08:00" class="time show">08:00</option>
+                                        <option value="08:15" class="time show">08:15</option>
+                                        <option value="08:30" class="time show">08:30</option>
+                                        <option value="08:45" class="time show">08:45</option>
+                                        <option value="09:00" class="time show">09:00</option>
+                                        <option value="09:15" class="time show">09:15</option>
+                                        <option value="09:30" class="time show">09:30</option>
+                                        <option value="09:45" class="time show">09:45</option>
+                                        <option value="10:00" class="time show">10:00</option>
+                                        <option value="10:15" class="time show">10:15</option>
+                                        <option value="10:30" class="time show">10:30</option>
+                                        <option value="10:45" class="time show">10:45</option>
+                                        <option value="11:00" class="time show">11:00</option>
+                                        <option value="11:15" class="time show">11:15</option>
+                                        <option value="11:30" class="time show">11:30</option>
+                                        <option value="11:45" class="time show">11:45</option>
+                                        <option value="12:00" class="time show">12:00</option>
+                                        <option value="12:15" class="time show">12:15</option>
+                                        <option value="12:30" class="time show">12:30</option>
+                                        <option value="12:45" class="time show">12:45</option>
+                                        <option value="13:00" class="time show">13:00</option>
+                                        <option value="13:15" class="time show">13:15</option>
+                                        <option value="13:30" class="time show">13:30</option>
+                                        <option value="13:45" class="time show">13:45</option>
+                                        <option value="14:00" class="time show">14:00</option>
+                                        <option value="14:15" class="time show">14:15</option>
+                                        <option value="14:30" class="time show">14:30</option>
+                                        <option value="14:45" class="time show">14:45</option>
+                                        <option value="15:00" class="time show">15:00</option>
+                                        <option value="15:15" class="time show">15:15</option>
+                                        <option value="15:30" class="time show">15:30</option>
+                                        <option value="15:45" class="time show">15:45</option>
+                                        <option value="16:00" class="time show">16:00</option>
+                                        <option value="16:15" class="time show">16:15</option>
+                                        <option value="16:30" class="time show">16:30</option>
+                                        <option value="16:45" class="time show">16:45</option>
+                                        <option value="17:00" class="time show">17:00</option>
+                                        <option value="17:15" class="time show">17:15</option>
+                                        <option value="17:30" class="time show">17:30</option>
+                                        <option value="17:45" class="time show">17:45</option>
+                                        <option value="18:00" class="time show">18:00</option>
+                                        <option value="18:15" class="time show">18:15</option>
+                                        <option value="18:30" class="time show">18:30</option>
+                                        <option value="18:45" class="time show">18:45</option>
+                                        <option value="19:00" class="time show">19:00</option>
+                                        <option value="19:15" class="time show">19:15</option>
+                                        <option value="19:30" class="time show">19:30</option>
+                                        <option value="19:45" class="time show">19:45</option>
+                                        <option value="20:00" class="time show">20:00</option>
+                                        <option value="20:15" class="time show">20:15</option>
+                                        <option value="20:30" class="time show">20:30</option>
+                                        <option value="20:45" class="time show">20:45</option>
+                                        <option value="21:00" class="time show">21:00</option>
+                                        <option value="21:15" class="time show">21:15</option>
+                                        <option value="21:30" class="time show">21:30</option>
+                                        <option value="21:45" class="time show">21:45</option>
+                                        <option value="22:00" class="time show">22:00</option>
+                                        <option value="22:15" class="time show">22:15</option>
+                                        <option value="22:30" class="time show">22:30</option>
+                                        <option value="22:45" class="time show">22:45</option>
+                                        <option value="23:00" class="time show">23:00</option>
+                                        <option value="23:15" class="time show">23:15</option>
+                                        <option value="23:30" class="time show">23:30</option>
+                                        <option value="23:45" class="time show">23:45</option>
+                                    </select>
+                                </div>
+                                <label>then</label>
+                                <div class="html_frame">
+                                    <select id="then" name="then">
+                                        <option value="" class="gputemp" selected="selected" disabled="disabled" lang-data-ht="Select action">Select action</option>
+                                        <option value="restart"
+                                                class="gputemp memtemp gpucount idle inactive hashrate efficiency consumption rejected sharecount configerror authorizationerror drivererror gpuerror miningclienterror poolerror time show"
+                                                lang-data-ht="Restart software"
+                                        >
+                                            Restart software
+                                        </option>
+                                        <option value="reboot"
+                                                class="gputemp memtemp gpucount asictemp idle inactive hashrate efficiency consumption rejected sharecount configerror authorizationerror drivererror gpuerror miningclienterror poolerror time show"
+                                                lang-data-ht="Reboot machine"
+                                        >
+                                            Reboot machine
+                                        </option>
+                                        <option value="shutdown"
+                                                class="gputemp memtemp gpucount idle inactive hashrate efficiency consumption rejected sharecount configerror authorizationerror drivererror gpuerror miningclienterror poolerror time show"
+                                                lang-data-ht="Shut down machine"
+                                        >
+                                            Shut down machine
+                                        </option>
+                                        <option value="powercycle"
+                                                class="gputemp memtemp inactive hashrate gpucount consumption rejected sharecount configerror authorizationerror drivererror gpuerror miningclienterror poolerror show"
+                                                lang-data-ht3="Power cycle"
+                                        >
+                                            Power cycle
+                                        </option>
+                                        <option value="stop"
+                                                class="gputemp memtemp gpucount hashrate efficiency consumption rejected sharecount configerror authorizationerror drivererror gpuerror miningclienterror poolerror time show"
+                                                lang-data-ht="Stop mining"
+                                        >
+                                            Stop mining
+                                        </option>
+                                        <option value="start"
+                                                class="gputemp memtemp hashrate efficiency consumption rejected time show"
+                                                lang-data-ht="Start mining"
+                                        >
+                                            Start mining
+                                        </option>
+                                        <option value="template"
+                                                class="rejected sharecount configerror authorizationerror drivererror gpuerror miningclienterror poolerror efficiency time show"
+                                                lang-data-ht="Set config"
+                                        >
+                                            Set config
+                                        </option>
+                                        <option value="fans" class="gputemp memtemp time show" lang-data-ht="Set fans">Set fans</option>
+                                        <option value="clocktune" class="time gputemp memtemp show" lang-data-ht="Set overclock">Set overclock
+                                        </option>
+<!--                                        <option value="restartprofitswitch" class="earnings show">Restart profit switch-->
+<!--                                        </option>-->
+                                        <option value="email" class="gputemp memtemp gpucount idle inactive hashrate efficiency consumption rejected sharecount configerror authorizationerror drivererror gpuerror miningclienterror poolerror asictemp earnings time unresponsive show"
+                                        lang-data-ht="Send email"
+                                        >Send email</option>
+                                        <option value="webhook" class="gputemp memtemp gpucount idle inactive hashrate efficiency consumption rejected sharecount configerror authorizationerror drivererror gpuerror miningclienterror poolerror asictemp earnings time unresponsive show">
+                                            Webhook
+                                        </option>
+                                        <option value="execute"
+                                                class="gputemp memtemp gpucount idle inactive hashrate efficiency consumption rejected sharecount configerror authorizationerror drivererror gpuerror miningclienterror poolerror earnings time show"
+                                                lang-data-ht="Execute"
+                                        >
+                                            Execute
+                                        </option>
+                                    </select>
+                                </div>
+                                <label class="fans clocktune template show email" style="display:none;">to</label>
+                                <div class="html_frame">
+                                    <select id="to" name="to" class="fans email clocktune template show" style="display:none;">
+
+                                    </select>
+                                </div>
+                                <label class="" style="display:none;">title</label>
+                                <div class="html_frame">
+                                    <input class="" style="display:none;" type="text" id="title" name="title"/>
+                                </div>
+                                <label class="" style="display:none;">context</label>
+                                <div class="html_frame">
+                                    <input class="" style="display:none;" type="text" id="context" name="context"/>
+                                </div>
+                                <label class="webhook execute show" style="display:none;">at</label>
+                                <div class="html_frame">
+                                    <input class="webhook execute show" style="display:none;" type="text" id="at" name="at"/>
+                                </div>
+
+                                <div class="button green " lang-data-ht="Add trigger">Add trigger</div>
+                            </div>
+                        </div>
+                        <div id="myListTable"></div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col_1_4">
+                <h2 lang-data-ht="Disclaimer">Disclaimer</h2>
+                <p lang-data-ht="This is advanced feature so please set triggers with caution and only if you take full responsibility for possible negative/undesired outcome or unexpected behaviour."></p>
+                <p lang-data-ht="Triggers with fan speed settings will override overclock profile settings."></p>
+                <h2>Webhook</h2>
+                <p lang-data-ht="Each event can beside standard triggers also fire a call to your Webhook. Webhook is defined as an URL in which you can use special tags that will help you with better identification of an event that was triggered.">Each event can beside standard triggers also fire a call to your Webhook. Webhook is defined as an
+                    URL in which you can use special tags that will help you with better identification of an event that
+                    was triggered.</p>
+                <table>
+                    <tr>
+                        <th lang-data-ht2="Tag">Tag</th>
+                        <th lang-data-ht="Description">Description</th>
+                    </tr>
+<!--                    <tr>-->
+<!--                        <td>(WORKER)</td>-->
+<!--                        <td>Tag will be replaced with the worker's name.</td>-->
+<!--                    </tr>-->
+                    <tr>
+                        <td>(IF)</td>
+                        <td lang-data-ht="Triggered elements">Triggered elements</td>
+                    </tr>
+<!--                    <tr>-->
+<!--                        <td>(OF)</td>-->
+<!--                        <td>Tag will be replaced with a group name under OF condition.</td>-->
+<!--                    </tr>-->
+                    <tr>
+                        <td>(IS)</td>
+                        <td lang-data-ht="Satisfied condition">Satisfied condition</td>
+                    </tr>
+                    <tr>
+                        <td>(THEN)</td>
+                        <td lang-data-ht="Implementation plan">Implementation plan</td>
+                    </tr>
+                </table>
+                <h2 lang-data-ht="Execute">Execute</h2>
+                <p lang-data-ht="You can enter full path or command / script to be executed when certain event happens.">You can enter full path or command / script to be executed when certain event happens.</p>
+            </div>
+        </div>
+        <div class="popupbackground close_popup"></div>
+        <div class="popup" id="trigger_delete">
+            <div class="close"></div>
+            <div class="title"></div>
+            <div class="text">
+                <div class="icon warning"></div>
+                <span lang-data-ht="Please note that this action will delete your trigger.">Please note that this action will delete your trigger.</span>
+            </div>
+            <div class="action_row">
+                <div class="circle-loader">
+                    <div class="checkmark draw"></div>
+                </div>
+                <div class="message_suc">Finished</div>
+                <div class="message_err">Error</div>
+                <div class="outlined_button gray close_popup" lang-data-ht="No, keep it">No, keep it</div>
+                <div class="button red" lang-data-ht="Yes, delete it">Yes, delete it</div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" value="0ba0bad67cf31a07be70d895c1d31223ca4417a482a2340f72df3a6e73774f27" id="nonce"/>
+</div>
+<script>
+    var currency = "CNY";
+    var currencyValue = 6.383202;
+    var temperature = "°C";
+    var userPermission = "owner";
+    var userPrimaryPermission = "";
+
+    [
+        "./js/jquery.js", "./js/gettext.js", "./js/perfect-scrollbar.js",'./js/language.js', "./js/templates/global.js", "./js/templates/triggers.js"
+    ].forEach(function (src) {
+        var script = document.createElement("script");
+        script.src = src;
+        script.async = false;
+        document.head.appendChild(script);
+    });
+</script>
+</body>
+</html>

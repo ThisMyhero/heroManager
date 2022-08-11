@@ -1,0 +1,1037 @@
+<!doctype html>
+<html lang="en-US" translate="no">
+<head>
+    <title>Workers</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta charset="UTF-8">
+    <link rel="preload" href="./css/themes/light/global.css" as="style"/>
+    <link rel="preload" href="./js/jquery.js" as="script"/>
+    <meta name="robots" content="noindex">
+    <link href="./css/themes/light/global.css?v=1635430962" id="css" rel="stylesheet" type="text/css">
+    <link href="./css/themes/dark/global.css?v=1632755234" rel="stylesheet" type="text/css">
+    <link href="./css/themes/light/workers.css?v=1635072098" rel="stylesheet" type="text/css">
+    <link href="./css/themes/dark/workers.css?v=1634986419" rel="stylesheet" type="text/css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+<body>
+<noscript>
+</noscript>
+<header>
+
+</header>
+<div class="page">
+    <div class="menu">
+        <div id="main_menu">
+
+        </div>
+    </div>
+    <div class="preloader" style="display: none">
+        <div class="center">
+            <div class="logo"></div>
+            <div class="loader_line">
+                <div class="bar animate"></div>
+            </div>
+        </div>
+    </div>
+    <div class="content workers">
+        <h1 lang-data-ht="Workers">Workers</h1>
+        <div class="filter_row">
+            <div class="search_el">
+                <input type="text" id="search_text"/>
+                <div class="icon search"></div>
+            </div>
+            <div lang-data-ti="Filter results" data-tooltip="Filter results" class="filter_el">
+                <div class="icon filter"></div>
+            </div>
+            <div class="filter_popup">
+                <div class="filter_top">
+                    <div class="element">
+                        <div class="title">
+                            <div class="icon status"></div>
+                            <span lang-data-ht="Status">Status</span>
+                        </div>
+                        <div class="checkbox_group">
+                            <div class="checkbox_row">
+                                <input type="checkbox" data-xxx-g="Status" id="filter_online" data-filter="online" data-search="Online" lang-data-fi="online" name="filter_online"
+                                       value="1"><label for="filter_online"><span lang-data-ht="Online">Online</span> (<span
+                                    id="count_online">0</span>)</label>
+                            </div>
+                            <div class="checkbox_row">
+                                <input type="checkbox" data-xxx-g="Status" id="filter_offline" data-filter="offline" data-search="Offline" lang-data-fi="offline" name="filter_offline"
+                                       value="1"><label for="filter_offline"><span lang-data-ht="Offline">Offline</span> (<span id="count_offline">0</span>)</label>
+                            </div>
+                            <div class="checkbox_row">
+                                <input type="checkbox" data-xxx-g="Status" id="filter_idle" data-filter="idle" data-search="Idle" lang-data-fi="idle" name="filter_idle" value="1"><label
+                                    for="filter_idle"><span lang-data-ht="Idle">Idle</span> (<span id="count_idle">0</span>)</label>
+                            </div>
+                            <div class="checkbox_row">
+                                <input type="checkbox" data-xxx-g="Status" id="filter_alerts_pause" data-search="Paused alerts" data-filter="alerts_pause" lang-data-fi="alerts_pause"
+                                       name="filter_alerts_pause" value="1"><label for="filter_alerts_pause">
+                                <span lang-data-ht2="Paused alerts">Paused alerts</span>(<span id="count_alerts_pause">0</span>)</label>
+                            </div>
+                            <div class="checkbox_row">
+                                <input type="checkbox" data-xxx-g="Status" id="filter_triggers_pause" data-search="Paused triggers" data-filter="triggers_pause"  lang-data-fi="triggers_pause"
+                                       name="filter_triggers_pause" value="1"><label for="filter_triggers_pause">
+                                <span lang-data-ht2="Paused triggers">Paused triggers</span> (<span id="count_triggers_pause">0</span>)</label>
+                            </div>
+                        </div>
+                        <div class="title">
+                            <div class="icon temperature"></div>
+                            <span lang-data-ht="Temperature">Temperature</span>
+                        </div>
+                        <div class="checkbox_group">
+                            <div class="checkbox_row">
+                                <input type="checkbox" data-xxx-g="Temperature" id="filter_hotlimit" data-search="Hot limit" data-filter="hotlimit" lang-data-fi="hotlimit"
+                                       name="filter_hotlimit" value="1"><label for="filter_hotlimit">
+                                <span lang-data-ht="Hot limit">Hot limit</span> (<span
+                                    id="count_hotlimit">0</span>)</label>
+                            </div>
+                            <div class="checkbox_row">
+                                <input type="checkbox" data-xxx-g="Temperature" id="filter_veryhotlimit" data-search="Very hot limit" data-filter="veryhotlimit" lang-data-fi="veryhotlimit"
+                                       name="filter_veryhotlimit" value="1"><label for="filter_veryhotlimit">
+                                <span lang-data-ht="Very hot limit">Very hot limit</span> (<span id="count_veryhotlimit">0</span>)</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="element">
+                        <div class="title">
+                            <div class="icon mining"></div>
+                            <sapn lang-data-ht="Mining issues">Mining issues</sapn>
+                        </div>
+                        <div class="checkbox_group">
+                            <div class="checkbox_row">
+                                <input type="checkbox" data-xxx-g="Mining issues" id="filter_nospeed" data-search="No speed" data-filter="nospeed" name="filter_nospeed" lang-data-fi="nospeed"
+                                       value="1"><label for="filter_nospeed"><span lang-data-ht="No speed">No speed</span> (<span id="count_nospeed">0</span>)</label>
+                            </div>
+                            <div class="checkbox_row">
+                                <input type="checkbox" data-xxx-g="Mining issues" id="filter_noefficiency" data-search="Low efficiency" data-filter="noefficiency" lang-data-fi="noefficiency"
+                                       name="filter_noefficiency" value="1"><label for="filter_noefficiency">
+                                <sapn lang-data-ht="Low efficiency">Low efficiency</sapn> (<span id="count_noefficiency">0</span>)</label>
+                            </div>
+                            <div class="checkbox_row">
+                                <input type="checkbox" data-xxx-g="Mining issues" id="filter_notemperature" data-search="No temperature" data-filter="notemperature" lang-data-fi="notemperature"
+                                       name="filter_notemperature" value="1"><label for="filter_notemperature">
+                                <span lang-data-ht="No temperature">No temperature</span> (<span id="count_notemperature">0</span>)</label>
+                            </div>
+                            <div class="checkbox_row">
+                                <input type="checkbox" data-xxx-g="Mining issues" id="filter_nofans" data-search="No fans" data-filter="nofans" name="filter_nofans" lang-data-fi="nofans"
+                                       value="1"><label for="filter_nofans">
+                                <span lang-data-ht="No fans">No fans</span>
+                                (<span
+                                    id="count_nofans">0</span>)</label>
+                            </div>
+                            <div class="checkbox_row">
+                                <input type="checkbox" data-xxx-g="Mining issues" id="filter_nopool" data-search="No pool" data-filter="nopool" name="filter_nopool" lang-data-fi="nopool"
+                                       value="1"><label for="filter_nopool">
+                                <span lang-data-ht="No pool">No pool</span>
+                                (<span
+                                    id="count_nopool">0</span>)</label>
+                            </div>
+                            <div class="checkbox_row">
+                                <input type="checkbox" data-xxx-g="Mining issues" id="filter_nocoin"  data-search="No coin" data-filter="nocoin" name="filter_nocoin" lang-data-fi="nocoin"
+                                       value="1"><label for="filter_nocoin">
+                                <span lang-data-ht="No coin">No coin</span> (<span
+                                    id="count_nocoin">0</span>)</label>
+                            </div>
+                            <div class="checkbox_row">
+                                <input type="checkbox" data-xxx-g="Mining issues" id="filter_idlegpus" data-search="Idle GPUs" data-filter="idlegpus" lang-data-fi="idlegpus"
+                                       name="filter_idlegpus" value="1"><label for="filter_idlegpus"><span lang-data-ht="Idle GPUs">Idle GPUs</span> (<span
+                                    id="count_idlegpus">0</span>)</label>
+                            </div>
+<!--                            <div class="checkbox_row">-->
+<!--                                <input type="checkbox" data-xxx-g="Mining issues" id="filter_missinggpus" data-search="Missing GPUs" data-filter="missinggpus" lang-data-fi="missinggpus"-->
+<!--                                       name="filter_missinggpus" value="1"><label for="filter_missinggpus">-->
+<!--                                <span lang-data-ht="Missing GPUs">Missing GPUs</span>-->
+<!--                                (<span id="count_missinggpus">0</span>)</label>-->
+<!--                            </div>-->
+                        </div>
+                    </div>
+                    <div class="element">
+                        <div class="title">
+                            <div class="icon misc"></div>
+                            <span lang-data-ht="Misc">Misc</span>
+                        </div>
+                        <div class="checkbox_group">
+                            <div class="checkbox_row">
+                                <input type="checkbox" data-xxx-g="Misc" id="filter_notes" data-search="Notes" data-filter="notes" name="filter_notes" lang-data-fi="notes"
+                                       value="1"><label for="filter_notes">
+                                <span lang-data-ht="Notes">Notes</span> (<span
+                                    id="count_notes">0</span>)</label>
+                            </div>
+                            <div class="checkbox_row" style="display: none">
+                                <input type="checkbox" data-xxx-g="Misc" id="filter_profitswitch" data-search="Profit switch" data-filter="profitswitch"
+                                       name="filter_profitswitch" value="1"><label for="filter_profitswitch">Profit switch (<span id="count_profitswitch">0</span>)</label>
+                            </div>
+                            <div class="checkbox_row" style="display: none">
+                                <input type="checkbox" data-xxx-g="Misc" id="filter_duplicatedips" data-search="Duplicated ASIC IPs" data-filter="duplicatedips"
+                                       name="filter_duplicatedips" value="1"><label for="filter_duplicatedips">Duplicated ASIC IPs (<span id="count_duplicatedips">0</span>)</label>
+                            </div>
+                            <div class="checkbox_row">
+                                <input type="checkbox" data-xxx-g="Misc" id="filter_nospace" data-search="Out of space" data-filter="nospace" name="filter_nospace" lang-data-fi="nospace"
+                                       value="1"><label for="filter_nospace"><span lang-data-ht="Out of space">Out of space</span> (<span
+                                    id="count_nospace">0</span>)</label>
+                            </div>
+                        </div>
+                        <div class="title">
+                            <div class="icon stability"></div>
+                            <span lang-data-ht="Stability">Stability</span>
+                        </div>
+                        <div class="checkbox_group">
+                            <div class="checkbox_row">
+                                <input type="checkbox" data-xxx-g="Stability" id="filter_stability" data-search="Poor stability rate" data-filter="stability" lang-data-fi="stability"
+                                       name="filter_stability" value="1"><label for="filter_stability">
+                                <span lang-data-ht="Poor stability rate">Poor stability rate</span> (<span id="count_stability">0</span>)</label>
+                            </div>
+                            <div class="checkbox_row">
+                                <input type="checkbox" data-xxx-g="Stability" id="filter_reboots" data-search="System reboots" data-filter="reboots" name="filter_reboots" lang-data-fi="reboots"
+                                       value="1"><label for="filter_reboots">
+                                <span lang-data-ht="System reboots">System reboots</span>
+                                (<span
+                                    id="count_reboots">0</span>)</label>
+                            </div>
+                            <div class="checkbox_row">
+                                <input type="checkbox" data-xxx-g="Stability" id="filter_console" data-search="Console errors" data-filter="console" name="filter_console" lang-data-fi="console"
+                                       value="1"><label for="filter_console">
+                                <span lang-data-ht="Console errors">Console errors</span> (<span
+                                    id="count_console">0</span>)</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="filter_bottom">
+                    <div class="element">
+                        <div class="title">
+                            <div class="icon groups"></div>
+                            <span lang-data-ht="Groups">Groups</span>
+                            (<span id="count_groups">0</span>)
+                        </div>
+                        <div id="groupsFrame" class="frame ps">
+                            <div class="checkbox_group"></div>
+                        </div>
+                    </div>
+                    <div class="element">
+                        <div class="title">
+                            <div class="icon coins"></div>
+                            <span lang-data-ht="Coins">Coins</span> (<span id="count_coins">0</span>)
+                        </div>
+                        <div id="coinsFrame" class="frame ps">
+                            <div class="checkbox_group"></div>
+                        </div>
+                    </div>
+                    <div class="element">
+<!--                        <div class="title">-->
+<!--                            <div class="icon clients"></div>-->
+<!--                            Mining clients (<span id="count_clients">0</span>)-->
+<!--                        </div>-->
+<!--                        <div id="clientsFrame" class="frame ps">-->
+<!--                            <div class="checkbox_group"></div>-->
+<!--                        </div>-->
+                    </div>
+                </div>
+            </div>
+            <div lang-data-ti="Change to extended view" data-tooltip="Change to extended view" class="view_el">
+                <div class="icon view_compact"></div>
+            </div>
+            <div class="search_result"></div>
+        </div>
+        <div class="sum_tab">
+<!--            <div class="card" id="workers_card_info">-->
+<!--                <div class="jdt"  style="opacity: 1">-->
+<!--                    <div class="jdx" style="width: 10%"></div>-->
+<!--                </div>-->
+<!--                <div class="info_tx">-->
+<!--                    <div class="txt_number_1">17</div>-->
+<!--                    <small></small>-->
+<!--                    <div class="error_text">00</div>-->
+<!--                </div>-->
+<!--                <div class="info_type" lang-data-ht2="Workers"></div>-->
+<!--            </div>-->
+<!--            <div class="card" id="workers_card_GPU">-->
+<!--                <div class="jdt"  style="opacity: 1">-->
+<!--                    <div class="jdx" style="width: 10%"></div>-->
+<!--                </div>-->
+<!--                <div class="info_tx">-->
+<!--                    <div class="txt_number_1">0</div>-->
+<!--                    <small></small>-->
+<!--                    <div class="error_text">00</div>-->
+<!--                </div>-->
+<!--                <div class="info_type">GPU</div>-->
+<!--            </div>-->
+<!--            <div class="card" id="workers_card_power">-->
+<!--                <div class="jdt"  style="opacity: 0">-->
+<!--                    <div class="jdx" style="width: 0%"></div>-->
+<!--                </div>-->
+<!--                <div class="info_tx">-->
+<!--                    <div class="txt_number_1">0</div>-->
+<!--                    <small></small>-->
+<!--                </div>-->
+<!--                <div class="info_type" lang-data-ht="Pow"></div>-->
+<!--            </div>-->
+
+<!--            <div class="card" id="workers_card_moeny">-->
+<!--                <div class="jdt"  style="opacity: 0">-->
+<!--                    <div class="jdx" style="width: 10%"></div>-->
+<!--                </div>-->
+<!--                <div class="info_tx">-->
+<!--                    <div class="txt_number_1">0</div>-->
+<!--                    <small></small>-->
+<!--                </div>-->
+<!--                <div class="info_type" lang-data-ht="Est. daily"></div>-->
+<!--            </div>-->
+        </div>
+        <div class="box_table">
+            <div class="loader_frame">
+                <div class="loader"></div>
+            </div>
+            <div id="checked_rows">
+                <div id="actions_button" class="button green"><x lang-data-ht="Action for">Action for</x> <span id="count">0</span> <x lang-data-ht3="workers"></x>
+                    <div class="icon arrow_down"></div>
+                </div>
+                <div id="actions_menu">
+                    <div class="row" onclick="massAction('edit');">
+                        <div class="icon config"></div>
+                        <span lang-data-ht2="Configure">Configure</span>
+                    </div>
+                    <div class="actions_submenu" id="actions_submenu_switch">
+                        <div class="search_el">
+                            <input type="text" id="search_templates">
+                            <div class="icon search"></div>
+                        </div>
+                        <div class="frame">
+                            <div class="row" data-template="91488">1<small>ETHMINER</small></div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="row">
+                            <label>CPU mining</label>
+                            <select id="submenu_cpu">
+                                <option value="">Don't change</option>
+                                <option value="1">Enable</option>
+                                <option value="0">Disable</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <label>Profit switch</label>
+                            <select id="submenu_profitswitch">
+                                <option value="">Don't change</option>
+                                <option value="1">Enable</option>
+                                <option value="0">Disable</option>
+                            </select>
+                        </div>
+                        <div class="button green" onclick="massAction('switch');">Apply changes</div>
+                    </div>
+                    <div class="row" onclick="massAction('update');">
+                        <div class="icon update"></div>
+                        <span lang-data-ht="Update">Update</span>
+                    </div>
+                    <div class="row" onclick="massAction('reboot');">
+                        <div class="icon reboot"></div>
+                        <span lang-data-ht="Reboot machine">Reboot machine</span>
+                    </div>
+                    <div class="row" onclick="massAction('restart');">
+                        <div class="icon restart"></div>
+                        <span lang-data-ht="Restart software">Restart software</span>
+
+                    </div>
+                    <div class="row" onclick="massAction('miner');">
+                        <div class="icon power_cycle" style="background-position: 0px -774px"></div>
+                        <span lang-data-ht="Restart miner">Restart miner</span>
+                    </div>
+                    <div class="row" onclick="massAction('stop');">
+                        <div class="icon stop"></div>
+                        <span lang-data-ht="Stop mining">Stop mining</span>
+                    </div>
+                    <div class="row" onclick="massAction('start');">
+                        <div class="icon start"></div>
+                        <span lang-data-ht="Start mining">Start mining</span>
+                    </div>
+                    <div class="row" onclick="massAction('wakeUp');">
+                        <div class="icon start" style="background-position: -36px -576px"></div>
+                        <span lang-data-ht="Wake up">wakeUp</span>
+                    </div>
+                    <div class="row" onclick="massAction('shutdown');">
+                        <div class="icon shut_down"></div>
+                        <span lang-data-ht2="Shut down">Shut down</span>
+                    </div>
+                    <div class="row" onclick="massAction('forbidden');">
+                        <div class="icon my-worker-icon-forbidden"></div>
+                        <span lang-data-ht="forbidden"></span>
+                    </div>
+                    <div class="row" onclick="massAction('startUsing');">
+                        <div class="icon my-worker-icon-start-using"></div>
+                        <span lang-data-ht="start using"></span>
+                    </div>
+                    <div class="row" onclick="massAction('powercycle');">
+                        <div class="icon power_cycle"></div>
+                        <span lang-data-ht3="Power cycle">Power cycle</span>
+                    </div>
+
+                </div>
+                <input type="hidden" id="nonce"
+                       value="c13caefd4b5b37b31c578c6624f681ffad074d2092711c67b61f7f0b8f4a9b9e"/>
+            </div>
+            <table id="workersList">
+                <tr>
+                    <th class="check_width">
+<!--                        <div class="checkbox" onclick="selectAll(this);"></div>-->
+                    </th>
+                    <th class="status_width"></th>
+                    <th class="flexWorker orderTh">
+                        <div class="order_icon" onclick="workersSort('nameDesc');" id="sort_name"></div>
+                        <x lang-data-ht="Worker">Worker</x>
+                    </th>
+                    <th class="rmv2 flexMining orderTh">
+                        <div class="order_icon" onclick="workersSort('miningDesc');" id="sort_mining"></div>
+                        <x lang-data-ht="Mining">Mining</x>
+                    </th>
+                    <th class="rmv1 flexTemp orderTh">
+                        <div class="order_icon" onclick="workersSort('tempDesc');" id="sort_temp"></div>
+                        <x lang-data-ht="Max. Temp">Max. Temp</x>
+
+                    </th>
+                    <th class="rmv1 flexFans orderTh">
+                        <div class="order_icon" onclick="workersSort('fansDesc');" id="sort_fans"></div>
+                        <x lang-data-ht="Max. Fans"> Max. Fans</x>
+                    </th>
+                    <th class="rmv1 flexPower orderTh">
+                        <div class="order_icon" onclick="workersSort('wattDesc');" id="sort_watt"></div>
+                        <x lang-data-ht="Power"> Power</x>
+                    </th>
+                    <th class="rmv1 flexUptime orderTh">
+                        <div class="order_icon" onclick="workersSort('uptimeDesc');" id="sort_uptime"></div>
+                        <x lang-data-ht="Uptime"> Uptime</x>
+
+                    </th>
+                    <th class="rmv2 flexEarnings orderTh">
+                        <div class="order_icon" onclick="workersSort('earningsDesc');" id="sort_earnings"></div>
+                        <x lang-data-ht="Earnings"> Uptime</x>
+                    </th>
+                    <th class="rmv2 flexActions align_right actions_width" lang-data-ht="Actions">Actions</th>
+                </tr>
+            </table>
+        </div>
+        <div class="pages"></div>
+    </div>
+    <div class="popupbackground close_popup"></div>
+    <div class="popup" id="startUsingWin">
+        <div class="close"></div>
+        <div class="title"></div>
+        <div class="text">
+            <div class="icon error"></div>
+            <x lang-data-ht="This operation will enable machine mining">This operation will disable machine mining.</x>
+        </div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup" lang-data-ht="No, keep it">No, keep it</div>
+            <div class="button blue" lang-data-ht="start using"></div>
+        </div>
+    </div>
+    <div class="popup" id="forbiddenWin">
+        <div class="close"></div>
+        <div class="title"></div>
+        <div class="text">
+            <div class="icon error"></div>
+            <x lang-data-ht="This action will disable mining"></x>
+        </div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup" lang-data-ht="No, keep it">No, keep it</div>
+            <div class="button red" lang-data-ht="forbidden"></div>
+        </div>
+    </div>
+    <div class="popup" id="worker_shutdown">
+        <div class="close"></div>
+        <div class="title"></div>
+        <div class="text">
+            <div class="icon warning"></div>
+            <p lang-data-ht="Please note that this action will shutdown your mining machines and you will need to be at the location to turn them back on."></p></div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup">No, keep it</div>
+            <div class="button red">Yes, shut it down</div>
+        </div>
+    </div>
+    <div class="popup" id="worker_power_cycle">
+        <div class="close"></div>
+        <div class="title"></div>
+        <div class="text">
+            <div class="icon warning"></div>
+            <p lang-data-ht="Please note that this action will power down your machines and boot them up after 30 seconds.  If action is not supported by your motherboard then machines will reboot."></p></div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup">No, keep it</div>
+            <div class="button red">Yes, power cycle</div>
+        </div>
+    </div>
+    <div class="popup" id="worker_delete">
+        <div class="close"></div>
+        <div class="title"></div>
+        <div class="text">
+            <div class="icon warning"></div>
+            <p lang-data-ht="Whether or not to delete.">Whether or not to delete.</p></div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup">No, keep it</div>
+            <div class="button red">Yes, delete it</div>
+        </div>
+    </div>
+    <div class="popup" id="hardware_reboot">
+        <div class="close"></div>
+        <div class="title"></div>
+        <div class="text">
+            <div class="icon reboot"></div>
+            <p lang-data-ht="Please note that this action will reboot your mining machine.">Please note that this action will reboot your mining machine.</p></div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup">No, keep it</div>
+            <div class="button blue">Yes, reboot it</div>
+        </div>
+    </div>
+    <div class="popup" id="software_stop">
+        <div class="close"></div>
+        <div class="title"></div>
+        <div class="text">
+            <div class="icon stop"></div>
+            <p lang-data-ht="Please note that this action will stop the mining process.">Please note that this action will stop the mining process.</p></div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup">No, keep it</div>
+            <div class="button blue">Yes, stop it</div>
+        </div>
+    </div>
+    <div class="popup" id="software_update">
+        <div class="close"></div>
+        <div class="title"></div>
+        <div class="text">
+            <div class="icon update"></div>
+            <p lang-data-ht="This action will update your software."></p></div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup">No, keep it</div>
+            <div class="button blue">Yes, update it</div>
+        </div>
+    </div>
+    <div class="popup" id="software_start">
+        <div class="close"></div>
+        <div class="title"></div>
+        <div class="text">
+            <div class="icon start"></div>
+            <p lang-data-ht="Please note that this action will start the mining process.">Please note that this action will start the mining process.</p></div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup">No, keep it</div>
+            <div class="button blue">Yes, start it</div>
+        </div>
+    </div>
+    <div class="popup" id="software_restart">
+        <div class="close"></div>
+        <div class="title"></div>
+        <div class="text">
+            <div class="icon restart"></div>
+            <p lang-data-ht="Please note that this action will restart your mining software only.">Please note that this action will restart your mining software only.</p></div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup">No, keep it</div>
+            <div class="button blue">Yes, restart it</div>
+        </div>
+    </div>
+    <div class="popup" id="miner_restart">
+        <div class="close"></div>
+        <div class="title"></div>
+        <div class="text">
+            <div class="icon restart"></div>
+            <p lang-data-ht="Please note that this action will restart your mining miner only.">Please note that this action will restart your mining software only.</p></div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup">No, keep it</div>
+            <div class="button blue">Yes, restart it</div>
+        </div>
+    </div>
+    <div class="popup" id="RouseMachineWin">
+        <div class="close"></div>
+        <div class="title"></div>
+        <div class="text">
+            <div class="icon stop"></div>
+            <x lang-data-ht="This operation will wake up the machine"></x>
+        </div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup" lang-data-ht="No, keep it">No, keep it</div>
+            <div class="button blue" lang-data-ht="Rouse Machine">Yes, stop it</div>
+        </div>
+    </div>
+    <div class="popup dynamic_height absolute_popup" id="edit_note">
+        <div class="close"></div>
+        <div class="title">Worker's note</div>
+        <div class="text">
+            <textarea></textarea>
+            <div class="reset_row">
+                <div class="reset_button" onclick="" lang-data-ht="Clear content">Clear content</div>
+            </div>
+        </div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup"  lang-data-ht2="Cancel">Discard changes</div>
+            <div class="button green" lang-data-ht="Save">Save note</div>
+        </div>
+    </div>
+    <div class="popup dynamic_height absolute_popup" id="rename_worker">
+        <div class="close"></div>
+        <div class="title">Edit</div>
+        <div class="text">
+            <div class="icon warning"></div>
+            <p>Please note that renaming the worker might cause the differences in statistics. If you are using Windows
+                software, make sure to logout and login with new worker's name.</p></div>
+        <div class="text">
+            <div class="row">
+                <label>New name</label>
+                <label class="chars_left"></label>
+                <input type="text" class="wn" value=""/>
+            </div>
+            <div class="row">
+                <label>Type
+                    <div class="info_box">
+                        <div class="info_icon"></div>
+                        <div class="tooltip tooltip_left">
+                            <b>Type</b>
+                            <p>Mixed AMD and Nvidia rigs are not supported.</p>
+                        </div>
+                    </div>
+                </label>
+                <select id="popup_type">
+                    <option value="amd">AMD</option>
+                    <option value="nvidia">Nvidia</option>
+                    <option value="asic">ASIC</option>
+                </select>
+            </div>
+            <div class="row">
+                <label>System
+                    <div class="info_box">
+                        <div class="info_icon"></div>
+                        <div class="tooltip tooltip_left">
+                            <b>System</b>
+                            <p>Mining with Mac, Android, iOS, and other devices is not supported.</p>
+                        </div>
+                    </div>
+                </label>
+                <select id="popup_system_asic">
+                    <option value="antminer">Antminer</option>
+                    <option value="whatsminer">Whatsminer</option>
+                    <option value="strongu">Strongu</option>
+                    <option value="ebang">Ebang</option>
+                    <option value="avalon">Avalon</option>
+                    <option value="innosilicon">Innosilicon</option>
+                    <option value="goldshell">Goldshell (Monitoring only)</option>
+                    <option value="dayun">Dayun</option>
+                    <option value="baikal">Baikal</option>
+                    <option value="blackminer">Blackminer</option>
+                    <option value="obelisk">Obelisk</option>
+                    <option value="spondoolies">Spondoolies</option>
+                    <option value="aisen">Aisen</option>
+                    <option value="hyperbit">Hyperbit</option>
+                    <option value="fusionsilicon">Fusionsilicon</option>
+                    <option value="toddminer">Toddminer</option>
+                    <option value="cheetah">Cheetah</option>
+                </select>
+                <select id="popup_system_gpu">
+                    <option value="msos">msOS</option>
+                    <option value="windows">Windows</option>
+                </select>
+            </div>
+            <div class="row">
+                <label>Groups / Locations (optional)</label>
+                <div id="groups">
+                    <div class="fixed_tag tag_type">amd</div>
+                    <div class="fixed_tag tag_system">msos</div>
+                    <input type="text" id="popup_tag" placeholder="Add a group ..."/>
+                </div>
+            </div>
+        </div>
+        <div class="text asic">
+            <div class="row">
+                <label>ASIC local IP</label>
+                <input type="text" class="asicip" value=""/>
+            </div>
+            <div class="row mt20">
+                <label>ASIC credentials</label>
+                <div class="credentials_text">If you are using ASIC Hub, you need to enter your web username and
+                    password.
+                </div>
+            </div>
+            <div class="row">
+                <label>Username</label>
+                <input type="text" class="asicuser" value=""/>
+            </div>
+            <div class="row">
+                <label>Password</label>
+                <input type="text" class="asicpassword" value=""/>
+            </div>
+        </div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup">Discard changes</div>
+            <div class="button green">Save changes</div>
+        </div>
+    </div>
+    <script>
+        var access = "owner";
+    </script>
+    <script>
+        var workers = '[{"workersProfitSwitchActive":"0","workersClientDefault":"NBMINER-AMD","workersCpuClientDefault":"XMRIG","workersId":"644266","workersName":"home","workersType":"amd","workersSystem":"windows","workersGroups":";TestGroup;"},{"workersProfitSwitchActive":"0","workersClientDefault":"PHOENIX-ETH","workersCpuClientDefault":"disabled","workersId":"617989","workersName":"WORKER001","workersType":"nvidia","workersSystem":"windows","workersGroups":";TestGroup;"}]';
+        var workersStability = '[617989]';
+        var workersReboots = 'null';
+        var workersConsole = 'null';
+        var workerToken = 'zgtnisjwk59a';
+        var btcExchange = 1;
+    </script>
+    <script>
+        var clients = {
+            "TREX": {
+                "config": "{\r\n  \"pools\": [\r\n    {\r\n      \"user\": \"<mark class=\"tag\">(WALLET:ETH)<\/mark>\",\r\n\t  \"worker\": \"<mark class=\"tag\">(WORKER)<\/mark>\",\r\n      \"url\": \"<mark class=\"tag\">(POOL:ETH)<\/mark>\",\r\n      \"pass\": \"x\"\r\n    }\r\n  ],\r\n  \"no-nvml\": false,\r\n  \"api-bind-http\": \"127.0.0.1:4068\",\r\n  \"json-response\": true,\r\n  \"pci-indexing\":true,\r\n  \"retries\": 3,\r\n  \"retry-pause\": 5,\r\n  \"timeout\": 500,\r\n  \"no-watchdog\":true,\r\n  \"algo\": \"ethash\",\r\n\r\n  \"exit-on-cuda-error\": true,\r\n  \"exit-on-connection-lost\": false\r\n}",
+                "for": ["nvidia", "msos", "windows"],
+                "param": "\"api-bind-http\": \"0.0.0.0:4068\",\r\n\t\"json-response\": true,\r\n\t",
+                "algo": ["Ethash", "ProgPowZ", "Skunkhash", "MTP", "KAWPOW", "ProgPowSERO", "MTP-TCR", "ProgPow", "vProgPow", "Etchash", "ProgPowVeil", "Octopus", "Autolykos2", "FiroPoW"]
+            },
+            "CRYPTODREDGE": {
+                "config": "-a kawpow -o <mark class=\"tag\">(POOL:RVN)<\/mark> -p x -u <mark class=\"tag\">(WALLET:RVN)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark>",
+                "for": ["nvidia", "msos", "windows"],
+                "param": "",
+                "algo": ["CryptoNightHaven", "CryptoNightHeavy", "MTP", "cuckARoo29", "CryptoNightGPU", "CryptoNightTurtle", "Argon2d4096", "Argon2d250", "Argon2d-nim", "Argon2d-dyn", "Chukwa", "CryptoNightConceal", "X16RTVEIL", "CryptoNightZLS", "CryptoNightUPX2", "SHA-256csm", "CryptoNightTalleo", "KAWPOW", "Chukwa2"]
+            },
+            "PHOENIX-ETH": {
+                "config": "-worker <mark class=\"tag\">(WORKER)<\/mark>\r\n-pool <mark class=\"tag\">(POOL:ETH)<\/mark>\r\n-wal <mark class=\"tag\">(WALLET:ETH)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark>\r\n-pass x\r\n-eres 0\r\n-log 0\r\n-gbase 0\r\n-proto <mark class=\"tag\">(AUTO)<\/mark>",
+                "for": ["nvidia", "amd", "msos", "windows"],
+                "param": "",
+                "algo": ["Ethash", "Ubqhash", "Etchash"]
+            },
+            "BMINER": {
+                "config": "-uri cuckaroo29m:\/\/<mark class=\"tag\">(WALLET:GRIN)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark>@<mark class=\"tag\">(POOL:GRIN)<\/mark>",
+                "for": ["nvidia", "msos", "windows"],
+                "param": "start.bat\r\n\tFROM v3.5\r\n\t-api 127.0.0.1:1880",
+                "algo": ["cuckAToo31", "Equihash(144,5)", "Ethash", "cuckARoom29", "CuckooBFC", "cuckAToo32", "KAWPOW", "BeamHashIII", "BeamHashII", "cuckARooz29", "Octopus", "Equihash"]
+            },
+            "NBMINER": {
+                "config": "-a ethash -o <mark class=\"tag\">(POOL:ETH)<\/mark> -u <mark class=\"tag\">(WALLET:ETH)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark> -p x -cmd-output 1 -long-format",
+                "for": ["nvidia", "msos", "windows"],
+                "param": "start.bat\r\n\t--api 3333",
+                "algo": ["Ethash", "Etchash", "Tensority", "cuckAToo31", "cuckARoo29", "cuckARood29", "ProgPowSERO", "KAWPOW", "cuckAToo32", "BeamHashIII", "Octopus", "Autolykos2"]
+            },
+            "NBMINER-AMD": {
+                "config": "-a ethash -o <mark class=\"tag\">(POOL:ETH)<\/mark> -u <mark class=\"tag\">(WALLET:ETH)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark> -p x -cmd-output 1 -long-format",
+                "for": ["amd", "msos", "windows"],
+                "param": "start.bat\r\n\t--api 3333",
+                "algo": ["Ethash", "Etchash", "ProgPowSERO", "KAWPOW", "Octopus", "Autolykos2"]
+            },
+            "GMINER": {
+                "config": "--algo 150_5 --pers Beam-PoW --server <mark class=\"tag\">(POOL:BEAM)<\/mark> --port <mark class=\"tag\">(AUTO)<\/mark> --ssl 0 --user <mark class=\"tag\">(WALLET:BEAM)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark>",
+                "for": ["nvidia", "windows", "msos"],
+                "param": "start.bat\r\n\t--api 3333",
+                "algo": ["Ethash", "Equihash(144,5)", "Equihash(150,5)", "Equihash(210,9)", "Equihash(192,7)", "Equihash(125,4)", "Zhash", "CuckooCycle", "Cortex", "KAWPOW", "BeamHashIII", "Etchash"]
+            },
+            "GMINER-AMD": {
+                "config": "--algo 150_5 --pers Beam-PoW --server <mark class=\"tag\">(POOL:BEAM)<\/mark> --port <mark class=\"tag\">(AUTO)<\/mark> --ssl 0 --user <mark class=\"tag\">(WALLET:BEAM)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark>",
+                "for": ["amd", "msos", "windows"],
+                "param": "start.bat\r\n\t--api 3333",
+                "algo": ["Equihash(144,5)", "Equihash(150,5)", "Equihash(192,7)", "Zhash", "CuckooCycle", "Equihash(125,4)", "CuckooBFC", "Ethash", "Etchash"]
+            },
+            "SRBMINER": {
+                "config": "--ccryptonighttype cryptonight_r --cpool <mark class=\"tag\">(POOL:SUMO)<\/mark> --cwallet <mark class=\"tag\">(WALLET:SUMO)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark>",
+                "for": ["amd", "windows"],
+                "param": "--api_enabled true --api-port 21555",
+                "algo": ["CryptoNightV7", "CryptoNightFast", "CryptoNightHaven", "CryptoNightHeavy", "CryptoNightLiteV7", "CryptoNightV8", "CryptoNightStelliteV4", "CryptoNightSaber", "CryptoNightAlloy", "CryptoNightArto", "CryptoNightB2N", "CryptoNightItalo", "CryptoNightGPU", "CryptoNightTurtle", "CryptoNightUPX2", "CryptoNightHeavyX", "CryptoNightWOW", "CryptoNightR", "CryptoNightFastV2", "CryptoNightConceal", "CNReverseWaltz", "CryptoNightB2N", "CryptoNightZLS", "CryptoNightDark"]
+            },
+            "SRBMINER-MULTI": {
+                "config": "--algorithm ethash --pool <mark class=\"tag\">(POOL:ETH)<\/mark> --wallet <mark class=\"tag\">(WALLET:ETH)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark> --password x",
+                "for": ["amd", "windows", "msos"],
+                "param": "--api_enabled true --api-port 17644",
+                "algo": ["Eaglesong", "Blake (2s)", "KangarooTwelve", "Handshake", "RandomKEVA", "Minotaur", "Ethash", "Ubqhash", "Panthera", "CryptoNightConceal", "CryptoNightHaven", "CryptoNightGPU", "CryptoNightUPX2", "CryptoNightHeavyX", "VerusHash", "Argon2d-dyn", "Argon2d-ninja", "Chukwa", "Chukwa2", "Etchash", "Phi5", "Autolykos2", "Verthash", "HeavyHash", "Webchain", "CryptoNightTurtle", "Circcash", "FiroPoW", "KAWPOW", "ProgPowSERO", "ProgPowVeil", "ProgPowZ", "vProgPow", "AstroBWT"]
+            },
+            "MINIZ": {
+                "config": "--url <mark class=\"tag\">(WALLET:BTG)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark>@<mark class=\"tag\">(POOL:BTG)<\/mark> --pass x --par 144,5 --pers auto",
+                "for": ["nvidia", "windows", "msos"],
+                "param": "--extra --telemetry 20000 --gpu-line --show-shares --show-server",
+                "algo": ["Equihash(144,5)", "Equihash(192,7)", "Equihash(96,5)", "Zhash", "Equihash(150,5)", "Equihash(125,4)", "Equihash(210,9)", "BeamHashII", "BeamHashIII", "RandomHash2", "Etchash", "Ethash", "Scryptn2"]
+            },
+            "EWBF-ZHASH": {
+                "config": "--algo zhash --pers auto --server <mark class=\"tag\">(POOL:BTCZ)<\/mark> --port <mark class=\"tag\">(AUTO)<\/mark> --user <mark class=\"tag\">(WALLET:BTCZ)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark> --pass x",
+                "for": ["nvidia", "msos", "windows"],
+                "param": "start.bat\r\n\t--api\r\n\t--eexit 3 (to use Watchdog)",
+                "algo": ["Zhash", "EquihashBTG", "EquihashBTCZ", "EquihashSAFE", "Equihash(144,5)", "Equihash(192,7)", "Equihash(210,9)"]
+            },
+            "SGMINER-AVERMORE": {
+                "config": "{\r\n    \"pools\":\r\n    [\r\n        {\r\n            \"name\": \"x16r\",\r\n            \"url\": \"<mark class=\"tag\">(POOL:RCL)<\/mark>\",\r\n            \"user\": \"<mark class=\"tag\">(WALLET:RCL)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark>\",\r\n            \"pass\": \"x\",\r\n            \"priority\": \"0\",\r\n            \"profile\": \"x16r\",\r\n            \"intensity\":\"22\"\r\n        }\r\n    ],\r\n    \"profiles\":\r\n    [\r\n        {\r\n            \"name\": \"x16r\",\r\n            \"algorithm\": \"x16r\"\r\n        }\r\n    ],\r\n    \"default-profile\": \"x16r\",\r\n    \"no-extranonce\": true,\r\n    \"gpu-platform\": \"-1\"\r\n\t}",
+                "for": ["amd", "msos"],
+                "param": "sgminer.conf",
+                "algo": ["X16R", "X16S", "Xevan"]
+            },
+            "WILDRIG-MULTI": {
+                "config": "--algo kawpow --opencl-threads 2 --url <mark class=\"tag\">(POOL:RVN)<\/mark> --user <mark class=\"tag\">(WALLET:RVN)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark> --pass x",
+                "for": ["amd", "nvidia", "msos", "windows"],
+                "param": "",
+                "algo": ["HoneyComb", "Dedal", "SonoA", "BCD", "C11", "HMQ1725", "PHI1612", "TimeTravel10", "Tribus", "X16R", "X16S", "X17", "X22i", "X21S", "MTP", "X16RT", "Lyra2REv3", "Lyra2REv2", "Lyra2vc0ban", "Skunkhash", "X18", "Xevan", "X25X", "Skein2", "Blake (2s)", "Blake (2b)", "Blake (2b-BTCC)", "BMW512", "Astralhash", "Globalhash", "Jeonghash", "Padihash", "Pawelhash", "X16RTVEIL", "X16Rv2", "Hex", "X17R", "SHA-256csm", "KAWPOW", "ProgPowSERO", "vProgPow", "X11k", "ProgPowZ"]
+            },
+            "TEAMREDMINER": {
+                "config": "--algo ethash -o <mark class=\"tag\">(POOL:ETH)<\/mark> -u <mark class=\"tag\">(WALLET:ETH)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark> -p x --eth_dag_slowdown=9 --watchdog_script=\/home\/minerstat\/minerstat-os\/bin\/reboot.sh --eth_no_ramp_up",
+                "for": ["amd", "msos", "windows"],
+                "param": "--api_listen=127.0.0.1:4028",
+                "algo": ["Lyra2z", "PHI2", "CryptoNightV8", "Lyra2REv3", "CryptoNightR", "CryptoNightHeavyX", "CryptoNightSaber", "CryptoNightHaven", "CryptoNightHeavy", "CNReverseWaltz", "CryptoNightFastV2", "CryptoNightTurtle", "CryptoNightUPX2", "X16R", "X16S", "X16RT", "MTP", "cuckAToo31", "cuckARood29", "CryptoNightConceal", "X16RTVEIL", "Chukwa", "X16Rv2", "Ethash", "KAWPOW", "Argon2d-nim", "Chukwa2", "Etchash", "Verthash", "Autolykos2", "FiroPoW"]
+            },
+            "CCMINER-KRNLX": {
+                "config": "-a xevan -o <mark class=\"tag\">(POOL:XEVAN)<\/mark> -u <mark class=\"tag\">(WALLET:XEVAN)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark> -p x -q",
+                "for": ["nvidia", "msos", "windows"],
+                "param": "start.bat\r\n\t-b 0.0.0.0:3333 --api-bind 3333 --api-remote",
+                "algo": ["Xevan"]
+            },
+            "CAST-XMR": {
+                "config": "-S <mark class=\"tag\">(POOL:MNG)<\/mark> -u <mark class=\"tag\">(WALLET:MNG)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark> -p x --maxmem --ratewatchdog",
+                "for": ["amd", "msos", "windows"],
+                "param": "start.bat\r\n\t--remoteaccess",
+                "algo": ["CryptoNightV7", "CryptoNightHeavy", "CryptoNightLiteV7", "CryptoNightSaber", "CryptoNightStelliteV4", "CryptoNightV8", "CryptoNightTurtle"]
+            },
+            "CLAYMORE-ETH": {
+                "config": "-eworker <mark class=\"tag\">(WORKER)<\/mark>\r\n\t-epool <mark class=\"tag\">(POOL:ETH)<\/mark>\r\n\t-ewal <mark class=\"tag\">(WALLET:ETH)<\/mark>\r\n\t-epsw x\r\n\t-mode <mark class=\"tag\">(MODE:SINGLE)<\/mark>\r\n\t-asm 1\r\n\t-allpools 1\r\n\t-allcoins 1\r\n\t-eres 0\r\n\t-dbg -1\r\n\t-wd 1\r\n\t-esm <mark class=\"tag\">(AUTO)<\/mark>",
+                "for": ["nvidia", "amd", "msos", "windows"],
+                "dual": {
+                    "Ethash": {"hashrate": 0, "consumption": 0, "dcri": 0},
+                    "Blake (14r)": {"hashrate": 160, "consumption": 65, "dcri": 20},
+                    "LBRY": {"hashrate": 160, "consumption": 65, "dcri": 20},
+                    "Pascal": {"hashrate": 160, "consumption": 110, "dcri": 20},
+                    "Blake (2b)": {"hashrate": 160, "consumption": 0, "dcri": 20},
+                    "Blake (2s)": {"hashrate": 0, "consumption": 0, "dcri": 20},
+                    "Keccak": {"hashrate": 160, "consumption": 0, "dcri": 20}
+                },
+                "param": "config.txt\r\n\t-mport 3333\r\n\t-esm (AUTO)",
+                "algo": ["Ethash"],
+                "algoDual": ["Blake (14r)", "LBRY", "Pascal", "Blake (2b)", "Blake (2s)", "Keccak", "Ethash"]
+            },
+            "NSFMINER": {
+                "config": "-P stratum1+tcp:\/\/<mark class=\"tag\">(WALLET:ETH)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark>@<mark class=\"tag\">(POOL:ETH)<\/mark> --report-hashrate",
+                "for": ["nvidia", "amd", "msos", "windows"],
+                "param": "start.bat\r\n\t-U -> Nvidia\r\n\t-G -> AMD",
+                "algo": ["Ethash"]
+            },
+            "ETHMINER": {
+                "config": "-P stratum1+tcp:\/\/<mark class=\"tag\">(WALLET:ETH)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark>@<mark class=\"tag\">(POOL:ETH)<\/mark> --report-hashrate",
+                "for": ["nvidia", "amd", "msos", "windows"],
+                "param": "start.bat\r\n\t-U -> Nvidia\r\n\t-G -> AMD",
+                "algo": ["Ethash"],
+                "templates": [{"name": "1", "id": "91488"}]
+            },
+            "KAWPOWMINER": {
+                "config": "-P stratum+tcp:\/\/<mark class=\"tag\">(WALLET:RVN)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark>@<mark class=\"tag\">(POOL:RVN)<\/mark> --report-hashrate",
+                "for": ["nvidia", "amd", "msos", "windows"],
+                "param": "start.bat\r\n\t-U -> Nvidia\r\n\t-G -> AMD",
+                "algo": ["KAWPOW"]
+            },
+            "KBMINER": {
+                "config": "--pool <mark class=\"tag\">(POOL:VOLLAR)<\/mark> --user <mark class=\"tag\">(WALLET:VOLLAR)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark> --pass x",
+                "for": ["amd", "msos"],
+                "param": "start.bat\r\n\t-U -> Nvidia\r\n\t-G -> AMD",
+                "algo": ["Equihash+Scrypt"]
+            },
+            "SEROMINER": {
+                "config": "-P stratum1+tcp:\/\/<mark class=\"tag\">(WALLET:SERO)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark>@<mark class=\"tag\">(POOL:SERO)<\/mark> --report-hashrate",
+                "for": ["nvidia", "amd", "msos"],
+                "param": "start.bat\r\n\t-U -> Nvidia\r\n\t-G -> AMD",
+                "algo": ["ProgPowSERO"]
+            },
+            "CCMINER-X16R": {
+                "config": "-a x16r -o <mark class=\"tag\">(POOL:RVN)<\/mark> -u <mark class=\"tag\">(WALLET:RVN)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark> -p x -i 21",
+                "for": ["nvidia", "msos", "windows"],
+                "param": "start.bat\r\n-b 0.0.0.0:3333 --api-bind 3333 --api-remote",
+                "algo": ["X16R"]
+            },
+            "LOLMINER": {
+                "config": "{\r\n\t\"MINERSTAT\" :\r\n\t{\r\n\t\t\"DEVICES\" : \"AUTO\",\r\n\t\t\"APIPORT\" : 3333,\r\n\t\t\"COIN\" : \"BTCZ\",\r\n\t\t\"POOLS\" : [\r\n\t\t\t{\"POOL\" : \"<mark class=\"tag\">(POOL:BTCZ)<\/mark>\",\r\n\t\t\t \"PORT\" : \"<mark class=\"tag\">(AUTO)<\/mark>\",\r\n\t\t\t \"USER\" : \"<mark class=\"tag\">(WALLET:BTCZ)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark>\",\r\n\t\t\t \"PASS\" : \"x\"}\r\n\t\t]\r\n\t}\r\n}",
+                "for": ["nvidia", "amd", "msos", "windows"],
+                "param": "",
+                "algo": ["Zhash", "Equihash(144,5)", "Equihash(192,7)", "Equihash(125,4)", "Equihash(210,9)", "cuckARood29", "cuckAToo31", "BeamHashII", "BeamHashIII", "cuckARoom29", "cuckAToo32", "Cuckaroo29b", "Cuckaroo29S", "Ethash", "Etchash", "Cortex", "Autolykos2", "CuckooCycle"]
+            },
+            "Z-ENEMY": {
+                "config": "-a kawpow -o <mark class=\"tag\">(POOL:RVN)<\/mark> -u <mark class=\"tag\">(WALLET:RVN)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark> -p x",
+                "for": ["nvidia", "msos", "windows"],
+                "param": "start.bat\r\n-b 0.0.0.0:3333 --api-bind 3333 --api-remote",
+                "algo": ["Hex", "TimeTravel10", "X16R", "X16S", "C11", "PHI1612", "Tribus", "Skunkhash", "Xevan", "PHI2", "BCD", "X16Rv2", "KAWPOW"]
+            },
+            "XMR-STAK": {
+                "config": "\"pool_list\":[{\"pool_address\" : \"<mark class=\"tag\">(POOL:SUMO)<\/mark>\", \"wallet_address\" : \"<mark class=\"tag\">(WALLET:SUMO)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark>\", \"rig_id\" : \"<mark class=\"tag\">(WORKER)<\/mark>\", \"pool_password\" : \"x\", \"use_nicehash\" : false, \"use_tls\" : false, \"tls_fingerprint\" : \"\", \"pool_weight\" : 1 },],\"currency\" : \"cryptonight_r\",",
+                "for": ["nvidia", "amd", "msos", "windows"],
+                "param": "config.txt\r\n\t\"httpd_port\" : 2222",
+                "algo": ["CryptoNightV7", "CryptoNightV8", "CryptoNightFast", "CryptoNightHaven", "CryptoNightHeavy", "CryptoNightLiteV7", "CryptoNightStelliteV4", "CryptoNightSaber", "CryptoNightGPU", "CryptoNightR", "CryptoNightConceal", "CryptoNightZLS", "CryptoNightTurtle"]
+            },
+            "XMR-STAK-RANDOMX": {
+                "config": "\"pool_list\":[{\"pool_address\" : \"<mark class=\"tag\">(POOL:XMR)<\/mark>\", \"wallet_address\" : \"<mark class=\"tag\">(WALLET:XMR)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark>\", \"rig_id\" : \"<mark class=\"tag\">(WORKER)<\/mark>\", \"pool_password\" : \"x\", \"use_nicehash\" : false, \"use_tls\" : false, \"tls_fingerprint\" : \"\", \"pool_weight\" : 1 },],\"currency\" : \"randomx\",",
+                "for": ["nvidia", "amd", "msos"],
+                "param": "config.txt\r\n\t\"httpd_port\" : 2222",
+                "algo": ["RandomX"]
+            },
+            "CCMINER-TPRUVOT": {
+                "config": "-a x16r -o <mark class=\"tag\">(POOL:RCL)<\/mark> -u <mark class=\"tag\">(WALLET:RCL)<\/mark> -p x -q",
+                "for": ["nvidia", "msos", "windows"],
+                "param": "start.bat\r\n\t-b 0.0.0.0:3333 --api-bind 3333 --api-remote",
+                "algo": ["HMQ1725", "Blake (14r)", "Blake (2s)", "Lyra2REv2", "Lyra2z", "NeoScrypt", "NIST5", "TimeTravel10", "X15", "X16R", "Lyra2REv3", "Keccak", "Keccak-C"]
+            },
+            "CCMINER-DJM34": {
+                "config": "-a mtp -o <mark class=\"tag\">(POOL:XZC)<\/mark> -u <mark class=\"tag\">(WALLET:XZC)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark> -p x",
+                "for": ["nvidia", "msos", "windows"],
+                "param": "start.bat\r\n\t--b 0.0.0.0:3333 --api-bind 3333 --api-remote",
+                "algo": ["MTP"]
+            },
+            "CCMINER-ALEXIS": {
+                "config": "-a skein -o <mark class=\"tag\">(POOL:SKEIN)<\/mark> -u <mark class=\"tag\">(WALLET:SKEIN)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark> -p x -q",
+                "for": ["nvidia", "msos", "windows"],
+                "param": "start.bat\r\n\t-b 0.0.0.0:3333 --api-bind 3333 --api-remote",
+                "algo": ["Skein"]
+            },
+            "CLAYMORE-NEOSCRYPT": {
+                "config": "-pool <mark class=\"tag\">(POOL:CRC)<\/mark>\r\n-wal <mark class=\"tag\">(WALLET:CRC)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark>\r\n-psw x\r\n-powlim 50",
+                "for": ["amd", "windows"],
+                "param": "",
+                "algo": ["NeoScrypt"]
+            },
+            "PROGPOWMINER": {
+                "config": "-P stratum+tcp:\/\/<mark class=\"tag\">(WALLET:BCI)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark>@<mark class=\"tag\">(POOL:BCI)<\/mark> --report-hashrate",
+                "for": ["nvidia", "amd", "msos", "windows"],
+                "param": "start.bat\r\n\t-U -> Nvidia\r\n\t-G -> AMD",
+                "algo": ["ProgPow"]
+            },
+            "XMRIG-AMD": {
+                "config": "-a cn\/r -o <mark class=\"tag\">(POOL:SUMO)<\/mark> -u <mark class=\"tag\">(WALLET:SUMO)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark> -p x",
+                "for": ["amd", "msos", "windows"],
+                "param": "",
+                "algo": ["CryptoNightSaber", "CryptoNightFast", "CryptoNightArto", "CryptoNightAlloy", "CryptoNightHaven", "CryptoNightStelliteV4", "CryptoNightHeavy", "CryptoNightTurtle", "CryptoNightR", "CNReverseWaltz", "CryptoNightGPU", "CryptoNightStelliteV5", "CryptoNightWOW", "CryptoNightHeavyX", "CryptoNightZLS", "CryptoNightLiteV7"]
+            },
+            "XMRIG-NVIDIA": {
+                "config": "-a cn\/r -o <mark class=\"tag\">(POOL:SUMO)<\/mark> -u <mark class=\"tag\">(WALLET:SUMO)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark> -p x",
+                "for": ["nvidia", "msos", "windows"],
+                "param": "",
+                "algo": ["CryptoNightSaber", "CryptoNightFast", "CryptoNightArto", "CryptoNightAlloy", "CryptoNightHaven", "CryptoNightStelliteV4", "CryptoNightHeavy", "CryptoNightTurtle", "CryptoNightR", "CNReverseWaltz", "CryptoNightGPU", "CryptoNightStelliteV5", "CryptoNightWOW", "CryptoNightHeavyX", "CryptoNightZLS"]
+            },
+            "XMRIG-RANDOMX": {
+                "config": "{\r\n\t\"http\": {\r\n\t\t\"enabled\": true,\r\n\t\t\"host\": \"127.0.0.1\",\r\n\t\t\"port\": 7888,\r\n\t\t\"access-token\": null,\r\n\t\t\"restricted\": null\r\n\t},\r\n\t\"autosave\": true,\r\n\t\"background\": false,\r\n\t\"colors\": true,\r\n\t\"donate-level\": 1,\r\n\t\"donate-over-proxy\": 0,\r\n\t\"log-file\": null,\r\n\t\"pools\": [{\r\n\t\t\"algo\": \"rx\",\r\n\t\t\"url\": \"<mark class=\"tag\">(POOL:XMR)<\/mark>\",\r\n\t\t\"user\": \"<mark class=\"tag\">(WALLET:XMR)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark>\u2063\u2063\u2063\",\r\n\t\t\"pass\": \"x\",\r\n\t\t\"rig-id\": null,\r\n\t\t\"nicehash\": false,\r\n\t\t\"keepalive\": false,\r\n\t\t\"enabled\": true,\r\n\t\t\"tls\": false,\r\n\t\t\"tls-fingerprint\": null,\r\n\t\t\"daemon\": false\r\n\t}],\r\n\t\"print-time\": 60,\r\n\t\"retries\": 5,\r\n\t\"retry-pause\": 5,\r\n\t\"syslog\": false,\r\n\t\"watch\": false\r\n}",
+                "for": ["amd", "nvidia", "msos"],
+                "param": "",
+                "algo": ["RandomX", "RandomSFX", "CryptoNightTalleo", "AstroBWT", "RandomKEVA"]
+            },
+            "TTMINER": {
+                "config": "-A ETHASH -P <mark class=\"tag\">(WALLET:ETH)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark>:x@<mark class=\"tag\">(POOL:ETH)<\/mark>",
+                "for": ["nvidia", "msos"],
+                "param": "",
+                "algo": ["Ethash", "Ubqhash", "ProgPow", "ProgPowSERO", "MTP", "Lyra2REv3", "ProgPowZ", "KAWPOW", "vProgPow", "Etchash"]
+            },
+            "VKMINER": {
+                "config": "-a bitfree -o <mark class=\"tag\">(POOL:BFC)<\/mark> -u <mark class=\"tag\">(WALLET:BFC)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark> -p x -i 10",
+                "for": ["nvidia", "msos"],
+                "param": "start.bat\r\n\t-b 0.0.0.0:3333 --api-bind 3333 --api-remote",
+                "algo": ["CuckooBFC"]
+            },
+            "NANOMINER": {
+                "config": "-algo ethash -pool1 <mark class=\"tag\">(POOL:ETH)<\/mark> -wallet <mark class=\"tag\">(WALLET:ETH)<\/mark> -rigName <mark class=\"tag\">(WORKER)<\/mark> -rigPassword x",
+                "for": ["nvidia", "amd", "msos", "windows"],
+                "param": "start.bat\r\n\t-U -> Nvidia\r\n\t-G -> AMD",
+                "algo": ["Ethash", "cuckARoo29", "cuckARood29", "Ubqhash", "KAWPOW", "Octopus", "Etchash", "Autolykos2", "Verthash", "FiroPoW"]
+            },
+            "ASIC": {
+                "config": "",
+                "for": ["asic", "antminer", "whatsminer", "strongu", "ebang", "avalon", "innosilicon", "goldshell", "dayun", "baikal", "blackminer", "obelisk", "spondoolies", "aisen", "hyperbit", "fusionsilicon", "toddminer", "cheetah"],
+                "param": "ASIC software will auto fill this field on the first sync.",
+                "algo": ["SHA-256", "SHA-256 AsicBoost", "Scrypt", "X11", "X13", "CryptoNight", "Equihash", "Lyra2REv2", "Tensority", "Blake (14r)", "Blake (2b)", "Blake (2b-Sia)", "Ethash", "Quark", "Qubit", "Myr-Groestl", "NIST5", "Skein", "X11Gost", "Groestl", "Lyra2z", "Solidity-SHA3", "Keccak-C", "Keccak", "Tribus", "Lyra2REv3", "BCD", "PHI2", "PHI1612", "Odocrypt", "BMW512", "C11", "X16R", "TimeTravel10", "KangarooTwelve", "LBRY", "NEXUS", "SHA3d", "Eaglesong", "Tellor", "Handshake", "Blake (2b-BCHC)", "Blake (2s-Kadena)"]
+            },
+            "XMRIG": {
+                "config": "{\r\n\t\"http\": {\r\n\t\t\"enabled\": true,\r\n\t\t\"host\": \"127.0.0.1\",\r\n\t\t\"port\": 7887,\r\n\t\t\"access-token\": null,\r\n\t\t\"restricted\": null\r\n\t},\r\n\t\"autosave\": true,\r\n\t\"background\": false,\r\n\t\"colors\": true,\r\n\t\"donate-level\": 1,\r\n\t\"donate-over-proxy\": 0,\r\n\t\"log-file\": null,\r\n\t\"pools\": [{\r\n\t\t\"algo\": \"rx\",\r\n\t\t\"url\": \"<mark class=\"tag\">(POOL:XMR)<\/mark>\u2063\u2063\",\r\n\t\t\"user\": \"<mark class=\"tag\">(WALLET:XMR)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark>\",\r\n\t\t\"pass\": \"x\",\r\n\t\t\"rig-id\": null,\r\n\t\t\"nicehash\": false,\r\n\t\t\"keepalive\": false,\r\n\t\t\"enabled\": true,\r\n\t\t\"tls\": false,\r\n\t\t\"tls-fingerprint\": null,\r\n\t\t\"daemon\": false\r\n\t}],\r\n\t\"print-time\": 60,\r\n\t\"retries\": 5,\r\n\t\"retry-pause\": 5,\r\n\t\"syslog\": false,\r\n\t\"watch\": false\r\n}",
+                "for": ["msos", "windows", "cpu"],
+                "param": "",
+                "algo": ["CryptoNightR", "CryptoNightHeavy", "CNReverseWaltz", "CryptoNightGPU", "RandomWOW", "RandomX", "RandomARQ", "RandomSFX", "CryptoNightTalleo", "AstroBWT", "RandomKEVA", "Chukwa2", "CryptoNightTurtle"]
+            },
+            "CPUMINER-OPT": {
+                "config": "-a x16r -o <mark class=\"tag\">(POOL:X16R)<\/mark> -u <mark class=\"tag\">(WALLET:BTC)<\/mark>.<mark class=\"tag\">(WORKER)<\/mark> -p c=BTC",
+                "for": ["msos", "windows", "cpu"],
+                "param": "start.bat\r\n\t-b 0.0.0.0:4048 --api-bind 4048 --api-remote",
+                "algo": ["Allium", "Anime", "Argon2", "Argon2d250", "Argon2d500", "Argon2d4096", "Axiom", "Bastion", "Blake", "BlakeCoin", "Blake (2s)", "BMW", "CryptoNightV7", "Decred", "Deep", "DMD-GR", "Drop", "Fresh", "Groestl", "Heavy", "HMQ1725", "Hodl", "JHA", "Keccak", "Keccak-C", "Luffa", "Lyra2h", "Lyra2RE", "Lyra2REv2", "Lyra2z", "Lyra2z330", "M7M", "NeoScrypt", "Nist5", "Pentablake", "PHI1612", "Pluck", "Polytimos", "ScryptN", "Scrypt-Jane", "SHA-256d", "SHA-256t", "SHAvite3", "Skein2", "Skunkhash", "TimeTravel", "TimeTravel10", "Tribus", "Vanilla", "Veltor", "Whirlpool", "WhirlpoolX", "X11Evo", "X12", "X13SM3", "X14", "X15", "X16R", "X16S", "X17", "Xevan", "Yescrypt", "YescryptR8", "YescryptR16", "YescryptR32", "ZR5", "Lyra2z330", "YesPoWer", "YesPoWerR16"]
+            }
+        };
+        var workerToken = "zgtnisjwk59a";
+    </script>
+    <script>
+        var viewMode = 0;
+        var demoAccount = 0;
+        var workersCount = 2;
+    </script>
+</div>
+
+<script>
+    var currency = "CNY";
+    var currencyValue = 6.405705;
+    var temperature = "°C";
+    var userPermission = "owner";
+    var userPrimaryPermission = "";
+
+    [
+        "./js/jquery.js", "./js/gettext.js", "./js/perfect-scrollbar.js",'./js/language.js', "./js/templates/global.js", "./js/FileSaver.min.js", "./js/templates/workers.js","./js/analytics.js"
+    ].forEach(function (src) {
+        var script = document.createElement("script");
+        script.src = src;
+        script.async = false;
+        document.head.appendChild(script);
+    });
+</script>
+</body>
+</html>

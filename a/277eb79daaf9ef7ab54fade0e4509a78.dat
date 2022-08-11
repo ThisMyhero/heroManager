@@ -1,0 +1,504 @@
+function EditWin() {
+    // $('#overclock_delete .title').html(_('Delete') + ' ' + name + '?');
+    $('#saveBtn').attr('onclick','saveEmail()')
+    $('.popupbackground').fadeToggle();
+    $('#overclock_delete').fadeToggle('fast');
+    // $('#overclock_delete .red').attr('data-profile', wid);
+}
+function EditWinColse() {
+    // $('#overclock_delete .title').html(_('Delete') + ' ' + name + '?');
+    $('.popupbackground').fadeOut('fast');
+    $('#overclock_delete').fadeOut('fast');
+    $('#Eaccount').val('')
+    $('#ETPsever').val('')
+    $('#Epassword').val('')
+    // $('#overclock_delete .red').attr('data-profile', wid);
+}
+
+$('.toggle').click(function () {
+    var toggle = '';
+    if ($(this).find('.bullet').hasClass('paying')) {
+        $('.floating_shadow').hide();
+        $('.checkmark').hide();
+        $('.circle-loader').removeClass('load-complete');
+        $('.circle-loader, .message_err, .message_suc').hide();
+        $('.circle-loader').show();
+        $('.floating_shadow').show();
+        $('.unavailable:visible').hide();
+        $(this).children('.bullet').toggleClass('selected');
+        if ($(this).find('.bullet').hasClass('selected')) {
+            toggle = 1;
+        } else {
+            toggle = 0;
+        }
+        var type = $(this).find('.bullet').attr('data-type');
+        var via = $(this).find('.bullet').attr('data-via');
+        var nonce = $('#nonce').val();
+        var value = $(this).closest('tr').find(':selected').val();
+    } else {
+        $('.unavailable:visible').fadeOut('fast');
+        $(this).parent().children('.unavailable:hidden').fadeIn('fast');
+    }
+});
+
+function alertsNotificationIssues() {
+    var telegramToggleSelected = 0;
+    var mobileToggleSelected = 0;
+    $('.toggle').each(function () {
+        if ($(this).find('.bullet').hasClass('selected')) {
+            if ($(this).find('.bullet').attr('data-via') == 'telegram') {
+                telegramToggleSelected = 1;
+            }
+            if ($(this).find('.bullet').attr('data-via') == 'mobile') {
+                mobileToggleSelected = 1;
+            }
+        }
+    });
+    if (telegramToggleSelected == 1 && monitoringTelegram == 0) {
+        $('#telegramAlert').show();
+    } else {
+        $('#telegramAlert').hide();
+    }
+    if (mobileToggleSelected == 1 && monitoringMobile == 0) {
+        $('#mobileAlert').show();
+    } else {
+        $('#mobileAlert').hide();
+    }
+}
+
+$('.alerttemperature,.alertoffline,.alertinactive,.alertefficiency,.alertonline,.alertasic,.alerthashrate,.alertconsumptionUp,.alertconsumptionDown').change(function () {
+    $('.floating_shadow').hide();
+    $('.checkmark').hide();
+    $('.circle-loader').removeClass('load-complete');
+    $('.circle-loader, .message_err, .message_suc').hide();
+    $('.circle-loader').show();
+    $('.floating_shadow').show();
+    var type = $(this).attr('data-type');
+    var value = $(this).find(':selected').val();
+    var text = $(this).find(':selected').text();
+    let obj={}
+    switch (type) {
+        case 'gputemp':
+            obj={
+                a:'set',
+                idx:0,
+                nid:getURLhref(),
+                desc:text,
+                value:value,
+            }
+            break
+        case 'offline':
+            obj={
+                a:'set',
+                idx:1,
+                nid:getURLhref(),
+                desc:text,
+                value:value,
+            }
+            break
+        case 'inactive':
+            obj={
+                a:'set',
+                idx:2,
+                desc:text,
+                nid:getURLhref(),
+                value:value,
+            }
+            break
+        case 'online':
+            obj={
+                a:'set',
+                idx:3,
+                desc:text,
+                nid:getURLhref(),
+                value:value,
+            }
+            break
+        case 'asic':
+            obj={
+                a:'set',
+                idx:4,
+                desc:text,
+                nid:getURLhref(),
+                value:value,
+            }
+            break
+        case 'consumptionDown':
+            obj={
+                a:'set',
+                idx:5,
+                desc:text,
+                nid:getURLhref(),
+                value:value,
+            }
+            break
+        case 'consumptionUp':
+            obj={
+                a:'set',
+                idx:6,
+                desc:text,
+                nid:getURLhref(),
+                value:value,
+            }
+            break
+        case 'efficiency':
+            obj={
+                a:'set',
+                nid:getURLhref(),
+                idx:7,
+                desc:text,
+                value:value,
+            }
+            break
+    }
+    setSa(obj)
+});
+$('.empty_state .green').click(function () {
+    var nonce = $('#nonce').val();
+    $(this).hide();
+    $('.checkmark').hide();
+    $('.circle-loader').removeClass('load-complete');
+    $('.circle-loader, .message_err, .message_suc').hide();
+    $('.circle-loader').show();
+    $.post(window.location.href, {resend: nonce}, function (data) {
+        $('.empty_state .title').html(_('E-mail sent!'));
+        $('.empty_state .text').html(_('Please check your inbox and confirm your account to proceed.'));
+        $('.circle-loader').hide();
+    });
+});
+$(document).mouseup(function (e) {
+    if (!$('.unavailable').is(e.target) && !$('.toggle').is(e.target) && !$('.bullet').is(e.target)) {
+        $(".unavailable").hide();
+    }
+});
+
+
+window.onload=function(){
+    getInfoList()
+}
+
+
+
+function getInfoList() {
+    $.ajax({
+        url: '/miner3?a=alarm',
+        type: 'POST',
+        data: {
+            a:'get',
+            nid:getURLhref()
+        },
+        dataType: 'json',
+        success:function (res) {
+            setEmailDom(res.email)
+            $.each(res.data,function (index,item) {
+                switch (item.name) {
+                    case 'GPU temperature':
+                        $('.alerttemperature').val(item.value);
+                        console.log($(".toggle .bullet")[0])
+                        if(item.on==1){
+                            $(".toggle .bullet[data-type='gputemp']").addClass('selected')
+                        }else {
+                            $(".toggle .bullet[data-type='gputemp']").removeClass('selected')
+                        }
+                        break
+                    case 'When worker goes offline':
+                        $('.alertoffline').val(item.value);
+                        if(item.on==1){
+                            $(".toggle .bullet[data-type='offline']").addClass('selected')
+                        }else {
+                            $(".toggle .bullet[data-type='offline']").removeClass('selected')
+                        }
+                        break
+                    case 'When worker becomes inactive':
+                        $('.alertinactive').val(item.value);
+                        if(item.on==1){
+                            $(".toggle .bullet[data-type='inactive']").addClass('selected')
+                        }else {
+                            $(".toggle .bullet[data-type='inactive']").removeClass('selected')
+                        }
+                        break
+                    case 'When worker comes back online':
+                        $('.alertonline').val(item.value);
+                        if(item.on==1){
+                            $(".toggle .bullet[data-type='online']").addClass('selected')
+                        }else {
+                            $(".toggle .bullet[data-type='online']").removeClass('selected')
+                        }
+                        break
+                    case 'ardware errors and high temperature':
+                        $('.alertasic').val(item.value)
+                        if(item.on==1){
+                            $(".toggle .bullet[data-type='asic']").addClass('selected')
+                        }else {
+                            $(".toggle .bullet[data-type='asic']").removeClass('selected')
+                        }
+                        break
+                    case 'Consumption decrease':
+                        $('.alertconsumptionDown').val(item.value)
+                        if(item.on==1){
+                            $(".toggle .bullet[data-type='consumptionDown']").addClass('selected')
+                        }else {
+                            $(".toggle .bullet[data-type='consumptionDown']").removeClass('selected')
+                        }
+                        break
+                    case 'Consumption increase':
+                        $('.alertconsumptionUp').val(item.value)
+                        if(item.on==1){
+                            $(".toggle .bullet[data-type='consumptionUp']").addClass('selected')
+                        }else {
+                            $(".toggle .bullet[data-type='consumptionUp']").removeClass('selected')
+                        }
+                        break
+                    case 'Efficiency rate drop':
+                        $('.alertefficiency').val(item.value)
+                        if(item.on==1){
+                            $(".toggle .bullet[data-type='efficiency']").addClass('selected')
+                        }else {
+                            $(".toggle .bullet[data-type='efficiency']").removeClass('selected')
+                        }
+                        break
+                }
+            })
+
+        },error:function (res) {
+
+        }
+    });
+}
+
+
+function setSa(obj) {
+    console.log('obj',obj)
+    $.ajax({
+        url: '/miner3?a=alarm',
+        dataType: 'json',
+        type:'post',
+        data:obj,
+        success:function () {
+            $('.circle-loader').show();
+            $('.circle-loader').addClass('load-complete');
+            $('.notification_row').addClass('finished');
+            $('.checkmark').show();
+            $('.message_suc').show();
+            $('.floating_shadow').hide();
+            setTimeout(function () {
+                if ($('.circle-loader').hasClass('load-complete')) {
+                    $('.circle-loader, .message_err, .message_suc').fadeOut("fast");
+                    $('.circle-loader, .message_err, .message_suc').fadeOut("fast");
+                }
+            }, 2000);
+        }
+    })
+}
+
+function saveEmail(id) {
+    if($('#ETPsever').val().replace(/(^\s*)|(\s*$)/g, "").length===0){
+        $('#myError').show()
+        $('#myError').html('SMTP server not null')
+        return
+    }else {
+        $('#myError').hide()
+    }
+    if($('#Eaccount').val().replace(/(^\s*)|(\s*$)/g, "").length===0){
+        $('#myError').show()
+        $('#myError').html('Account not null')
+        return
+    }else {
+        $('#myError').hide()
+    }
+    if($('#Epassword').val().replace(/(^\s*)|(\s*$)/g, "").length===0){
+        $('#myError').show()
+        $('#myError').html('Password not null')
+        return
+    }else {
+        $('#myError').hide()
+    }
+    $('#myLoading').show()
+    $.ajax({
+        url: '/miner3?a=alarmemail',
+        dataType: 'json',
+        type:'post',
+        data:{
+            a:id==undefined?'add':'set',
+            id:id==undefined?undefined:id,
+            acc:$('#Eaccount').val(),
+            smtp:$('#ETPsever').val(),
+            pwd:$('#Epassword').val(),
+            nid:getURLhref()
+        },
+        success:function (res) {
+            if(res.code===0){
+                $('#myLoading').hide()
+                $('#mySuc').show()
+                getInfoList()
+                let x=setTimeout(function () {
+                    $('#mySuc').hide()
+                    EditWinColse()
+                    clearTimeout(x)
+                },1500)
+            }
+
+        }
+    })
+}
+
+let testEamil=true
+function saveTestEmail() {
+    if (!testEamil){
+        return;
+    }
+    if($('#ETPsever').val().replace(/(^\s*)|(\s*$)/g, "").length===0){
+        $('#myError').show()
+        $('#myError').html('SMTP server not null')
+        return
+    }else {
+        $('#myError').hide()
+    }
+    if($('#Eaccount').val().replace(/(^\s*)|(\s*$)/g, "").length===0){
+        $('#myError').show()
+        $('#myError').html('Account not null')
+        return
+    }else {
+        $('#myError').hide()
+    }
+    if($('#Epassword').val().replace(/(^\s*)|(\s*$)/g, "").length===0){
+        $('#myError').show()
+        $('#myError').html('Password not null')
+        return
+    }else {
+        $('#myError').hide()
+    }
+
+    $('#myLoading').show()
+    testEamil=false
+    $.ajax({
+        url: '/miner3?a=AlarmEmail',
+        dataType: 'json',
+        type:'post',
+        data:{
+            a:'test',
+            acc:$('#Eaccount').val(),
+            smtp:$('#ETPsever').val(),
+            pwd:$('#Epassword').val()
+        },
+        success:function (res) {
+            if (res.code==0){
+                $('#mySuc').show()
+                $('#myError').hide()
+            }else {
+                $('#myError').show()
+                $('#myError').html(res.msg)
+                $('#mySuc').hide()
+            }
+            $('#myLoading').hide()
+            testEamil=true
+        }
+    })
+}
+
+function setEmail(id,acc,pwd,stmp) {
+    $('#saveBtn').attr('onclick','saveEmail('+id+')')
+    $('#ETPsever').val(stmp)
+    $('#Eaccount').val(acc)
+    $('#Epassword').val(pwd)
+    $('.popupbackground').fadeToggle();
+    $('#overclock_delete').fadeToggle('fast');
+}
+
+//分页签切换
+$('.myTile').on('click',function () {
+    if($(this).hasClass('isMyTile')){
+        return false
+    }else {
+        let list =document.getElementsByClassName('myTile')
+        $.each(list,function (i,it) {
+            $(it).removeClass('isMyTile')
+        })
+        $(this).addClass('isMyTile')
+
+        if($(this).html()=='Alerts'){
+            window.location.replace('/alerts#'+getURLhref())
+        }else {
+            window.location.replace('/site-setting#'+getURLhref())
+        }
+    }
+})
+
+function delEmailWin(id) {
+    $('.popupbackground').fadeIn()
+    $('#email_delete').fadeIn()
+    $('#email_delete').attr('data-id',id)
+}
+function delEmail(e){
+    if($(e).hasClass('disabled')){
+        return false;
+    }
+    $('#email_delete .outlined_button, #email_delete .red').addClass('disabled');
+    $('.checkmark').hide();
+    $('.circle-loader').removeClass('load-complete');
+    $('.circle-loader, .message_err, .message_suc').hide();
+    $('.circle-loader').show();
+    $.ajax({
+        url:'/miner3?a=alarmemail',
+        type:'post',
+        data:{
+            a:'del',
+            id: $('#email_delete').attr('data-id'),
+            nid:getURLhref()
+        },
+        success:function (res) {
+            $('.circle-loader').addClass('load-complete');
+            $('.notification_row').addClass('finished');
+            $('.checkmark').show();
+            $('.message_suc').show();
+            getInfoList()
+            setTimeout(function () {
+                $('#email_delete').fadeOut('fast');
+                $('.popupbackground').fadeOut('fast');
+                setTimeout(function () {
+                    $('#email_delete .outlined_button, #email_delete .red').removeClass('disabled');
+                    $('.checkmark').hide();
+                    $('.circle-loader').removeClass('load-complete');
+                    $('.circle-loader, .message_err, .message_suc').hide();
+                }, 500);
+            }, 1500);
+        }
+    })
+}
+
+$(document).click(function (e) {
+        let mx=e.target
+    if(!$(mx).is('.myRowItem *')){
+        let list = document.getElementsByClassName('myButtn')
+        $.each(list,function (j,k) {
+            $(k).hide()
+        })
+    }
+})
+
+//设置邮箱列表
+function setEmailDom(data) {
+    let str='<label>E-mail</label>'
+    $.each(data,function (i,it) {
+         str+='<div class="row myRowItem">' +
+                '    <div class="value">'+it.acc+'</div>' +
+                '    <div class="button green myButtn" onclick="setEmail('+it.id+',\''+it.acc+'\',\''+it.pwd+'\',\''+it.smtp+'\')">Edit</div>' +
+                '    <div class="button red myButtn" onclick="delEmailWin('+it.id+')">Del</div>' +
+                '</div>'
+    })
+    $('#emailList').html(str)
+    $('.myRowItem').on('click',function () {
+        let list = document.getElementsByClassName('myButtn')
+        $.each(list,function (j,k) {
+            $(k).hide()
+        })
+        $($(this).find('.myButtn')[0]).show()
+        $($(this).find('.myButtn')[1]).show()
+    })
+}
+
+//获取地址id
+function getURLhref() {
+    let x=window.location.href.split('#')
+    return x[1]
+}

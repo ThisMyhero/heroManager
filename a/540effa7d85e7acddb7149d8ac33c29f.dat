@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en-US" translate="no">
+<head>
+    <title>Groups statistics </title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta charset="UTF-8">
+    <link rel="canonical" href="./group-statistics/all">
+    <meta property="og:type" content="website"/>
+    <meta property="og:site_name" content="minerstat">
+    <meta property="og:title" content="All groups's statistics | minerstat"/>
+    <meta property="og:description" content=""/>
+    <meta property="og:url" content="./group-statistics/all"/>
+    <meta property="og:image" content="./images/socials/og.png"/>
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:title" content="All groups's statistics | minerstat"/>
+    <meta name="twitter:description" content=""/>
+    <meta name="twitter:image" content="./images/socials/tw.png"/>
+    <meta name="twitter:site" content="@minerstatcom"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="dns-prefetch" href="https://api.minerstat.com">
+    <link rel="dns-prefetch" href="https://static-ssl.minerstat.farm">
+    <link rel="dns-prefetch" href="https://static.minerstat.farm">
+    <link rel="preconnect" href="https://api.minerstat.com"/>
+    <link rel="preconnect" href="https://static-ssl.minerstat.farm"/>
+    <link rel="preload" href="./css/themes/light/global.css?v=1636136318" as="style"/>
+    <link rel="preload" href="/js/jquery.js" as="script"/>
+    <link rel="apple-touch-icon" sizes="57x57" href="/images/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/images/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/images/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/images/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/images/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/images/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/images/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/images/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/images/favicon/manifest.json">
+    <meta name="google" content="notranslate">
+    <meta name="msapplication-TileColor" content="#ffffff ">
+    <meta name="msapplication-TileImage" content="/images/favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#343d52 ">
+    <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "LocalBusiness",
+            "name": "minerstat",
+            "url": "https://minerstat.com",
+            "logo": "",
+            "image": "",
+            "description": "minerstat is remote crypto mining monitor & management solution"
+        }
+    </script>
+    <meta name="robots" content="noindex">
+    <link href="./css/themes/light/global.css?v=1636136318" id="css" rel="stylesheet"
+          type="text/css">
+    <link href="./css/themes/dark/global.css?v=1636136003" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Mukta+Mahee:200,300,400,600,700" rel="stylesheet">
+    <link href="./css/themes/light/stats.css?v=1612863384" rel="stylesheet" type="text/css">
+    <link href="./css/themes/dark/stats.css?v=1606721883" rel="stylesheet" type="text/css">
+    <script>(function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
+        var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-KJ552JD');</script>
+</head>
+<body>
+<noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KJ552JD" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe>
+</noscript>
+<header>
+
+</header>
+<div class="page">
+    <div class="menu">
+        <div id="main_menu">
+
+        </div>
+    </div>
+    <div class="content stats">
+        <div class="title_row">
+            <div class="title_left">
+                <div class="title_navigation">
+                    <a href="/group-statistics/all" title="Group statistics">Group statistics</a>
+                    &rsaquo;
+                    <h1 id="groupTitle">All groups</h1>
+                </div>
+            </div>
+            <div class="title_right">
+                <div class="select_box">
+                    <select id="groupsList">
+                        <option value="all">All groups</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div id="groupStatisticsBody"></div>
+    </div>
+    <div class="preloader">
+        <div class="center">
+            <div class="logo"></div>
+            <div class="loader_line">
+                <div class="bar animate"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var workerTimezone = 'Asia/Shanghai';
+        var plan = '1';
+        var workerToken = 'zgtnisjwk59a';
+        var workerOffset = 8;
+        var group = 'all';
+        var theme = 'dark';
+        var demoAccount = 0;
+    </script>
+</div>
+<script>
+    var currency = "CNY";
+    var currencyValue = 6.397503;
+    var temperature = "°C";
+    var userPermission = "owner";
+    var userPrimaryPermission = "";
+
+    [
+        "./js/jquery.js", "./js/gettext.js", "./js/perfect-scrollbar.js", "./js/templates/global.js?v=1635233847", "./js/highstock.js", "./js/templates/group-stats.js?v=1629217989"
+    ].forEach(function (src) {
+        var script = document.createElement("script");
+        script.src = src;
+        script.async = false;
+        document.head.appendChild(script);
+    });
+</script>
+</body>
+</html>

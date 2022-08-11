@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en-US" translate="no">
+<head>
+    <title>Worker config</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preload" href="./css/themes/light/global.css?v=1635430962" as="style"/>
+    <link rel="preload" href="./js/jquery.js" as="script"/>
+    <meta name="robots" content="noindex">
+    <script src="./js/echarts.min.js"></script>
+    <link href="./css/themes/light/global.css" id="css" rel="stylesheet" type="text/css">
+    <link href="./css/themes/dark/global.css" rel="stylesheet" type="text/css">
+    <link href="./css/themes/light/proxy-tunne.css" rel="stylesheet" type="text/css">
+    <link href="./css/themes/dark/proxy-tunne.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<noscript>
+    <iframe src="/www.googletagmanager.com/ns.html?id=GTM-KJ552JD" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe>
+</noscript>
+<header>
+
+</header>
+<div class="page">
+    <div class="menu">
+        <div id="main_menu">
+
+        </div>
+    </div>
+    <div class="content config">
+        <div class="title_row">
+            <div class="title_left">
+                <div class="title_navigation">
+                    <h1 class="tba_cade_item" lang-data-htp="ProxyData"  onclick="linkWin('/proxy-config')"></h1>
+                     <h1  class="tba_cade_item"  lang-data-htp="ProxyTunnelConfiguation" style="color: #fff !important;"  onclick="linkWin('/proxy-tunnel')"></h1>
+                </div>
+            </div>
+        </div>
+        <div style="position: relative" class="search_input">
+            <input type="text" id="search_input">
+            <div class="my_config_icon my_proxy_sea" style="position: absolute"></div>
+        </div>
+        <div style="width: 100%;height: 40px">
+            <div class="button green" style="float: right" onclick="showWin()">Add</div>
+        </div>
+
+        <div id="w_list">
+            <div class="my_table">
+                <div class="wk_list_head">
+                    <div class="c3 backx" lang-data-htp="Pool Address"></div>
+                    <div class="c3 backx" style="border-left:0" lang-data-htp="Wallet"></div>
+                    <div class="c1 backx" lang-data-htp="Listening port"></div>
+                    <div class="c1 backx">SSL</div>
+                    <div class="c1 backx" lang-data-htp="Coin"></div>
+                    <div class="c1 backx" lang-data-htp="Hide IP"></div>
+                    <div class="c1 backx" lang-data-htp="Latency"></div>
+                    <div class="c1 backx" lang-data-htp="Rake Rate"></div>
+
+                    <div class="c2 backx" lang-data-ht="Actions"></div>
+                </div>
+                <div class="wk_list_body">
+                    <div style="display:flex;background-color: #343d52">
+                        <div class="c3 backx_item"></div>
+                        <div class="c3 backx_item" style="border-left:0"></div>
+                        <div class="c1 backx_item"></div>
+                        <div class="c1 backx_item"></div>
+                        <div class="c1 backx_item"></div>
+                        <div class="c1 backx_item"></div>
+                        <div class="c1 backx_item"></div>
+                        <div class="c1 backx_item"></div>
+                        <div class="c2 backx_item"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="popup" id="add_proxy_win" style="display: none">
+            <div class="close"></div>
+            <div class="title" id="add_proxy_title"></div>
+            <div class="text">
+                    <div class="tan_por_item">
+                        <div lang-data-htp="Listening port"></div>
+                        <input type="text" id="listen_port">
+                    </div>
+                    <div class="tan_por_item">
+                        <div >SSL</div>
+                        <div class="edit_box mylineHeigh">
+                            <div class="mytoggle">
+                                <div class="bullet paying" id="ssl_bx"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tan_por_item">
+                        <div lang-data-htp="Pool Address" ></div>
+                        <input type="text" id="pool_address" value="stratum+ssl://">
+                    </div>
+                    <div class="tan_por_item">
+                        <div lang-data-htp="Coin"></div>
+                        <select type="text" id="coin_type">
+                            <option value="ethash">ethash</option>
+                            <option value="etchash">etchash</option>
+                        </select>
+                    </div>
+                    <div class="tan_por_item">
+                        <div lang-data-htp="Hide IP Address"></div>
+                        <div class="edit_box mylineHeigh">
+                            <div class="mytoggle">
+                                <div class="bullet paying" id="hideip"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tan_por_item">
+                        <div lang-data-htp="Rake Rate"></div>
+                        <input type="text" id="rake_rate">
+                    </div>
+                    <div class="tan_por_item">
+                        <div lang-data-htp="Rake Pool"></div>
+                        <input type="text"  id="rake_pool">
+                    </div>
+                <div class="tan_por_item">
+                    <div lang-data-htp="Rake Address"></div>
+                    <input type="text"  id="rake_address">
+                </div>
+            </div>
+            <div class="action_row">
+                <div class="circle-loader">
+                    <div class="checkmark draw"></div>
+                </div>
+                <div class="message_suc">Finished</div>
+                <div class="message_err">Error</div>
+                <div class="outlined_button gray close_popup" lang-data-ht="No, keep it" onclick="closeWin()">No, keep it</div>
+                <div class="button green" lang-data-ht="Save" onclick="submitProxy()">Yes, stop it</div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" value="271ab0270bbf45b35d4e6bbde5e85e8e2193112e4e33501c36b5e998a72ec94f" id="nonce"/>
+    <div class="popupbackground_empty"></div>
+    <div class="popupbackground close_popup"></div>
+    <div class="popup" id="del_proxy">
+        <div class="close"></div>
+        <div class="title" lang-data-ht="Delete"></div>
+        <div class="text">
+            <div class="icon warning"></div>
+            <p lang-data-ht="Delete proxy?"></p></div>
+        <div class="action_row">
+            <div class="circle-loader">
+                <div class="checkmark draw"></div>
+            </div>
+            <div class="message_suc">Finished</div>
+            <div class="message_err">Error</div>
+            <div class="outlined_button gray close_popup" lang-data-ht="Close" onclick="closeWin()">No, keep it</div>
+            <div class="button red" onclick="delProxy()" lang-data-ht="Yes, delete it">Yes, delete it</div>
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+    var currency = "CNY";
+    var currencyValue = 6.405705;
+    var temperature = "°C";
+    var userPermission = "owner";
+    var userPrimaryPermission = "";
+
+    [
+        "./js/jquery.js", "./js/gettext.js", "./js/perfect-scrollbar.js",'./js/language.js', "./js/templates/global.js","./js/templates/proxy-tunnel.js"
+    ].forEach(function (src) {
+        var script = document.createElement("script");
+        script.src = src;
+        script.async = false;
+        document.head.appendChild(script);
+    });
+</script>
+<!--    <div class="msg_info_box_tiex">-->
+<!--        <div class="msg_info_tiltle err">-->
+<!--            烧死烧死烧死烧死烧死烧死烧死烧死烧死烧死烧死烧死烧死烧死烧死烧死烧死烧死-->
+<!--        </div>-->
+<!--        <div class="msg_info_tiltle suc">-->
+<!--            烧死烧死烧死烧死烧死烧死烧死烧死烧死烧死烧死烧死烧死烧死烧死烧死烧死烧死-->
+<!--        </div>-->
+<!--        <div class="msg_info_tiltle war">-->
+<!--            烧死烧死烧死烧死烧死烧死烧死烧死烧死烧死烧死烧死烧死烧死烧死烧死烧死烧死-->
+<!--        </div>-->
+<!--    </div>-->
+</body>
+</html>

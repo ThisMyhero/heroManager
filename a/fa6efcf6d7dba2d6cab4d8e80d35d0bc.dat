@@ -1,0 +1,4477 @@
+.content.config {
+}
+
+.content.config .config_filter {
+    border-bottom: 1px solid #e2e5ef;
+    padding-bottom: 30px;
+    margin-bottom: 30px
+}
+
+.content.config .config_filter .element {
+    background: #fff;
+    padding: 10px;
+    border-radius: 3px;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, .05)
+}
+
+.content.config .container {
+    border-bottom: 1px solid #e2e5ef;
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+    width: 100%
+}
+
+.content.config .container:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+    margin-bottom: 0
+}
+
+.content.config .container .box {
+    padding: 0;
+    margin-bottom: 0
+}
+
+.content.config .container h2 {
+    font-size: 16px;
+    margin-bottom: 5px
+}
+
+.content.config .container .box .row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 1px solid #e2e5ef;
+    padding: 30px
+}
+
+.content.config .container .box .row:last-child {
+    border-bottom: 0
+}
+
+.content.config .container .box .row .client {
+    width: calc(30% - 25px);
+    margin-right: 25px
+}
+
+.content.config .container .box .row .client label {
+    font-size: 18px;
+    line-height: 1;
+    margin-bottom: 2px
+}
+
+.content.config .container .box .row .client label.params {
+    font-size: 14px;
+    line-height: 1;
+    margin-bottom: 5px
+}
+
+.content.config .container .box .row .client p.sub {
+    color: #a3a5b2;
+    font-size: 14px;
+    margin: 0;
+    line-height: 1.15
+}
+
+.content.config .container .box .row .client p.params {
+    color: #a3a5b2;
+    font-size: 14px;
+    margin: 0;
+    line-height: 1.15;
+    border-left: 1px solid #e2e5ef;
+    padding: 5px 0 5px 15px
+}
+
+.content.config .container .box .row .client .hw {
+    margin: 5px 0 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap
+}
+
+.content.config .container .box .row .client .hw .text {
+    color: #a3a5b2;
+    font-weight: 400;
+    font-size: 13px;
+    margin: 0 5px 5px 0
+}
+
+.content.config .container .box .row .client .hw .tag {
+    background: #81849c;
+    color: #fff;
+    border-radius: 2px;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 3px 6px;
+    text-transform: uppercase;
+    line-height: 1.1;
+    display: flex;
+    align-items: center;
+    margin: 0 5px 5px 0
+}
+
+.content.config .container .box .row .client .algos {
+    margin: 5px 20px 0 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap
+}
+
+.content.config .container .box .row .client .algos .text {
+    color: #a3a5b2;
+    font-weight: 400;
+    font-size: 13px;
+    margin: 0 5px 5px 0;
+    line-height: 1.3
+}
+
+.content.config .container .box .row .client .algos .tag {
+    background: #f8f9fc;
+    color: #6b6d7a;
+    border-radius: 2px;
+    font-weight: 300;
+    font-size: 12px;
+    padding: 4px 6px 3px;
+    line-height: 1.1;
+    display: flex;
+    align-items: center;
+    margin: 0 5px 5px 0
+}
+
+.content.config .container .box .row .client .algos .tag.more:hover {
+    background: #575e71;
+    color: #fff
+}
+
+.content.config .container .box .row .edit_box {
+    width: calc(70% - 40px);
+    position: relative
+}
+
+.content.config .container .box .row .edit_box .row {
+    padding: 0;
+    border: 0
+}
+
+.content.config .container .box .row .edit_box .row .edit_box {
+    width: 100%
+}
+
+.content.config .container .box .row .edit_box .tabs {
+    display: flex
+}
+
+.content.config .container .box .row .edit_box .tabs .tab {
+    flex: none;
+    padding: 10px 15px;
+    margin-right: 5px;
+    border-radius: 3px 3px 0 0;
+    border: 1px solid transparent;
+    font-size: 14px;
+    cursor: pointer;
+    color: #46474f;
+    background: #f8f9fc
+}
+
+.content.config .container .box .row .edit_box .tabs .tab:hover {
+    background: #f2f4fb
+}
+
+.content.config .container .box .row .edit_box .tabs .tab.selected {
+    flex: none;
+    padding: 10px 15px;
+    border: 1px solid #e2e5ef;
+    border-bottom: 1px solid #fff;
+    cursor: default;
+    font-weight: 700;
+    color: #46474f;
+    background: #fff;
+    margin-bottom: -1px;
+    position: relative
+}
+
+.content.config .container .box .row .edit_box .tabs .tab.selected:hover {
+    background: #fff
+}
+
+.content.config .container .box .row .edit_box .temp_row {
+    position: relative
+}
+
+.content.config .container .box .row .edit_box .select_target {
+    font-family: mukta mahee, source sans pro, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: flex-start;
+    text-align: left;
+    border: 1px solid #e2e5ef;
+    border-radius: 3px;
+    padding: 0;
+    width: 100%;
+    margin: 0;
+    color: #bababa;
+    cursor: text
+}
+
+.content.config .container .box .row .edit_box .select_target .tag {
+    background: #f8f9fc;
+    color: #6b6d7a;
+    display: table;
+    padding: 7px 28px 7px 10px;
+    border-radius: 2px;
+    font-weight: 400;
+    font-size: 13px;
+    margin: 5px 0 5px 5px;
+    position: relative;
+    cursor: pointer;
+    transition: all .2s ease
+}
+
+.content.config .container .box .row .edit_box .select_target .tag .icon.close {
+    width: 8px;
+    height: 8px;
+    background: url(/images/sprite_icons_button.svg?v=2) no-repeat;
+    background-size: 54px 900px;
+    background-position: -18px -72px;
+    position: absolute;
+    top: 10px;
+    right: 7px
+}
+
+.content.config .container .box .row .edit_box .select_target .tag:hover {
+    background: #6b6d7a;
+    color: #fff
+}
+
+.content.config .container .box .row .edit_box .select_target .tag:hover .icon.close {
+    background-position: -18px -18px
+}
+
+.content.config .container .box .row .edit_box .select_target input[type=text] {
+    border: 0;
+    padding: 8px 10px;
+    margin: 0;
+    width: auto;
+    font-size: 14px;
+    display: table;
+    width: 175px;
+    height: 36px
+}
+
+.content.config .container .box .row .edit_box .select_target input[type=text]:only-child {
+    width: 100%
+}
+
+.content.config .container .box .row .edit_box .select_target input[type=text]:focus {
+    outline: none !important;
+    border-color: transparent;
+    box-shadow: none
+}
+
+.content.config .container .box .row .edit_box .select_target input[type=text]:only-child:focus {
+    box-shadow: 0 0 0 2px #52cca5
+}
+
+.content.config .container .box .row .edit_box .select_target input[type=text].error_value:only-child {
+    box-shadow: 0 0 0 2px #ff5b56
+}
+
+.content.config .container .box .row .edit_box .select_target input[type=text]::-webkit-input-placeholder {
+    color: #bababa;
+    font-style: normal;
+    font-size: 16px;
+    font-weight: 300
+}
+
+.content.config .container .box .row .edit_box .select_target input[type=text]:-moz-placeholder {
+    color: #bababa;
+    font-style: normal;
+    font-size: 16px;
+    font-weight: 300
+}
+
+.content.config .container .box .row .edit_box .select_target input[type=text]::-moz-placeholder {
+    color: #bababa;
+    font-style: normal;
+    font-size: 16px;
+    font-weight: 300
+}
+
+.content.config .container .box .row .edit_box .select_target input[type=text]:-ms-input-placeholder {
+    color: #bababa;
+    font-style: normal;
+    font-size: 16px;
+    font-weight: 300
+}
+
+.content.config .container .box .row .edit_box #select_target_menu {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 10px;
+    border-radius: 3px;
+    background: #fff;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, .1);
+    z-index: 99
+}
+
+.content.config .container .box .row .edit_box #select_target_menu .frame {
+    width: auto;
+    min-width: 250px;
+    height: auto;
+    max-height: 290px;
+    margin: 10px;
+    padding: 0;
+    display: block;
+    overflow-y: auto
+}
+
+.content.config .container .box .row .edit_box #select_target_menu .frame .row {
+    text-decoration: none;
+    padding: 8px 10px;
+    margin: 0 10px 0 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    border-radius: 2px;
+    cursor: pointer;
+    border: 0
+}
+
+.content.config .container .box .row .edit_box #select_target_menu .frame .row:hover {
+    background: #f8f9fc
+}
+
+.content.config .container .box .row .edit_box #select_target_menu .frame .row.first {
+    cursor: default
+}
+
+.content.config .container .box .row .edit_box #select_target_menu .frame .row.first:hover {
+    background: #fff
+}
+
+.content.config .container .box .row .edit_box #select_target_menu .frame::-webkit-scrollbar-track {
+    background-color: #e4e7f1;
+    border-radius: 30px
+}
+
+.content.config .container .box .row .edit_box #select_target_menu .frame::-webkit-scrollbar {
+    width: 5px;
+    background-color: #e4e7f1;
+    border-radius: 30px
+}
+
+.content.config .container .box .row .edit_box #select_target_menu .frame::-webkit-scrollbar-thumb {
+    background-color: #575e71;
+    border-radius: 30px
+}
+
+.content.config .container .box .row .edit_box #select_target_menu .frame .row .checkbox {
+    border: 1px solid #e2e5ef;
+    box-shadow: none;
+    border-radius: 3px;
+    height: 21px;
+    width: 20px;
+    margin: -2px 10px 0 0;
+    cursor: pointer;
+    background: #fff
+}
+
+.content.config .container .box .row .edit_box #select_target_menu .frame .row .checkbox.selected {
+    background: #fff url(/images/tick_green.svg) no-repeat -4px -3px;
+    background-size: 25px 25px;
+    border: 1px solid #52cca5;
+    box-shadow: 0 0 0 1px #52cca5
+}
+
+.content.config .container .box .row .edit_box #select_target_menu .frame .row label {
+    font-size: 16px;
+    font-weight: 300;
+    color: #46474f;
+    margin: 0;
+    cursor: pointer
+}
+
+.content.config .container .box .row .edit_box #select_target_menu .frame .title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #46474f;
+    margin: 0
+}
+
+.content.config .container .box .row .edit_box #select_target_menu .frame .action {
+    font-size: 14px;
+    font-weight: 300;
+    color: #a3a5b2;
+    margin: 0 0 0 auto;
+    cursor: pointer
+}
+
+.content.config .container .box .row .edit_box #select_target_menu .frame .action:hover {
+    color: #52cca5
+}
+
+.content.config .container .box .row .edit_box #select_target_menu .frame .divider {
+    margin: 10px 20px 10px 10px
+}
+
+.content.config .container .box .row .edit_box #select_target_menu .button {
+    margin: 10px;
+    width: calc(100% - 20px);
+    text-align: center;
+    justify-content: center
+}
+
+.content.config .container .box .row .edit_box input[type=text] {
+    margin-bottom: 0
+}
+
+.content.config .container .box .row .edit_box select {
+    margin-bottom: 0;
+    padding: 5px 36px 5px 8px
+}
+
+.content.config .container .box .row .edit_box select.hardware_model {
+    margin-bottom: 15px
+}
+
+.content.config .container .box .row .edit_box select#profile_switch_algorithm {
+    margin-top: 15px;
+    display: none
+}
+
+.content.config .container .box .row .edit_box select option.unsupported {
+    color: #c2c4cc
+}
+
+.content.config .container .box .row .edit_box select option.private {
+    color: #8c97ff
+}
+
+.content.config .container .box .row .edit_box textarea {
+    font-family: ibm plex mono, courier new, Courier, monospace;
+    font-size: 13px;
+    font-weight: 400;
+    padding: 10px 15px;
+    height: 160px;
+    color: #6b6d7a;
+    line-height: 1.5;
+    margin-bottom: 0
+}
+
+.content.config .container .box .row .edit_box .textarea {
+    -moz-appearance: textfield-multiline;
+    -webkit-appearance: textarea;
+    font: medium -moz-fixed;
+    font: -webkit-small-control;
+    overflow: auto;
+    resize: vertical;
+    width: 100%;
+    font-family: ibm plex mono, courier new, Courier, monospace;
+    font-size: 13px;
+    font-weight: 400;
+    padding: 10px 15px;
+    height: auto;
+    min-height: 120px;
+    color: #6b6d7a;
+    line-height: 1.7;
+    margin-bottom: 0;
+    display: block;
+    text-align: left;
+    border: 1px solid #e2e5ef;
+    border-radius: 3px;
+    cursor: text;
+    word-wrap: break-word
+}
+
+.content.config .container .box .row .edit_box .textarea div {
+    font-family: ibm plex mono, courier new, Courier, monospace
+}
+
+.content.config .container .box .row .edit_box .textarea:focus {
+    outline: none !important;
+    border-color: #e2e5ef;
+    box-shadow: none
+}
+
+.content.config .container .box .row .edit_box .textarea mark.tag {
+    background: #5767ff;
+    padding: 0 3px;
+    border-radius: 3px;
+    color: #fff;
+    font-family: ibm plex mono, courier new, Courier, monospace;
+    font-size: 12px;
+    vertical-align: baseline;
+    cursor: default;
+    margin: 0 0 0 2px;
+    cursor: pointer;
+    display: inline-block
+}
+
+.content.config .container .box .row .edit_box .textarea mark.tag.undefined {
+    background: #ff5b56
+}
+
+.content.config .container .box .row .edit_box .select_button {
+    position: relative
+}
+
+.content.config .container .box .row .edit_box .select_button .selected_option {
+    position: relative;
+    border: 1px solid #e2e5ef;
+    background: url(/images/arrow_down.svg) no-repeat;
+    background-position: calc(100% - 15px) center;
+    border-radius: 3px;
+    padding: 8px 36px 8px 8px;
+    cursor: pointer
+}
+
+.content.config .container .box .row .edit_box .select_button .selected_option b {
+    display: block
+}
+
+.content.config .container .box .row .edit_box .select_button .selected_option .tags {
+    display: flex
+}
+
+.content.config .container .box .row .edit_box .select_button .selected_option .tags .tag {
+    background: #f8f9fc;
+    border-radius: 3px;
+    font-size: 10px;
+    color: #6b6d7a;
+    padding: 5px 7px;
+    margin: 5px 5px 0 0;
+    display: inline-block;
+    font-weight: 400
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown {
+    position: absolute;
+    top: 46px;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 35px rgba(0, 0, 0, .2), 0 5px 10px rgba(0, 0, 0, .05);
+    z-index: 110;
+    cursor: default;
+    display: none
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown.display {
+    opacity: 1;
+    margin-top: 20px;
+    z-index: 100;
+    display: block;
+    animation: load-display 200ms linear
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter {
+    display: flex;
+    border-bottom: 1px solid #e2e5ef;
+    padding: 10px;
+    width: 100%
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element {
+    position: relative
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element input {
+    height: 36px
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element .icon.search {
+    width: 18px;
+    height: 18px;
+    background: url(/images/sprite_icons_button.svg?v=2) no-repeat;
+    background-size: 54px 900px;
+    position: absolute;
+    right: 10px;
+    top: 8px;
+    background-position: 0 -90px
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element select {
+    height: 36px
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.search_element {
+    flex: none;
+    width: 200px;
+    margin-right: 10px
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.search_element input {
+    padding-right: 34px
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.type_element {
+    flex: none;
+    width: 120px;
+    margin-right: 10px
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.system_element {
+    flex: none;
+    width: 120px;
+    margin-right: 10px
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element {
+    flex: auto;
+    position: relative;
+    border: 1px solid #e2e5ef;
+    border-radius: 3px;
+    padding: 4px 5px
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element.focus {
+    border: 1px solid #52cca5;
+    box-shadow: 0 0 0 1px #52cca5
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element .selected_coin {
+    display: flex;
+    align-items: center
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element .selected_coin .icon {
+    flex: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 24px;
+    margin-right: 10px;
+    position: relative
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element .selected_coin .icon.noimage {
+    border: 2px dashed #e2e5ef
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element .selected_coin .search_icon {
+    width: 18px;
+    height: 18px;
+    background: url(/images/sprite_icons_button.svg?v=2) no-repeat;
+    background-size: 54px 900px;
+    position: absolute;
+    background-position: 0 -90px;
+    right: -5px;
+    top: 0;
+    width: 18px;
+    height: 18px;
+    right: 10px;
+    top: 8px
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element .selected_coin .icon img {
+    position: absolute;
+    left: 1px;
+    top: -1px;
+    width: 24px;
+    height: 24px
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element .selected_coin input {
+    border: 0;
+    flex: auto;
+    padding: 0;
+    height: 26px;
+    font-weight: 700;
+    color: #46474f;
+    font-size: 14px;
+    text-transform: uppercase
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element .selected_coin input::placeholder {
+    font-size: 14px;
+    text-transform: none
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element .selected_coin input:focus {
+    box-shadow: none
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element .icons_dropdown {
+    position: absolute;
+    top: 20px;
+    left: -1px;
+    right: -1px;
+    background: #fff;
+    border-radius: 3px;
+    box-shadow: 0 0 35px rgba(0, 0, 0, .2), 0 5px 10px rgba(0, 0, 0, .05);
+    z-index: 110;
+    cursor: default;
+    display: none;
+    padding: 5px
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element .icons_dropdown.display {
+    opacity: 1;
+    margin-top: 20px;
+    z-index: 100;
+    display: block;
+    animation: load-display 200ms linear
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element .icons_dropdown .frame {
+    position: relative;
+    height: auto;
+    max-height: 500px;
+    overflow-y: scroll;
+    width: 100%
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element .icons_dropdown .frame .row {
+    padding: 10px;
+    margin-right: 10px;
+    display: flex;
+    cursor: pointer;
+    border: 0
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element .icons_dropdown .frame .row.hidden {
+    display: none
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element .icons_dropdown .frame .row.selected {
+    background: #f8f9fc;
+    cursor: default
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element .icons_dropdown .frame .row:hover {
+    background: #f8f9fc;
+    border-radius: 5px
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element .icons_dropdown .frame .row .icon {
+    margin-right: 10px;
+    flex: none
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element .icons_dropdown .frame .row .icon img {
+    width: 24px;
+    height: 24px
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element .icons_dropdown .frame .row .text {
+    flex: auto
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element .icons_dropdown .frame .row .text .ticker {
+    display: block;
+    font-weight: 700;
+    color: #46474f;
+    font-size: 14px
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element .icons_dropdown .frame .row .text .algo {
+    fdisplay: block;
+    color: #a3a5b2;
+    font-size: 12px;
+    font-weight: 300
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .list {
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame {
+    position: relative;
+    height: auto;
+    max-height: 400px;
+    overflow-y: scroll;
+    width: calc(100% - 20px);
+    margin: 10px
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr {
+    display: flex;
+    width: calc(100% - 10px);
+    margin-right: 10px;
+    align-items: center;
+    cursor: pointer
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr.unsupported {
+    opacity: .3
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr.private {
+    opacity: 1
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr:hover {
+    background: #f8f9fc;
+    border-radius: 3px
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr.unsupported:hover {
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr:first-child {
+    cursor: default
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr:first-child:hover {
+    background: 0 0;
+    border-radius: 3px
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr:last-child {
+    margin-bottom: 10px
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr .th {
+    font-weight: 700;
+    padding: 5px 10px 15px;
+    border-bottom: 1px solid #e2e5ef;
+    justify-content: flex-end;
+    text-align: right;
+    flex: 1;
+    font-size: 14px;
+    text-transform: uppercase;
+    margin-bottom: 10px
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr .th:first-child {
+    justify-content: flex-start;
+    text-align: left;
+    flex: 2
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr .td {
+    padding: 5px 10px;
+    text-align: right;
+    flex: 1
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr .td:first-child {
+    justify-content: flex-start;
+    text-align: left;
+    flex: 2
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr .td b {
+    display: block;
+    font-weight: 700;
+    width: 100%;
+    font-size: 14px
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr.private .td b {
+    color: #6e7cff
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr .td small {
+    display: block;
+    width: 100%;
+    color: #a3a5b2;
+    font-size: 12px;
+    font-weight: 300;
+    white-space: nowrap
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr.private .td small {
+    color: #a3acff
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr .td .tag {
+    border-radius: 3px;
+    font-size: 12px;
+    color: #6b6d7a;
+    border: 1px solid #6b6d7a;
+    padding: 5px 7px;
+    margin: 2px 0 2px 5px;
+    display: inline-block;
+    font-weight: 400
+}
+
+.content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr.private .td .tag {
+    color: #6e7cff;
+    border-color: #6e7cff
+}
+
+.content.config .container .box .row .edit_box #automaticConfig {
+    border: 1px solid #e2e5ef;
+    border-radius: 0 3px 3px 3px;
+    cursor: text
+}
+
+.content.config .container .box .row .edit_box #automaticConfig input[type=text] {
+    height: 32px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig select {
+    height: 32px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row_box {
+    display: flex;
+    padding: 15px 0 0 10px;
+    border: 0;
+    align-items: stretch
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row {
+    flex: auto;
+    padding: 0;
+    border: 0
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element {
+    flex: auto;
+    margin: 0 10px 10px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element.elementCoin {
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element.elementPools {
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element.elementWallets {
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element.elementPassword {
+    flex: none;
+    width: 120px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element.el_extended {
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element.el_extended input {
+    height: 44px;
+    padding: 0 15px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field {
+    position: relative
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_selected_option {
+    position: relative;
+    border: 1px solid #e2e5ef;
+    background: url(/images/arrow_down.svg) no-repeat;
+    background-position: calc(100% - 15px) center;
+    border-radius: 3px;
+    padding: 8px 36px 8px 8px;
+    cursor: pointer
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_selected_option .row {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    margin: 0
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_selected_option .image {
+    flex: none;
+    margin-right: 5px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_selected_option .image img {
+    width: 24px;
+    height: 24px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_selected_option .text {
+    flex: auto;
+    display: block;
+    margin-left: 5px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_selected_option .text b {
+    display: block;
+    font-weight: 700;
+    color: #46474f;
+    font-size: 14px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_selected_option .text small {
+    display: block;
+    color: #a3a5b2;
+    font-size: 12px;
+    font-weight: 300
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_selected_option .row.empty {
+    height: 26px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_selected_option .row.empty:after {
+    content: "";
+    position: absolute;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    top: -1px;
+    border-radius: 3px;
+    border: 2px solid #ff5b56
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_selected_option .row.empty .image {
+    width: 24px;
+    height: 24px;
+    border: 2px dashed #e2e5ef;
+    border-radius: 24px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_selected_option .row.empty .text {
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_selected_option .row.empty .text b {
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown {
+    position: absolute;
+    top: 30px;
+    left: 0;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 35px rgba(0, 0, 0, .2), 0 5px 10px rgba(0, 0, 0, .05);
+    z-index: 110;
+    padding: 5px 5px 5px 0;
+    cursor: default;
+    display: none;
+    width: 320px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown.display {
+    opacity: 1;
+    margin-top: 20px;
+    z-index: 100;
+    display: block;
+    animation: load-display 200ms linear
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .search_box {
+    margin: -5px -5px 5px 0;
+    padding: 10px;
+    border-bottom: 1px solid #e2e5ef;
+    position: relative;
+    background: #f8f9fc
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .search_box input {
+    height: 38px;
+    padding: 3px 35px 3px 10px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .search_box .icon.search {
+    width: 18px;
+    height: 18px;
+    background: url(/images/sprite_icons_button.svg?v=2) no-repeat;
+    background-size: 54px 900px;
+    background-position: 0 -90px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: block
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .frame {
+    height: auto;
+    max-height: 370px;
+    width: auto;
+    min-width: 280px;
+    position: relative;
+    overflow-y: scroll
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .frame.frame_tags {
+    max-height: 200px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .frame .empty_text {
+    padding: 10px 15px;
+    line-height: 1.2;
+    font-size: 14px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .row {
+    display: flex;
+    align-items: center;
+    padding: 8px 5px 8px 10px;
+    margin: 5px 10px 5px 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .row:first-child {
+    margin-top: 0
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .row:last-child {
+    margin-bottom: 0
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .row:hover {
+    background: #f8f9fc;
+    border-radius: 5px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .row.selected {
+    background: #f8f9fc;
+    cursor: default;
+    border-radius: 3px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .row.selected:hover {
+    background: #f8f9fc
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .subgroup {
+    padding: 10px 15px;
+    margin: 0 5px 0 0;
+    border-bottom: 1px solid #e2e5ef;
+    border-top: 1px solid #e2e5ef;
+    font-weight: 700;
+    color: #46474f;
+    cursor: default
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .subgroup:first-child {
+    border-top: 0
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .image {
+    flex: none;
+    margin-right: 10px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .image img {
+    width: 24px;
+    height: 24px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .text {
+    flex: auto;
+    display: block;
+    margin-left: 0;
+    word-break: break-word;
+    padding-right: 30px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .text b {
+    display: block;
+    font-weight: 700;
+    color: #46474f;
+    font-size: 14px;
+    word-break: break-word
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .text small {
+    display: block;
+    color: #a3a5b2;
+    font-size: 12px;
+    font-weight: 300;
+    word-break: break-all
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .row.partner .text b {
+    color: #6e7cff
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .row.partner .text small {
+    color: #a3acff
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .row.partner:hover {
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .icon {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 18px;
+    height: 18px;
+    background: url(/images/sprite_icons_button.svg?v=2) no-repeat;
+    background-size: 54px 900px;
+    cursor: pointer;
+    display: none
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .row:hover .icon {
+    display: block
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .icon.edit {
+    background-position: 0 -198px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .icon.edit:hover {
+    background-position: -18px -198px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .add_new_element {
+    padding: 15px;
+    background: #f8f9fc;
+    border-top: 1px solid #e2e5ef;
+    border-radius: 0 0 5px 5px;
+    margin: 5px -5px -5px 0
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .add_new_element .title {
+    font-weight: 800;
+    font-size: 14px;
+    margin: 0 0 10px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .add_new_element .row {
+    display: block;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    cursor: default
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .add_new_element .row:hover {
+    background: 0 0
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .add_new_element .row .element {
+    flex: auto;
+    margin: 0
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .add_new_element .row .element.flexTag {
+    flex: 1
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .add_new_element .row .element.flexAddress {
+    flex: 3
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .add_new_element .row .element label {
+    font-weight: 400;
+    color: #46474f;
+    margin: 0 0 5px;
+    font-size: 14px;
+    display: block
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .add_new_element .row .element .input_area {
+    padding: 0
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .add_new_element .row .element .input_area input[type=text] {
+    font-family: mukta mahee, source sans pro, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    display: block;
+    text-align: left;
+    border: 1px solid #e2e5ef;
+    border-radius: 3px;
+    padding: 3px 10px;
+    width: 100%;
+    margin: 0 0 10px;
+    color: #6b6d7a;
+    height: 36px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .add_new_element .row .element .input_area input[type=text]:focus {
+    outline: none !important;
+    border-color: #52cca5;
+    box-shadow: 0 0 0 1px #52cca5
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .add_new_element .row .element .input_area_with_tag {
+    padding: 0;
+    position: relative;
+    margin: 0 0 10px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .add_new_element .row .element .input_area_with_tag .tag {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    bottom: 5px;
+    background: #eceef5;
+    border-radius: 2px;
+    color: #6b6d7a;
+    font-family: ibm plex mono, courier new, Courier, monospace;
+    font-size: 12px;
+    padding: 7px 6px 8px 8px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .add_new_element .row .element .input_area_with_tag input[type=text] {
+    font-family: mukta mahee, source sans pro, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    display: block;
+    border: 1px solid #e2e5ef;
+    border-radius: 3px;
+    text-align: left;
+    padding: 3px 10px;
+    width: 100%;
+    color: #6b6d7a;
+    height: 36px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .add_new_element .row .element .input_area_with_tag input[type=text]:focus {
+    outline: none !important;
+    border-color: #52cca5;
+    box-shadow: 0 0 0 1px #52cca5
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .add_new_element .row .element .input_area_with_tag.wallet_tag input[type=text] {
+    padding-left: 74px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .add_new_element .row .element .input_area_with_tag.pool_tag input[type=text] {
+    padding-left: 62px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row .element .config_field .config_dropdown .add_new_element .button {
+    font-size: 14px;
+    padding: 9px 12px;
+    display: table;
+    margin: 0 0 0 auto
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row_config_generated {
+    border-top: 1px solid #e2e5ef;
+    padding: 20px 50px 20px 20px;
+    cursor: default;
+    background: #f8f9fc;
+    position: relative;
+    border-radius: 0 0 4px 4px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row_config_generated .automatic_config {
+    font-family: ibm plex mono, courier new, Courier, monospace;
+    font-size: 12px;
+    vertical-align: baseline;
+    cursor: default;
+    color: #6b6d7a;
+    line-height: 1.5;
+    word-break: break-all
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row_config_generated .icon.edit {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 18px;
+    height: 18px;
+    background: url(/images/sprite_icons_button.svg?v=2) no-repeat;
+    background-size: 54px 900px;
+    cursor: pointer;
+    background-position: 0 -198px
+}
+
+.content.config .container .box .row .edit_box #automaticConfig .row_config_generated .icon.edit:hover {
+    background-position: -18px -198px
+}
+
+.content.config .container .box .row .edit_box .reset_row {
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px 0 0 auto;
+    font-size: 12px;
+    color: #a3a5b2;
+    text-align: right;
+    cursor: default
+}
+
+.content.config .container .box .row .edit_box .reset_button {
+    position: relative;
+    display: table;
+    margin: 0 0 0 10px;
+    font-size: 12px;
+    color: #a3a5b2;
+    text-align: right;
+    cursor: pointer
+}
+
+.content.config .container .box .row .edit_box .reset_button:hover {
+    color: #52cca5
+}
+
+.content.config .container .box .row .edit_box .reset_button.left_align {
+    margin-right: auto;
+    margin-left: 0
+}
+
+.content.config .container .box .row .edit_box .reset_button .reset_menu {
+    display: none;
+    position: absolute;
+    top: 20px;
+    right: 0;
+    background: #fff;
+    border-radius: 3px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, .1);
+    z-index: 109;
+    cursor: default;
+    color: #46474f
+}
+
+.content.config .container .box .row .edit_box .reset_button .reset_menu .form {
+    padding: 10px
+}
+
+.content.config .container .box .row .edit_box .reset_button .reset_menu .empty {
+    padding: 10px;
+    cursor: default;
+    margin-bottom: 20px
+}
+
+.content.config .container .box .row .edit_box .reset_button .reset_menu .empty:hover {
+    color: inherit
+}
+
+.content.config .container .box .row .edit_box .reset_button .reset_menu .reset_list {
+    width: auto;
+    padding: 0;
+    min-width: 180px;
+    text-align: center
+}
+
+.content.config .container .box .row .edit_box .reset_button .reset_menu .reset_list .search_el {
+    background: #f8f9fc;
+    border-bottom: 1px solid #e2e5ef;
+    border-radius: 3px 3px 0 0;
+    padding: 10px;
+    position: relative
+}
+
+.content.config .container .box .row .edit_box .reset_button .reset_menu .reset_list .search_el input {
+    margin-bottom: 0
+}
+
+.content.config .container .box .row .edit_box .reset_button .reset_menu .reset_list .search_el .icon.search {
+    width: 16px;
+    height: 16px;
+    background: url(/images/sprite_icons_button.svg?v=3) no-repeat;
+    background-size: 54px 900px;
+    background-position: 0 -90px;
+    position: absolute;
+    right: 22px;
+    top: 19px
+}
+
+.content.config .container .box .row .edit_box .reset_button .reset_menu .reset_list .frame {
+    width: auto;
+    min-width: 220px;
+    height: auto;
+    max-height: 290px;
+    margin: 10px;
+    padding: 0;
+    display: block;
+    overflow-y: auto;
+    position: relative
+}
+
+.content.config .container .box .row .edit_box .reset_button .reset_menu .reset_list .template {
+    padding: 8px 10px;
+    font-size: 14px;
+    color: #46474f;
+    text-align: left;
+    cursor: pointer
+}
+
+.content.config .container .box .row .edit_box .reset_button .reset_menu .reset_list .template:hover {
+    background: #f8f9fc;
+    border-radius: 2px
+}
+
+.content.config .container .box .row .edit_box .reset_button .reset_menu .divider {
+    margin: 0 10px 10px;
+    width: calc(100% - 20px)
+}
+
+.content.config .container .box .row .edit_box .reset_button .reset_menu .button.green {
+    margin: 0 10px 10px;
+    width: calc(100% - 20px);
+    text-align: center;
+    font-size: 14px;
+    display: table;
+    white-space: nowrap
+}
+
+.content.config .container .box .row .edit_box .reset_button.left_align .reset_menu {
+    right: auto;
+    left: 0;
+    min-width: 260px
+}
+
+.content.config .container .box .row .edit_box .reset_button.left_align .reset_menu .action_row {
+    margin: 10px 0 0
+}
+
+.content.config .container .box .row .edit_box .reset_button.left_align .reset_menu .action_row .button.green {
+    width: auto;
+    margin: 2px 0 2px auto
+}
+
+.content.config .container .box .row .edit_box #tags {
+    border: 1px solid #e2e5ef;
+    border-radius: 3px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-bottom: 0;
+    width: 100%;
+    padding-bottom: 5px;
+    cursor: text
+}
+
+.content.config .container .box .row .edit_box #tags .tag {
+    background: #f8f9fc;
+    color: #6b6d7a;
+    display: table;
+    padding: 7px 28px 7px 10px;
+    border-radius: 2px;
+    font-weight: 400;
+    font-size: 13px;
+    margin: 5px 0 0 5px;
+    position: relative;
+    cursor: pointer;
+    transition: all .2s ease
+}
+
+.content.config .container .box .row .edit_box #tags .tag .icon.close {
+    width: 8px;
+    height: 8px;
+    background: url(/images/sprite_icons_button.svg?v=2) no-repeat;
+    background-size: 54px 900px;
+    background-position: -18px -72px;
+    position: absolute;
+    top: 10px;
+    right: 7px
+}
+
+.content.config .container .box .row .edit_box #tags .tag:hover {
+    background: #6b6d7a;
+    color: #fff
+}
+
+.content.config .container .box .row .edit_box #tags .tag:hover .icon.close {
+    background-position: -18px -18px
+}
+
+.content.config .container .box .row .edit_box #tags input[type=text] {
+    border: 0;
+    padding: 2px 5px;
+    margin: 5px 0 0 5px;
+    width: auto;
+    font-size: 14px;
+    display: table;
+    width: 100px;
+    height: 28px
+}
+
+.content.config .container .box .row .edit_box #tags input[type=text]:first-child {
+    width: calc(100% - 10px)
+}
+
+.content.config .container .box .row .edit_box #tags input[type=text]:focus {
+    outline: none !important;
+    border-color: transparent;
+    box-shadow: none
+}
+
+.content.config .container .box .row .edit_box #tags input[type=text]::-webkit-input-placeholder {
+    color: #bababa;
+    font-style: normal;
+    font-size: 16px;
+    font-weight: 300
+}
+
+.content.config .container .box .row .edit_box #tags input[type=text]:-moz-placeholder {
+    color: #bababa;
+    font-style: normal;
+    font-size: 16px;
+    font-weight: 300
+}
+
+.content.config .container .box .row .edit_box #tags input[type=text]::-moz-placeholder {
+    color: #bababa;
+    font-style: normal;
+    font-size: 16px;
+    font-weight: 300
+}
+
+.content.config .container .box .row .edit_box #tags input[type=text]:-ms-input-placeholder {
+    color: #bababa;
+    font-style: normal;
+    font-size: 16px;
+    font-weight: 300
+}
+
+.content.config .container .box .row .edit_box .time {
+    display: flex;
+    align-items: center
+}
+
+.content.config .container .box .row .edit_box .time .col_1_2 {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px
+}
+
+.content.config .container .box .row .edit_box .time .col_1_2 .entry_row {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 10px
+}
+
+.content.config .container .box .row .edit_box .time .col_1_2 .entry_row:last-child {
+    margin-bottom: 0
+}
+
+.content.config .container .box .row .edit_box .time .col_1_2 .entry_row label:first-child {
+    width: 80px
+}
+
+.content.config .container .box .row .edit_box .time .col_1_2 .entry_row #weekday_from {
+    width: calc(100% - 100px)
+}
+
+.content.config .container .box .row .edit_box .time .col_1_2 .entry_row #weekday_end {
+    width: calc(100% - 100px)
+}
+
+.content.config .container .box .row .edit_box .time select {
+    flex: none;
+    width: 70px
+}
+
+.content.config .container .box .row .edit_box .time label {
+    flex: none;
+    margin: 0 10px;
+    font-size: 16px;
+    font-weight: 300
+}
+
+.content.config .container .divider {
+    border-top: 1px solid #e2e5ef;
+    margin-bottom: 20px
+}
+
+.content.config .container .box .row.disabled .client {
+    opacity: .4;
+    cursor: default
+}
+
+.content.config .container .box .row.disabled .client .hw .tag {
+    background: #81849c
+}
+
+.content.config .container .box .row.disabled .client .hw .text {
+    color: #46474f
+}
+
+.content.config .container .box .row.disabled .client p.sub {
+    color: #46474f
+}
+
+.content.config .container .box .row.disabled .client p.params {
+    color: #46474f
+}
+
+.content.config .container .box .row.disabled .edit_box {
+    opacity: .4
+}
+
+.content.config .container .box .row.disabled .edit_box .textarea {
+    cursor: default
+}
+
+.content.config .container .box .row.disabled .edit_box .textarea mark.tag {
+    background: #9597a9
+}
+
+.content.config .container .box .row.disabled .reset_button {
+    cursor: default;
+    color: #46474f
+}
+
+.content.config .container .box .row.disabled .reset_button:hover {
+    color: #46474f
+}
+
+.content.config .container .box .row.disabled .edit_box select {
+    cursor: default
+}
+
+.content.config .container .box .row.disabled .edit_box #tags input[type=text]:disabled {
+    background: 0 0
+}
+
+.content.config .container .box .row.disabled .edit_box #tags input[type=text]:disabled::-webkit-input-placeholder {
+    color: #46474f
+}
+
+.content.config .container .box .row.disabled .edit_box #tags input[type=text]:disabled:-moz-placeholder {
+    color: #46474f
+}
+
+.content.config .container .box .row.disabled .edit_box #tags input[type=text]:disabled::-moz-placeholder {
+    color: #46474f
+}
+
+.content.config .container .box .row.disabled .edit_box #tags input[type=text]:disabled:-ms-input-placeholder {
+    color: #46474f
+}
+
+.content.config .container .box .row.disabled .edit_box [data-tooltip]:before {
+    opacity: 0
+}
+
+.content.config .container .box .row.disabled .edit_box [data-tooltip]:after {
+    opacity: 0
+}
+
+.content.config .container .box .row_load {
+    background: #fff;
+    border-top: 1px dashed #e2e5ef;
+    margin: -1px auto 0;
+    text-align: center;
+    width: 100%;
+    border-radius: 0 0 4px 4px;
+    padding: 20px
+}
+
+.content.config .container .box .row_load .ghost_button {
+    margin: 0 auto;
+    border-radius: 3px;
+    display: table;
+    color: #969dae;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 300ms linear
+}
+
+.content.config .container .box .row_load .ghost_button:hover {
+    opacity: .5
+}
+
+.content.config .container .action_row.buttons {
+    width: 100%
+}
+
+.content.config .container .action_row.buttons .button {
+    margin: 0 0 0 15px
+}
+
+.content.config .container .action_row.buttons .button_empty {
+    cursor: pointer;
+    color: #85879b;
+    margin: 0 15px 0 auto;
+    text-decoration: none
+}
+
+.content.config .container .action_row.buttons .button_empty:hover {
+    cursor: pointer;
+    color: #acaebf
+}
+
+.content.config .container .col_1_4 {
+    padding: 0 20px;
+    position: relative
+}
+
+.content.config .container .col_1_4 .icon.info {
+    position: absolute;
+    top: -6px;
+    right: 0;
+    width: 22px;
+    height: 22px;
+    background: url(/images/sprite_icons_v2.svg) no-repeat;
+    background-size: 44px 1430px;
+    background-position: 0 -66px
+}
+
+.content.config .container .col_1_4 [data-tooltip]:before {
+    width: 300px;
+    white-space: normal;
+    left: auto;
+    right: -5px;
+    transform: none
+}
+
+.content.config .container .col_1_4 [data-tooltip]:after {
+    left: auto;
+    right: 5px;
+    transform: none
+}
+
+.content.config .container .col_1_4 p {
+    line-height: 1.2
+}
+
+.content.config .container .col_1_4 p a {
+    color: #46474f
+}
+
+.content.config .container .col_1_4 p a:hover {
+    color: #52cca5
+}
+
+.content.config .container .col_1_4 table {
+    margin-bottom: 20px;
+    border-top: 1px solid #e2e5ef;
+    border-bottom: 1px solid #e2e5ef
+}
+
+.content.config .container .col_1_4 table tr {
+}
+
+.content.config .container .col_1_4 table tr th {
+    padding: 10px 0
+}
+
+.content.config .container .col_1_4 table tr td {
+    padding: 10px 0;
+    vertical-align: top;
+    font-size: 14px
+}
+
+.content.config .container .col_1_4 table tr td a {
+    color: #46474f
+}
+
+.content.config .container .col_1_4 table tr td a:hover {
+    color: #52cca5
+}
+
+.content.config .container .col_1_4 table tr td:first-child {
+    padding-right: 15px
+}
+
+.content.config .container .col_1_4 table tr:nth-child(2n) td {
+    background: 0 0
+}
+
+.content.config .container .col_1_4 table tr td .tag {
+    display: inline-block;
+    background: #5767ff;
+    color: #fff;
+    font-family: mukta mahee, source sans pro, sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    padding: 4px 6px;
+    border-radius: 3px
+}
+
+.content.config .container .col_1_4 table tr td .tag.undefined {
+    background: #ff5b56
+}
+
+.content.config .container .col_1_4 table tr td .tag.amd {
+    background: #81849c
+}
+
+.content.config .container .col_1_4 table tr td .tag.nvidia {
+    background: #81849c
+}
+
+.content.config .container .col_1_4 table tr td .tag.windows {
+    background: #81849c
+}
+
+.content.config .container .col_1_4 table tr td .tag.msos {
+    background: #81849c
+}
+
+.content.config .container .col_1_4 table tr td .tag.baikal {
+    background: #81849c
+}
+
+.content.config .container .col_1_4 table tr td .tag.antminer {
+    background: #81849c
+}
+
+.content.config .container .col_1_4 table tr td .tag.cpu {
+    background: #81849c
+}
+
+.content.config .container .col_1_4 table tr td .tag.asic {
+    background: #81849c
+}
+
+.content.config .container .col_1_4 table tr td .tag.dragonmint {
+    background: #81849c
+}
+
+.content.config .container .col_1_4 table tr td .tag.innosilicon {
+    background: #81849c
+}
+
+.content.config .container .col_1_4 table tr td .tag.dayun {
+    background: #81849c
+}
+
+.content.config .container .col_1_4 table tr td .tag.spondoolies {
+    background: #81849c
+}
+
+.content.config .container .col_1_4 .button {
+    font-size: 14px;
+    margin-bottom: 80px;
+    text-align: center
+}
+
+.content.config .container .col_1_4 .col_1_2 {
+    width: 100%
+}
+
+.content.config .checkbox {
+    border: 1px solid #e2e5ef;
+    box-shadow: 0 0 0 1px #e2e5ef;
+    border-radius: 3px;
+    height: 22px;
+    width: 22px;
+    margin: -2px 15px 0 0;
+    cursor: pointer;
+    flex: none
+}
+
+.content.config .checkbox.selected {
+    background: url(/images/plus_green.svg) no-repeat center center;
+    background-size: 24px 24px;
+    border: 1px solid #52cca5;
+    box-shadow: 0 0 0 1px #52cca5
+}
+
+.content.config .checkbox[data-tooltip]:before {
+    left: -10px;
+    transform: none
+}
+
+.content.config .checkbox[data-tooltip]:after {
+    left: 5px;
+    transform: none
+}
+
+.content.config [data-tooltip]:before {
+    white-space: nowrap
+}
+
+#options {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 35px rgba(0, 0, 0, .2), 0 5px 10px rgba(0, 0, 0, .05);
+    list-style: none;
+    z-index: 110;
+    width: 280px;
+    margin-top: 0;
+    opacity: 0
+}
+
+#options.display {
+    opacity: 1;
+    margin-top: 20px;
+    z-index: 100;
+    display: block;
+    animation: load-display 200ms linear
+}
+
+#options .search_box {
+    margin: 0 0 5px;
+    padding: 10px;
+    border-bottom: 1px solid #e2e5ef;
+    position: relative;
+    background: #f8f9fc
+}
+
+#options .search_box input {
+    height: 38px;
+    padding: 3px 35px 3px 10px;
+    border: 1px solid #e2e5ef;
+    border-radius: 3px;
+    width: 100%;
+    font-family: mukta mahee, source sans pro, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: #6b6d7a
+}
+
+#options .search_box input:focus {
+    outline: none !important;
+    border-color: #52cca5;
+    box-shadow: 0 0 0 1px #52cca5
+}
+
+#options .search_box .icon.search {
+    width: 18px;
+    height: 18px;
+    background: url(/images/sprite_icons_button.svg?v=2) no-repeat;
+    background-size: 54px 900px;
+    background-position: 0 -90px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: block
+}
+
+#options .frame {
+    height: auto;
+    max-height: 200px;
+    margin: 5px;
+    padding: 0;
+    display: block;
+    overflow-y: auto;
+    width: 270px;
+    position: relative;
+    display: block
+}
+
+#options .frame .empty_addresseditor {
+    padding: 15px;
+    font-size: 14px;
+    line-height: 1.2;
+    text-align: left
+}
+
+#options .frame .empty_text {
+    padding: 15px;
+    font-size: 14px;
+    line-height: 1.2;
+    text-align: left
+}
+
+#options .frame li {
+    padding: 6px 10px;
+    font-size: 14px;
+    color: #46474f;
+    font-weight: 700;
+    list-style: none;
+    cursor: pointer;
+    margin: 0 10px 4px 0;
+    border-radius: 3px;
+    position: relative
+}
+
+#options .frame li:last-child {
+    margin-bottom: 0
+}
+
+#options .frame li:hover {
+    background: #f8f9fc
+}
+
+#options .frame li small {
+    display: block;
+    font-size: 12px;
+    font-weight: 300;
+    color: #afb2c3;
+    word-break: break-all
+}
+
+#options .frame li.selected {
+    background: #f8f9fc;
+    cursor: defaultborder-radius: 3px
+}
+
+#options .frame li.selected:hover {
+    background: #f8f9fc;
+    cursor: default
+}
+
+#options .frame li.partner {
+    color: #6e7cff
+}
+
+#options .frame li.partner small {
+    color: #a3acff
+}
+
+#options .frame li .icon {
+    position: absolute;
+    top: 9px;
+    right: 12px;
+    width: 18px;
+    height: 18px;
+    background: url(/images/sprite_icons_button.svg?v=2) no-repeat;
+    background-size: 54px 900px;
+    cursor: pointer;
+    display: none
+}
+
+#options .frame li:hover .icon {
+    display: block
+}
+
+#options .frame li .icon.edit {
+    background-position: 0 -198px
+}
+
+#options .frame li .icon.edit:hover {
+    background-position: -18px -198px
+}
+
+#options .frame::-webkit-scrollbar-track {
+    background-color: #e4e7f1;
+    border-radius: 30px
+}
+
+#options .frame::-webkit-scrollbar {
+    width: 5px;
+    background-color: #e4e7f1;
+    border-radius: 30px
+}
+
+#options .frame::-webkit-scrollbar-thumb {
+    background-color: #575e71;
+    border-radius: 30px
+}
+
+#options .divider {
+    border-top: 1px solid #e2e5ef;
+    margin: 10px
+}
+
+#options .button.green {
+    margin: 0 10px 10px;
+    display: block;
+    text-align: center;
+    white-space: nowrap
+}
+
+#options .add_new_element {
+    padding: 15px;
+    background: #f8f9fc;
+    border-top: 1px solid #e2e5ef;
+    border-radius: 0 0 5px 5px;
+    display: none
+}
+
+#options .add_new_element .title {
+    font-weight: 800;
+    font-size: 14px;
+    margin: 0 0 10px
+}
+
+#options .add_new_element .row {
+    display: block;
+    margin: 0;
+    border: 0;
+    padding: 0
+}
+
+#options .add_new_element .row .element {
+    flex: auto;
+    margin: 0 0 10px
+}
+
+#options .add_new_element .row .element.flexTag {
+    flex: 1
+}
+
+#options .add_new_element .row .element.flexAddress {
+    flex: 3
+}
+
+#options .add_new_element .row .element label {
+    font-weight: 400;
+    color: #46474f;
+    margin: 0 0 5px;
+    font-size: 14px;
+    display: block
+}
+
+#options .add_new_element .row .element .input_area {
+    padding: 0
+}
+
+#options .add_new_element .row .element .input_area input[type=text] {
+    font-family: mukta mahee, source sans pro, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    display: block;
+    text-align: left;
+    border: 1px solid #e2e5ef;
+    border-radius: 3px;
+    padding: 3px 10px;
+    width: 100%;
+    margin: 0 0 10px;
+    color: #6b6d7a
+}
+
+#options .add_new_element .row .element .input_area input[type=text]:focus {
+    outline: none !important;
+    border-color: #52cca5;
+    box-shadow: 0 0 0 1px #52cca5
+}
+
+#options .add_new_element .row .element .input_area_with_tag {
+    padding: 0;
+    position: relative;
+    margin: 0 0 10px
+}
+
+#options .add_new_element .row .element .input_area_with_tag .tag {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    bottom: 5px;
+    background: #eceef5;
+    border-radius: 2px;
+    color: #6b6d7a;
+    font-family: ibm plex mono, courier new, Courier, monospace;
+    font-size: 12px;
+    padding: 7px 6px 8px 8px
+}
+
+#options .add_new_element .row .element .input_area_with_tag input[type=text] {
+    font-family: mukta mahee, source sans pro, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    display: block;
+    border: 1px solid #e2e5ef;
+    border-radius: 3px;
+    text-align: left;
+    padding: 3px 10px;
+    width: 100%;
+    color: #6b6d7a
+}
+
+#options .add_new_element .row .element .input_area_with_tag input[type=text]:focus {
+    outline: none !important;
+    border-color: #52cca5;
+    box-shadow: 0 0 0 1px #52cca5
+}
+
+#options .add_new_element .row .element .input_area_with_tag.wallet_tag input[type=text] {
+    padding-left: 74px
+}
+
+#options .add_new_element .row .element .input_area_with_tag.pool_tag input[type=text] {
+    padding-left: 62px
+}
+
+#options .add_new_element .button {
+    font-size: 14px;
+    padding: 9px 12px;
+    display: table;
+    margin: 0 0 0 auto
+}
+
+.content.config.amd_tweak {
+}
+
+.content.config.amd_tweak .container .box .row {
+    align-items: flex-start
+}
+
+.content.config.amd_tweak .container .box .row .client {
+}
+
+.content.config.amd_tweak .container .box .row .client label {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start
+}
+
+.content.config.amd_tweak .container .box .row .client label span.number {
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    padding: 6px;
+    border-radius: 3px;
+    flex: none;
+    display: block;
+    text-align: center;
+    min-width: 26px;
+    background: #575e71;
+    margin: 0 8px 0 0;
+    white-space: nowrap
+}
+
+.content.config.amd_tweak .container .box .row:nth-child(1) .client label span.number {
+    background: #fe7c7c
+}
+
+.content.config.amd_tweak .container .box .row:nth-child(2) .client label span.number {
+    background: #fc7474
+}
+
+.content.config.amd_tweak .container .box .row:nth-child(3) .client label span.number {
+    background: #fa6c6c
+}
+
+.content.config.amd_tweak .container .box .row:nth-child(4) .client label span.number {
+    background: #f86565
+}
+
+.content.config.amd_tweak .container .box .row:nth-child(5) .client label span.number {
+    background: #f65d5d
+}
+
+.content.config.amd_tweak .container .box .row:nth-child(6) .client label span.number {
+    background: #f45656
+}
+
+.content.config.amd_tweak .container .box .row:nth-child(7) .client label span.number {
+    background: #f24e4e
+}
+
+.content.config.amd_tweak .container .box .row:nth-child(8) .client label span.number {
+    background: #f04747
+}
+
+.content.config.amd_tweak .container .box .row:nth-child(9) .client label span.number {
+    background: #ee3f3f
+}
+
+.content.config.amd_tweak .container .box .row:nth-child(10) .client label span.number {
+    background: #ec3838
+}
+
+.content.config.amd_tweak .container .box .row:nth-child(11) .client label span.number {
+    background: #ea3030
+}
+
+.content.config.amd_tweak .container .box .row:nth-child(12) .client label span.number {
+    background: #e82929
+}
+
+.content.config.amd_tweak .container .box .row:nth-child(13) .client label span.number {
+    background: #e62121
+}
+
+.content.config.amd_tweak .container .box .row:nth-child(14) .client label span.number {
+    background: #e41a1a
+}
+
+.content.config.amd_tweak .container .box .row:nth-child(15) .client label span.number {
+    background: #e21212
+}
+
+.content.config.amd_tweak .container .box .row:nth-child(16) .client label span.number {
+    background: #e00b0b
+}
+
+.content.config.amd_tweak .container .box .row .client .tags {
+    display: flex;
+    width: 100%;
+    margin: 10px 0 0;
+    flex-wrap: wrap
+}
+
+.content.config.amd_tweak .container .box .row .client .tags .tag {
+    background: #f8f9fc;
+    font-size: 13px;
+    color: #6b6d7a;
+    border-radius: 2px;
+    padding: 5px 8px;
+    margin: 0 5px 5px 0;
+    white-space: nowrap
+}
+
+.content.config.amd_tweak .container .box .row .client .tags .tag b {
+    display: inline-block;
+    margin: 0 5px 0 0;
+    color: #46474f;
+    font-weight: 600
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak {
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .row {
+    padding: 0;
+    flex-wrap: wrap;
+    justify-content: flex-start
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .row .parameter_box {
+    position: relative;
+    width: calc(25% - 8px);
+    margin: 0 10px 10px 0;
+    z-index: 1
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .row .parameter_box:nth-child(4n) {
+    margin-right: 0
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .row .parameter_box .parameter_name {
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    font-weight: 700;
+    font-size: 14px;
+    z-index: -1
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .row .parameter_box input.parameter_value {
+    padding: 5px 10px 5px 75px;
+    text-align: right;
+    background: 0 0;
+    font-weight: 800;
+    color: #46474f
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .row .parameter_box input.parameter_value:placeholder {
+    font-weight: 300
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .row .button {
+    margin: 0 10px 0 0;
+    font-size: 14px;
+    position: relative;
+    z-index: 2
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .row .button.editString {
+    padding: 10px 8px;
+    margin-right: 0;
+    margin-left: auto
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .row .button.editString[data-tooltip]:before {
+    bottom: 120%;
+    left: auto;
+    right: 0;
+    transform: none
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .row .button.editString[data-tooltip]:after {
+    bottom: 120%;
+    left: auto;
+    right: 15px;
+    transform: none
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .row .button .icon {
+    width: 18px;
+    height: 18px
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .row .button .icon.all_gpus {
+    background-position: -36px -234px
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .row .button .icon.same_gpus {
+    background-position: -36px -252px
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .row .button .icon.edit_string {
+    background-position: -36px -270px
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .row.scrollable_row {
+    height: 300px;
+    position: relative;
+    padding: 5px 15px 5px 1px;
+    margin-bottom: 15px;
+    overflow: hidden
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .popup_intro {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: 360px;
+    background: rgba(255, 255, 255, .95);
+    z-index: 99;
+    display: none
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .popup_intro .popup_frame {
+    background: #fff;
+    border-radius: 3px;
+    box-shadow: 0 0 50px rgba(0, 0, 0, .2);
+    margin: 30px 80px;
+    position: relative
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .popup_intro .popup_frame .close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 18px;
+    height: 18px
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .popup_intro .popup_frame .close .icon_close {
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    background: url(/images/sprite_icons_button.svg?v=2) no-repeat;
+    background-size: 54px 900px;
+    background-position: 0 -234px;
+    opacity: .3
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .popup_intro .popup_frame .close .icon_close:hover {
+    opacity: 1
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .popup_intro .popup_frame label {
+    font-size: 16px;
+    padding: 15px 30px 5px 15px
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .popup_intro .popup_frame textarea {
+    margin: 0 15px 15px;
+    width: calc(100% - 30px);
+    height: 180px;
+    resize: none
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .popup_intro .popup_frame .divider {
+    margin: 15px 0
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .popup_intro .popup_frame .action_row {
+    padding: 0 15px 15px
+}
+
+.content.config.amd_tweak .container .box .row .edit_box.memory_tweak .popup_intro .popup_frame .action_row .button.green {
+    font-size: 14px
+}
+
+.content.config.amd_tweak .container .error_message {
+    background: #ff5b56;
+    border-radius: 3px;
+    padding: 18px 24px;
+    margin-bottom: 20px;
+    width: auto;
+    flex: auto;
+    font-weight: 600;
+    color: #fff;
+    text-align: center
+}
+
+.content.config.amd_tweak .container .error_message:last-child {
+    margin-bottom: 0
+}
+
+.page .empty_state .buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center
+}
+
+.page .empty_state .button {
+    margin: 0 5px
+}
+
+.page .empty_state .button.gray {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative
+}
+
+.page .empty_state .button.gray input[type=file] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    opacity: 0;
+    cursor: pointer
+}
+
+.content.config .container .container .col_1_2 .box {
+    padding: 0
+}
+
+.content.config .container .container .col_1_2 .box h3 {
+    font-size: 18px;
+    line-height: 1;
+    margin: 0 auto 2px 0;
+    font-weight: 600
+}
+
+.content.config .container .container .col_1_2 .box .icon.multitune {
+    background: url(/images/sprite_icons_v2.svg) no-repeat;
+    background-size: 44px 1430px;
+    width: 22px;
+    height: 22px;
+    margin: 0 0 0 auto;
+    background-position: 0 -242px;
+    cursor: pointer
+}
+
+.content.config .container .container .col_1_2 .box .icon.multitune:hover {
+    background-position: -22px -242px
+}
+
+.content.config .container .container .col_1_2 .box .icon.multitune[data-tooltip]:before {
+    right: -10px;
+    transform: none;
+    left: auto
+}
+
+.content.config .container .container .col_1_2 .box .icon.multitune[data-tooltip]:after {
+    right: 0;
+    transform: none;
+    left: auto
+}
+
+.content.config .container .container .col_1_2 .box .button.gray {
+    margin: -4px -4px -4px auto;
+    font-size: 14px;
+    padding: 5px 10px
+}
+
+.content.config .container .container .col_1_2 .box .button.gray[data-tooltip]:before {
+    right: -10px;
+    transform: none;
+    left: auto;
+    bottom: 120%
+}
+
+.content.config .container .container .col_1_2 .box .button.gray[data-tooltip]:after {
+    right: 0;
+    transform: none;
+    left: auto;
+    bottom: 120%
+}
+
+.content.config .container .container .col_1_2.disabled .box .button.gray {
+    opacity: .5;
+    position: relative
+}
+
+.content.config .container .container .col_1_2.disabled .box .button.gray:after {
+    content: "";
+    background: 0 0;
+    cursor: default;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0
+}
+
+.content.config .container .container .col_1_2 .box .mini_divider {
+    border-top: 1px solid #e2e5ef;
+    margin: 20px 0;
+    width: 30px;
+    margin: 20px 0 20px 30px
+}
+
+.content.config .container .container .col_1_2 .box .row {
+    padding: 20px 20px 0;
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    border: 0;
+    position: relative
+}
+
+.content.config .container .container .col_1_2 .box .row:last-child {
+    padding-bottom: 20px
+}
+
+.content.config .container .container .col_1_2 .box .row label {
+    width: 100%;
+    font-size: 14px;
+    margin: 0;
+    display: flex;
+    justify-content: space-between
+}
+
+.content.config .container .container .col_1_2 .box .row label span {
+    font-weight: 300;
+    margin-left: auto
+}
+
+.content.config .container .container .col_1_2 .box .row label .info_box {
+    margin: -1px 0 0 10px
+}
+
+.content.config .container .container .col_1_2 .box .row .slider {
+    width: calc(100% - 130px)
+}
+
+.content.config .container .container .col_1_2 .box .row .input_units {
+    position: relative;
+    width: 100px;
+    margin-top: 4px
+}
+
+.content.config .container .container .col_1_2 .box .row .input_units input {
+    padding: 2px 45px 2px 10px;
+    margin: 0
+}
+
+.content.config .container .container .col_1_2 .box .row .input_units label.unit {
+    width: auto;
+    font-size: 14px;
+    position: absolute;
+    top: 10px;
+    right: 10px
+}
+
+.content.config .container .container .col_1_2 .box .row .input_units.multi {
+    width: 100%;
+    margin-bottom: 2px
+}
+
+.content.config .container .container .col_1_2 .box .row .clocktune_values {
+    display: none;
+    position: absolute;
+    right: 12px;
+    top: 56px;
+    background: #fff;
+    box-shadow: 0 5px 35px rgba(0, 0, 0, .2);
+    z-index: 90;
+    padding: 15px;
+    border-radius: 4px;
+    min-width: 240px
+}
+
+.content.config .container .container .col_1_2 .box .row .clocktune_values .divider {
+    margin-top: 10px;
+    margin-bottom: 10px
+}
+
+.content.config .container .container .col_1_2 .box .row .clocktune_values .button.green {
+    font-size: 14px;
+    width: 100%;
+    text-align: center;
+    justify-content: center
+}
+
+.content.config .container .container .col_1_2 .box .row .clocktune_values select {
+    margin-bottom: 10px
+}
+
+.content.config .container .container .col_1_2 .box .row .clocktune_values label {
+    margin-bottom: 5px
+}
+
+.content.config .container .container .col_1_2 .box .row .clocktune_values .clocktune_values_box {
+    padding: 0;
+    margin: -5px 0
+}
+
+.content.config .container .container .col_1_2 .box .row .clocktune_values .clocktune_values_box .row {
+    padding: 5px 0;
+    display: flex;
+    justify-content: space-between
+}
+
+.content.config .container .container .col_1_2 .box .row .clocktune_values .clocktune_values_box .row label.parameter {
+    flex: none;
+    width: auto;
+    margin: 0;
+    margin-right: 5px
+}
+
+.content.config .container .container .col_1_2 .box .row .clocktune_values .clocktune_values_box .row label.value {
+    flex: none;
+    width: auto;
+    margin: 0;
+    font-weight: 300;
+    text-align: right
+}
+
+.content.config .container .container .col_1_2 .box .row.advanced.fans {
+    padding: 20px 2px 2px;
+    border-radius: 0 0 3px 3px
+}
+
+.content.config .container .container .col_1_2 .box .row.advanced.fans:last-child {
+    padding-bottom: 2px
+}
+
+.content.config .container .container .col_1_2 .box .row.advanced.fans .tabs {
+    width: 100%;
+    display: flex;
+    padding-left: 15px
+}
+
+.content.config .container .container .col_1_2 .box .row.advanced.fans .tabs .tab {
+    padding: 12px 20px;
+    margin-right: 5px;
+    font-size: 14px;
+    cursor: pointer
+}
+
+.content.config .container .container .col_1_2 .box .row.advanced.fans .tabs .tab:hover {
+    background: rgba(0, 0, 100, .01)
+}
+
+.content.config .container .container .col_1_2 .box .row.advanced.fans .tabs .tab.selected {
+    background: #f8f9fc;
+    border-radius: 3px 3px 0 0;
+    font-weight: 600;
+    position: relative;
+    cursor: default
+}
+
+.content.config .container .container .col_1_2 .box .row.advanced.fans .tabs .tab.selected:hover {
+    background: #f8f9fc
+}
+
+.content.config .container .container .col_1_2 .box .row.advanced.fans .tabs .tab.selected:after {
+    content: "";
+    position: absolute;
+    left: 8px;
+    bottom: 0;
+    right: 8px;
+    height: 3px;
+    border-radius: 5px;
+    background: #52cca5
+}
+
+.content.config .container .container .col_1_2 .box .row.advanced.fans .fixed_fans {
+    background: #f8f9fc;
+    padding: 20px;
+    width: 100%;
+    border-radius: 0 0 3px 3px
+}
+
+.content.config .container .container .col_1_2 .box .row.advanced.fans .auto_fans {
+    background: #f8f9fc;
+    padding: 20px;
+    width: 100%;
+    border-radius: 0 0 3px 3px;
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap
+}
+
+.content.config .container .container .col_1_2 .box .row.advanced.fans .auto_fans .element {
+    flex: 1;
+    width: auto;
+    margin-right: 15px
+}
+
+.content.config .container .container .col_1_2 .box .row.advanced.fans .auto_fans .element:last-child {
+    margin-right: 0
+}
+
+.content.config .container .container .col_1_2.disabled .box .row h3 {
+    opacity: .4;
+    cursor: default
+}
+
+.content.config .container .container .col_1_2.disabled .box .row label .info_box:hover .tooltip {
+    display: none
+}
+
+.content.config .container .container .col_1_2.disabled .box #nvidia_oc_settings {
+    opacity: .4;
+    cursor: default
+}
+
+.content.config .container .container .col_1_2.disabled .box #amd_oc_settings {
+    opacity: .4;
+    cursor: default
+}
+
+.content.config .container .container .col_1_2.disabled .box .row .container .row .input_units input:disabled {
+    background: #f8f8f8
+}
+
+.content.config .container .container .col_1_2.disabled .box .row .container .row .input_units input:disabled::-webkit-input-placeholder {
+    color: #46474f
+}
+
+.content.config .container .container .col_1_2.disabled .box .row .container .row .input_units input:disabled:-moz-placeholder {
+    color: #46474f
+}
+
+.content.config .container .container .col_1_2.disabled .box .row .irs-slider {
+    background: #9597a9
+}
+
+.content.config .container .container .col_1_2.disabled .box .row .irs-bar-edge {
+    background: #9597a9
+}
+
+.content.config .container .container .col_1_2.disabled .box .row .irs-bar {
+    background: #9597a9
+}
+
+.content.clocktune .title_row {
+    padding-bottom: 0;
+    margin-bottom: 15px
+}
+
+.content.clocktune .filter_row {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: flex-end;
+    border-top: 0;
+    padding-top: 0
+}
+
+.content.clocktune .filter_row h1 {
+    margin: 0 auto 0 0
+}
+
+.content.clocktune .filter_row .button {
+    margin: 0 0 0 10px
+}
+
+.content.clocktune .filter_row .button.white {
+    padding: 10px;
+    background: #fff;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, .05);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative
+}
+
+.content.clocktune .filter_row .button.white input[type=file] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    opacity: 0;
+    cursor: pointer
+}
+
+.content.clocktune .filter_row .button.white .icon {
+    margin: 0;
+    width: 16px;
+    height: 16px
+}
+
+.content.clocktune .filter_row .button.white .icon.export {
+    background-position: 0 -702px
+}
+
+.content.clocktune .filter_row .button.white .icon.import {
+    background-position: 0 -684px
+}
+
+.content.clocktune .filter_row .button.white:hover .icon.export {
+    background-position: -18px -702px
+}
+
+.content.clocktune .filter_row .button.white:hover .icon.import {
+    background-position: -18px -684px
+}
+
+.content.clocktune .filter_row .button.white[data-tooltip]::before {
+    bottom: calc(100% + 5px)
+}
+
+.content.clocktune .filter_row .button.white[data-tooltip]::after {
+    bottom: calc(100% + 5px)
+}
+
+.content.clocktune .box_table table {
+}
+
+.content.clocktune .box_table table tr:nth-child(2n) td {
+    background: 0 0
+}
+
+.content.clocktune .box_table table tr .flexType {
+    width: 130px
+}
+
+.content.clocktune .box_table table tr .flexUsed {
+    width: 50px
+}
+
+.content.clocktune .box_table table tr .flexActions {
+    width: 160px
+}
+
+.content.clocktune .box_table table tr td {
+    vertical-align: top;
+    font-size: 14px
+}
+
+.content.clocktune .box_table table tr td a:link, .content.clocktune .box_table table tr td a:visited, .content.clocktune .box_table table tr td a:active {
+    text-decoration: none;
+    color: #46474f;
+    font-weight: 700;
+    margin: 0;
+    display: table
+}
+
+.content.clocktune .box_table table tr td a:hover, .content.clocktune .box_table table tr td a:visited:hover {
+    color: #52cca5
+}
+
+.content.clocktune .box_table table tr td a.icon:link, .content.clocktune .box_table table tr td a.icon:visited, .content.clocktune .box_table table tr td a.icon:active {
+    margin: 5px 6px 5px 0
+}
+
+.content.clocktune .box_table table tr td:first-child {
+    vertical-align: top;
+    font-size: 16px
+}
+
+.content.clocktune .box_table table tr td:last-child {
+    vertical-align: top
+}
+
+.content.clocktune .box_table table tr td .tag {
+    background: #f8f9fc;
+    color: #5f5d65;
+    width: auto;
+    border-radius: 2px;
+    font-weight: 400;
+    font-size: 12px;
+    padding: 4px 6px;
+    text-transform: uppercase;
+    line-height: 1;
+    display: inline-block;
+    align-items: center;
+    margin: 1px 5px 4px 0;
+    white-space: nowrap
+}
+
+.content.clocktune .box_table table tr td .row {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    padding: 5px 0 0;
+    align-items: center
+}
+
+.content.clocktune .box_table table tr td .row:first-child {
+    padding: 0
+}
+
+.content.clocktune .box_table table tr td .row .tag {
+    margin: 0 5px 0 0
+}
+
+.content.clocktune .box_table table tr td .row .el {
+    flex: none;
+    margin: 0 5px 0 0;
+    font-weight: 300
+}
+
+.content.clocktune .box_table table tr td .row .el[data-tooltip]:before {
+    font-weight: 600
+}
+
+.content.clocktune .box_table table.clocktuneTable tr th {
+    border: 0
+}
+
+.content.clocktune .box_table table.clocktuneTable tr td {
+    border: 0;
+    border-top: 1px solid #e2e5ef
+}
+
+.content.clocktune .box_table table.clocktuneTable tr.subrow td {
+    border: 0
+}
+
+.content.clocktune .box_table table.clocktuneTable tr.subrow td.borderTop {
+    border-top: 1px solid #f5f6fb
+}
+
+.content.clocktune .box_table table.clocktuneTable tr td .used_none {
+    opacity: .5
+}
+
+.content.clocktune .box_table table.clocktuneTable tr td .used {
+    color: #fff;
+    background: #46474f;
+    padding: 6px 8px;
+    border-radius: 3px;
+    display: inline-flex;
+    font-weight: 700
+}
+
+.content.config_template .container .box .row .edit_box .selected_option {
+    margin-bottom: 20px
+}
+
+.content.bios_flashing {
+    position: relative
+}
+
+.content.bios_flashing .container#saveContainer {
+    border: 0
+}
+
+.content.bios_flashing .container .empty_state {
+    padding: 50px;
+    text-align: center;
+    width: 100%;
+    margin: 0
+}
+
+.content.bios_flashing .container .empty_state .title {
+    display: block;
+    margin: 0 auto 5px
+}
+
+.content.bios_flashing .container .empty_state p {
+    margin: 0
+}
+
+.content.bios_flashing .container .box .row .edit_box #select_target_menu .button {
+    margin-top: 0
+}
+
+.content.bios_flashing .container .box .row .edit_box .action {
+}
+
+.content.bios_flashing .container .box .row .edit_box .action .buttons {
+    display: flex;
+    align-items: stretch
+}
+
+.content.bios_flashing .container .box .row .edit_box .action .buttons .notification {
+    margin-left: 10px;
+    justify-content: flex-start;
+    align-items: center;
+    border-radius: 3px;
+    padding: 7px 12px 7px 10px;
+    font-size: 14px;
+    font-weight: 800;
+    display: none
+}
+
+.content.bios_flashing .container .box .row .edit_box .action .buttons .notification.display {
+    display: flex
+}
+
+.content.bios_flashing .container .box .row .edit_box .action .buttons .notification.green {
+    color: #52cca5;
+    background: rgba(82, 204, 165, .1)
+}
+
+.content.bios_flashing .container .box .row .edit_box .action .buttons .notification.green .tick_box {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    background: #52cca5;
+    margin-right: 8px;
+    position: relative
+}
+
+.content.bios_flashing .container .box .row .edit_box .action .buttons .notification.green .tick_box .tick {
+    position: relative
+}
+
+.content.bios_flashing .container .box .row .edit_box .action .buttons .notification.green .tick_box .tick:after {
+    content: "";
+    height: 2px;
+    width: 4px;
+    background: #fff;
+    transform: rotate(45deg);
+    position: absolute;
+    left: 6px;
+    top: 10px
+}
+
+.content.bios_flashing .container .box .row .edit_box .action .buttons .notification.green .tick_box .tick:before {
+    content: "";
+    height: 2px;
+    width: 8px;
+    background: #fff;
+    transform: rotate(-45deg);
+    position: absolute;
+    left: 7px;
+    top: 9px
+}
+
+.content.bios_flashing .container .box .row .edit_box .action .buttons .notification.red {
+    color: #ff5b56;
+    background: rgba(255, 91, 86, .1)
+}
+
+.content.bios_flashing .container .box .row .edit_box .action .buttons .notification.red .tick_box {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    background: #ff5b56;
+    margin-right: 8px;
+    position: relative
+}
+
+.content.bios_flashing .container .box .row .edit_box .action .buttons .notification.red .tick_box .tick {
+    position: relative
+}
+
+.content.bios_flashing .container .box .row .edit_box .action .buttons .notification.red .tick_box .tick:after {
+    content: "";
+    height: 2px;
+    width: 8px;
+    background: #fff;
+    transform: rotate(45deg);
+    position: absolute;
+    left: 6px;
+    top: 9px
+}
+
+.content.bios_flashing .container .box .row .edit_box .action .buttons .notification.red .tick_box .tick:before {
+    content: "";
+    height: 2px;
+    width: 8px;
+    background: #fff;
+    transform: rotate(-45deg);
+    position: absolute;
+    left: 6px;
+    top: 9px
+}
+
+.content.bios_flashing .container .box .row .edit_box .action .buttons .button.blue {
+    margin: 0;
+    font-size: 14px;
+    cursor: pointer;
+    position: relative;
+    cursor: pointer;
+    flex: none
+}
+
+.content.bios_flashing .container .box .row .edit_box .action .buttons .button input {
+    position: absolute;
+    left: 0;
+    top: -6px;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    font-size: 0
+}
+
+.content.bios_flashing .container .box .row .edit_box .action small {
+    display: block;
+    margin: 5px 0 0;
+    color: #a3a5b2;
+    font-size: 12px
+}
+
+.content.bios_flashing .container .box .edit_table table tr:nth-child(n) td {
+    background: 0 0;
+    border: 0
+}
+
+.content.bios_flashing .container .box .edit_table table tr th.checkWidth {
+    width: 30px;
+    padding-right: 0
+}
+
+.content.bios_flashing .container .box .edit_table table tr td.checkWidth {
+    width: 30px;
+    padding-right: 0
+}
+
+.content.bios_flashing .container .box .edit_table table tr th .checkbox {
+    margin: 0
+}
+
+.content.bios_flashing .checkbox.selected {
+    background-image: url(/images/tick_green.svg)
+}
+
+.content.bios_flashing .container .box .edit_table table tr td.mini_title {
+    padding: 15px 15px 5px;
+    text-align: left;
+    font-weight: 800;
+    font-size: 14px;
+    color: #46474f;
+    border-top: 1px solid #e2e5ef
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .shw2 {
+    display: none
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .flexBios {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    position: relative
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .flexBios[data-tooltip]:before {
+    left: -15px;
+    transform: none
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .flexBios[data-tooltip]:after {
+    left: 6px;
+    transform: none
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .flexBios .icon {
+    margin: 1px 5px 0 0;
+    width: 14px;
+    height: 12px;
+    background: url(/images/sprite_icons_v2.svg?v=5) no-repeat;
+    background-size: 44px 1430px
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .flexBios .icon.bios_download {
+    background-position: -4px -1106px
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .flexBios .icon.loading {
+    width: 12px;
+    height: 12px;
+    margin: 0 6px 0 1px;
+    background: 0 0;
+    border-radius: 22px;
+    border: 1px solid rgba(0, 0, 80, .2);
+    border-right-color: #46474f;
+    animation: loader-spin 500ms infinite linear
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .flexBios.disabled {
+    position: relative;
+    cursor: default
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .flexBios.disabled:after {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: 0;
+    bottom: -2px;
+    right: 0;
+    background: rgba(255, 255, 255, .6);
+    border-radius: 3px;
+    cursor: default
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .flexBios.disabled.disabled_with_loader:after {
+    left: 18px
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .flexBios.disabled.disabled_with_loader .icon {
+    cursor: default
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .gpu_name {
+    display: flex;
+    align-items: center
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .gpu_name .tag {
+    background: #f8f9fc;
+    border-radius: 3px;
+    font-size: 12px;
+    color: #6b6d7a;
+    padding: 6px 8px;
+    font-weight: 400;
+    flex: none;
+    margin-right: 8px
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .status {
+    background: #f8f9fc;
+    border-radius: 3px;
+    font-size: 12px;
+    color: #6b6d7a;
+    padding: 6px 8px;
+    font-weight: 400;
+    display: inline-block;
+    margin-left: auto
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .status.pending {
+    background: #f8f9fc;
+    color: #6b6d7a;
+    display: inline-flex;
+    align-items: center
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .status.pending .bullet_1 {
+    flex: none;
+    background: #6b6d7a;
+    width: 3px;
+    height: 3px;
+    border-radius: 3px;
+    opacity: .4;
+    margin: 0 1px 0 7px;
+    animation: bullet_animation 1200ms infinite linear
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .status.pending .bullet_2 {
+    flex: none;
+    background: #6b6d7a;
+    width: 3px;
+    height: 3px;
+    border-radius: 3px;
+    opacity: .4;
+    margin: 0 1px;
+    animation: bullet_animation 1200ms infinite linear;
+    animation-delay: 400ms
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .status.pending .bullet_3 {
+    flex: none;
+    background: #6b6d7a;
+    width: 3px;
+    height: 3px;
+    border-radius: 3px;
+    opacity: .4;
+    margin: 0 1px;
+    animation: bullet_animation 1200ms infinite linear;
+    animation-delay: 800ms
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .status.flashing {
+    background: #5767ff;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    font-weight: 600
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .status.flashing .bullet_1 {
+    flex: none;
+    background: #fff;
+    width: 3px;
+    height: 3px;
+    border-radius: 3px;
+    opacity: .4;
+    margin: 0 1px 0 7px;
+    animation: bullet_animation 1200ms infinite linear
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .status.flashing .bullet_2 {
+    flex: none;
+    background: #fff;
+    width: 3px;
+    height: 3px;
+    border-radius: 3px;
+    opacity: .4;
+    margin: 0 1px;
+    animation: bullet_animation 1200ms infinite linear;
+    animation-delay: 400ms
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .status.flashing .bullet_3 {
+    flex: none;
+    background: #fff;
+    width: 3px;
+    height: 3px;
+    border-radius: 3px;
+    opacity: .4;
+    margin: 0 1px;
+    animation: bullet_animation 1200ms infinite linear;
+    animation-delay: 800ms
+}
+
+@keyframes bullet_animation {
+    0% {
+        opacity: 1
+    }
+    33% {
+        opacity: .4
+    }
+    100% {
+        opacity: .4
+    }
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .status.error {
+    background: #ff5b56;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    font-weight: 600
+}
+
+.content.bios_flashing .container .box .edit_table table tr td .status.finished {
+    background: rgba(82, 204, 165, .1);
+    color: #52cca5;
+    display: inline-flex;
+    align-items: center;
+    font-weight: 600
+}
+
+.content.bios_flashing .empty_state .loader {
+    margin: 30px auto 0;
+    width: 36px;
+    height: 36px
+}
+
+.content.bios_flashing .empty_state .loader .loading {
+    border: 2px solid rgba(0, 0, 0, .1);
+    border-left-color: #52cca5;
+    animation-name: loader-spin;
+    animation-duration: 500ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    position: relative;
+    vertical-align: top;
+    flex: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px
+}
+
+.content.bios_flashing .click_protector {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+    cursor: not-allowed
+}
+
+@media (max-width: 1800px) {
+    .content.config .container .box .row .edit_box .select_button .select_dropdown .filter {
+        flex-wrap: wrap
+    }
+
+    .content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.search_element {
+        width: 100%;
+        margin-bottom: 10px
+    }
+
+    .content.config .container .box .row .edit_box #automaticConfig .row_box {
+        flex-wrap: wrap;
+        padding: 10px
+    }
+
+    .content.config .container .box .row .edit_box #automaticConfig .row {
+        flex-wrap: wrap;
+        padding: 0;
+        flex: none;
+        width: 100%
+    }
+
+    .content.config .container .box .row .edit_box #automaticConfig .row .element {
+        flex: none;
+        margin: 0
+    }
+
+    .content.config .container .box .row .edit_box #automaticConfig .row .element.elementCoin {
+        flex: auto;
+        margin-right: 15px;
+        margin-bottom: 15px
+    }
+
+    .content.config .container .box .row .edit_box #automaticConfig .row .element.elementPool {
+        flex: auto;
+        margin-bottom: 15px
+    }
+
+    .content.config .container .box .row .edit_box #automaticConfig .row .element.elementWallets {
+        flex: auto;
+        margin-right: 15px
+    }
+
+    .content.config .container .box .row .edit_box #automaticConfig .row .element.elementPassword {
+        flex: none
+    }
+}
+
+@media (max-width: 1600px) {
+    .content.config.amd_tweak .container .box .row .edit_box.memory_tweak .row .parameter_box {
+        width: calc(33% - 5px)
+    }
+
+    .content.config.amd_tweak .container .box .row .edit_box.memory_tweak .row .parameter_box:nth-child(4n) {
+        margin-right: 10px
+    }
+
+    .content.config.amd_tweak .container .box .row .edit_box.memory_tweak .row .parameter_box:nth-child(3n) {
+        margin-right: 0
+    }
+
+    .content.clocktune .box_table table.clocktuneTable .rmv2 {
+        display: none
+    }
+
+    .content.clocktune .box_table table.clocktuneTable .clocktuneName {
+        display: block;
+        border-bottom: 1px solid #e2e5ef;
+        padding-bottom: 10px;
+        margin-bottom: 10px
+    }
+
+    .content.clocktune .box_table table.clocktuneTable .shw2 {
+        display: flex;
+        flex-wrap: wrap;
+        position: relative
+    }
+
+    .content.clocktune .box_table table.clocktuneTable .shw2 .row {
+        display: block;
+        width: calc(50% - 20px);
+        margin: 10px
+    }
+
+    .content.clocktune .box_table table.clocktuneTable .shw2 .row b {
+        display: block
+    }
+
+    .content.clocktune .box_table table.clocktuneTable .shw2 .row .row {
+        display: flex;
+        margin: 0;
+        width: auto
+    }
+
+    .content.clocktune .box_table table.clocktuneTable .shw2 .actions {
+        position: absolute;
+        top: -44px;
+        right: 0
+    }
+}
+
+@media (max-width: 1400px) {
+    .content.config .container .box .row {
+        flex-wrap: wrap;
+        padding: 20px
+    }
+
+    .content.config .container .box .row .checkbox {
+        order: 1
+    }
+
+    .content.config .container .container .col_1_2 .box .button.gray {
+        order: 4
+    }
+
+    .content.config .container .container .col_1_2 .box .icon.multitune {
+        order: 3
+    }
+
+    .content.config .container .container .col_1_2 .box h3 {
+        order: 1
+    }
+
+    .content.config .container .box .row .client {
+        order: 2;
+        width: calc(100% - 40px);
+        flex: 1 1 auto;
+        padding: 0;
+        margin-bottom: 20px;
+        margin-right: 0
+    }
+
+    .content.config .container .box .row .edit_box {
+        order: 3;
+        width: calc(100% - 40px);
+        margin-left: 36px;
+        flex: 1 1 auto
+    }
+
+    .content.config.scheduler .container .box .row .edit_box {
+        order: 3;
+        width: calc(100% - 40px);
+        margin-left: 0;
+        flex: 1 1 auto
+    }
+
+    .content.config .container .box .container .col_1_2 h3 {
+        order: 2
+    }
+
+    .content.config .container .box .row .edit_box #select_target_menu .frame .row label {
+        order: 2
+    }
+
+    .content.config .container:nth-of-type(2) .box .row .edit_box {
+        width: 100%;
+        margin-left: 0
+    }
+
+    .content.config.amd_tweak .container .box .row .client {
+        order: 0
+    }
+
+    .content.config.amd_tweak .container .box .row .edit_box.memory_tweak {
+        width: 100%;
+        margin-left: 0
+    }
+
+    .content.config.bios_flashing .container .box .row .edit_box {
+        width: 100%;
+        margin-left: 0
+    }
+}
+
+@media (max-width: 1200px) {
+    .content.config .container .col_1_4 {
+        padding: 0
+    }
+
+    .content.config .container .box .row [data-tooltip]:before {
+        left: -10px;
+        transform: none
+    }
+
+    .content.config .container .box .row [data-tooltip]:after {
+        left: 10px;
+        transform: none
+    }
+}
+
+@media (max-width: 1040px) {
+    .content.config .container {
+        flex-wrap: wrap
+    }
+
+    .content.config .container .col_1_4 {
+        order: 1;
+        width: 100%;
+        flex: 1 1 auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between
+    }
+
+    .content.config .container .col_1_4 h2 {
+        display: block;
+        width: 100%;
+        margin-bottom: 20px;
+        display: none
+    }
+
+    .content.config .container .col_1_4 h2:first-child {
+        display: block
+    }
+
+    .content.config .container .col_1_4 p {
+        display: block;
+        width: 100%;
+        font-size: 14px;
+        display: none
+    }
+
+    .content.config .container .col_1_4 .icon.info {
+        display: none
+    }
+
+    .content.config .container .col_1_4 table {
+        display: none
+    }
+
+    .content.config .container .col_1_4 .button {
+        margin-bottom: 30px;
+        display: none
+    }
+
+    .content.config .container .col_1_4 .col_1_2 {
+        width: calc(50% - 20px);
+        display: table;
+        display: none
+    }
+
+    .content.config .container .col_3_4 {
+        order: 2;
+        width: 100%;
+        flex: 1 1 auto
+    }
+
+    .content.config .container .box .container .col_1_2 {
+        padding-bottom: 10px
+    }
+
+    .content.config .container .box .container .col_1_2:first-child .row {
+        padding: 0 0 0 30px
+    }
+
+    .content.config .container .box .container .col_1_2:last-child .row {
+        padding: 0 30px 0 0
+    }
+}
+
+@media (max-width: 960px) {
+    .content.clocktune .box_table table tr .rmv2 {
+        display: none
+    }
+
+    .content.clocktune .box_table table tr .shw2 {
+        display: flex;
+        position: relative;
+        border-top: 1px solid #e2e5ef;
+        padding-top: 10px;
+        margin-top: 10px;
+        flex-wrap: wrap
+    }
+
+    .content.clocktune .box_table table tr .shw2 .actions {
+        position: absolute;
+        top: -33px;
+        right: 0
+    }
+
+    .content.clocktune .box_table table tr .shw2 .row {
+        display: block;
+        flex: 1;
+        margin-top: 10px
+    }
+
+    .content.clocktune .box_table table tr .shw2 .row b {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 14px
+    }
+
+    .content.clocktune .box_table table.clocktuneTable .shw2 {
+        border: 0;
+        padding: 0;
+        margin: 0
+    }
+
+    .content.clocktune .box_table table.clocktuneTable .shw2 .row {
+        display: block;
+        width: calc(50% - 20px);
+        margin: 10px;
+        flex: none
+    }
+
+    .content.clocktune .box_table table.clocktuneTable .shw2 .row b {
+        display: block
+    }
+}
+
+@media (max-width: 860px) {
+}
+
+@media (max-width: 740px) {
+    .content.config .container .col_1_2 {
+        width: 100%;
+        margin: 0 0 30px
+    }
+
+    .content.config .container .col_1_2:last-child {
+        margin: 0
+    }
+
+    .content.config .container .box .row .edit_box .time {
+        flex-wrap: wrap
+    }
+
+    .content.config .container .box .row .edit_box .time .col_1_2 {
+        width: 100%;
+        flex: none
+    }
+
+    .content.config .container .box .row .edit_box .time .col_1_2 label:first-child {
+        min-width: 40px
+    }
+
+    .content.config .container .box .row .client label {
+        font-size: 16px
+    }
+
+    .content.clocktune .filter_row {
+        flex-wrap: wrap
+    }
+
+    .content.clocktune .filter_row h1 {
+        width: 100%;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #e2e5ef
+    }
+
+    .content.clocktune .filter_row .button {
+        padding: 10px 15px
+    }
+
+    .content.config .container .box .row .edit_box #automaticConfig .row .element.elementCoin {
+        flex: none;
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 15px
+    }
+
+    .content.config .container .box .row .edit_box #automaticConfig .row .element.elementPool {
+        flex: none;
+        width: 100%;
+        margin-bottom: 15px
+    }
+
+    .content.config .container .box .row .edit_box #automaticConfig .row .element.elementWallets {
+        flex: none;
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 15px
+    }
+
+    .content.config .container .box .row .edit_box #automaticConfig .row .element.elementPassword {
+        flex: none;
+        width: 100%
+    }
+
+    .content.clocktune .box_table table.clocktuneTable .shw2 .row {
+        display: block;
+        width: calc(100% - 20px);
+        margin: 10px;
+        flex: none
+    }
+
+    .content.bios_flashing .container .box .edit_table table tr td {
+        vertical-align: top
+    }
+
+    .content.bios_flashing .checkbox {
+        margin-top: 1px
+    }
+
+    .content.bios_flashing .container .box .edit_table table tr .rmv2 {
+        display: none
+    }
+
+    .content.bios_flashing .container .box .edit_table table tr td .shw2 {
+        display: block
+    }
+
+    .content.bios_flashing .container .box .edit_table table tr td .shw2 .row {
+        display: block;
+        width: calc(100% - 20px);
+        margin: 10px 0 0;
+        flex: none;
+        border: 0;
+        padding: 0
+    }
+
+    .content.bios_flashing .container .box .edit_table table tr td .shw2 .row b {
+        margin-top: 2px
+    }
+
+    .content.bios_flashing .container .box .edit_table table tr td .shw2 .row:last-child {
+        border-bottom: 1px solid #e2e5ef;
+        padding-bottom: 20px
+    }
+
+    .content.bios_flashing .container .box .edit_table table tr:last-child td .shw2 .row:last-child {
+        border-bottom: 0
+    }
+
+    .content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr .th {
+        margin-bottom: 0
+    }
+
+    .content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr .th.rmv2 {
+        display: none
+    }
+
+    .content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        border-bottom: 1px solid #e2e5ef;
+        padding-top: 10px;
+        padding-bottom: 10px
+    }
+
+    .content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr:first-child {
+        border-bottom: 0;
+        padding-top: 0;
+        padding-bottom: 0
+    }
+
+    .content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr .td {
+        flex: none;
+        text-align: left;
+        padding-right: 0
+    }
+
+    .content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr .td:first-child {
+        width: 100%;
+        flex: none
+    }
+
+    .content.config .container .box .row .edit_box .select_button .select_dropdown .list .frame .tr .td .tag {
+        margin: 0 5px 0 0
+    }
+}
+
+@media (max-width: 600px) {
+    .content.config .container .col_1_4 .col_1_2 {
+        width: 100%;
+        display: table
+    }
+
+    .content.config .container .box .container .col_1_2 {
+        width: 100%;
+        flex: 1 1 auto
+    }
+
+    .content.config .container .box .container .col_1_2:first-child .row {
+        padding: 0 30px
+    }
+
+    .content.config .container .box .container .col_1_2:last-child .row {
+        padding: 0 30px
+    }
+
+    .content.config.amd_tweak .container .box .row .edit_box.memory_tweak .row .parameter_box {
+        width: calc(50% - 8px)
+    }
+
+    .content.config.amd_tweak .container .box .row .edit_box.memory_tweak .row .parameter_box:nth-child(4n) {
+        margin-right: 10px
+    }
+
+    .content.config.amd_tweak .container .box .row .edit_box.memory_tweak .row .parameter_box:nth-child(3n) {
+        margin-right: 10px
+    }
+
+    .content.config.amd_tweak .container .box .row .edit_box.memory_tweak .row .parameter_box:nth-child(2n) {
+        margin-right: 0
+    }
+
+    .content.config .container .box .row .edit_box #automaticConfig .row .element {
+        width: calc(50% - 10px);
+        flex: none
+    }
+
+    .content.clocktune .box_table table tr .shw2 .row {
+        width: 50%;
+        flex: none;
+        margin-bottom: 10px
+    }
+
+    .content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.type_element {
+        flex: 1;
+        margin-bottom: 10px
+    }
+
+    .content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.system_element {
+        flex: 1;
+        margin-bottom: 10px
+    }
+
+    .content.config .container .box .row .edit_box .select_button .select_dropdown .filter .element.coin_element {
+        flex: none;
+        width: 100%
+    }
+
+    .content.config.amd_tweak .container .box .row .edit_box.memory_tweak .row .button {
+        width: 100%;
+        margin: 0 0 10px
+    }
+
+    .content.config.amd_tweak .container .box .row .edit_box.memory_tweak .row .button.editString {
+        margin-bottom: 0;
+        width: auto
+    }
+
+    .content.config .container .container .col_1_2 .box .row.advanced.fans .auto_fans {
+        flex-wrap: wrap
+    }
+
+    .content.config .container .container .col_1_2 .box .row.advanced.fans .auto_fans .element {
+        flex: none;
+        margin-right: 0;
+        width: 100%;
+        margin-bottom: 15px
+    }
+
+    .content.config .container .container .col_1_2 .box .row.advanced.fans .auto_fans .element:last-child {
+        margin-bottom: 0
+    }
+}
+
+@media (max-width: 500px) {
+    .content.config .container .action_row.buttons .button {
+        margin: 0 auto 15px
+    }
+
+    .content.config .container .action_row.buttons .button_empty {
+        margin: 0 auto 15px
+    }
+
+    .content.config .container .box .row .edit_box #automaticConfig .row .element {
+        width: calc(100% - 10px)
+    }
+
+    .content.config .container .box .row .edit_box .reset_row {
+        justify-content: space-between
+    }
+
+    .content.config .container .box .row .edit_box .reset_button {
+        flex: 1;
+        text-align: center
+    }
+
+    .content.config .container .box .row .edit_box .reset_button.left_align {
+        margin: 0
+    }
+}
+
+@media (max-width: 390px) {
+    .content.config.amd_tweak .container .box .row .edit_box.memory_tweak .row .parameter_box:nth-child(n) {
+        margin-right: 0;
+        width: 100%
+    }
+}
+
+#my_select_target_menu {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 40px;
+    border-radius: 3px;
+    background: #fff;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, .1);
+    z-index: 99
+}
+
+#my_select_target_menu .frame {
+    width: auto;
+    min-width: 250px;
+    height: auto;
+    max-height: 290px;
+    margin: 10px;
+    padding: 0;
+    display: block;
+    overflow-y: auto
+}
+
+#my_select_target_menu .frame .row {
+    text-decoration: none;
+    padding: 8px 10px;
+    margin: 0 10px 0 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    border-radius: 2px;
+    cursor: pointer;
+    border: 0
+}
+
+#my_select_target_menu .frame .row:hover {
+    background: #f8f9fc
+}
+
+#my_select_target_menu .frame .row.first {
+    cursor: default
+}
+
+#my_select_target_menu .frame .row.first:hover {
+    background: #fff
+}
+
+#my_select_target_menu .frame::-webkit-scrollbar-track {
+    background-color: #e4e7f1;
+    border-radius: 30px
+}
+
+#my_select_target_menu .frame::-webkit-scrollbar {
+    width: 5px;
+    background-color: #e4e7f1;
+    border-radius: 30px
+}
+
+#my_select_target_menu .frame::-webkit-scrollbar-thumb {
+    background-color: #575e71;
+    border-radius: 30px
+}
+
+#my_select_target_menu .frame .row .checkbox {
+    border: 1px solid #e2e5ef;
+    box-shadow: none;
+    border-radius: 3px;
+    height: 21px;
+    width: 20px;
+    margin: -2px 10px 0 0;
+    cursor: pointer;
+    background: #fff
+}
+
+#my_select_target_menu .frame .row .checkbox.selected {
+    background: #fff url(/images/tick_green.svg) no-repeat -4px -3px;
+    background-size: 25px 25px;
+    border: 1px solid #52cca5;
+    box-shadow: 0 0 0 1px #52cca5
+}
+
+#my_select_target_menu .frame .row label {
+    font-size: 16px;
+    font-weight: 300;
+    color: #46474f;
+    margin: 0;
+    cursor: pointer
+}
+
+#my_select_target_menu .frame .title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #46474f;
+    margin: 0
+}
+
+#my_select_target_menu .frame .action {
+    font-size: 14px;
+    font-weight: 300;
+    color: #a3a5b2;
+    margin: 0 0 0 auto;
+    cursor: pointer
+}
+
+
+
+#my_select_target_menu .frame .action:hover {
+    color: #52cca5
+}
+
+#my_select_target_menu .frame .divider {
+    margin: 10px 20px 10px 10px
+}
+
+#my_select_target_menu .button {
+    margin: 10px;
+    width: calc(100% - 20px);
+    text-align: center;
+    justify-content: center
+}
+#my_select_target_menu .button {
+    margin-top: 0
+}
+#my_select_target_menu .frame .row label {
+    order: 2
+}
+
+#my_select_target .tag:hover {
+    background: #6b6d7a;
+    color: #fff
+}
+
+#my_select_target .tag:hover .icon.close {
+    background-position: -18px -18px
+}
+
+#my_select_target input[type=text] {
+    border: 0;
+    padding: 8px 10px;
+    margin: 0;
+    width: auto;
+    font-size: 14px;
+    display: table;
+    width: 175px;
+    height: 36px
+}
+
+#my_select_target input[type=text]:only-child {
+    width: 100%
+}
+
+#my_select_target input[type=text]:focus {
+    outline: none !important;
+    border-color: transparent;
+    box-shadow: none
+}
+
+#my_select_target input[type=text]:only-child:focus {
+    box-shadow: 0 0 0 2px #52cca5
+}
+
+#my_select_target input[type=text].error_value:only-child {
+    box-shadow: 0 0 0 2px #ff5b56
+}
+
+#my_select_target input[type=text]::-webkit-input-placeholder {
+    color: #bababa;
+    font-style: normal;
+    font-size: 16px;
+    font-weight: 300
+}
+
+#my_select_target input[type=text]:-moz-placeholder {
+    color: #bababa;
+    font-style: normal;
+    font-size: 16px;
+    font-weight: 300
+}
+
+#my_select_target input[type=text]::-moz-placeholder {
+    color: #bababa;
+    font-style: normal;
+    font-size: 16px;
+    font-weight: 300
+}
+
+#my_select_target input[type=text]:-ms-input-placeholder {
+    color: #bababa;
+    font-style: normal;
+    font-size: 16px;
+    font-weight: 300
+}
+#my_select_target{
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 4px;
+    padding-left: 3px;
+
+}
+#tagsList{
+    min-height: 34px;
+}
+#tagsList .myTag{
+    margin-top: 3px;
+    margin-bottom: 3px;
+    width: auto;
+    position: relative;
+    display: inline-block;
+    color: #fff;
+    font-size: 13px;
+    padding: 7px 28px 7px 10px;
+    border-radius: 2px;
+    background-color: #3f475b;
+}
+#tagsList .myTag:hover{
+    cursor: pointer;
+    background: rgba(255,255,255,.1);
+    color: #fff;
+}
+#tagsList .myTag .closx{
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform:translateY(-50%);
+}
+
+.mytoggle {
+
+    width: 35px;
+    height: 10px;
+    border-radius: 30px;
+    background: #676b78;
+    position: relative;
+    cursor: pointer
+}
+
+.mytoggle .bullet {
+    background: #cbced8;
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    right: auto;
+    left: 0;
+    top: -4px;
+    border-radius: 30px;
+    transition: left .2s linear
+}
+
+.mytoggle .bullet.selected {
+    background: #52cca5;
+    left: calc(100% - 18px);
+    right: auto
+}
+
+.mylineHeigh{
+    display: flex;
+    align-items: center;
+}
+/**************************************************/
+.input_time_wk{
+
+}
+.myTimeInput{
+    background: rgba(0,0,0,0);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 3px;
+    height: 30px;
+    line-height: 30px;
+    color: rgba(255, 255, 255, 0.61);
+    webkit-appearance: none ;
+    padding-left: 15px;
+    width: 150px;
+    display: flex;
+}
+
+.myTimeInputSelected{
+    border-color: #52cca5;
+    box-shadow: 0 0 0px 1px #52cca5;
+}
+.timeLabel{
+    display: flex;width: 100px;position: absolute;z-index: 9999;
+}
+.my_h_ul{
+    float: left;
+    list-style: none;
+    position: relative;
+    background-color: #434c61;
+    height: 240px;
+    width: 50%;
+}
+.my_h_ul li{
+    z-index: 99999;
+    height: 30px;
+    line-height: 30px;
+    padding-left: 10px;
+    user-select: none;
+    padding-right: 10px;
+    background-color: #434c61;
+}
+.my_h_ul li:hover{
+    background-color: rgba(255, 255, 255, .05);
+    cursor: pointer;
+}
+.my_m_ul{
+    list-style: none;
+    position: relative;
+    background-color: #434c61;
+    height: 240px;
+    width: 50%;
+}
+.my_m_ul li{
+    height: 30px;
+    line-height: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+    user-select: none;
+    background-color: #434c61;
+}
+.my_m_ul li:hover{
+    background-color: rgba(255, 255, 255, .05);
+    cursor: pointer;
+}
+
+.my_in_time .icon{
+    width: 18px;
+    height: 18px;
+    background: url(/images/sprite_icons_button_dark.svg) no-repeat;
+    background-size: 54px 900px;
+    margin: 5px 6px 5px 10px;
+    float: right;
+    cursor: pointer;
+}
+
+.my_in_time .jia{
+    background-position:0px -234px;
+    transform:rotate(45deg)
+}
+.my_in_time .chax{
+    background-position:0px -233px;
+}
+
+@media(max-width: 600px)  {
+    .myTimeInput{
+        width:80px
+    }
+    .my_in_time .icon{
+        margin: 5px 6px 5px 3px;
+    }
+}
+/**************************************************/

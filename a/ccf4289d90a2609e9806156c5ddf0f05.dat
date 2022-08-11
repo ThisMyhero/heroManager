@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh-CN" translate="no">
+<head>
+    <title>Auto Templates</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="./css/themes/light/global.css" id="css" rel="stylesheet" type="text/css">
+    <link href="./css/themes/dark/global.css" rel="stylesheet" type="text/css">
+    <link href="./css/themes/light/auto.css" rel="stylesheet" type="text/css">
+    <link href="./css/themes/dark/auto.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KJ552JD" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe>
+</noscript>
+<header>
+
+</header>
+<div class="page">
+    <div class="menu">
+        <div id="main_menu">
+
+        </div>
+    </div>
+    <div class="content config_templates">
+        <div class="title_row" style="justify-content: left">
+            <h1 class="myTabText " onclick="linkWinHref('/site-config-templates')" lang-data-ht="Setting">Setting</h1>
+            <h1 class="myTabText " onclick="linkWinHref('/email-templates')" lang-data-ht="E-mail" style="margin-left: 30px">E-mail</h1>
+            <h1 class="myTabText myTabTextIs" onclick="linkWinHref('/auto-templates')" lang-data-ht='Auto' style="margin-left: 30px">Auto</h1>
+            <h1 class="myTabText" onclick="linkWinHref('/clocktune')" lang-data-ht='Overclocking' style="margin-left: 30px">Overclocking</h1>
+        </div>
+        <div class="filter_row">
+            <div class="search_el">
+                <input type="text" id="search_configs"/>
+                <div class="icon search"></div>
+            </div>
+            <div class="buttons">
+                <div data-tooltip="export（JSON）" lang-data-ti="Export (JSON)" onclick="exportProfiles('all')" class="button white">
+                    <div class="icon export"></div>
+                </div>
+                <div data-tooltip="import（JSON）" lang-data-ti="Import (JSON)" class="button white">
+                    <div class="icon import"></div>
+                    <input type="file" id="import"  name="import"/></div>
+                <div class="button green" onclick="EditWin()">
+                    <div class="icon plus"></div>
+                    <span lang-data-ht="Add New Template">Add New Templates</span>
+                </div>
+            </div>
+        </div>
+        <div class="box_table">
+            <table id="mytable">
+            </table>
+        </div>
+        <div class="popupbackground close_popup"></div>
+        <div class="popup" id="eMailWin">
+            <div class="close" onclick="EditWinColse()"></div>
+            <div class="title">New Auto Templates<br>
+            </div>
+            <div class="text">
+                <div>Name Templates</div>
+                <input id="autoName" class="value" type="text" style="margin-top: 10px;width: 100%">
+                <!--                    <div style="margin-top:15px">Port</div>-->
+                <!--                    <input id="Eport" class="value" type="text" style="margin-top: 10px;width: 100%">-->
+            </div>
+            <div class="action_row">
+                <div class="circle-loader" id="myLoading">
+                    <div class="checkmark draw"></div>
+                </div>
+                <div class="message_suc" id="mySuc">Succeed</div>
+                <div class="message_err" id="myError">Error</div>
+<!--                <div class="button blue" onclick="saveTestEmail()">Test E-mail</div>-->
+                <div class="outlined_button gray close_popup" onclick="EditWinColse()">Close</div>
+                <div class="button green" id="saveBtn" onclick="saveEmail()">Save</div>
+            </div>
+        </div>
+        <div class="popup" id="email_delete">
+            <div class="close"></div>
+            <div class="title"></div>
+            <div class="text">
+                <div class="icon warning"></div>
+                <p lang-data-ht="Do you want to delete the trigger?">Please note that this action will delete the config template, but the workers' current configuration
+                    will stay the same.</p></div>
+            <div class="action_row">
+                <div class="circle-loader">
+                    <div class="checkmark draw"></div>
+                </div>
+                <div class="message_suc">Finished</div>
+                <div class="message_err">Error</div>
+                <div class="outlined_button gray close_popup" lang-data-ht="No, keep it">No, keep it</div>
+                <div class="button red" onclick="delConfigTemp(this)" lang-data-ht="Yes, delete it">Yes, delete it</div>
+            </div>
+        </div>
+        <div class="popup" id="auto_copy">
+            <div class="close"></div>
+            <div class="title"></div>
+            <div class="text">
+                <div class="icon warning"></div>
+                <p lang-data-ht="Would you like to copy this template?">Would you like to copy this template?</p></div>
+            <div class="action_row">
+                <div class="circle-loader">
+                    <div class="checkmark draw"></div>
+                </div>
+                <div class="message_suc">Finished</div>
+                <div class="message_err">Error</div>
+                <div class="outlined_button gray close_popup" lang-data-ht="No">No</div>
+                <div class="button red" onclick="copyAutoT(this)" lang-data-ht="Yes">Yes</div>
+            </div>
+        </div>
+        <input type="hidden" id="nonce" value=""/>
+    </div>
+    <script>
+        var jsonProfiles = '';
+    </script>
+</div>
+
+<script>
+    var currency = "USD";
+    var currencyValue = 1.000000;
+    var temperature = "°C";
+    var userPermission = "owner";
+    var userPrimaryPermission = "";
+
+    [
+        "./js/jquery.js", "./js/gettext.js", "./js/perfect-scrollbar.js",'./js/language.js', "./js/templates/global.js", "./js/templates/auto.js", "./js/FileSaver.min.js"
+    ].forEach(function (src) {
+        var script = document.createElement("script");
+        script.src = src;
+        script.async = false;
+        document.head.appendChild(script);
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+.content.address_editor h1 span.icon {
+    background-image: url(/images/sprite_icons_dark_v2.svg)
+}
+
+.content.address_editor .box_table table tr td .input_tag_pool .tag {
+    background: rgba(255, 255, 255, .1);
+    color: rgba(255, 255, 255, .8)
+}
+
+.content.address_editor .box_table table tr td .input_tag_wallet .tag {
+    background: rgba(255, 255, 255, .1);
+    color: rgba(255, 255, 255, .8)
+}
+
+.content.address_editor .tab_row .tabs_left .tab:hover {
+    background: rgba(255, 255, 255, .02)
+}
+
+.content.address_editor .tab_row .tabs_left .tab.selected {
+    background: #343d52;
+    color: #fff
+}
+
+.content.address_editor .tab_row .tabs_left .tab.selected:hover {
+    background: #343d52
+}
+
+.content.address_editor .tab_row .tabs_left .tab.selected:before {
+    background: #52cca5
+}
+
+.content.address_editor .tab_row .tabs_left .tab.selected:after {
+    background: #343d52
+}
+
+.content.address_editor .button_white {
+    background: rgba(255, 255, 255, .1)
+}
+
+.content.address_editor .button_white .icon {
+    background-image: url(/images/sprite_icons_button_dark.svg?v=2)
+}
+
+.content.address_editor .box_table table tr td .warning_tooltip {
+    background: #4e5971;
+    color: #fff
+}
+
+.content.address_editor .box_table table tr td .warning_tooltip .tooltip_arrow {
+    border-top-color: #4e5971
+}
+.my_d_pool_tab_card{
+    width: auto;
+    height: 44px;
+    line-height: 44px;
+    background-color: #343d52;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
+    display: inline-block;
+    border-top-left-radius: 5px;
+    border-top-right-radius:5px;
+    color:#fff;
+}
+.my_icon_view_log{
+    background-position: 0px -89px !important;
+}
+.my_icon_view_log:hover{
+    background-position: -18px -89px !important;
+}
+.view_log_pre{
+    width: 100%;
+    height: 600px;
+    background-color: #000;
+    font-family: 'Courier New' !important;
+    overflow: auto;color: #fff;
+    padding: 5px;line-height: 16px;
+    font-size: 14px
+}
+.view_log_1{
+    color: #ffbd4d;
+}
+.view_log_2{
+    color: #0ec9ff;
+}
+.view_log_3{
+    color: #e82929;
+}

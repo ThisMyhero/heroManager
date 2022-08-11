@@ -1,0 +1,289 @@
+function removeConf(name, wid) {
+    $('#email_delete .title').html(_mx('Delete') + ' ' + name + '?');
+    $('.popupbackground').fadeToggle();
+    $('#email_delete').fadeToggle('fast');
+    $('#email_delete').attr('data-id', wid);
+}
+
+$('.close,.close_popup').click(function () {
+    $('.popupbackground').fadeOut('fast');
+    $('.popup').fadeOut('fast');
+});
+
+function exportProfiles(type) {
+    if (type == "all") {
+        var blob = new Blob([JSON.stringify(jsonProfiles)], {type: "text/json;charset=utf-8"});
+        saveAs(blob, "email-templates.json");
+    } else {
+        $.each(jsonProfiles,function (i,item) {
+            if(item.id===Number(type)){
+                var blob = new Blob(['['+JSON.stringify(item)+']'], {type: "text/json;charset=utf-8"});
+                saveAs(blob, "email-"+item.name+".json");
+            }
+        })
+
+    }
+}
+
+$('#search_configs').keyup(function () {
+    var searchQuery = $(this).val();
+    if (searchQuery == '') {
+        $('.box_table tr').show();
+    } else {
+        searchQuery = searchQuery.toLowerCase();
+        $('.box_table tr').each(function () {
+            if (typeof $(this).attr('data-keywords') != 'undefined') {
+                var profileStr = $(this).attr('data-keywords');
+                if (profileStr != '') {
+                    profileStr = profileStr.toLowerCase();
+                    if (profileStr.indexOf(searchQuery) != -1) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                }
+            }
+        });
+    }
+});
+
+window.onload=function () {
+    getConfigTemp()
+    $('#import').on('change',function(){
+        let files = $(this)[0].files[0];
+        let reader = new FileReader();
+        reader.readAsText(files);
+        reader.onload=function(e)
+        {
+            $.ajax({
+                url: '/email?a=import',
+                type: 'POST',
+                data: {context:reader.result},
+                dataType: 'json',
+                success:function (res) {
+                    $('#import').val('')
+                    alert('成功导入'+res.count+'条');
+                    getConfigTemp()
+                }
+                ,error:function (res) {
+                    $('#import').val('')
+                    alert('错误');
+                    getConfigTemp()
+                }
+            });
+        }
+    })
+}
+
+
+//查询模板列表
+function getConfigTemp() {
+    $.ajax({
+        url:'/Query?Email,emailcfg',
+        dataType:'json',
+        type:'post',
+        success:function (res) {
+            jsonProfiles=res.EMAIL
+            setConfigTempDom(res.EMAIL)
+
+        },
+        error:function (res) {
+
+        }
+    })
+}
+
+//删除模板
+function delConfigTemp(e) {
+    if($(e).hasClass('disabled')){
+        return false;
+    }
+    $('#email_delete .outlined_button, #email_delete .red').addClass('disabled');
+    $('.checkmark').hide();
+    $('.circle-loader').removeClass('load-complete');
+    $('.circle-loader, .message_err, .message_suc').hide();
+    $('.circle-loader').show();
+    $.ajax({
+        url:'/email?a=del',
+        type:'post',
+        data:{
+            id: $('#email_delete').attr('data-id'),
+        },
+        success:function (res) {
+            $('.circle-loader').addClass('load-complete');
+            $('.notification_row').addClass('finished');
+            $('.checkmark').show();
+            $('.message_suc').show();
+            getConfigTemp()
+            setTimeout(function () {
+                $('#email_delete').fadeOut('fast');
+                $('.popupbackground').fadeOut('fast');
+                setTimeout(function () {
+                    $('#email_delete .outlined_button, #email_delete .red').removeClass('disabled');
+                    $('.checkmark').hide();
+                    $('.circle-loader').removeClass('load-complete');
+                    $('.circle-loader, .message_err, .message_suc').hide();
+                }, 500);
+            }, 1500);
+        }
+    })
+}
+function EditWin() {
+    // $('#overclock_delete .title').html(_('Delete') + ' ' + name + '?');
+    $('#saveBtn').attr('onclick','saveEmail()')
+    $('.popupbackground').fadeToggle();
+    $('#eMailWin').fadeToggle('fast');
+    // $('#overclock_delete .red').attr('data-profile', wid);
+}
+
+function setEmail(id,acc,pwd,stmp) {
+    $('#saveBtn').attr('onclick','saveEmail('+id+')')
+    $('#ETPsever').val(stmp)
+    $('#Eaccount').val(acc)
+    $('#Epassword').val(pwd)
+    $('.popupbackground').fadeToggle();
+    $('#eMailWin').fadeToggle('fast');
+}
+
+//设置列表dom节点
+function setConfigTempDom(data) {
+    let str='<tr>\n' +
+        '<th>'+_mx('E-mail')+'</th>' +
+            // '<th class="rmv2">MINING CLIENT</th>' +
+            // '<th class="rmv2">Overclocking Templates</th>' +
+            '<th class="rmv2">'+_mx('Actions')+'</th>' +
+        '</tr>'
+    $.each(data,function (index,item) {
+        str+='<tr id="mb'+item.id+'" data-my-id="'+item.id+'" data-keywords="'+item.acc+',">' +
+                '<td>'+item.acc+'' +
+                '<div class="shw2" style="border: 0;padding-bottom: 0;margin-top: 0;margin-bottom: 0;padding-top: 0">' +
+                // '<div class="row"><b>MINING CLIENT:</b> '+item.poolName+'</div>' +
+                // '<div class="row"><b>Overclocking Templates:</b> '+item.overClockingName+'</div>' +
+                '<div class="actions">' +
+                '<div onclick="removeConf(\''+item.acc+'\','+item.id+');" data-tooltip="delete" class="icon bin"></div>' +
+            '<div onclick="setEmail('+item.id+',\''+item.acc+'\',\''+item.pwd+'\',\''+item.smtp+'\')" data-tooltip="edit"' +
+                'class="icon edit"></div>' +
+                '<div onclick="exportProfiles('+item.id+');" data-tooltip="export" class="icon export"></div></div>' +
+                '</div>' +
+                '</td>' +
+                // '<td class="rmv2">'+item.poolName+'</td>' +
+                // '<td class="rmv2">'+item.overClockingName+'</td>' +
+                '<td class="rmv2">' +
+                '<div onclick="removeConf(\''+item.acc+'\','+item.id+');" data-tooltip="'+_mx('Delete')+'" class="icon bin"></div>' +
+                '<div onclick="setEmail('+item.id+',\''+item.acc+'\',\''+item.pwd+'\',\''+item.smtp+'\')" data-tooltip="'+_mx('Edit')+'" class="icon edit">' +
+            '</div><div onclick="exportProfiles('+item.id+');" data-tooltip="'+_mx('Export')+'" class="icon export"></div>' +
+                '</td>' +
+                '</tr>'
+    })
+    $('#mytable').html(str)
+}
+
+function saveEmail(id) {
+    if($('#ETPsever').val().replace(/(^\s*)|(\s*$)/g, "").length===0){
+        $('#myError').show()
+        $('#myError').html('SMTP server not null')
+        return
+    }else {
+        $('#myError').hide()
+    }
+    if($('#Eaccount').val().replace(/(^\s*)|(\s*$)/g, "").length===0){
+        $('#myError').show()
+        $('#myError').html('Account not null')
+        return
+    }else {
+        $('#myError').hide()
+    }
+    if($('#Epassword').val().replace(/(^\s*)|(\s*$)/g, "").length===0){
+        $('#myError').show()
+        $('#myError').html('Password not null')
+        return
+    }else {
+        $('#myError').hide()
+    }
+    $('#myLoading').show()
+    $.ajax({
+        url: '/email?a='+(id==undefined?'add':'set'),
+        dataType: 'json',
+        type:'post',
+        data:{
+            id:id==undefined?undefined:id,
+            acc:$('#Eaccount').val(),
+            smtp:$('#ETPsever').val(),
+            pwd:$('#Epassword').val(),
+        },
+        success:function (res) {
+            if(res.code===0){
+                $('#myLoading').hide()
+                $('#mySuc').show()
+                getConfigTemp()
+                let x=setTimeout(function () {
+                    $('#mySuc').hide()
+                    EditWinColse()
+                    clearTimeout(x)
+                },1500)
+            }
+
+        }
+    })
+}
+function EditWinColse() {
+    // $('#overclock_delete .title').html(_('Delete') + ' ' + name + '?');
+    $('.popupbackground').fadeOut('fast');
+    $('#eMailWin').fadeOut('fast');
+    $('#Eaccount').val('')
+    $('#ETPsever').val('')
+    $('#Epassword').val('')
+    // $('#overclock_delete .red').attr('data-profile', wid);
+}
+let testEamil=true
+function saveTestEmail() {
+    if (!testEamil){
+        return;
+    }
+    if($('#ETPsever').val().replace(/(^\s*)|(\s*$)/g, "").length===0){
+        $('#myError').show()
+        $('#myError').html('SMTP server not null')
+        return
+    }else {
+        $('#myError').hide()
+    }
+    if($('#Eaccount').val().replace(/(^\s*)|(\s*$)/g, "").length===0){
+        $('#myError').show()
+        $('#myError').html('Account not null')
+        return
+    }else {
+        $('#myError').hide()
+    }
+    if($('#Epassword').val().replace(/(^\s*)|(\s*$)/g, "").length===0){
+        $('#myError').show()
+        $('#myError').html('Password not null')
+        return
+    }else {
+        $('#myError').hide()
+    }
+
+    $('#myLoading').show()
+    testEamil=false
+    $.ajax({
+        url: '/email?a=test',
+        dataType: 'json',
+        type:'post',
+        data:{
+            acc:$('#Eaccount').val(),
+            smtp:$('#ETPsever').val(),
+            pwd:$('#Epassword').val()
+        },
+        success:function (res) {
+            if (res.code==0){
+                $('#mySuc').show()
+                $('#myError').hide()
+            }else {
+                $('#myError').show()
+                $('#myError').html(res.msg)
+                $('#mySuc').hide()
+            }
+            $('#myLoading').hide()
+            testEamil=true
+        }
+    })
+}

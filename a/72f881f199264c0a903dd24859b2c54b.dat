@@ -1,0 +1,1472 @@
+.content.worker .tooltip {
+    background-color: #4e5971
+}
+
+.content.worker .arrow {
+    border-bottom: 5px solid #4e5971
+}
+
+.content.worker .divider {
+    border-color: rgba(255, 255, 255, .2)
+}
+
+.content.worker .header .left {
+    color: rgba(255, 255, 255, .3)
+}
+
+.content.worker .header .left a:link, .content.worker .header .left a:visited, .content.worker .header .left a:active {
+    color: rgba(255, 255, 255, .15)
+}
+
+.content.worker .header .left a:hover, .content.worker .header .left a:visited:hover {
+    color: rgba(255, 255, 255, .3);
+    opacity: 1
+}
+
+.content.worker .header .left .tag.online {
+    color: #232d43
+}
+
+.content.worker .header .left .tag.offline {
+    color: #232d43
+}
+
+.content.worker .header .left .tag.idle {
+    color: #232d43
+}
+
+.content.worker .header .left .tag.profit_switch {
+    background: rgba(255, 255, 255, .08);
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.worker .header .left .tag.profit_switch b {
+    color: #fff
+}
+
+.content.worker .header .left .tag.scheduler {
+    background: rgba(255, 255, 255, .08);
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.worker .header .left .tag.scheduler b {
+    color: #fff
+}
+
+.content.worker .header .left .tag.paused_tag {
+    background: rgba(255, 255, 255, .1);
+    color: #fff
+}
+
+.content.worker .header .left .tag.paused_tag:hover {
+    background: rgba(255, 255, 255, .16);
+    opacity: 1
+}
+
+.content.worker .header .left a.tag:hover, .content.worker .header .left a.tag:visited:hover {
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.worker .header .left .notes .icon.note {
+    background-image: url(/images/sprite_icons_button_dark.svg?v=2)
+}
+
+.content.worker .header .left .notes.disabled .icon.note {
+    opacity: .1
+}
+
+.content.worker .header .left .notes:hover .icon.note {
+    opacity: 1
+}
+
+.content.worker .header .right .button.disabled {
+    background: rgba(255, 255, 255, .025)
+}
+
+.content.worker .header .right .button.disabled:hover {
+    background: rgba(255, 255, 255, .025)
+}
+
+.content.worker .header .right .button.disabled .icon {
+    opacity: .1
+}
+
+.content.worker .header .right .button .icon {
+    background-image: url(/images/sprite_icons_button_dark.svg?v=2)
+}
+
+.content.worker .header .right .button .actions_submenu {
+    background: #434c61;
+    box-shadow: 0 5px 80px rgba(0, 0, 0, .3)
+}
+
+.content.worker .header .right .button .actions_submenu .row {
+    color: rgba(255, 255, 255, .6);
+    border-color: rgba(255, 255, 255, .2)
+}
+
+.content.worker .header .right .button .actions_submenu .row:hover {
+    background: rgba(255, 255, 255, .05)
+}
+
+.content.worker .header .right .change_worker_menu {
+    background: #434c61;
+    box-shadow: 0 5px 80px rgba(0, 0, 0, .3)
+}
+
+.content.worker .header .right .change_worker_menu .frame a {
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.worker .header .right .change_worker_menu .frame a:hover {
+    color: rgba(255, 255, 255, .6);
+    background: rgba(255, 255, 255, .05)
+}
+
+.content.worker .header .right .change_worker_menu .frame a.selected {
+    color: rgba(255, 255, 255, .6);
+    background: rgba(255, 255, 255, .05)
+}
+
+.content.worker .header .right .change_worker_menu .frame .selected .status {
+    border-color: rgba(255, 255, 255, .2);
+    background: 0 0
+}
+
+.content.worker .header .right .change_worker_menu .frame .status {
+    border-color: rgba(255, 255, 255, .2);
+    background: 0 0
+}
+
+.content.worker .header .right .change_worker_menu .frame .status.offline .bullet {
+    background: rgba(255, 255, 255, .1)
+}
+
+.content.worker .header .right .tasks_menu {
+    background: #434c61;
+    box-shadow: 0 5px 80px rgba(0, 0, 0, .3)
+}
+
+.content.worker .header .right .tasks_menu #tasksList .frame .row {
+    border-color: rgba(255, 255, 255, .1)
+}
+
+.content.worker .header .right .tasks_menu #tasksList .frame .row .priority {
+    background: #e2e5ef
+}
+
+.content.worker .header .right .tasks_menu #tasksList .frame .row .priority[data-tooltip]:after {
+    border-left: 5px solid #575e73
+}
+
+.content.worker .header .right .tasks_menu #tasksList .frame .row .checkit {
+    border-color: rgba(255, 255, 255, .2)
+}
+
+.content.worker .header .right .tasks_menu #tasksList .frame .row .checkit .check_arrow {
+    background-image: url(/images/sprite_icons_dark_v4.svg?v=32)
+}
+
+.content.worker .header .right .tasks_menu #tasksList .frame .row .discardit {
+    border-color: rgba(255, 255, 255, .2)
+}
+
+.content.worker .header .right .tasks_menu #tasksList .frame .row .discardit .check_discard {
+    background-image: url(/images/sprite_icons_button_dark.svg?v=6)
+}
+
+.content.worker .header .right .tasks_menu #tasksList .frame .row .text b {
+    color: #fff
+}
+
+.content.worker .header .right .tasks_menu #tasksList .frame .row .text small {
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.worker .header .right .tasks_menu #tasksList .icon_empty {
+    background: url(/images/sprite_empty_dark_v2.svg?v=6) no-repeat
+}
+
+.content.worker .header .right .tasks_menu #tasksList b {
+    color: #fff
+}
+
+.content.worker .header .right .tasks_menu #tasksList p {
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.worker .header .right .tasks_menu #addNewTask .tasksTitle {
+    border-color: rgba(255, 255, 255, .2)
+}
+
+.content.worker .header .right .tasks_menu #addNewTask .tasksTitle b {
+    color: #fff
+}
+
+.content.worker .header .right .tasks_menu #addNewTask .tasksTitle .arrow_back {
+    background-image: url(/images/sprite_icons_dark_v4.svg?v=8)
+}
+
+.content.worker .header .right .tasks_menu #addNewTask .frame .row input[type=text] {
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.worker .header .right .tasks_menu #addNewTask .frame .row input[type=date] {
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.worker .header .right .tasks_menu #addNewTask .frame .row select {
+    background-color: transparent
+}
+
+.content.worker .header .right .tasks_menu #addNewTask .frame .row textarea {
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.worker .header .right .switch_miner_menu {
+    background: #434c61;
+    box-shadow: 0 5px 80px rgba(0, 0, 0, .3)
+}
+
+.content.worker .header .right .switch_miner_menu .search_el {
+    background: rgba(255, 255, 255, .05);
+    border-bottom: 0
+}
+
+.content.worker .header .right .switch_miner_menu .search_el .icon.search {
+    background-image: url(/images/sprite_icons_button_dark.svg?v=22)
+}
+
+.content.worker .header .right .switch_miner_menu .frame .empty {
+    color: rgba(255, 255, 255, .2)
+}
+
+.content.worker .header .right .switch_miner_menu .frame .button.green {
+    color: #fff
+}
+
+.content.worker .header .right .switch_miner_menu .frame .row {
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.worker .header .right .switch_miner_menu .frame .row small {
+    color: rgba(255, 255, 255, .2)
+}
+
+.content.worker .header .right .switch_miner_menu .frame .row:hover {
+    color: rgba(255, 255, 255, .6);
+    background: rgba(255, 255, 255, .05)
+}
+
+.content.worker .header .right .switch_miner_menu .frame .row.selected {
+    color: rgba(255, 255, 255, .6);
+    background: rgba(255, 255, 255, .05)
+}
+
+.content.worker .header .right .switch_miner_menu .row label {
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.worker .header .right .switch_miner_menu {
+    background: #434c61;
+    box-shadow: 0 5px 80px rgba(0, 0, 0, .3)
+}
+
+.content.worker .header .right .switch_miner_menu .frame::-webkit-scrollbar-track {
+    background-color: rgba(255, 255, 255, .05)
+}
+
+.content.worker .header .right .switch_miner_menu .frame::-webkit-scrollbar {
+    background-color: rgba(255, 255, 255, .05)
+}
+
+.content.worker .header .right .switch_miner_menu .frame::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, .6)
+}
+
+.content.worker .header .right .switch_miner_menu .row .toggle {
+    background: rgba(255, 255, 255, .1)
+}
+
+.content.worker .header .right .switch_miner_menu .row .toggle .bullet {
+    background: rgba(255, 255, 255, .6)
+}
+
+.content.worker .header .right .clocktune_menu {
+    background: #434c61;
+    box-shadow: 0 5px 80px rgba(0, 0, 0, .3)
+}
+
+.content.worker .header .right .clocktune_menu .search_el {
+    background: rgba(255, 255, 255, .05);
+    border-bottom: 0
+}
+
+.content.worker .header .right .clocktune_menu .search_el .icon.search {
+    background-image: url(/images/sprite_icons_button_dark.svg?v=22)
+}
+
+.content.worker .header .right .clocktune_menu .frame .empty {
+    color: rgba(255, 255, 255, .2)
+}
+
+.content.worker .header .right .clocktune_menu .frame .row_outside .row {
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.worker .header .right .clocktune_menu .frame .row_outside .row:hover {
+    color: rgba(255, 255, 255, .6);
+    background: rgba(255, 255, 255, .05)
+}
+
+.content.worker .header .right .clocktune_menu .frame .row_outside .row.selected {
+    color: rgba(255, 255, 255, .8);
+    background: rgba(255, 255, 255, .2)
+}
+
+.content.worker .header .right .clocktune_menu .frame .row_outside .edit_area .icon {
+    background-image: url(/images/sprite_icons_button_dark.svg?v=2)
+}
+
+.content.worker .header .right .clocktune_menu .button.red {
+    color: #fff
+}
+
+.content.worker .header .right .activity_menu {
+    background: #434c61;
+    box-shadow: 0 5px 80px rgba(0, 0, 0, .3)
+}
+
+.content.worker .header .right .activity_menu .frame .day_title {
+    color: #fff;
+    border-color: rgba(255, 255, 255, .1)
+}
+
+.content.worker .header .right .activity_menu .frame .day_title_with_line {
+}
+
+.content.worker .header .right .activity_menu .frame .day_title_with_line:before {
+    border-color: rgba(255, 255, 255, .1)
+}
+
+.content.worker .header .right .activity_menu .frame .day_title_with_line .name {
+    background: #434c61
+}
+
+.content.worker .header .right .activity_menu .frame .row {
+    color: rgba(255, 255, 255, .6);
+    border-color: rgba(255, 255, 255, .1)
+}
+
+.content.worker .header .right .activity_menu .frame .row .icon {
+    background-image: url(/images/sprite_icons_dark_v4.svg?v=8)
+}
+
+.content.worker .header .right .activity_menu .frame .row .text time {
+    color: rgba(255, 255, 255, .3)
+}
+
+.content.worker .header .right .activity_menu .frame .row .text b {
+    color: #fff
+}
+
+.content.worker .header .right .activity_menu .frame .row .text p {
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.worker .header .right .activity_menu .frame .row .text .tags .tag {
+    background: rgba(255, 255, 255, .1);
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.worker .header .right .activity_menu .frame .row .text a:link, .content.worker .header .right .activity_menu .frame .row .text a:visited, .content.worker .header .right .activity_menu .frame .row .text a:active {
+    color: #fff
+}
+
+.content.worker .header .right .activity_menu .frame .row .text a:hover, .content.worker .header .right .activity_menu .frame .row .text a:visited:hover {
+    color: #52cca5
+}
+
+.content.worker .header .right .activity_menu .frame .row .text a.button_error {
+    color: #fff;
+    background: rgba(255, 255, 255, .1)
+}
+
+.content.worker .header .right .activity_menu .frame .row .text a.button_error:hover {
+    opacity: .8;
+    color: #fff
+}
+
+.content.worker .header .right .activity_menu .frame .row.unread {
+    background: rgba(255, 255, 255, .05)
+}
+
+.content.worker .header .right .activity_menu .frame .row.unread:after {
+    background: #fff
+}
+
+.content.worker .header .right .activity_menu .row .label {
+    color: #fff
+}
+
+.content.worker .header .right .activity_menu .row .label small {
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.worker .header .right .activity_menu #activityListEmpty .icon_empty {
+    background-image: url(/images/sprite_empty_dark.svg?v=2)
+}
+
+.content.worker .header .right .activity_menu #activityListEmpty b {
+    color: #fff
+}
+
+.content.worker .header .right .activity_menu a.small_link:link, .content.worker .header .right .activity_menu a.small_link:visited, .content.worker .header .right .activity_menu a.small_link:active {
+    color: rgba(255, 255, 255, .3)
+}
+
+.content.worker .header .right .activity_menu a.small_link:hover, .content.worker .header .right .activity_menu a.small_link:visited:hover {
+    color: #52cca5
+}
+
+.content.worker .header .right .diagnostic_menu {
+    background: #434c61;
+    box-shadow: 0 5px 80px rgba(0, 0, 0, .3)
+}
+
+.content.worker .header .right .diagnostic_menu .frame .loader {
+    border-color: rgba(255, 255, 255, .1);
+    border-left-color: #52cca5
+}
+
+.content.worker .header .right .diagnostic_menu .frame .text {
+    border-color: rgba(255, 255, 255, .2)
+}
+
+.content.worker .header .right .diagnostic_menu .frame .text .date {
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.worker .header .right .diagnostic_menu .frame .report_results .frame .title {
+    color: #fff
+}
+
+.content.worker .header .right .diagnostic_menu .frame .report_results .frame .box {
+    border: none;
+    background: rgba(255, 255, 255, .05)
+}
+
+.content.worker .header .right .diagnostic_menu .frame .report_results .frame .box .row {
+    border-color: rgba(255, 255, 255, .1)
+}
+
+.content.worker .header .right .diagnostic_menu .frame .report_results .frame .box .row .result small {
+    color: rgba(255, 255, 255, .5)
+}
+
+.content.worker .header .right .diagnostic_menu .frame .report_results .frame .box .row .text b {
+    color: #fff
+}
+
+.content.worker .header .right .diagnostic_menu .frame .report_results .frame .box .row .text p {
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.worker .header .right .diagnostic_menu .frame .report_results .frame .box .row .result .number_unit .number {
+    color: #fff
+}
+
+.content.worker .header .right .diagnostic_menu .frame .report_results .frame .box .row .result .number_unit .unit {
+    color: #fff
+}
+
+.content.worker .header .right .diagnostic_menu .frame .report_results .frame .box .row .result .number_unit .subtitle {
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.worker .header .right .diagnostic_menu .frame .report_results .frame .box .row .result .word {
+    color: #fff
+}
+
+.content.worker .header .right .diagnostic_menu .frame .report_results .frame .box .row .notice {
+    background: rgba(255, 128, 124, .15);
+    color: #ff7470;
+    font-weight: 500
+}
+
+.content.worker .header .right .diagnostic_menu .frame .report_results .frame .box .row .notice.blue {
+    background: rgba(142, 153, 255, .2);
+    color: #95a0ff;
+    font-weight: 500
+}
+
+.content.worker .header .right .diagnostic_menu .frame .report_results .frame .box .row .notice.blue a {
+    color: #95a0ff
+}
+
+.content.worker .header .right .diagnostic_menu .frame .report_results .frame .box .row .mini_table {
+    border-color: rgba(255, 255, 255, .1)
+}
+
+.content.worker .header .right .diagnostic_menu .frame .report_results .frame .box .row .mini_table .mini_row {
+    border-color: rgba(255, 255, 255, .1)
+}
+
+.content.worker .header .right .diagnostic_menu .frame .report_results .frame .box .row .mini_table .mini_row .mini_id {
+    color: #fff
+}
+
+.content.worker .header .right .diagnostic_menu .frame .report_results .frame .box .row .mini_table .mini_row .mini_val {
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.worker .header .right .diagnostic_menu .frame .progress {
+}
+
+.content.worker .header .right .diagnostic_menu .frame .progress .circle-loader {
+    margin: 0 auto
+}
+
+.content.worker .header .right .diagnostic_menu .frame .progress b {
+    color: #fff
+}
+
+.content.worker .header .right .diagnostic_menu .frame .progress p {
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.worker .header .right .diagnostic_menu a.small_link:link, .content.worker .header .right .diagnostic_menu a.small_link:visited, .content.worker .header .right .diagnostic_menu a.small_link:active {
+    color: rgba(255, 255, 255, .3)
+}
+
+.content.worker .header .right .diagnostic_menu a.small_link:hover, .content.worker .header .right .diagnostic_menu a.small_link:visited:hover {
+    color: #52cca5
+}
+
+.content.worker .header .right .button .signal_new {
+    border-color: #353e51
+}
+
+.content.worker .header .right .button:hover .signal_new {
+    border-color: #414a5b
+}
+
+.content.worker .row_stats .element {
+    background: rgba(255, 255, 255, .08)
+}
+
+.content.worker .row_stats .element .icon {
+    background-image: url(/images/sprite_stats_dark_v2.svg?v=3)
+}
+
+.content.worker .row_stats .element .text .number {
+    color: #fff
+}
+
+.content.worker .row_stats .element .text .progress_bar {
+    background: rgba(255, 255, 255, .05)
+}
+
+.content.worker .row_stats .element .text .row label.bold a:link, .content.worker .row_stats .element .text .row label.bold a:visited, .content.worker .row_stats .element .text .row label.bold a:active {
+    color: #fff
+}
+
+.content.worker .row_stats .element .text .row label.bold {
+    color: #fff
+}
+
+.content.worker .row_stats .element .text .row label .icon {
+    background-image: url(/images/sprite_icons_button_dark.svg?v=6)
+}
+
+.content.worker .row_stats .element .text label {
+    color: rgba(255, 255, 255, .3)
+}
+
+.content.worker .row_stats .element .button.gray .icon {
+    background-image: url(/images/sprite_icons_button_dark.svg)
+}
+
+.content.worker .row_stats .element.disabled {
+    background: rgba(255, 255, 255, .025);
+    box-shadow: none
+}
+
+.content.worker .row_stats .element.disabled .icon {
+    opacity: .1
+}
+
+.content.worker .row_stats .element.disabled .text {
+    opacity: .1
+}
+
+.content.worker .row_stats .element.disabled .text .progress_bar {
+    background: #fff
+}
+
+.content.worker .row_stats .element.disabled .progress_bar .progress, .content.worker .row_stats .element.disabled .text .progress_bar .progress.green, .content.worker .row_stats .element.disabled .text .progress_bar .progress.yellow, .content.worker .row_stats .element.disabled .text .progress_bar .progress.orange, .content.worker .row_stats .element.disabled .text .progress_bar .progress.red {
+    background: #fff
+}
+
+.content.worker .row_stats .element.disabled .text label {
+    color: #fff
+}
+
+.content.worker .row_stats .element.disabled .button.gray {
+    background: rgba(255, 255, 255, .2)
+}
+
+.content.worker .row_stats .element.disabled .button.gray .icon {
+    opacity: 1
+}
+
+.content.worker .row_stats .element .specs_menu {
+    background: #434c61;
+    box-shadow: 0 5px 80px rgba(0, 0, 0, .3)
+}
+
+.content.worker .row_stats .element .specs_menu .frame_console .console_window {
+    color: #fff;
+    border-color: rgba(255, 255, 255, .2);
+    background: 0 0
+}
+
+.content.worker .row_stats .element .specs_menu .frame_console .console_window .title {
+    color: rgba(255, 255, 255, .4);
+    background: #434c61
+}
+
+.content.worker .row_stats .element .specs_menu .frame_console .console_window .console_text {
+    background: #181d29
+}
+
+.content.worker .row_stats .element .specs_menu .frame_console .console_actions .link {
+    color: rgba(255, 255, 255, .3)
+}
+
+.content.worker .row_stats .element .specs_menu .frame_console .console_actions .link:hover {
+}
+
+.content.worker .row_stats .element .specs_menu .element {
+    border-color: rgba(255, 255, 255, .2);
+    background: 0 0
+}
+
+.content.worker .row_stats .element .specs_menu .element .icon {
+    background-image: url(/images/sprite_stats_dark_v2.svg)
+}
+
+.content.worker .row_stats .element .specs_menu .element .title {
+    color: rgba(255, 255, 255, .4);
+    background: #434c61
+}
+
+.content.worker .row_stats .element .specs_menu .element .text .element_title {
+    color: #fff
+}
+
+.content.worker .row_stats .element .specs_menu .element .text .row label.type {
+    color: rgba(255, 255, 255, .8)
+}
+
+.content.worker .row_stats .element .specs_menu .element .text .row label.value {
+    color: rgba(255, 255, 255, .5)
+}
+
+.content.worker .row_stats .element .specs_menu .row.width_full .link {
+    color: rgba(255, 255, 255, .3)
+}
+
+.content.worker .row_stats .element .specs_menu .row.width_full .link:hover {
+}
+
+.content.worker .row_stats .element .motherboard_menu {
+    background: #434c61;
+    box-shadow: 0 5px 80px rgba(0, 0, 0, .3)
+}
+
+.content.worker .row_stats .element .motherboard_menu .element {
+    border-color: rgba(255, 255, 255, .2);
+    background: 0 0
+}
+
+.content.worker .row_stats .element .motherboard_menu .element .title {
+    color: rgba(255, 255, 255, .4);
+    background: #434c61
+}
+
+.content.worker .row_stats .element .motherboard_menu .gpu_list .row .gpu_num {
+    color: #fff;
+    background: #6574ff
+}
+
+.content.worker .row_stats .element .motherboard_menu .gpu_list .row .gpu_num.red {
+    background: #ff6560
+}
+
+.content.worker .row_stats .element .motherboard_menu .gpu_list .row .gpu_data .hardwareName {
+    color: #fff
+}
+
+.content.worker .row_stats .element .motherboard_menu .gpu_list .row .gpu_data .hardwareTags .hardwareTag {
+    background: rgba(255, 255, 255, .05);
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.worker .row_stats .element .motherboard_menu .gpu_list .row .gpu_data .hardwareTags .hardwareTag b {
+    color: #fff
+}
+
+.content.worker .row_stats .element .motherboard_menu .gpu_list .row:hover {
+    background: rgba(255, 255, 255, .05);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, .05)
+}
+
+.content.worker .row_stats .element .motherboard_menu .gpu_list .row:hover .gpu_num {
+    background: #929cff
+}
+
+.content.worker .row_stats .element .motherboard_menu .gpu_list .row:hover .gpu_num.red {
+    background: #ff6560
+}
+
+.content.worker .row_stats .element .motherboard_menu .gpu_list .row.highlighted {
+    background: rgba(255, 255, 255, .05);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, .05)
+}
+
+.content.worker .row_stats .element .motherboard_menu .gpu_list .row.highlighted .gpu_num {
+    background: #929cff
+}
+
+.content.worker .row_stats .element .motherboard_menu .gpu_list .row.highlighted .gpu_num.red {
+    background: #ff6560
+}
+
+.content.worker .row_stats .element .motherboard_menu .gpu_map .motherboard .red {
+    background: #ff6560;
+    color: #fff;
+    border: 1px solid #434c61
+}
+
+.content.worker .row_stats .element .motherboard_menu .gpu_map .motherboard .blue {
+    background: #6574ff;
+    color: #fff;
+    border: 1px solid #434c61
+}
+
+.content.worker .row_stats .element .motherboard_menu .gpu_map .motherboard .blue.highlighted {
+    background: #929cff;
+    animation: highlighted_pulse_blue 1.3s ease-out infinite;
+    border-color: #929cff
+}
+
+@keyframes highlighted_pulse_blue {
+    0% {
+        box-shadow: 0 0 0 0 rgba(146, 156, 255, .7)
+    }
+    40% {
+        box-shadow: 0 0 0 10px transparent
+    }
+    100% {
+        box-shadow: 0 0 0 10px transparent
+    }
+}
+
+.content.worker .row_stats .element .motherboard_menu .gpu_map .motherboard .red.highlighted {
+    background: #c35d60;
+    animation: highlighted_pulse_red 1.3s ease-out infinite;
+    border-color: #c35d60
+}
+
+@keyframes highlighted_pulse_red {
+    0% {
+        box-shadow: 0 0 0 0 rgba(195, 93, 96, .7)
+    }
+    40% {
+        box-shadow: 0 0 0 10px transparent
+    }
+    100% {
+        box-shadow: 0 0 0 10px transparent
+    }
+}
+
+.page .content .box_graph {
+    background: #343d52
+}
+
+.content.worker .tab_row .tab:hover {
+    background: rgba(255, 255, 255, .03)
+}
+
+.content.worker .tab_row .tab.selected {
+    background: #343d52;
+    color: #fff
+}
+
+.content.worker .tab_row .tab.selected:hover {
+    background: #343d52
+}
+
+.content.worker .tab_row .tab.selected:before {
+    background: #52cca5
+}
+
+.content.worker .tab_row .tab.selected:after {
+    background: #343d52
+}
+
+.content.worker .chart_settings .button_box {
+    background: rgba(255, 255, 255, .08);
+    box-shadow: none
+}
+
+.content.worker .chart_settings .button_box .icon {
+    background-image: url(/images/sprite_icons_button_dark.svg?v=50)
+}
+
+.content.worker .box_table table tr td small.crypto_price {
+    color: rgba(255, 255, 255, .2)
+}
+
+.content.worker .box_table table tr td small.shares {
+    color: rgba(255, 255, 255, .2)
+}
+
+.content.worker .box_table table tr td small.btc_val {
+    color: rgba(255, 255, 255, .2)
+}
+
+.content.worker .box_table table tr .status {
+    border-color: rgba(255, 255, 255, .2);
+    background: 0 0
+}
+
+.content.worker .box_table table tr .status.offline .bullet {
+    background: rgba(255, 255, 255, .1)
+}
+
+.content.worker .box_table table tr td .color {
+    color: #343d52
+}
+
+.content.worker .box_table table tr td .hardwareName {
+    color: #fff
+}
+
+.content.worker .box_table table tr td .hardwareTags .hardwareTag {
+    background: rgba(255, 255, 255, .05);
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.worker .box_table table tr td .hardwareTags .hardwareTag b {
+    color: #fff
+}
+
+.content.worker .box_table table tr td .hardwareTags .hardwareTag .icon {
+    background-image: url(/images/sprite_icons_dark_v4.svg?v=5)
+}
+
+.content.worker .box_table table tr td .hardwareTags .hardwareTag .icon.loading {
+    border: 1px solid rgba(255, 255, 255, .2);
+    border-right-color: #fff
+}
+
+.content.worker .box_table table tr td .hardwareTags .hardwareTag.disabled:after {
+    background: rgba(62, 71, 91, .6)
+}
+
+.content.worker .box_table table.hardwareOffline tr td .color {
+    background: rgba(255, 255, 255, .2) !important
+}
+
+.content.worker .box_table table tr .icon.clocktune_show {
+    background-image: url(/images/sprite_icons_button_dark.svg?v=2)
+}
+
+.content.worker .box_table table tr .icon.clocktune {
+    background-image: url(/images/sprite_icons_button_dark.svg?v=2)
+}
+
+.content.worker .box_table table tr .icon.chips {
+    background-image: url(/images/sprite_icons_button_dark.svg?v=3)
+}
+
+.content.worker .box_table table tr .chips_popup {
+    background: #434c61;
+    box-shadow: 0 20px 150px rgba(0, 0, 0, .5), 0 10px 40px rgba(0, 0, 0, .3)
+}
+
+.content.worker .box_table table tr .chips_popup .chips_row .chip_block .chip {
+    background: #52cca5
+}
+
+.content.worker .box_table table tr .chips_popup .chips_row .chip_block .chip.failed {
+    background: #ff5b56
+}
+
+.content.worker .box_table table#table_gpus tr {
+    border-color: rgba(255, 255, 255, .1)
+}
+
+.content.worker .box_table table#table_gpus tr.highlight {
+    box-shadow: 0 0 0 5px #333c51, 0 0 80px rgba(0, 0, 30, .6);
+    z-index: 5;
+    background: #333c51
+}
+
+.content.worker .box_table table#table_gpus tr.highlight td {
+    position: relative
+}
+
+.content.worker .box_table table#table_gpus tr.highlight td:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: -1px;
+    right: 0;
+    height: 2px;
+    background: #333c51
+}
+
+.content.worker .box_table table#table_gpus tr.highlight td:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    right: 0;
+    height: 2px;
+    background: #333c51
+}
+
+.content.worker .box_table table tr td .target_values_group .target_values {
+    border-color: rgba(255, 255, 255, .2);
+    border-radius: 3px
+}
+
+.content.worker .clocktune_popup {
+    background: #434c61;
+    box-shadow: 0 20px 150px rgba(0, 0, 0, .5), 0 10px 40px rgba(0, 0, 0, .3)
+}
+
+.content.worker .clocktune_popup .title {
+    color: #fff
+}
+
+.content.worker .clocktune_popup p {
+    color: rgba(255, 255, 255, .5)
+}
+
+.content.worker .clocktune_popup .row .input_units.multi {
+    background: 0 0
+}
+
+.content.worker .clocktune_popup .row.fans .tabs .tab:hover {
+    background: rgba(255, 255, 255, .01)
+}
+
+.content.worker .clocktune_popup .row.fans .tabs .tab.selected {
+    background: rgba(255, 255, 255, .03);
+    color: #fff
+}
+
+.content.worker .clocktune_popup .row.fans .tabs .tab.selected:hover {
+    background: rgba(255, 255, 255, .03)
+}
+
+.content.worker .clocktune_popup .row.fans .fixed_fans {
+    background: rgba(255, 255, 255, .03)
+}
+
+.content.worker .clocktune_popup .row.fans .auto_fans {
+    background: rgba(255, 255, 255, .03)
+}
+
+.content.worker .clocktune_popup .action_row {
+    border-color: rgba(255, 255, 255, .1)
+}
+
+.content.worker .clocktune_popup .row .clocktune_warning {
+    background: #495164;
+    box-shadow: 0 10px 80px rgba(0, 0, 0, .5)
+}
+
+.content.worker .clocktune_popup .row .clocktune_warning .arrow {
+    border-left-color: #495164
+}
+
+.content.worker .clocktune_popup .row .clocktune_warning b {
+    color: #fff
+}
+
+.content.worker .clocktune_popup .row .clocktune_warning p {
+    color: rgba(255, 255, 255, .6)
+}
+
+.content.worker .clocktune_popup .row .clocktune_warning p code {
+    background: rgba(0, 0, 0, .2);
+    color: #6aeec4
+}
+
+.content.worker .clocktune_popup .frame_shadow {
+    background: -moz-linear-gradient(bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0) 100%);
+    background: -webkit-linear-gradient(bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0) 100%);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#22000000', GradientType=0)
+}
+
+.content.worker .box.other_status.switching {
+    background: #6574ff
+}
+
+.content.worker .box.other_status.benchmarking {
+    background: #6574ff
+}
+
+.content.worker .box.other_status .icon {
+    background-image: url(/images/sprite_stats_dark_v2.svg?v=5)
+}
+
+.content.worker .box.other_status .text .title {
+    color: #fff
+}
+
+.content.worker .box.other_status .text .subtitle {
+    color: #fff
+}
+
+.content.worker .box.other_status.idle .text {
+    color: #232d43
+}
+
+.content.worker .box.other_status.idle .text .title {
+    color: #232d43
+}
+
+.content.worker .box.other_status.idle .text .subtitle {
+    color: #232d43
+}
+
+.content.worker .container .small_button {
+    color: rgba(255, 255, 255, .2)
+}
+
+.content.worker .row_stats .element.disabled {
+    background: rgba(255, 255, 255, .04);
+    box-shadow: none
+}
+
+.content.worker .box_graph.disabled {
+    background: #343d52;
+    box-shadow: none
+}
+
+.content.worker .box.disabled {
+    background: #343d52;
+    box-shadow: none;
+    color: rgba(255, 255, 255, .5);
+    box-shadow: none;
+    border: 0
+}
+
+.content.worker .box_table.disabled {
+    background: #343d52;
+    box-shadow: none;
+    border: 0
+}
+
+.content.worker .box_table.disabled table tr th {
+    color: #fff
+}
+
+.content.worker .box_table.disabled table tr td {
+    color: rgba(255, 255, 255, .8);
+    border: 0
+}
+
+.content.worker .box_graph .loader_frame_graph, .content.worker .box_graph .loader_frame_temp {
+    background: #343d52
+}
+
+.content.worker .box_graph .loader_frame_graph .loader, .content.worker .box_graph .loader_frame_temp .loader {
+    border: 3px solid rgba(255, 255, 255, .1);
+    border-left-color: #52cca5
+}
+
+.content.worker .box_graph .hashrate_filters .filter_el .radio {
+    border-color: rgba(255, 255, 255, .15)
+}
+
+.content.worker .box_graph .hashrate_filters .filter_el .radio .bullet {
+    background: rgba(255, 255, 255, .15)
+}
+
+.content.worker .box_graph .hashrate_filters .filter_el label {
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.worker .box_graph .icon_small {
+    background: url(/images/sprite_icons_button_dark.svg?v=8) no-repeat
+}
+
+.content.worker .box.profit_switch .title {
+    border-color: rgba(255, 255, 255, .1)
+}
+
+.content.worker .box.profit_switch .title small {
+    color: rgba(255, 255, 255, .4)
+}
+
+.content.worker .box.profit_switch .title .icon {
+    background-image: url(/images/sprite_icons_button_dark.svg)
+}
+
+.content.worker .box.profit_switch .title .icon.profit_switch:hover {
+}
+
+.content.worker .box.profit_switch .frame::-webkit-scrollbar-track {
+    background-color: rgba(255, 255, 255, .05)
+}
+
+.content.worker .box.profit_switch .frame::-webkit-scrollbar {
+    background-color: rgba(255, 255, 255, .05)
+}
+
+.content.worker .box.profit_switch .frame::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, .6)
+}
+
+.content.worker .box.profit_switch .frame .row {
+    border-color: rgba(255, 255, 255, .05)
+}
+
+.content.worker .box.profit_switch .frame .row[data-tooltip]:before {
+    background: #343d52;
+    color: #fff
+}
+
+.content.worker .box.profit_switch .frame .row .coin_info .text .title {
+    color: #fff
+}
+
+.content.worker .box.profit_switch .frame .row .coin_info .text .subtitle {
+    color: rgba(255, 255, 255, .5)
+}
+
+.content.worker .box.profit_switch .frame .row .profit .title {
+    color: #fff
+}
+
+.content.worker .box.profit_switch .frame .row .profit .subtitle {
+    color: rgba(255, 255, 255, .5)
+}
+
+.content.worker .box.profit_switch .frame .row:hover .coin_info {
+    opacity: .6
+}
+
+.content.worker .box.profit_switch .frame .row:hover .profit {
+    opacity: .6
+}
+
+.content.worker small.disclaimer {
+    color: rgba(255, 255, 255, .4)
+}
+
+@media (max-width: 1040px) {
+    .content.worker .header #worker_actions_hamburger {
+        background: rgba(255, 255, 255, .1)
+    }
+
+    .content.worker .header #worker_actions {
+        background: #434c61;
+        box-shadow: 0 5px 80px rgba(0, 0, 0, .3)
+    }
+
+    .content.worker .header #worker_actions .button.responsiveRow {
+        border-color: rgba(255, 255, 255, .1)
+    }
+
+    .content.worker .header #worker_actions .responsiveRow[data-tooltip]::before {
+        color: rgba(255, 255, 255, .6)
+    }
+
+    .content.worker .header #worker_actions .button.responsiveRow:hover {
+        background: rgba(255, 255, 255, .05)
+    }
+
+    .content.worker .header #worker_actions .clocktune_menu .button.green {
+        background: #52cca5;
+        color: #fff
+    }
+
+    .content.worker .header #worker_actions .clocktune_menu .button.green:hover {
+        background: #3ab58e
+    }
+
+    .content.worker .header .right .button .signal_new {
+        border-color: #434c61
+    }
+
+    .content.worker .header .right .button:hover .signal_new {
+        border-color: #4d5569
+    }
+
+    .content.worker .header #worker_actions .diagnostic_menu .frame .text .button.blue {
+        background: #6574ff;
+        color: #fff
+    }
+
+    .content.worker .header #worker_actions .diagnostic_menu .frame .text .button.blue:hover {
+        background-color: #7e8aff;
+        color: #fff
+    }
+}
+
+@media (max-width: 960px) {
+    .content.worker .box_table table tr .shw2 {
+        border-color: rgba(255, 255, 255, .1)
+    }
+
+    .content.worker .box_table table tr .shw2 .row small {
+        color: rgba(255, 255, 255, .3)
+    }
+
+    .content.worker .box_table table tr .shw2 .row {
+        color: #fff
+    }
+
+    .content.worker .box_table table tr .shw1 {
+        border-color: rgba(255, 255, 255, .1)
+    }
+
+    .content.worker .box_table table tr .shw1 .row small {
+        color: rgba(255, 255, 255, .3)
+    }
+
+    .content.worker .box_table table tr .shw1 .row {
+        color: #fff
+    }
+}
+
+@media (max-width: 600px) {
+    .content.worker .tab_row_mobile {
+        background: #343d52;
+        box-shadow: 0 2px 0 rgba(0, 0, 0, .05)
+    }
+
+    .content.worker .tab_row_mobile select {
+        border-color: #343d52
+    }
+
+    .content.worker .tab_row_mobile select:focus {
+        border-color: #52cca5
+    }
+}
+
+.popup#edit_task .text .loader_background {
+    background: #434c61
+}
+
+.popup#edit_task .text .loader_background .loader {
+    border: 2px solid rgba(255, 255, 255, .1);
+    border-right-color: #6574ff
+}
+
+.popup#edit_task .text .row input[type=text] {
+    color: rgba(255, 255, 255, .5)
+}
+
+.popup#edit_task .text textarea {
+    color: rgba(255, 255, 255, .5)
+}
+
+.popup#edit_task .text .icon {
+    background-image: url(/images/sprite_icons_dark_v4.svg?v=36)
+}
+
+.popup#edit_task .text .task_area .col_3_4 .row label {
+    color: #fff
+}
+
+.popup#edit_task .text .task_area .col_3_4 .row .data {
+    color: rgba(255, 255, 255, .5)
+}
+
+.popup#edit_task .text .task_area .col_3_4 .row .data input {
+    color: rgba(255, 255, 255, .5)
+}
+
+.popup#edit_task .text .task_area .col_3_4 .task_title {
+    color: #fff
+}
+
+.popup#edit_task .text .task_area .col_3_4 .mini_title {
+    color: #fff
+}
+
+.popup#edit_task .text .task_area .col_3_4 .task_description_frame .frame .description_content {
+    color: rgba(255, 255, 255, .5)
+}
+
+.popup#edit_task .text .task_area .col_3_4 .comment .avatar {
+    background: rgba(255, 255, 255, .2)
+}
+
+.popup#edit_task .text .task_area .col_3_4 .comment .message_box textarea {
+    color: rgba(255, 255, 255, .5)
+}
+
+.popup#edit_task .text .task_area .col_3_4 .comments_frame .frame .log_event .avatar {
+    background: rgba(255, 255, 255, .1)
+}
+
+.popup#edit_task .text .task_area .col_3_4 .comments_frame .frame .log_event .message_box small b {
+    color: #fff
+}
+
+.popup#edit_task .text .task_area .col_3_4 .comments_frame .frame .log_event .message_box p {
+    color: rgba(255, 255, 255, .5)
+}
+
+.popup#edit_task .text .task_area .col_1_4 {
+    background: rgba(255, 255, 255, .03)
+}
+
+.popup#edit_task .text .task_area .col_1_4 .row label {
+    color: #fff
+}
+
+.popup#edit_task .text .task_area .col_1_4 .row .data {
+    color: rgba(255, 255, 255, .5)
+}
+
+.popup#edit_task .text .task_area .col_1_4 .row .data input {
+    color: rgba(255, 255, 255, .5);
+    box-shadow: none;
+    border: 1px solid rgba(255, 255, 255, .2)
+}
+
+.popup#edit_task .text .task_area .col_1_4 .select_box {
+    color: rgba(255, 255, 255, .5);
+    border-color: rgba(255, 255, 255, .1);
+    background-color: transparent;
+    box-shadow: none;
+    border: 1px solid rgba(255, 255, 255, .2)
+}
+
+.popup#edit_task .text .task_area .col_1_4 .select_box .selected_option {
+    color: rgba(255, 255, 255, .5)
+}
+
+.popup#edit_task .text .task_area .col_1_4 .select_box .selected_option .arrow {
+    background-image: url(/images/sprite_icons_button_dark.svg?v=2)
+}
+
+.popup#edit_task .text .task_area .col_1_4 .select_box .select_menu {
+    background-color: #4d5569;
+    box-shadow: 0 5px 55px rgba(0, 0, 20, .35)
+}
+
+.popup#edit_task .text .task_area .col_1_4 .select_box .select_menu .row {
+    border-color: rgba(255, 255, 255, .1);
+    color: rgba(255, 255, 255, .5)
+}
+
+.popup#edit_task .text .task_area .col_1_4 .select_box .select_menu .row:hover {
+    background: rgba(255, 255, 255, .05)
+}
+
+.popup#edit_task .text .task_area .col_1_4 .select_box .select_menu .row.selected {
+    background: rgba(255, 255, 255, .05)
+}
+
+.popup#edit_task .text .task_area .col_1_4 .select_box .priority_bar {
+    background: rgba(255, 255, 255, .1)
+}
+
+.popup#edit_task .text .task_area .col_1_4 .select_box .priority_bar.high {
+    background: #ff5b56
+}
+
+.popup#edit_task .text .task_area .col_1_4 .select_box .priority_bar.medium {
+    background: #ff9970
+}
+
+.popup#edit_task .text .task_area .col_1_4 .select_box .priority_bar.low {
+    background: #ffd66f
+}
+
+.popup#edit_task .text .task_area .col_1_4 .select_box .priority_bar.gray {
+    background: #c3c7d6
+}
+
+.popup#edit_task .text .task_area .col_1_4 .select_box .priority_bar.green {
+    background: #52cca5
+}
+
+.popup#edit_task .text .task_area .col_1_4 .select_box .status_bar {
+    background: rgba(255, 255, 255, .1)
+}
+
+.popup#edit_task .text .task_area .col_1_4 .select_box .status_bar.discarded {
+    background: #ff5b56
+}
+
+.popup#edit_task .text .task_area .col_1_4 .select_box .avatar {
+    background: rgba(255, 255, 255, .2)
+}
+
+.popup#edit_task .text .task_area .col_1_4 .select_box .icon {
+    background-image: url(/images/sprite_icons_dark_v4.svg?v=36)
+}
+
+.popup#edit_task .text .row select {
+    background-color: transparent;
+    box-shadow: none;
+    border: 1px solid rgba(255, 255, 255, .2)
+}
+
+
+.myClockSpeed{
+    display: none;
+    background: #434c61;
+    box-shadow: 0 5px 80px rgb(0 0 0 / 30%);
+    position: absolute;
+    right: 12px;
+    top: 56px;
+    z-index: 90;
+    padding: 15px;
+    border-radius: 4px;
+    min-width: 240px;
+}
+.myClockSpeed .clocktune_values_box{
+    padding: 0;
+    margin: -5px 0;
+}
+.myClockSpeed .clocktune_values_box .row{
+    padding: 5px 0 !important;
+    display: flex !important;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    border: 0;
+    position: relative;
+}
+.myClockSpeed .clocktune_values_box .row label.parameter{
+    flex: none;
+    width: auto;
+    margin: 0;
+    margin-right: 5px
+}
+.myClockSpeed .clocktune_values_box .row label.value{
+    flex: none;
+    width: auto;
+    margin: 0;
+    font-weight: 300;
+    text-align: right;
+}
+.myClockSpeed .clocktune_values_box .row label{
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+}
